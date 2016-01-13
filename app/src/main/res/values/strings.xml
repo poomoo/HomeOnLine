@@ -2,8 +2,8 @@
     <string name="app_name">家有在线</string>
     <string name="action_settings">Settings</string>
     <!--<string name="server_url">http://weixin.jiayou9.com/weixin/index.html</string>-->
-    <!--<string name="server_url">http://www.jiayou9.com/weixin/index.html?userId=49</string>-->
-    <string name="server_url">http://192.168.0.119:8080/weixin/index.html</string>
+    <string name="server_url">http://www.jiayou9.com/weixin/index.html</string>
+    <!--<string name="server_url">http://192.168.0.119:8080/weixin/index.html</string>-->
 
     <string name="title_login">登录</string>
     <string name="title_register">注册</string>
