@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ThemeBg"
+    android:orientation="vertical">
+
+    <include layout="@layout/pub_layout_title_bar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_userName"
+                android:textColor="@color/ThemeText"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/edt_userName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/hint_inputUserName"
+                android:inputType="phone"
+                android:maxLength="11"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_userPassWord"
+                android:textColor="@color/ThemeText"
+                android:textSize="18sp" />
+
+            <EditText
+                android:id="@+id/edt_userPassWord"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="@string/hint_inputUserPassWord"
+                android:inputType="textPassword"
+                android:paddingLeft="10dp"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/txt_register"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:padding="6dp"
+                android:text="@string/label_register"
+                android:textColor="@color/ThemeRed"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/txt_forgetPassWord"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:padding="6dp"
+                android:text="@string/label_forgetPassWord"
+                android:textColor="@color/ThemeText"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp" />
+
+        <Button
+            style="@style/myButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="toLogin"
+            android:text="@string/btn_login" />
+    </LinearLayout>
+</LinearLayout>

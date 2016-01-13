@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">家有在线</string>
+    <string name="action_settings">Settings</string>
+    <!--<string name="server_url">http://weixin.jiayou9.com/weixin/index.html</string>-->
+    <!--<string name="server_url">http://www.jiayou9.com/weixin/index.html?userId=49</string>-->
+    <string name="server_url">http://192.168.0.119:8080/weixin/index.html</string>
+
+    <string name="title_login">登录</string>
+    <string name="title_register">注册</string>
+    <string name="title_resetPassWord">设置密码</string>
+
+    <string name="label_userName">"用户名　"</string>
+    <string name="label_userPassWord">登录密码</string>
+    <string name="label_register">免费注册</string>
+    <string name="label_forgetPassWord">忘记密码?</string>
+    <string name="label_passWord">"密码　　"</string>
+    <string name="label_confirmPassWord">确认密码</string>
+
+    <string name="hint_inputUserName">请输入用户名</string>
+    <string name="hint_inputUserPassWord">请输入密码</string>
+    <string name="hint_inputPhoneNum">请输入您的手机号</string>
+    <string name="hint_inputCode">请输入验证码</string>
+    <string name="hint_inputPassWord">请输入6位以上的密码</string>
+    <string name="hint_inputPassWordAgain">再次输入密码</string>
+
+    <string name="btn_login">登录</string>
+    <string name="btn_next">下一步</string>
+    <string name="btn_complete">完成</string>
+
+    <string name="intent_value">value</string>
+    <string name="intent_parent">parent</string>
+    <string name="intent_register">register</string>
+    <string name="intent_find">find</string>
+
+
+    <string name="sp_isIndex">isIndex</string>
+    <string name="sp_phoneNum">phoneNum</string>
+    <string name="sp_isLogin">isLogin</string>
+    <string name="sp_id">id</string>
+
+    <string name="dialog">请稍后...</string>
+
+</resources>
