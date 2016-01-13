@@ -87,6 +87,7 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
                 userBO = (UserBO) data.getObj();
                 LogUtils.i(TAG, "id:" + userBO.getId());
                 finish();
+                SPUtils.put(getApplicationContext(), getString(R.string.sp_isLogin), true);
                 SPUtils.put(getApplicationContext(), getString(R.string.sp_id), userBO.getId() + "");
                 openActivity(MainActivity.class);
             }

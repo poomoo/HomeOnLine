@@ -27,8 +27,11 @@ public class SplashActivity extends BaseActivity {
                     openActivity(IndexViewPagerActivity.class);
                     finish();
                 } else {
-                    application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
-                    openActivity(LogInActivity.class);
+                    if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false))
+                        openActivity(MainActivity.class);
+                    else
+                        openActivity(LogInActivity.class);
+
                     finish();
                 }
 
