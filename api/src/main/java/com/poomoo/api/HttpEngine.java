@@ -51,7 +51,7 @@ public class HttpEngine {
     private final static String ENCODE_TYPE = "UTF-8";
     // IP
     public static final String BaseLocalUrl = "http://192.168.0.119:8080/app/";// 本地
-    public static final String BaseRemoteUrl = "www.jiayou9.com/app/";// 远程
+    public static final String BaseRemoteUrl = "http://www.jiayou9.com/app/";// 远程
     public static final String URL = BaseRemoteUrl + "call.json";
     public static final String PICSURL = BaseRemoteUrl + "/common/uploadPic.ajax";
 
