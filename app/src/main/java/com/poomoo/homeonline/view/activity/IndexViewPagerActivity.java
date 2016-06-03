@@ -142,7 +142,7 @@ public class IndexViewPagerActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        openActivity(LogInActivity.class);
+        openActivity(MainActivity.class);
         finish();
     }
 }

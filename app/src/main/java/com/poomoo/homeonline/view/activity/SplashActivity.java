@@ -2,6 +2,7 @@ package com.poomoo.homeonline.view.activity;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.WindowManager;
 
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.utils.SPUtils;
@@ -15,6 +16,9 @@ public class SplashActivity extends BaseActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //去掉Activity上面的状态栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splash);
 
         isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);
@@ -27,11 +31,10 @@ public class SplashActivity extends BaseActivity {
                     openActivity(IndexViewPagerActivity.class);
                     finish();
                 } else {
-                    if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false))
-                        openActivity(MainActivity.class);
-                    else
-                        openActivity(LogInActivity.class);
-
+//                    if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false))
+                    openActivity(MainActivity.class);
+//                    else
+//                    openActivity(LogInActivity.class);
                     finish();
                 }
 

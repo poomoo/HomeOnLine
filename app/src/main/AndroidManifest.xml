@@ -6,7 +6,7 @@
     <application
         android:name=".application.MyApplication"
         android:allowBackup="false"
-        android:icon="@mipmap/ic_log"
+        android:icon="@mipmap/ic_logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">

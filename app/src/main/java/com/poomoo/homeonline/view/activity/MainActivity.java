@@ -28,10 +28,11 @@ public class MainActivity extends BaseActivity {
         webView = (WebView) findViewById(R.id.webView);
         webView.setWebViewClient(new webViewClient());
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.loadUrl(getString(R.string.server_url) + "?userId=" + SPUtils.get(getApplicationContext(), getString(R.string.sp_id), "") + "&isAppClient=true");
+//        webView.loadUrl(getString(R.string.server_url) + "?userId=" + SPUtils.get(getApplicationContext(), getString(R.string.sp_id), "") + "&isAppClient=true");
+        webView.loadUrl(getString(R.string.server_url));
 
         webView.getSettings().setDomStorageEnabled(true);
-        webView.getSettings().setAppCacheMaxSize(1024*1024*8);
+        webView.getSettings().setAppCacheMaxSize(1024 * 1024 * 8);
         String appCachePath = getApplicationContext().getCacheDir().getAbsolutePath();
         webView.getSettings().setAppCachePath(appCachePath);
         webView.getSettings().setAllowFileAccess(true);
@@ -55,7 +56,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack()) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack() && !isIndexPage(webView.getUrl())) {
             webView.goBack();
             return true;
         } else if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -74,5 +75,20 @@ public class MainActivity extends BaseActivity {
         } else {
             finish();
         }
+    }
+
+    private boolean isIndexPage(String url) {
+        if (url.equals(getString(R.string.server_url)))
+            return true;
+        else if (url.equals(getString(R.string.category_url)))
+            return true;
+        else if (url.equals(getString(R.string.rush_url)))
+            return true;
+        else if (url.equals(getString(R.string.cart_url)))
+            return true;
+        else if (url.equals(getString(R.string.user_url)))
+            return true;
+        else
+            return false;
     }
 }
