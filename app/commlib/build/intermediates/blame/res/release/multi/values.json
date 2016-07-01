@@ -1,0 +1,26 @@
+[
+    {
+        "outputFile": "G:\\ASProject\\PartTimeJob\\commlib\\build\\intermediates\\res\\merged\\release\\values\\values.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 44,
+                    "endOffset": 95
+                },
+                "from": {
+                    "file": "G:\\ASProject\\PartTimeJob\\commlib\\src\\main\\res\\values\\strings.xml",
+                    "position": {
+                        "startLine": 1,
+                        "startColumn": 4,
+                        "startOffset": 17,
+                        "endColumn": 44,
+                        "endOffset": 57
+                    }
+                }
+            }
+        ]
+    }
+]

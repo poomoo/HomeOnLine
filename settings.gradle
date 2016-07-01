@@ -1,1 +1,1 @@
-include ':app', ':api', ':core', ':model'
+include ':app', ':api', ':core', ':model', ':commlib'
