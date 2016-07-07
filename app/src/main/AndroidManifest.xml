@@ -44,9 +44,6 @@
             android:name=".ui.activity.WebViewActivity"
             android:exported="false" />
 
-        <activity
-            android:name=".ui.activity.TestActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

@@ -1,7 +1,6 @@
 package com.poomoo.homeonline.ui.base;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +9,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,7 +23,7 @@ import com.poomoo.homeonline.application.MyApplication;
  * 作者: 李苜菲
  * 日期: 2015/11/11 11:30.
  */
-public abstract class BaseActivity extends FragmentActivity {
+public abstract class BaseActivity extends Activity {
     // 上下文实例
     public Context context;
     // 应用全局的实例
@@ -38,13 +39,13 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = getApplicationContext();
-//        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         application = (MyApplication) this.getApplication();
         appAction = application.getAppAction();
         // 去掉默认标题栏
-//        Window window = getWindow();
-//        window.requestFeature(Window.FEATURE_NO_TITLE);
+        Window window = getWindow();
+        window.requestFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(onBindLayout());
     }

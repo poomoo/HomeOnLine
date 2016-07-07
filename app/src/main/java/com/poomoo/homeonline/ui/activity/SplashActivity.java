@@ -31,7 +31,7 @@ public class SplashActivity extends BaseActivity {
                     finish();
                 } else {
 //                    if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false))
-                    openActivity(TestActivity.class);
+                    openActivity(MainNewActivity.class);
 //                    else
 //                    openActivity(LogInActivity.class);
                     finish();
