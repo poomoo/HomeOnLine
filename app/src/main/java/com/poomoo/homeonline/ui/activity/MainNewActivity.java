@@ -13,6 +13,7 @@ import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.homeonline.ui.custom.BottomBar;
+import com.poomoo.homeonline.ui.fragment.CenterFragment;
 import com.poomoo.homeonline.ui.fragment.ClassifyFragment;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
 
@@ -29,6 +30,7 @@ public class MainNewActivity extends BaseActivity {
 
     private MainFragment mainFragment;
     private ClassifyFragment classifyFragment;
+    private CenterFragment centerFragment;
     private Fragment curFragment;
     private FragmentTransaction fragmentTransaction;
     private int flag = 0;
@@ -91,10 +93,15 @@ public class MainNewActivity extends BaseActivity {
                 curFragment = classifyFragment;
                 break;
             case 2:
+
                 break;
             case 3:
                 break;
             case 4:
+                if (centerFragment == null)
+                    centerFragment = new CenterFragment();
+                switchFragment(centerFragment);
+                curFragment = centerFragment;
                 break;
         }
     }

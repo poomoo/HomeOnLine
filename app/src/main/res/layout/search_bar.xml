@@ -13,7 +13,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_logo" />
+        android:src="@drawable/ic_title_logo" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -25,7 +25,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
             android:background="@drawable/style_search_edittext"
             android:gravity="center"
             android:orientation="horizontal">
@@ -33,11 +32,13 @@
             <EditText
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
                 android:layout_weight="1"
                 android:background="@null"
                 android:drawableLeft="@drawable/nav_main_normal"
                 android:gravity="center_vertical"
                 android:hint="搜索你想找的商品"
+                android:singleLine="true"
                 android:textSize="14sp" />
 
             <TextView
