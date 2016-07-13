@@ -191,7 +191,7 @@ public class BottomBar extends LinearLayout implements OnClickListener {
                 if (isShow) {
                     inform_cartTxt.setVisibility(View.VISIBLE);
                     inform_cartTxt.setText(number + "");
-                    LogUtils.d(TAG, "购物车显示数量"+number+"isShow"+inform_cartTxt.getVisibility());
+                    LogUtils.d(TAG, "购物车显示数量" + number + "isShow" + inform_cartTxt.getVisibility());
                 } else
                     inform_cartTxt.setVisibility(View.INVISIBLE);
                 break;

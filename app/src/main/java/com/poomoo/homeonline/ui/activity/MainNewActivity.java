@@ -34,12 +34,14 @@ public class MainNewActivity extends BaseActivity {
     private CenterFragment centerFragment;
     private android.app.Fragment curFragment;
     private FragmentTransaction fragmentTransaction;
+
+    public static MainNewActivity INSTANCE = null;
     private int flag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        INSTANCE = this;
         ButterKnife.bind(this);
         setDefaultFragment();
 
@@ -48,10 +50,10 @@ public class MainNewActivity extends BaseActivity {
             public void onItemChanged(final int index) {
                 LogUtils.d(TAG, "onItemChanged:" + index);
                 jump(index);
-                if (index == 3)
-                    bottomBar.setInfoNum(3, 5, false);
-                else
-                    bottomBar.setInfoNum(3, 5, true);
+//                if (index == 3)
+//                    bottomBar.setInfoNum(3, 5, false);
+//                else
+//                    bottomBar.setInfoNum(3, 5, true);
             }
         });
     }
@@ -109,6 +111,10 @@ public class MainNewActivity extends BaseActivity {
                 curFragment = centerFragment;
                 break;
         }
+    }
+
+    public void setInfoNum(int type, int number, boolean isShow) {
+        bottomBar.setInfoNum(type, number, isShow);
     }
 
     /**

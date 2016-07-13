@@ -13,6 +13,7 @@ import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.listeners.OnBuyCheckChangedListener;
 import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
+import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.custom.AddAndMinusView;
 import com.poomoo.homeonline.ui.fragment.CartFragment;
 import com.poomoo.model.response.RCartBO;
@@ -37,6 +38,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
     public boolean isEdit = false;//true -购买模式 false-编辑模式
     private double totalPrice = 0.00;
     public int removeCount = 0;//选择的删除项
+    private int commodityKind = 0;
 
     public CartAdapter(Context context, List<RCartBO> group, OnBuyCheckChangedListener onBuyCheckChangedListener, OnEditCheckChangedListener onEditCheckChangedListener) {
         this.context = context;
@@ -90,7 +92,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-        LogUtils.d(TAG, "getGroupView:" + groupPosition);
+//        LogUtils.d(TAG, "getGroupView:" + groupPosition);
 
         GroupViewHolder holder;
         convertView = LayoutInflater.from(context).inflate(R.layout.item_list_group, null);
@@ -109,6 +111,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.shopChk.setOnClickListener(new Group_CheckBox_Click(groupPosition));
 
         setTotalPrice();
+        getTotalCommodity();
+
+        MainNewActivity.INSTANCE.setInfoNum(3, commodityKind, commodityKind > 0 ? true : false);
         return convertView;
     }
 
@@ -153,7 +158,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-        LogUtils.d(TAG, "getChildView:" + childPosition);
+//        LogUtils.d(TAG, "getChildView:" + childPosition);
         ChildViewHolder holder;
         convertView = LayoutInflater.from(context).inflate(R.layout.item_list_commodity, null);
         holder = new ChildViewHolder();
@@ -301,6 +306,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
                         j--;
                     }
         }
+        if (group.size() == 0)
+            MainNewActivity.INSTANCE.setInfoNum(3, 0, false);
         notifyDataSetChanged();
     }
 
@@ -320,7 +327,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 if (rCommodityBO.isEditChecked)
                     removeCount++;
             }
-        LogUtils.d(TAG, "setTotalPrice:" + totalPrice);
+//        LogUtils.d(TAG, "setTotalPrice:" + totalPrice);
         cartFragment.setTotalPrice(totalPrice + "");
     }
 
@@ -340,6 +347,20 @@ public class CartAdapter extends BaseExpandableListAdapter {
                         return false;
                 }
         return true;
+    }
+
+    /**
+     * 商品种类
+     *
+     * @return
+     */
+    public int getTotalCommodity() {
+        commodityKind = 0;
+        int len = group.size();
+        for (int i = 0; i < len; i++)
+            commodityKind += getChildrenCount(i);
+
+        return commodityKind;
     }
 
 }

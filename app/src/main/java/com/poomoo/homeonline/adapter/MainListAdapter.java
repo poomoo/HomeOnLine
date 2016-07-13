@@ -18,10 +18,33 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * Created by thanatos on 15/12/22.
+ * #                                                   #
+ * #                       _oo0oo_                     #
+ * #                      o8888888o                    #
+ * #                      88" . "88                    #
+ * #                      (| -_- |)                    #
+ * #                      0\  =  /0                    #
+ * #                    ___/`---'\___                  #
+ * #                  .' \\|     |# '.                 #
+ * #                 / \\|||  :  |||# \                #
+ * #                / _||||| -:- |||||- \              #
+ * #               |   | \\\  -  #/ |   |              #
+ * #               | \_|  ''\---/''  |_/ |             #
+ * #               \  .-\__  '-'  ___/-. /             #
+ * #             ___'. .'  /--.--\  `. .'___           #
+ * #          ."" '<  `.___\_<|>_/___.' >' "".         #
+ * #         | | :  `- \`.;`\ _ /`;.`/ - ` : | |       #
+ * #         \  \ `_.   \_ __\ /__ _/   .-` /  /       #
+ * #     =====`-.____`.___ \_____/___.-`___.-'=====    #
+ * #                       `=---='                     #
+ * #     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   #
+ * #                                                   #
+ * #               佛祖保佑         永无BUG            #
+ * #                                                   #
+ * 作者: 李苜菲
+ * 日期: 2016/7/13 16:52
  */
 public class MainListAdapter extends BaseListAdapter<RRecommendBO> {
-
     public MainListAdapter(Context context, int mode) {
         super(context, mode);
     }
@@ -40,6 +63,7 @@ public class MainListAdapter extends BaseListAdapter<RRecommendBO> {
         holder.oldPriceTxt.setText("￥" + item.oldPrice);
         holder.oldPriceTxt.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
     }
+
 
     public static final class BaseViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.img_commodity)
