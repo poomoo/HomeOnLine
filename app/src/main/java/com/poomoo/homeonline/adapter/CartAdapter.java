@@ -9,7 +9,6 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.listeners.OnBuyCheckChangedListener;
 import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
