@@ -3,7 +3,6 @@
  */
 package com.poomoo.homeonline.ui.activity;
 
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
@@ -13,6 +12,7 @@ import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.homeonline.ui.custom.BottomBar;
+import com.poomoo.homeonline.ui.fragment.CartFragment;
 import com.poomoo.homeonline.ui.fragment.CenterFragment;
 import com.poomoo.homeonline.ui.fragment.ClassifyFragment;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
@@ -30,8 +30,9 @@ public class MainNewActivity extends BaseActivity {
 
     private MainFragment mainFragment;
     private ClassifyFragment classifyFragment;
+    private CartFragment cartCartFragment;
     private CenterFragment centerFragment;
-    private Fragment curFragment;
+    private android.app.Fragment curFragment;
     private FragmentTransaction fragmentTransaction;
     private int flag = 0;
 
@@ -96,6 +97,10 @@ public class MainNewActivity extends BaseActivity {
 
                 break;
             case 3:
+                if (cartCartFragment == null)
+                    cartCartFragment = new CartFragment();
+                switchFragment(cartCartFragment);
+                curFragment = cartCartFragment;
                 break;
             case 4:
                 if (centerFragment == null)
@@ -111,7 +116,7 @@ public class MainNewActivity extends BaseActivity {
      *
      * @param to
      */
-    public void switchFragment(Fragment to) {
+    public void switchFragment(android.app.Fragment to) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if (!to.isAdded()) { // 先判断是否被add过

@@ -8,13 +8,10 @@ import android.support.design.widget.AppBarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -33,9 +30,8 @@ import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.homeonline.ui.listener.AdvertisementListener;
-import com.poomoo.model.response.RCommodityBO;
+import com.poomoo.model.response.RRecommendBO;
 import com.poomoo.model.response.RTypeBO;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,7 +79,7 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
     private PicturesGridAdapter lsyzGridAdapter;
     private TimeCountDownUtilBy3View timeCountDownUtilBy3View;
 
-    private List<RCommodityBO> rCommodityBOs = new ArrayList<>();
+    private List<RRecommendBO> rRecommendBOs = new ArrayList<>();
     private String[] ad = {"http://img.jiayou9.com/jyzx/upload/company/20160621/20160621235614_798.jpg", "http://img.jiayou9.com/jyzx//upload/company/20160617/20160617152510_21.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160617/20160617153952_548.jpg"};
     private String[] qhcs = {"http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133639_805.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133706_479.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133619_901.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133559_450.jpg"};
     private String[] lsyz = {"http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133432_159.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160622/20160622135718_235.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133453_903.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133539_91.jpg"};
@@ -154,49 +150,49 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
     }
 
     private void initCommodities() {
-        RCommodityBO rCommodityBO = new RCommodityBO();
-        rCommodityBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628100836_78.jpg";
-        rCommodityBO.newPrice = "10.80";
-        rCommodityBO.oldPrice = "10.80";
-        rCommodityBOs.add(rCommodityBO);
+        RRecommendBO rRecommendBO = new RRecommendBO();
+        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628100836_78.jpg";
+        rRecommendBO.newPrice = "10.80";
+        rRecommendBO.oldPrice = "10.80";
+        rRecommendBOs.add(rRecommendBO);
 
-        rCommodityBO = new RCommodityBO();
-        rCommodityBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101204_324.jpg";
-        rCommodityBO.newPrice = "68";
-        rCommodityBO.oldPrice = "68";
-        rCommodityBOs.add(rCommodityBO);
+        rRecommendBO = new RRecommendBO();
+        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101204_324.jpg";
+        rRecommendBO.newPrice = "68";
+        rRecommendBO.oldPrice = "68";
+        rRecommendBOs.add(rRecommendBO);
 
-        rCommodityBO = new RCommodityBO();
-        rCommodityBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101635_324.jpg";
-        rCommodityBO.newPrice = "8.18";
-        rCommodityBO.oldPrice = "8.18";
-        rCommodityBOs.add(rCommodityBO);
+        rRecommendBO = new RRecommendBO();
+        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101635_324.jpg";
+        rRecommendBO.newPrice = "8.18";
+        rRecommendBO.oldPrice = "8.18";
+        rRecommendBOs.add(rRecommendBO);
 
-        rCommodityBO = new RCommodityBO();
-        rCommodityBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628100543_124.jpg";
-        rCommodityBO.newPrice = "15.20";
-        rCommodityBO.oldPrice = "15.20";
-        rCommodityBOs.add(rCommodityBO);
+        rRecommendBO = new RRecommendBO();
+        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628100543_124.jpg";
+        rRecommendBO.newPrice = "15.20";
+        rRecommendBO.oldPrice = "15.20";
+        rRecommendBOs.add(rRecommendBO);
 
-        rCommodityBO = new RCommodityBO();
-        rCommodityBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101204_324.jpg";
-        rCommodityBO.newPrice = "68";
-        rCommodityBO.oldPrice = "68";
-        rCommodityBOs.add(rCommodityBO);
+        rRecommendBO = new RRecommendBO();
+        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101204_324.jpg";
+        rRecommendBO.newPrice = "68";
+        rRecommendBO.oldPrice = "68";
+        rRecommendBOs.add(rRecommendBO);
 
-        rCommodityBO = new RCommodityBO();
-        rCommodityBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101635_324.jpg";
-        rCommodityBO.newPrice = "8.18";
-        rCommodityBO.oldPrice = "8.18";
-        rCommodityBOs.add(rCommodityBO);
+        rRecommendBO = new RRecommendBO();
+        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101635_324.jpg";
+        rRecommendBO.newPrice = "8.18";
+        rRecommendBO.oldPrice = "8.18";
+        rRecommendBOs.add(rRecommendBO);
 
-        rCommodityBO = new RCommodityBO();
-        rCommodityBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628100543_124.jpg";
-        rCommodityBO.newPrice = "15.20";
-        rCommodityBO.oldPrice = "15.20";
-        rCommodityBOs.add(rCommodityBO);
+        rRecommendBO = new RRecommendBO();
+        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628100543_124.jpg";
+        rRecommendBO.newPrice = "15.20";
+        rRecommendBO.oldPrice = "15.20";
+        rRecommendBOs.add(rRecommendBO);
 
-        adapter.addItems(rCommodityBOs);
+        adapter.addItems(rRecommendBOs);
     }
 
     private void initCountDownTime() {
