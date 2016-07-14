@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.poomoo.homeonline.R;
@@ -96,6 +97,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         GroupViewHolder holder;
         convertView = LayoutInflater.from(context).inflate(R.layout.item_list_group, null);
         holder = new GroupViewHolder();
+        holder.shopLayout = (LinearLayout) convertView.findViewById(R.id.llayout_shop);
         holder.shopChk = (CheckBox) convertView.findViewById(R.id.chk_shop);
         holder.shopTxt = (TextView) convertView.findViewById(R.id.txt_shop);
 
@@ -107,7 +109,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.shopTxt.setText(rCartBO.shop);
 
         // 點擊 CheckBox 時，將狀態存起來
-        holder.shopChk.setOnClickListener(new Group_CheckBox_Click(groupPosition));
+        holder.shopLayout.setOnClickListener(new Group_CheckBox_Click(groupPosition));
 
         setTotalPrice();
         getTotalCommodity();
@@ -161,6 +163,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         ChildViewHolder holder;
         convertView = LayoutInflater.from(context).inflate(R.layout.item_list_commodity, null);
         holder = new ChildViewHolder();
+        holder.commodityLayout = (LinearLayout) convertView.findViewById(R.id.llayout_commodity);
         holder.commodityChk = (CheckBox) convertView.findViewById(R.id.chk_commodity);
         holder.commodityImg = (ImageView) convertView.findViewById(R.id.img_commodity);
         holder.commodityTxt = (TextView) convertView.findViewById(R.id.txt_commodity);
@@ -179,7 +182,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.andMinusView.setCount(rCommodityBO.count);
 
         // 點擊 CheckBox 時，將狀態存起來
-        holder.commodityChk.setOnClickListener(new Child_CheckBox_Click(groupPosition, childPosition));
+        holder.commodityLayout.setOnClickListener(new Child_CheckBox_Click(groupPosition, childPosition));
 
         setTotalPrice();
         return convertView;
@@ -223,11 +226,13 @@ public class CartAdapter extends BaseExpandableListAdapter {
     }
 
     class GroupViewHolder {
+        LinearLayout shopLayout;
         CheckBox shopChk;
         TextView shopTxt;
     }
 
     class ChildViewHolder {
+        LinearLayout commodityLayout;
         CheckBox commodityChk;
         ImageView commodityImg;
         TextView commodityTxt;
