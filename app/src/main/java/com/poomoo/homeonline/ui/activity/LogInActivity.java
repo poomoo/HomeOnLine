@@ -46,8 +46,11 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
     }
 
     @Override
-    protected void initView() {
-        initTitleBar();
+    protected int onSetTitle() {
+        return R.string.title_login;
+    }
+
+    private void initView() {
         nameEdt = (EditText) findViewById(R.id.edt_userName);
         passWordEdt = (EditText) findViewById(R.id.edt_userPassWord);
         registerTxt = (TextView) findViewById(R.id.txt_register);
@@ -55,13 +58,6 @@ public class LogInActivity extends BaseActivity implements View.OnClickListener 
 
         registerTxt.setOnClickListener(this);
         forgetPassWordTxt.setOnClickListener(this);
-    }
-
-    @Override
-    protected void initTitleBar() {
-        HeaderViewHolder headerViewHolder = getHeaderView();
-        headerViewHolder.titleTxt.setText(R.string.title_login);
-        headerViewHolder.backImg.setVisibility(View.GONE);
     }
 
     @Override

@@ -18,13 +18,14 @@
     <!--</style>-->
 
     <style name="NoActionBarTheme" parent="android:Theme.Holo.NoActionBar">
-    <!--<item name="windowActionBar">false</item>-->
-    <!--<item name="windowNoTitle">false</item>-->
+        <!--<item name="windowActionBar">false</item>-->
+        <!--<item name="windowNoTitle">false</item>-->
     </style>
 
     <style name="myButton" parent="android:Widget.Button">
         <item name="android:background">@drawable/selector_button</item>
         <item name="android:textColor">@color/white</item>
+        <item name="android:layout_height">36dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>
     </style>

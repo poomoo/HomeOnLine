@@ -1,0 +1,145 @@
+package com.poomoo.homeonline.ui.base;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+
+import com.poomoo.commlib.LogUtils;
+import com.poomoo.homeonline.R;
+
+import java.util.ArrayList;
+
+/**
+ * #                                                   #
+ * #                       _oo0oo_                     #
+ * #                      o8888888o                    #
+ * #                      88" . "88                    #
+ * #                      (| -_- |)                    #
+ * #                      0\  =  /0                    #
+ * #                    ___/`---'\___                  #
+ * #                  .' \\|     |# '.                 #
+ * #                 / \\|||  :  |||# \                #
+ * #                / _||||| -:- |||||- \              #
+ * #               |   | \\\  -  #/ |   |              #
+ * #               | \_|  ''\---/''  |_/ |             #
+ * #               \  .-\__  '-'  ___/-. /             #
+ * #             ___'. .'  /--.--\  `. .'___           #
+ * #          ."" '<  `.___\_<|>_/___.' >' "".         #
+ * #         | | :  `- \`.;`\ _ /`;.`/ - ` : | |       #
+ * #         \  \ `_.   \_ __\ /__ _/   .-` /  /       #
+ * #     =====`-.____`.___ \_____/___.-`___.-'=====    #
+ * #                       `=---='                     #
+ * #     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   #
+ * #                                                   #
+ * #               佛祖保佑         永无BUG            #
+ * #                                                   #
+ * 作者: 李苜菲
+ * 日期: 2016/7/14 9:37
+ * TAB
+ */
+public abstract class BaseTabFragment extends BaseFragment {
+
+    protected ViewPager mViewPager;
+
+    protected FragmentStatePagerAdapter mAdapter;
+    protected ArrayList<ViewPageInfo> mTabs;
+    public static final String BUNDLE_TYPE = "BUNDLE_TYPE";
+    public Context mContext;
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
+
+        if (mAdapter == null) {
+            mTabs = new ArrayList<>();
+            onSetupTabs();
+
+            mViewPager.setAdapter(new FragmentStatePagerAdapter(getGenuineFragmentManager()) {
+                @Override
+                public Fragment getItem(int position) {
+                    return mTabs.get(position).fragment;
+                }
+
+                @Override
+                public int getCount() {
+                    return mTabs.size();
+                }
+
+                @Override
+                public CharSequence getPageTitle(int position) {
+                    return mTabs.get(position).tag;
+                }
+            });
+        } else {
+            mViewPager.setAdapter(mAdapter);
+        }
+    }
+
+    /**
+     * 导航元素
+     *
+     * @param title
+     * @return
+     */
+    public abstract View setupTabItemView(String title);
+
+    /**
+     * 设置Fragment
+     */
+    public abstract void onSetupTabs();
+
+    public FragmentManager getGenuineFragmentManager() {
+        return getFragmentManager();
+    }
+
+    /**
+     * 添加Fragment对象到ViewPager
+     */
+    public void addTab(String tag, Class<? extends Fragment> fragment, int catalog) {
+        LogUtils.d(TAG, "addTab:" + catalog);
+        Bundle bundle = new Bundle();
+        bundle.putInt(BUNDLE_TYPE, catalog);
+        mTabs.add(new ViewPageInfo(tag, instantiate(getActivity(), fragment.getName(), bundle)));
+    }
+
+    public void addTab(String tag, Class<? extends Fragment> fragment) {
+        mTabs.add(new ViewPageInfo(tag, instantiate(getActivity(), fragment.getName())));
+    }
+
+    public void addTab(String tag, Fragment fragment) {
+        mTabs.add(new ViewPageInfo(tag, fragment));
+    }
+
+    public void setCurrentItem(int index) {
+        mViewPager.setCurrentItem(index);
+    }
+
+    public int getCurrentItem() {
+        return mViewPager.getCurrentItem();
+    }
+
+    public int getPageCount() {
+        return mTabs.size();
+    }
+
+    /**
+     * ViewPageInformation
+     */
+    public static class ViewPageInfo {
+        public String tag;
+        public View view;
+        public Fragment fragment;
+
+        public ViewPageInfo(String tag, Fragment fragment) {
+            this.tag = tag;
+            this.fragment = fragment;
+        }
+    }
+}

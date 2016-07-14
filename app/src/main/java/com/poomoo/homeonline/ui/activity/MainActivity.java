@@ -37,6 +37,11 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
+    @Override
+    protected int onSetTitle() {
+        return 0;
+    }
+
     class webViewClient extends WebViewClient {
 
         //重写shouldOverrideUrlLoading方法，使点击链接后不使用其他的浏览器打开。

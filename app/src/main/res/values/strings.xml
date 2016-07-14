@@ -11,6 +11,9 @@
     <string name="title_login">登录</string>
     <string name="title_register">注册</string>
     <string name="title_resetPassWord">设置密码</string>
+    <string name="title_myOrders">我的订单</string>
+    <string name="title_my_info">我的资料</string>
+    <string name="title_address_list">地址管理</string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -42,6 +45,15 @@
     <string name="sp_id">id</string>
 
     <string name="dialog">请稍后...</string>
+
+    <!--tab-->
+    <string name="tab_order_all">全部</string>
+    <string name="tab_order_pay">待付款</string>
+    <string name="tab_order_deliver">待发货</string>
+    <string name="tab_order_receipt">待收货</string>
+    <string name="tab_order_evaluate">待评价</string>
+    <string name="tab_order_after_sale">退款/售后</string>
+    <!--tab-->
 
     <!--dialog-->
     <string name="dialog_msg">请稍后...</string>

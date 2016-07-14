@@ -50,9 +50,13 @@ public class WebViewActivity extends BaseActivity {
         return R.layout.activity_webview;
     }
 
-    @SuppressLint("JavascriptInterface")
     @Override
-    protected void initView() {
+    protected int onSetTitle() {
+        return 0;
+    }
+
+    @SuppressLint("JavascriptInterface")
+    private void initView() {
         url = getIntent().getStringExtra(getString(R.string.intent_value));
         pubWeb.setWebViewClient(new webViewClient());
         pubWeb.setWebChromeClient(new MyWebChromeClient());

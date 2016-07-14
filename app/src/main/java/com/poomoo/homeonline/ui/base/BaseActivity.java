@@ -1,6 +1,5 @@
 package com.poomoo.homeonline.ui.base;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +22,7 @@ import com.poomoo.homeonline.application.MyApplication;
  * 作者: 李苜菲
  * 日期: 2015/11/11 11:30.
  */
-public abstract class BaseActivity extends Activity {
+public abstract class BaseActivity extends FragmentActivity {
     // 上下文实例
     public Context context;
     // 应用全局的实例
@@ -52,10 +51,10 @@ public abstract class BaseActivity extends Activity {
 
     protected abstract int onBindLayout();
 
-    protected void initView() {
-    }
+    protected abstract int onSetTitle();
 
-    protected void initTitleBar() {
+    protected void setBack() {
+        getHeaderView();
     }
 
     /**
@@ -69,6 +68,7 @@ public abstract class BaseActivity extends Activity {
         headerViewHolder.backImg = (ImageView) findViewById(R.id.img_titleBar_back);
         headerViewHolder.rightImg = (ImageView) findViewById(R.id.img_titleBar_right);
         headerViewHolder.rightTxt = (TextView) findViewById(R.id.txt_titleBar_right);
+        headerViewHolder.titleTxt.setText(getString(onSetTitle()));
         headerViewHolder.backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

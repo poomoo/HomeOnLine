@@ -18,8 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class IndexViewPagerActivity extends BaseActivity implements
-        OnClickListener, OnPageChangeListener {
+public class IndexViewPagerActivity extends BaseActivity implements OnClickListener, OnPageChangeListener {
 
     private ViewPager vp;
     private ViewPagerAdapter vpAdapter;
@@ -77,6 +76,11 @@ public class IndexViewPagerActivity extends BaseActivity implements
         return R.layout.viewpager;
     }
 
+    @Override
+    protected int onSetTitle() {
+        return 0;
+    }
+
     private void initDots() {
         ll = (LinearLayout) findViewById(R.id.viewpager_ll);
         dots = new ImageView[lenth];
@@ -106,17 +110,17 @@ public class IndexViewPagerActivity extends BaseActivity implements
     /**
      * 当前引导小点的选中
      */
-    private void setCurDot(int positon) {
-        if (positon < 0 || positon > lenth - 1 || currentIndex == positon) {
+    private void setCurDot(int position) {
+        if (position < 0 || position > lenth - 1 || currentIndex == position) {
             return;
         }
-        if (positon == lenth - 1)
+        if (position == lenth - 1)
             ll.setVisibility(View.INVISIBLE);
         else
             ll.setVisibility(View.VISIBLE);
-        dots[positon].setEnabled(true);
+        dots[position].setEnabled(true);
         dots[currentIndex].setEnabled(false);
-        currentIndex = positon;
+        currentIndex = position;
     }
 
     // 当滑动状态改变时调用

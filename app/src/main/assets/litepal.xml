@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+
+    <dbname value="homeOnLine" />
+
+    <version value="2" />
+
+    <list>
+        <mapping class="com.poomoo.homeonline.database.ProvinceInfo" />
+        <mapping class="com.poomoo.homeonline.database.CityInfo" />
+        <mapping class="com.poomoo.homeonline.database.AreaInfo" />
+    </list>
+
+</litepal>

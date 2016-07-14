@@ -6,6 +6,7 @@ package com.poomoo.commlib;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
@@ -346,6 +347,23 @@ public class MyUtils {
             e.printStackTrace();
         }
         return time;
+    }
+
+    private static ConnectivityManager mCnnManager;
+
+    public static ConnectivityManager getCnnManager(Context context) {
+        if (mCnnManager == null)
+            mCnnManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return mCnnManager;
+    }
+
+    /**
+     * 检测是否有网络
+     *
+     * @return
+     */
+    public static boolean hasInternet(Context context) {
+        return getCnnManager(context).getActiveNetworkInfo() != null && getCnnManager(context).getActiveNetworkInfo().isAvailable();
     }
 
 

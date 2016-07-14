@@ -90,6 +90,7 @@
             </LinearLayout>
 
             <RelativeLayout
+                android:id="@+id/rlayout_myOrder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -139,6 +140,7 @@
                 android:paddingTop="12dp">
 
                 <LinearLayout
+                    android:id="@+id/llayout_pay"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -158,6 +160,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llayout_deliver"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -177,6 +180,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llayout_recepit"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -196,6 +200,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llayout_evaluate"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -215,6 +220,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/llayout_after_safe"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -241,6 +247,7 @@
                 android:background="@color/divide" />
 
             <RelativeLayout
+                android:id="@+id/rlayout_my_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -280,6 +287,7 @@
                 android:background="@color/divide" />
 
             <RelativeLayout
+                android:id="@+id/rlayout_my_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
@@ -315,6 +323,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:id="@+id/rlayout_tel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -354,6 +363,7 @@
                 android:background="@color/divide" />
 
             <RelativeLayout
+                android:id="@+id/rlayout_feed_back"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -393,6 +403,7 @@
                 android:background="@color/divide" />
 
             <RelativeLayout
+                android:id="@+id/rlayout_safe_center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="30dp"

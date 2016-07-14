@@ -36,6 +36,7 @@ public class GetCodeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setBack();
         initView();
     }
 
@@ -45,8 +46,12 @@ public class GetCodeActivity extends BaseActivity {
     }
 
     @Override
-    protected void initView() {
-        initTitleBar();
+    protected int onSetTitle() {
+        return R.string.title_register;
+    }
+
+
+    private void initView() {
         phoneEdt = (EditText) findViewById(R.id.edt_tel);
         codeEdt = (EditText) findViewById(R.id.edt_code);
         getCodeBtn = (Button) findViewById(R.id.btn_code);
@@ -56,12 +61,6 @@ public class GetCodeActivity extends BaseActivity {
             flag = false;
         else
             flag = true;
-    }
-
-    @Override
-    protected void initTitleBar() {
-        HeaderViewHolder headerViewHolder = getHeaderView();
-        headerViewHolder.titleTxt.setText(R.string.title_register);
     }
 
     public void toGetCode(View view) {

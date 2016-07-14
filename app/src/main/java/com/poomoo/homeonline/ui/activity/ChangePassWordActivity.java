@@ -35,6 +35,8 @@ public class ChangePassWordActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setBack();
         initView();
     }
 
@@ -44,18 +46,15 @@ public class ChangePassWordActivity extends BaseActivity {
     }
 
     @Override
-    protected void initView() {
-        initTitleBar();
+    protected int onSetTitle() {
+        return R.string.title_resetPassWord;
+    }
+
+    private void initView() {
         passWordEdt = (EditText) findViewById(R.id.edt_passWord);
         passWordAgainEdt = (EditText) findViewById(R.id.edt_passWordAgain);
 
         PARENT = getIntent().getStringExtra(getString(R.string.intent_parent));
-    }
-
-    @Override
-    protected void initTitleBar() {
-        HeaderViewHolder headerViewHolder = getHeaderView();
-        headerViewHolder.titleTxt.setText(getString(R.string.title_resetPassWord));
     }
 
     public void toComplete(View view) {

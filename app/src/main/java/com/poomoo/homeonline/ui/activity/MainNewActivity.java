@@ -3,10 +3,10 @@
  */
 package com.poomoo.homeonline.ui.activity;
 
-import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
@@ -32,8 +32,8 @@ public class MainNewActivity extends BaseActivity {
     private ClassifyFragment classifyFragment;
     private CartFragment cartCartFragment;
     private CenterFragment centerFragment;
-    private android.app.Fragment curFragment;
-    private FragmentTransaction fragmentTransaction;
+    private Fragment curFragment;
+//    private FragmentTransaction fragmentTransaction;
 
     public static MainNewActivity INSTANCE = null;
     private int flag = 0;
@@ -50,10 +50,6 @@ public class MainNewActivity extends BaseActivity {
             public void onItemChanged(final int index) {
                 LogUtils.d(TAG, "onItemChanged:" + index);
                 jump(index);
-//                if (index == 3)
-//                    bottomBar.setInfoNum(3, 5, false);
-//                else
-//                    bottomBar.setInfoNum(3, 5, true);
             }
         });
     }
@@ -72,15 +68,28 @@ public class MainNewActivity extends BaseActivity {
         return R.layout.activity_main_new;
     }
 
+    @Override
+    protected int onSetTitle() {
+        return 0;
+    }
+
     private void setDefaultFragment() {
         // TODO 自动生成的方法存根
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentTransaction = fragmentManager.beginTransaction();
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentTransaction = fragmentManager.beginTransaction();
+//
+//        mainFragment = new MainFragment();
+//        curFragment = mainFragment;
+//        fragmentTransaction.add(R.id.frameLayout_main, curFragment);
+//        fragmentTransaction.commit();
+
+//        mainFragment = Fragment.instantiate(this, MainFragment.class.getName());
 
         mainFragment = new MainFragment();
         curFragment = mainFragment;
-        fragmentTransaction.add(R.id.frameLayout_main, curFragment);
-        fragmentTransaction.commit();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.frameLayout_main, curFragment)
+                .commit();
     }
 
     private void jump(int position) {
@@ -122,14 +131,28 @@ public class MainNewActivity extends BaseActivity {
      *
      * @param to
      */
-    public void switchFragment(android.app.Fragment to) {
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+    public void switchFragment(Fragment to) {
+//        FragmentManager fragmentManager = getFragmentManager();
+//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//        if (!to.isAdded()) { // 先判断是否被add过
+//            fragmentTransaction.hide(curFragment).add(R.id.frameLayout_main, to); // 隐藏当前的fragment，add下一个到Activity中
+//        } else {
+//            fragmentTransaction.hide(curFragment).show(to); // 隐藏当前的fragment，显示下一个
+//        }
+//        fragmentTransaction.commitAllowingStateLoss();
+
         if (!to.isAdded()) { // 先判断是否被add过
-            fragmentTransaction.hide(curFragment).add(R.id.frameLayout_main, to); // 隐藏当前的fragment，add下一个到Activity中
+            getSupportFragmentManager().beginTransaction()
+                    .hide(curFragment)
+                    .add(R.id.frameLayout_main, to)
+                    .commitAllowingStateLoss();
+            // 隐藏当前的fragment，add下一个到Activity中
         } else {
-            fragmentTransaction.hide(curFragment).show(to); // 隐藏当前的fragment，显示下一个
+            getSupportFragmentManager().beginTransaction()
+                    .hide(curFragment)
+                    .show(to)
+                    .commitAllowingStateLoss();
+            // 隐藏当前的fragment，显示下一个
         }
-        fragmentTransaction.commitAllowingStateLoss();
     }
 }
