@@ -56,7 +56,7 @@ public class AddressListAdapter extends BaseListAdapter<RReceiptBO> {
 
     @Override
     protected RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
-        return new BaseViewHolder(mInflater.inflate(R.layout.item_list_classify, parent, false));
+        return new BaseViewHolder(mInflater.inflate(R.layout.item_list_address, parent, false));
     }
 
     @Override
