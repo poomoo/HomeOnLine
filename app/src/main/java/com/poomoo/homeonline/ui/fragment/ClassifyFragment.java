@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
@@ -22,6 +23,7 @@ import com.poomoo.homeonline.adapter.SubClassifyGridAdapter;
 import com.poomoo.homeonline.adapter.SubClassifyListAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.listeners.ClassifyOnItemClickListener;
+import com.poomoo.homeonline.ui.activity.JSAndroidActivity;
 import com.poomoo.homeonline.ui.activity.WebViewActivity;
 import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.model.response.RClassifyBO;
@@ -136,5 +138,6 @@ public class ClassifyFragment extends BaseFragment implements BaseListAdapter.On
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.intent_value), "http://www.jiayou9.com/phone/commodity/three_list.html?categoryId=1777");
         openActivity(WebViewActivity.class, bundle);
+//        openActivity(WebViewActivity.class);
     }
 }

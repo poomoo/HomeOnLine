@@ -48,7 +48,6 @@ public class MyOrdersActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setBack();
         type = getIntent().getIntExtra(getString(R.string.intent_value), 0);
         setDefaultMenuItem();
     }

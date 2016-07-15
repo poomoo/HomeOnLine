@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.activity.AddressInfoActivity;
 import com.poomoo.homeonline.ui.activity.AddressListActivity;
+import com.poomoo.homeonline.ui.activity.FeedBackActivity;
 import com.poomoo.homeonline.ui.activity.MyInfoActivity;
 import com.poomoo.homeonline.ui.activity.MyOrdersActivity;
 import com.poomoo.homeonline.ui.base.BaseFragment;
@@ -104,6 +105,7 @@ public class CenterFragment extends BaseFragment {
                 dial();
                 break;
             case R.id.rlayout_feed_back:
+                openActivity(FeedBackActivity.class);
                 break;
             case R.id.rlayout_safe_center:
                 break;

@@ -367,4 +367,10 @@ public class MyUtils {
     }
 
 
+    public static boolean checkPhoneNum(String tel) {
+        int len = tel.length();
+        if (len != 11)
+            return false;
+        return true;
+    }
 }

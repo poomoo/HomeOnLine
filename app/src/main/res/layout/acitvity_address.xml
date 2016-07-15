@@ -29,12 +29,13 @@
                 android:textSize="16sp" />
 
             <EditText
+                android:id="@+id/edt_receiptName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:text="木子火"
-                android:textSize="14sp" />
+                android:text=""
+                android:textSize="16sp" />
         </LinearLayout>
 
         <View
@@ -58,12 +59,15 @@
                 android:textSize="16sp" />
 
             <EditText
+                android:id="@+id/edt_receiptTel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:text="18600878140"
-                android:textSize="14sp" />
+                android:inputType="phone"
+                android:maxLength="11"
+                android:text=""
+                android:textSize="16sp" />
 
 
         </LinearLayout>
@@ -114,7 +118,7 @@
                         android:gravity="center_vertical"
                         android:text="选择省份"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -138,7 +142,7 @@
                         android:gravity="center_vertical"
                         android:text="选择城市"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -160,9 +164,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:text="选择区域"
+                        android:text="选择城区"
                         android:textColor="@color/black"
-                        android:textSize="14sp" />
+                        android:textSize="16sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -193,12 +197,13 @@
                 android:textSize="16sp" />
 
             <EditText
+                android:id="@+id/edt_receiptAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:background="@null"
-                android:text="世纪城龙禧苑"
-                android:textSize="14sp" />
+                android:text=""
+                android:textSize="16sp" />
 
 
         </LinearLayout>
@@ -229,8 +234,7 @@
                 android:layout_marginLeft="30dp"
                 android:background="@null"
                 android:inputType="number"
-                android:text="550300"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
 
         </LinearLayout>
@@ -242,6 +246,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/llayout_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -253,9 +258,10 @@
             android:layout_weight="1" />
 
         <Button
-            style="@style/myButton"
+            style="@style/myButton_Gray"
             android:layout_width="0dp"
             android:layout_weight="3"
+            android:onClick="deleteAddress"
             android:text="删除"
             android:textSize="18sp" />
 
@@ -265,9 +271,10 @@
             android:layout_weight="1" />
 
         <Button
-            style="@style/myButton"
+            style="@style/myButton_Red"
             android:layout_width="0dp"
             android:layout_weight="3"
+            android:onClick="saveAddress"
             android:text="保存"
             android:textSize="18sp" />
 

@@ -108,7 +108,7 @@
             android:layout_height="20dp" />
 
         <Button
-            style="@style/myButton"
+            style="@style/myButton_Red"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="toLogin"

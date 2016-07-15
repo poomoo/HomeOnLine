@@ -36,7 +36,6 @@ public class GetCodeActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setBack();
         initView();
     }
 
@@ -52,6 +51,8 @@ public class GetCodeActivity extends BaseActivity {
 
 
     private void initView() {
+        setBack();
+
         phoneEdt = (EditText) findViewById(R.id.edt_tel);
         codeEdt = (EditText) findViewById(R.id.edt_code);
         getCodeBtn = (Button) findViewById(R.id.btn_code);

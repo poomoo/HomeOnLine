@@ -81,4 +81,17 @@ public class JSAndroidActivity extends Activity {
         });
         return "Html call Java";
     }
+
+    @android.webkit.JavascriptInterface
+    public String jumpToMainActivity() {
+        LogUtils.d(TAG, "JavascriptInterface");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(JSAndroidActivity.this, "jumpToMainActivity", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+        return "Html call Java";
+    }
 }

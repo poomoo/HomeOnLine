@@ -36,7 +36,6 @@ public class ChangePassWordActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setBack();
         initView();
     }
 
@@ -51,6 +50,8 @@ public class ChangePassWordActivity extends BaseActivity {
     }
 
     private void initView() {
+        setBack();
+
         passWordEdt = (EditText) findViewById(R.id.edt_passWord);
         passWordAgainEdt = (EditText) findViewById(R.id.edt_passWordAgain);
 

@@ -12,8 +12,11 @@
     <string name="title_register">注册</string>
     <string name="title_resetPassWord">设置密码</string>
     <string name="title_myOrders">我的订单</string>
-    <string name="title_my_info">我的资料</string>
+    <string name="title_myInfo">我的资料</string>
     <string name="title_address_list">地址管理</string>
+    <string name="title_addressInfo">修改地址</string>
+    <string name="title_feed_back">我要反馈</string>
+    <string name="title_bucket">相册</string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -37,6 +40,12 @@
     <string name="intent_parent">parent</string>
     <string name="intent_register">register</string>
     <string name="intent_find">find</string>
+    <string name="intent_provinceId">provinceId</string>
+    <string name="intent_cityId">cityId</string>
+    <string name="intent_areaId">areaId</string>
+    <string name="intent_receiptName">receiptName</string>
+    <string name="intent_receiptTel">receiptTel</string>
+    <string name="intent_receiptAddress">receiptAddress</string>
 
 
     <string name="sp_isIndex">isIndex</string>
@@ -63,5 +72,7 @@
     <string name="load_no_more">没有更多了</string>
     <string name="refreshing">刷新中</string>
     <!--dialog-->
+
+    <string name="toast_3_pics">最多选择3张图片</string>
 
 </resources>

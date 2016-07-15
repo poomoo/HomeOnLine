@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/pub_layout_title_bar" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/ThemeBg"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="商家、商品体验问题"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/edt_advice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:gravity="top"
+        android:hint="请简单描述您的问题和意见,上传截图更快解决哦"
+        android:lines="8"
+        android:paddingLeft="10dp"
+        android:textSize="14sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@color/ThemeBg"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="添加图片(选填,提供问题截图,最多三张)"
+        android:textSize="16sp" />
+
+    <com.poomoo.homeonline.ui.custom.NoScrollGridView
+        android:id="@+id/grid_add_pics"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:horizontalSpacing="2dp"
+        android:numColumns="3"
+        android:padding="10dp"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="2dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/ThemeBg" />
+
+    <Button
+        style="@style/myButton_Red"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="50dp"
+        android:onClick="subAdvice"
+        android:text="提交" />
+</LinearLayout>

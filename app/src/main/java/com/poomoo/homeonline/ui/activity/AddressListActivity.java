@@ -26,6 +26,7 @@
  */
 package com.poomoo.homeonline.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -70,21 +71,23 @@ import butterknife.ButterKnife;
  * #                                                   #
  * 作者: 李苜菲
  * 日期: 2016/7/14 17:26.
- * <p/>
+ * <p>
  * 地址列表
  */
 public class AddressListActivity extends BaseActivity implements BaseListAdapter.OnItemClickListener {
+    private static final int NEW = 1;
+    private static final int DELETE = 2;
     @Bind(R.id.recycler_address)
     RecyclerView recyclerView;
 
     private AddressListAdapter adapter;
     private ArrayList<RReceiptBO> rReceiptBOs = new ArrayList<>();
     private RReceiptBO rReceiptBO;
+    private int deletePosition = -1;//删除的地址item的下标
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         ButterKnife.bind(this);
         init();
     }
@@ -100,6 +103,8 @@ public class AddressListActivity extends BaseActivity implements BaseListAdapter
     }
 
     private void init() {
+        setBack();
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.divide))
@@ -114,11 +119,11 @@ public class AddressListActivity extends BaseActivity implements BaseListAdapter
     }
 
     private List<RReceiptBO> getList() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 8; i++) {
             rReceiptBO = new RReceiptBO();
-            rReceiptBO.name = "测试收货人" + i + 1;
+            rReceiptBO.name = "测试收货人" + (i + 1);
             rReceiptBO.tel = "1860087814" + i;
-            rReceiptBO.address = "贵州省 贵阳市 观山湖区 世纪城龙禧苑11栋";
+            rReceiptBO.address = "贵州省 贵阳市 观山湖区 世纪城龙禧苑" + (i + 1) + "栋";
             rReceiptBOs.add(rReceiptBO);
         }
         return rReceiptBOs;
@@ -126,12 +131,34 @@ public class AddressListActivity extends BaseActivity implements BaseListAdapter
 
     @Override
     public void onItemClick(int position, long id, View view) {
-//        Bundle bundle = new Bundle();
-//        bundle.putString(getString(R.string.intent_value));
-        openActivity(AddressInfoActivity.class);
+        deletePosition = position;
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_value), "old");
+        bundle.putString(getString(R.string.intent_receiptName), adapter.getItem(position).name);
+        bundle.putString(getString(R.string.intent_receiptTel), adapter.getItem(position).tel);
+        String address[] = adapter.getItem(position).address.split(" ");
+        bundle.putString(getString(R.string.intent_receiptAddress), address.length == 4 ? address[3] : "");
+        bundle.putInt(getString(R.string.intent_provinceId), 1);
+        bundle.putInt(getString(R.string.intent_cityId), 1);
+        bundle.putInt(getString(R.string.intent_areaId), 7);
+        openActivityForResult(AddressInfoActivity.class, bundle, DELETE);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == DELETE) {
+            adapter.removeItem(deletePosition);
+        }
+
+        if (resultCode == NEW) {
+            rReceiptBO = (RReceiptBO) data.getSerializableExtra(getString(R.string.intent_value));
+            adapter.addItem(0, rReceiptBO);
+        }
     }
 
     public void addAddress(View view) {
-        openActivity(AddressInfoActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_value), "new");
+        openActivityForResult(AddressInfoActivity.class, bundle, NEW);
     }
 }

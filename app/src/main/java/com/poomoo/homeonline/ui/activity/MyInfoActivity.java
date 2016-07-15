@@ -65,7 +65,7 @@ public class MyInfoActivity extends BaseActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setBack();
+        init();
     }
 
     @Override
@@ -75,6 +75,11 @@ public class MyInfoActivity extends BaseActivity{
 
     @Override
     protected int onSetTitle() {
-        return R.string.title_my_info;
+        return R.string.title_myInfo;
+    }
+
+    private void init() {
+        setBack();
+
     }
 }

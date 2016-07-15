@@ -89,6 +89,7 @@ public class ZoneAdapter extends MyBaseAdapter<String> {
     }
 
     public void setSelectedPosition(int selectedPosition) {
+        LogUtils.d(TAG, "setSelectedPosition:" + selectedPosition + "currAddress:" + currAddress);
         this.selectedPosition = selectedPosition;
         switch (currAddress) {
             case PROVINCE:
