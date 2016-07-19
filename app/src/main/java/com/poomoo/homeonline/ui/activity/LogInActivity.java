@@ -18,9 +18,10 @@ import com.poomoo.model.ResponseBO;
 import com.poomoo.model.UserBO;
 
 /**
- * 登录
- * 作者: 李苜菲
- * 日期: 2016/1/11 14:15.
+ * 类名 LogInActivity
+ * 描述 登录
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:22
  */
 public class LogInActivity extends BaseActivity implements View.OnClickListener {
     private EditText nameEdt;

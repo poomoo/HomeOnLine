@@ -3,12 +3,13 @@
  */
 package com.poomoo.homeonline.ui.activity;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.KeyEvent;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.homeonline.ui.custom.BottomBar;
@@ -21,8 +22,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/6/22 15:57.
+ * 类名 MainNewActivity
+ * 描述 主Activity
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:22
  */
 public class MainNewActivity extends BaseActivity {
     @Bind(R.id.bottomBar)
@@ -35,6 +38,7 @@ public class MainNewActivity extends BaseActivity {
     private Fragment curFragment;
 //    private FragmentTransaction fragmentTransaction;
 
+    private long exitTime = 0;
     public static MainNewActivity INSTANCE = null;
     private int flag = 0;
 
@@ -155,4 +159,29 @@ public class MainNewActivity extends BaseActivity {
             // 隐藏当前的fragment，显示下一个
         }
     }
+
+
+    private void exitApp() {
+        // 判断2次点击事件时间
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            MyUtils.showToast(getApplicationContext(), "再按一次退出程序");
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (curFragment != mainFragment) {
+                jump(0);
+                bottomBar.cancelLinearBackground(0);
+            } else
+                exitApp();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

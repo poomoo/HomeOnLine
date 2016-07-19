@@ -32,12 +32,12 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.base.BaseActivity;
 
 /**
- * 类名 MyInfoActivity
- * 描述 我的资料
+ * 类名 SafeActivity
+ * 描述 账户与安全
  * 作者 李苜菲
  * 日期 2016/7/19 11:22
  */
-public class MyInfoActivity extends BaseActivity {
+public class SafeActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +46,19 @@ public class MyInfoActivity extends BaseActivity {
         init();
     }
 
+
     @Override
     protected int onBindLayout() {
-        return R.layout.activity_my_info;
+        return R.layout.activity_safe;
     }
 
     @Override
     protected int onSetTitle() {
-        return R.string.title_myInfo;
+        return R.string.title_safe;
     }
 
     private void init() {
         setBack();
-
     }
+
 }

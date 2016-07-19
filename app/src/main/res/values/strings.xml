@@ -17,6 +17,7 @@
     <string name="title_addressInfo">修改地址</string>
     <string name="title_feed_back">我要反馈</string>
     <string name="title_bucket">相册</string>
+    <string name="title_safe">账户与安全</string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>

@@ -25,6 +25,7 @@ import com.poomoo.homeonline.adapter.MainListAdapter;
 import com.poomoo.homeonline.adapter.PicturesGridAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.listeners.ScrollViewListener;
+import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
@@ -40,8 +41,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/6/23 10:52.
+ * 类名 MainFragment
+ * 描述 首页
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:20
  */
 public class MainFragment extends BaseFragment implements AdapterView.OnItemClickListener, ScrollViewListener {
     @Bind(R.id.scrollView_main)
@@ -222,6 +225,13 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         qhcsGridAdapter = new PicturesGridAdapter(getActivity());
         qhcsGrid.setAdapter(qhcsGridAdapter);
         qhcsGridAdapter.setItems(qhcsList);
+
+        qhcsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openActivity(CommodityInfoActivity.class);
+            }
+        });
     }
 
     private void initLsyz() {

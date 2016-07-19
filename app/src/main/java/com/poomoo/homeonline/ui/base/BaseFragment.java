@@ -12,8 +12,10 @@ import com.poomoo.homeonline.application.MyApplication;
 
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/3/18 14:32.
+ * @author 李苜菲
+ * @ClassName BaseFragment
+ * @Description 基类Fragment
+ * @date 2016/7/19 11:15
  */
 public abstract class BaseFragment extends Fragment {
     public String TAG = getClass().getSimpleName();

@@ -18,8 +18,10 @@ import com.poomoo.model.ResponseBO;
 import com.poomoo.model.UserBO;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/1/11 15:06.
+ * 类名 ChangePassWordActivity
+ * 描述 修改密码
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:22
  */
 public class ChangePassWordActivity extends BaseActivity {
     private EditText passWordEdt;

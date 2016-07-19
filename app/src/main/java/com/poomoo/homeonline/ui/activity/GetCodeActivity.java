@@ -16,9 +16,10 @@ import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.model.ResponseBO;
 
 /**
- * 获取验证码
- * 作者: 李苜菲
- * 日期: 2016/1/11 14:22.
+ * 类名 GetCodeActivity
+ * 描述 获取验证码
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:22
  */
 public class GetCodeActivity extends BaseActivity {
     private EditText phoneEdt;

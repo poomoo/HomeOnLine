@@ -17,7 +17,12 @@ import com.poomoo.homeonline.ui.base.BaseActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * 类名 IndexViewPagerActivity
+ * 描述 引导页
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:22
+ */
 public class IndexViewPagerActivity extends BaseActivity implements OnClickListener, OnPageChangeListener {
 
     private ViewPager vp;

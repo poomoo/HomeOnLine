@@ -18,9 +18,10 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.application.MyApplication;
 
 /**
- * Activity基类
- * 作者: 李苜菲
- * 日期: 2015/11/11 11:30.
+ * @author 李苜菲
+ * @ClassName BaseActivity
+ * @Description 基类Activity
+ * @date 2016/7/19 11:15
  */
 public abstract class BaseActivity extends FragmentActivity {
     // 上下文实例
@@ -169,6 +170,17 @@ public abstract class BaseActivity extends FragmentActivity {
             progressDialog.dismiss();
             progressDialog = null;
         }
+    }
+
+    /**
+     * 系统状态栏高度
+     *
+     * @return
+     */
+    protected int getBarHeight() {
+        // 获得状态栏高度
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        return context.getResources().getDimensionPixelSize(resourceId);
     }
 
     /**

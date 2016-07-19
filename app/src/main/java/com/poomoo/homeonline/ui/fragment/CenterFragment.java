@@ -19,6 +19,7 @@ import com.poomoo.homeonline.ui.activity.AddressListActivity;
 import com.poomoo.homeonline.ui.activity.FeedBackActivity;
 import com.poomoo.homeonline.ui.activity.MyInfoActivity;
 import com.poomoo.homeonline.ui.activity.MyOrdersActivity;
+import com.poomoo.homeonline.ui.activity.SafeActivity;
 import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.model.response.ROrderBO;
 
@@ -26,8 +27,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/6/23 10:52.
+ * 类名 CenterFragment
+ * 描述 个人中心
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:20
  */
 public class CenterFragment extends BaseFragment {
 //    @Bind(R.id.scrollView_main)
@@ -108,6 +111,7 @@ public class CenterFragment extends BaseFragment {
                 openActivity(FeedBackActivity.class);
                 break;
             case R.id.rlayout_safe_center:
+                openActivity(SafeActivity.class);
                 break;
         }
     }

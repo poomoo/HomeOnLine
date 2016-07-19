@@ -26,20 +26,16 @@
  */
 package com.poomoo.homeonline.ui.activity;
 
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.AddPicsAdapter;
-import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.picUtils.Bimp;
 import com.poomoo.homeonline.ui.activity.pics.PhotoActivity;
 import com.poomoo.homeonline.ui.activity.pics.PhotosActivity;
@@ -50,31 +46,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * #                                                   #
- * #                       _oo0oo_                     #
- * #                      o8888888o                    #
- * #                      88" . "88                    #
- * #                      (| -_- |)                    #
- * #                      0\  =  /0                    #
- * #                    ___/`---'\___                  #
- * #                  .' \\|     |# '.                 #
- * #                 / \\|||  :  |||# \                #
- * #                / _||||| -:- |||||- \              #
- * #               |   | \\\  -  #/ |   |              #
- * #               | \_|  ''\---/''  |_/ |             #
- * #               \  .-\__  '-'  ___/-. /             #
- * #             ___'. .'  /--.--\  `. .'___           #
- * #          ."" '<  `.___\_<|>_/___.' >' "".         #
- * #         | | :  `- \`.;`\ _ /`;.`/ - ` : | |       #
- * #         \  \ `_.   \_ __\ /__ _/   .-` /  /       #
- * #     =====`-.____`.___ \_____/___.-`___.-'=====    #
- * #                       `=---='                     #
- * #     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   #
- * #                                                   #
- * #               佛祖保佑         永无BUG            #
- * #                                                   #
- * 作者: 李苜菲
- * 日期: 2016/7/15 15:29.
+ * 类名 FeedBackActivity
+ * 描述 反馈
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:22
  */
 public class FeedBackActivity extends BaseActivity implements AdapterView.OnItemClickListener {
     @Bind(R.id.edt_advice)

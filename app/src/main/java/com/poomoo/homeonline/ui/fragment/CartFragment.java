@@ -34,9 +34,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 购物车
- * 作者: 李苜菲
- * 日期: 2016/6/23 10:52.
+ * 类名 CartFragment
+ * 描述 购物车
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:20
  */
 public class CartFragment extends BaseFragment implements OnBuyCheckChangedListener, OnEditCheckChangedListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     @Bind(R.id.txt_edit)

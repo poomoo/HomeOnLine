@@ -8,6 +8,7 @@
     <color name="ThemeBg">#EEEEEE</color>
     <color name="ThemeText">#646464</color>
     <color name="TitleBarBg">#F4F4F4</color>
+    <color name="ThemeTextColor">#50535C</color>
 
     <color name="transparent">#00000000</color>
     <color name="transParentBlack">#55000000</color>
@@ -19,6 +20,7 @@
     <color name="gray">#828282</color>
     <color name="divide">#DADADA</color>
     <color name="btn_gray">#CCCCCC</color>
+    <color name="btn_cart">#F8A30D</color>
 
     <!-- swipe refresh color -->
     <color name="swipe_refresh_first">#ff00ddff</color>

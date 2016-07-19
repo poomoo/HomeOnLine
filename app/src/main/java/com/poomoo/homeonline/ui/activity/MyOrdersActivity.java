@@ -13,33 +13,10 @@ import com.poomoo.homeonline.ui.fragment.TabFragment;
 import com.poomoo.model.response.ROrderBO;
 
 /**
- * #                                                   #
- * #                       _oo0oo_                     #
- * #                      o8888888o                    #
- * #                      88" . "88                    #
- * #                      (| -_- |)                    #
- * #                      0\  =  /0                    #
- * #                    ___/`---'\___                  #
- * #                  .' \\|     |# '.                 #
- * #                 / \\|||  :  |||# \                #
- * #                / _||||| -:- |||||- \              #
- * #               |   | \\\  -  #/ |   |              #
- * #               | \_|  ''\---/''  |_/ |             #
- * #               \  .-\__  '-'  ___/-. /             #
- * #             ___'. .'  /--.--\  `. .'___           #
- * #          ."" '<  `.___\_<|>_/___.' >' "".         #
- * #         | | :  `- \`.;`\ _ /`;.`/ - ` : | |       #
- * #         \  \ `_.   \_ __\ /__ _/   .-` /  /       #
- * #     =====`-.____`.___ \_____/___.-`___.-'=====    #
- * #                       `=---='                     #
- * #     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   #
- * #                                                   #
- * #               佛祖保佑         永无BUG            #
- * #                                                   #
- * 作者: 李苜菲
- * 日期: 2016/7/14 9:45
- * <p/>
- * 我的订单
+ * 类名 MyOrdersActivity
+ * 描述 我的订单
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:22
  */
 public class MyOrdersActivity extends BaseActivity {
     int type;
@@ -48,6 +25,7 @@ public class MyOrdersActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setBack();
         type = getIntent().getIntExtra(getString(R.string.intent_value), 0);
         setDefaultMenuItem();
     }

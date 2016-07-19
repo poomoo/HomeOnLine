@@ -24,8 +24,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/6/29 11:41.
+ * 类名 WebViewActivity
+ * 描述 WebView
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:22
  */
 public class WebViewActivity extends BaseActivity {
     @Bind(R.id.web_pub)

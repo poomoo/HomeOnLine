@@ -37,9 +37,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 分类
- * 作者: 李苜菲
- * 日期: 2016/6/28 14:11.
+ * 类名 ClassifyFragment
+ * 描述 分类
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:20
  */
 public class ClassifyFragment extends BaseFragment implements BaseListAdapter.OnItemClickListener, ClassifyOnItemClickListener {
     @Bind(R.id.recycler_classify)

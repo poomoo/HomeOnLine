@@ -13,6 +13,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 
+/**
+ * 类名 SplashActivity
+ * 描述 启动页
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:22
+ */
 public class SplashActivity extends BaseActivity {
 
     private final int SPLASH_DISPLAY_LENGHT = 3000;

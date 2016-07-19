@@ -65,9 +65,16 @@
             android:name=".ui.activity.JSAndroidActivity"
             android:exported="false" />
 
-
         <activity
             android:name=".ui.activity.FeedBackActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.SafeActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.CommodityInfoActivity"
             android:exported="false" />
 
         <activity

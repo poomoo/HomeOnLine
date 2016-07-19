@@ -10,35 +10,11 @@ import com.poomoo.homeonline.ui.base.BaseListFragment;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.model.response.ROrderBO;
 
-
 /**
- * #                                                   #
- * #                       _oo0oo_                     #
- * #                      o8888888o                    #
- * #                      88" . "88                    #
- * #                      (| -_- |)                    #
- * #                      0\  =  /0                    #
- * #                    ___/`---'\___                  #
- * #                  .' \\|     |# '.                 #
- * #                 / \\|||  :  |||# \                #
- * #                / _||||| -:- |||||- \              #
- * #               |   | \\\  -  #/ |   |              #
- * #               | \_|  ''\---/''  |_/ |             #
- * #               \  .-\__  '-'  ___/-. /             #
- * #             ___'. .'  /--.--\  `. .'___           #
- * #          ."" '<  `.___\_<|>_/___.' >' "".         #
- * #         | | :  `- \`.;`\ _ /`;.`/ - ` : | |       #
- * #         \  \ `_.   \_ __\ /__ _/   .-` /  /       #
- * #     =====`-.____`.___ \_____/___.-`___.-'=====    #
- * #                       `=---='                     #
- * #     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   #
- * #                                                   #
- * #               佛祖保佑         永无BUG            #
- * #                                                   #
- * 作者: 李苜菲
- * 日期: 2016/7/14 9:59
- * <p/>
- * 我的订单
+ * 类名 MyOrdersFragment
+ * 描述 我的订单
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:19
  */
 public class MyOrdersFragment extends BaseListFragment<ROrderBO> implements BaseListAdapter.OnItemClickListener {
     public int mCatalog;
