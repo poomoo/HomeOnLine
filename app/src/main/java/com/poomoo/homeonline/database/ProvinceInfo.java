@@ -3,10 +3,10 @@ package com.poomoo.homeonline.database;
 import org.litepal.crud.DataSupport;
 
 /**
- * @author 李苜菲
- * @ClassName ProvinceInfo
- * @Description TODO 区域模型
- * @date 2015年8月16日 下午10:45:03
+ * 类名 ProvinceInfo
+ * 描述 省份数据模型
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:28
  */
 public class ProvinceInfo extends DataSupport {
     private int provinceId;

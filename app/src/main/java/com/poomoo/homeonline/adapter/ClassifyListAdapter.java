@@ -16,7 +16,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- *
+ * 类名 ClassifyListAdapter
+ * 描述 一级分类适配器
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:30
  */
 public class ClassifyListAdapter extends BaseListAdapter<String> {
 

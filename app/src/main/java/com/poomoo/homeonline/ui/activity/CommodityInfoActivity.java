@@ -42,7 +42,7 @@ import com.poomoo.homeonline.listeners.ScrollViewListener;
 import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
-import com.poomoo.homeonline.ui.listener.AdvertisementListener;
+import com.poomoo.homeonline.listeners.AdvertisementListener;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;

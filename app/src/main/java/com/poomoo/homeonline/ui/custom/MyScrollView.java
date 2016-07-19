@@ -10,8 +10,10 @@ import android.widget.ScrollView;
 import com.poomoo.homeonline.listeners.ScrollViewListener;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/6/24 16:58.
+ * 类名 MyScrollView
+ * 描述 自定义ScrollView 放开onScrollChanged接口
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:36
  */
 public class MyScrollView extends ScrollView {
 

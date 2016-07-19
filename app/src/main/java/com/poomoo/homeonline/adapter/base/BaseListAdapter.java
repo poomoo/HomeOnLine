@@ -15,7 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2015-2-4.
+ * 类名 BaseListAdapter
+ * 描述 RecyclerView适配器基类
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:29
  */
 public abstract class BaseListAdapter<T> extends RecyclerView.Adapter {
 

@@ -13,8 +13,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/4/20 15:51.
+ * 类名 DataBaseHelper
+ * 描述 数据库操作类
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:28
  */
 public class DataBaseHelper {
     private static final String TAG = "DateBaseHelper";

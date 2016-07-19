@@ -16,8 +16,10 @@ import com.poomoo.homeonline.listeners.ClassifyOnItemClickListener;
 import com.poomoo.model.response.RSubClassifyBO;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/6/23 15:56.
+ * 类名 SubClassifyGridAdapter
+ * 描述 三级分类适配器
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:33
  */
 public class SubClassifyGridAdapter extends MyBaseAdapter<RSubClassifyBO> {
     private String TAG = "SubClassifyGridAdapter";

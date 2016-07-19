@@ -21,11 +21,12 @@ import com.poomoo.homeonline.R;
 
 
 /**
- * http://blog.csdn.net/lmj623565791/article/details/41967509
- *
- * @author zhy
+ * 类名 RoundImageView
+ * 描述 圆角图片
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:38
  */
-public class RoundImageView2 extends ImageView {
+public class RoundImageView extends ImageView {
     /**
      * 图片的类型，圆形or圆角
      */
@@ -63,7 +64,7 @@ public class RoundImageView2 extends ImageView {
     private int mWidth;
     private RectF mRoundRect;
 
-    public RoundImageView2(Context context, AttributeSet attrs) {
+    public RoundImageView(Context context, AttributeSet attrs) {
 
         super(context, attrs);
         mMatrix = new Matrix();
@@ -83,7 +84,7 @@ public class RoundImageView2 extends ImageView {
         a.recycle();
     }
 
-    public RoundImageView2(Context context) {
+    public RoundImageView(Context context) {
         this(context, null);
     }
 

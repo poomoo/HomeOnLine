@@ -11,8 +11,10 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/6/29 17:20.
+ * 类名 JavaScript
+ * 描述 JS注入webView类
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:27
  */
 public class JavaScript {
     private Activity mContext;

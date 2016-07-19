@@ -17,7 +17,7 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
-import com.poomoo.homeonline.ui.listener.AdvertisementListener;
+import com.poomoo.homeonline.listeners.AdvertisementListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +27,11 @@ import java.util.concurrent.TimeUnit;
 
 
 /**
- * ViewPager实现的轮播图广告自定义视图，如京东首页的广告轮播图效果；
- * 既支持自动轮播页面也支持手势滑动切换页面
+ * 类名 SlideShowView
+ * 描述 ViewPager实现的轮播图广告自定义视图
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:39
  */
-
 public class SlideShowView extends FrameLayout {
 
     private String TAG = "SlideShowView";

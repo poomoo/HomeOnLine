@@ -22,7 +22,10 @@ import com.poomoo.model.response.RCommodityBO;
 import java.util.List;
 
 /**
- * expandableListView适配器
+ * 类名 CartAdapter
+ * 描述 购物车适配器
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:30
  */
 public class CartAdapter extends BaseExpandableListAdapter {
     private final String TAG = "MyAdapter";

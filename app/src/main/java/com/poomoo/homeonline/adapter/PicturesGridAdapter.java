@@ -15,8 +15,10 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/6/23 15:56.
+ * 类名 PicturesGridAdapter
+ * 描述 首页图片适配器
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:33
  */
 public class PicturesGridAdapter extends MyBaseAdapter<String> {
     private String TAG = "PicturesGridAdapter";

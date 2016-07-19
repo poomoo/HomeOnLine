@@ -6,9 +6,10 @@ import com.poomoo.core.AppActionImpl;
 import org.litepal.LitePalApplication;
 
 /**
- * 自定义Application
- * 作者: 李苜菲
- * 日期: 2015/11/11 11:26.
+ * 类名 MyApplication
+ * 描述 自定义Application
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:28
  */
 public class MyApplication extends LitePalApplication {
     private AppAction appAction;

@@ -15,8 +15,10 @@ import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
 import com.poomoo.model.response.RTypeBO;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/6/23 15:56.
+ * 类名 MainGridAdapter
+ * 描述 首页类别适配器
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:31
  */
 public class MainGridAdapter extends MyBaseAdapter<RTypeBO> {
     private String TAG = "MainGridAdapter";

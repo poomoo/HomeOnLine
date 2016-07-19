@@ -3,10 +3,10 @@ package com.poomoo.homeonline.database;
 import org.litepal.crud.DataSupport;
 
 /**
- * @author 李苜菲
- * @ClassName AreaInfo
- * @Description TODO 区域模型
- * @date 2015年8月16日 下午10:45:03
+ * 类名 AreaInfo
+ * 描述 城区数据模型
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:27
  */
 public class AreaInfo extends DataSupport {
     private int areaId;

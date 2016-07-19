@@ -17,7 +17,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- *
+ * 类名 SubClassifyListAdapter
+ * 描述 二级分类适配器
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:33
  */
 public class SubClassifyListAdapter extends BaseListAdapter<RClassifyBO> {
 
@@ -43,7 +46,7 @@ public class SubClassifyListAdapter extends BaseListAdapter<RClassifyBO> {
         LogUtils.d(TAG, "item:" + item + "position:" + position);
         holder.classifyTxt.setText(item.subTitle);
 
-        subClassifyGridAdapter = new SubClassifyGridAdapter(mContext,onItemClickListener);
+        subClassifyGridAdapter = new SubClassifyGridAdapter(mContext, onItemClickListener);
         holder.gridView.setAdapter(subClassifyGridAdapter);
         subClassifyGridAdapter.addItems(item.rSubClassifyBOs);
     }

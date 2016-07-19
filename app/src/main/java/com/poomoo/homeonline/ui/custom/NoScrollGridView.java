@@ -5,9 +5,10 @@ import android.util.AttributeSet;
 import android.widget.GridView;
 
 /**
- * Created by Android_PM on 2015/11/3.
- * 自定义的“九宫格”——用在显示帖子详情的图片集合
- * 解决的问题：GridView显示不全，只显示了一行的图片，比较奇怪，尝试重写GridView来解决
+ * 类名 NoScrollGridView
+ * 描述 自定义的GridView 用于嵌套在scrollview里，避免显示不全
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:37
  */
 public class NoScrollGridView extends GridView {
     public NoScrollGridView(Context context) {

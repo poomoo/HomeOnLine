@@ -11,8 +11,10 @@ import android.view.View;
 import java.util.List;
 
 /**
- * @author Administrator
- * 
+ * 类名 ViewPagerAdapter
+ * 描述 ViewPager适配器
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:33
  */
 public class ViewPagerAdapter extends PagerAdapter {
 

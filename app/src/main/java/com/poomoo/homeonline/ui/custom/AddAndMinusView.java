@@ -18,8 +18,10 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.activity.MainActivity;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/7/8 15:11.
+ * 类名 AddAndMinusView
+ * 描述 购物车数量加减控件
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:35
  */
 public class AddAndMinusView extends LinearLayout implements View.OnClickListener, TextWatcher {
     private Context context;

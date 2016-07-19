@@ -30,7 +30,7 @@ import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
-import com.poomoo.homeonline.ui.listener.AdvertisementListener;
+import com.poomoo.homeonline.listeners.AdvertisementListener;
 import com.poomoo.model.response.RRecommendBO;
 import com.poomoo.model.response.RTypeBO;
 

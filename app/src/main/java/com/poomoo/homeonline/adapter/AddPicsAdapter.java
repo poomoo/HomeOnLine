@@ -21,9 +21,10 @@ import com.poomoo.homeonline.picUtils.FileUtils;
 import java.io.IOException;
 
 /**
- * 选择上传图片适配器
- * 作者: 李苜菲
- * 日期: 2015/11/23 15:30.
+ * 类名 AddPicsAdapter
+ * 描述 选择上传图片适配器
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:29
  */
 public class AddPicsAdapter extends MyBaseAdapter {
     public AddPicsAdapter(Context context) {

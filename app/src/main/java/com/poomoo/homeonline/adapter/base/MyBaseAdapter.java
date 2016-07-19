@@ -10,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Adapter抽象基类
- * 作者: 李苜菲
- * 日期: 2015/11/13 11:12.
+ * 类名 MyBaseAdapter
+ * 描述 Adapter抽象基类
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:29
  */
 public abstract class MyBaseAdapter<T> extends BaseAdapter {
     private String TAG = "MyBaseAdapter";

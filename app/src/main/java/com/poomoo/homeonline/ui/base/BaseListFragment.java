@@ -20,7 +20,10 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import java.util.List;
 
 /**
- * @param <T>
+ * 类名 BaseListFragment
+ * 描述 带List的Fragment基类
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:35
  */
 public abstract class BaseListFragment<T> extends BaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, ErrorLayout.OnActiveClickListener, BaseListAdapter.OnLoadingListener {

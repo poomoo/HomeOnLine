@@ -22,8 +22,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/4/15 10:21.
+ * 类名 TabFragment
+ * 描述 TabFragment
+ * 作者 李苜菲
+ * 日期 2016/7/19 11:39
  */
 public abstract class TabFragment extends BaseTabFragment {
     @Bind(R.id.tab_nav)
