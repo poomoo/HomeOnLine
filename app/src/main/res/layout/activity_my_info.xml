@@ -21,14 +21,14 @@
             android:layout_height="wrap_content"
             android:text="昵称"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp_14" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="家有在线"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp_14" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,14 +44,14 @@
             android:layout_height="wrap_content"
             android:text="性别"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp_14" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="男"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp_14" />
     </LinearLayout>
 
     <LinearLayout
@@ -67,14 +67,14 @@
             android:layout_height="wrap_content"
             android:text="年龄"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp_14" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="18"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp_14" />
     </LinearLayout>
 
     <LinearLayout
@@ -91,13 +91,13 @@
             android:layout_height="wrap_content"
             android:text="手机号码"
             android:textColor="@color/black"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp_14" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="15597726689"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp_14" />
     </LinearLayout>
 </LinearLayout>

@@ -9,6 +9,6 @@
     android:padding="6dp"
     android:text="不限"
     android:textColor="@color/commodity_specification_text"
-    android:textSize="12sp">
+    android:textSize="@dimen/sp_12">
 
 </TextView>

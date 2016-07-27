@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/label_userName"
                 android:textColor="@color/ThemeText"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp_16" />
 
             <EditText
                 android:id="@+id/edt_userName"
@@ -37,7 +37,7 @@
                 android:inputType="phone"
                 android:maxLength="11"
                 android:paddingLeft="10dp"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_16" />
         </LinearLayout>
 
         <TextView
@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/label_userPassWord"
                 android:textColor="@color/ThemeText"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp_16" />
 
             <EditText
                 android:id="@+id/edt_userPassWord"
@@ -67,7 +67,7 @@
                 android:hint="@string/hint_inputUserPassWord"
                 android:inputType="textPassword"
                 android:paddingLeft="10dp"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_16" />
         </LinearLayout>
 
         <TextView
@@ -89,7 +89,7 @@
                 android:padding="6dp"
                 android:text="@string/label_register"
                 android:textColor="@color/ThemeRed"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_16" />
 
             <TextView
                 android:id="@+id/txt_forgetPassWord"
@@ -100,7 +100,7 @@
                 android:padding="6dp"
                 android:text="@string/label_forgetPassWord"
                 android:textColor="@color/ThemeText"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_16" />
         </RelativeLayout>
 
         <TextView

@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="会员昵称"
             android:textColor="@color/ThemeTextColor"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="40dp"
             android:text="家有在线"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
             android:layout_height="wrap_content"
             android:text="修改手机号码"
             android:textColor="@color/ThemeTextColor"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="40dp"
             android:text="15597726689"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -83,7 +83,7 @@
             android:layout_height="wrap_content"
             android:text="修改登录密码"
             android:textColor="@color/ThemeTextColor"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
 
 
         <ImageView

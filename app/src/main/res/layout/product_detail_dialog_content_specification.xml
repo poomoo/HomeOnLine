@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:text="手机型号"
         android:textColor="@color/black"
-        android:textSize="16sp" />
+        android:textSize="@dimen/sp_16" />
 
     <com.poomoo.myflayout.TagFlowLayout
         android:id="@+id/flayout_commodity_specification_content"

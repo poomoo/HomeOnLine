@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:text="个人中心"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
     </LinearLayout>
 
     <ScrollView
@@ -57,7 +57,7 @@
                     android:layout_marginLeft="20dp"
                     android:text="木子火"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/sp_16" />
             </LinearLayout>
 
             <LinearLayout
@@ -74,7 +74,7 @@
                     android:gravity="center"
                     android:text="商品收藏"
                     android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp_14" />
 
                 <TextView
                     android:layout_width="1dp"
@@ -88,7 +88,7 @@
                     android:gravity="center"
                     android:text="浏览足迹"
                     android:textColor="@color/white"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
             <RelativeLayout
@@ -109,7 +109,7 @@
                     android:layout_centerVertical="true"
                     android:text="我的订单"
                     android:textColor="@color/black"
-                    android:textSize="17sp" />
+                    android:textSize="@dimen/sp_18" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -119,7 +119,7 @@
                     android:layout_marginRight="40dp"
                     android:text="查看全部订单"
                     android:textColor="@color/ThemeTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp_12" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -159,7 +159,7 @@
                         android:layout_height="wrap_content"
                         android:text="待付款"
                         android:textColor="@color/ThemeTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/sp_12" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -180,7 +180,7 @@
                         android:layout_height="wrap_content"
                         android:text="待发货"
                         android:textColor="@color/ThemeTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/sp_12" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -201,7 +201,7 @@
                         android:layout_height="wrap_content"
                         android:text="待收货"
                         android:textColor="@color/ThemeTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/sp_12" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -222,7 +222,7 @@
                         android:layout_height="wrap_content"
                         android:text="待评价"
                         android:textColor="@color/ThemeTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/sp_12" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -243,7 +243,7 @@
                         android:layout_height="wrap_content"
                         android:text="退款/售后"
                         android:textColor="@color/ThemeTextColor"
-                        android:textSize="12sp" />
+                        android:textSize="@dimen/sp_12" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -279,7 +279,7 @@
                     android:layout_marginLeft="40dp"
                     android:text="我的资料"
                     android:textColor="@color/ThemeTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/sp_16" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -321,7 +321,7 @@
                     android:layout_marginLeft="40dp"
                     android:text="地址管理"
                     android:textColor="@color/ThemeTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/sp_16" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -357,7 +357,7 @@
                     android:layout_marginLeft="40dp"
                     android:text="客服热线"
                     android:textColor="@color/ThemeTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/sp_16" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -398,7 +398,7 @@
                     android:layout_marginLeft="40dp"
                     android:text="意见反馈"
                     android:textColor="@color/ThemeTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/sp_16" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -440,7 +440,7 @@
                     android:layout_marginLeft="40dp"
                     android:text="安全中心"
                     android:textColor="@color/ThemeTextColor"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/sp_16" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -450,7 +450,7 @@
                     android:layout_marginRight="40dp"
                     android:text="手机绑定、修改密码"
                     android:textColor="@color/ThemeTextColor"
-                    android:textSize="12sp" />
+                    android:textSize="@dimen/sp_12" />
 
                 <ImageView
                     android:layout_width="wrap_content"

@@ -59,7 +59,7 @@
         android:paddingTop="6dp"
         android:text="立即体验"
         android:textColor="@color/white"
-        android:textSize="20sp"
+        android:textSize="@dimen/sp_18"
         android:visibility="invisible" />
 
 </RelativeLayout>

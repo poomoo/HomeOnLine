@@ -38,8 +38,8 @@
                 android:layout_height="wrap_content"
                 android:onClick="toCompleted"
                 android:text="完成"
-                android:textColor="#ff495a"
-                android:textSize="20sp" />
+                android:textColor="@color/ThemeRed"
+                android:textSize="@dimen/sp_18" />
         </LinearLayout>
     </LinearLayout>
 

@@ -37,7 +37,7 @@
                 android:gravity="center"
                 android:padding="4dp"
                 android:text="一"
-                android:textSize="14sp" />
+                android:textSize="@dimen/sp_14" />
 
             <EditText
                 android:id="@+id/edt_dialog_count"
@@ -49,7 +49,7 @@
                 android:maxLength="3"
                 android:singleLine="true"
                 android:text="200"
-                android:textSize="14sp" />
+                android:textSize="@dimen/sp_14" />
 
             <TextView
                 android:id="@+id/txt_dialog_plus"
@@ -59,7 +59,7 @@
                 android:gravity="center"
                 android:padding="4dp"
                 android:text="+"
-                android:textSize="14sp" />
+                android:textSize="@dimen/sp_14" />
         </LinearLayout>
 
         <View
@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:text="取消"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_16" />
 
             <View
                 android:layout_width="0dp"
@@ -103,7 +103,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="4"
                 android:text="确定"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_16" />
 
             <View
                 android:layout_width="0dp"

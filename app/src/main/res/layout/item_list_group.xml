@@ -38,6 +38,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="厂家商品信息"
-            android:textSize="14sp" />
+            android:textSize="@dimen/sp_14" />
     </LinearLayout>
 </LinearLayout>

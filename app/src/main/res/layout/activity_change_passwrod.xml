@@ -28,7 +28,7 @@
                 android:background="@null"
                 android:hint="@string/hint_inputPhoneNum"
                 android:paddingLeft="10dp"
-                android:textSize="18sp" />
+                android:textSize="@dimen/sp_16" />
         </LinearLayout>
 
         <TextView
@@ -57,19 +57,18 @@
                     android:background="@null"
                     android:hint="@string/hint_inputCode"
                     android:paddingLeft="10dp"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/sp_16" />
 
             </LinearLayout>
 
             <Button
                 android:id="@+id/btn_code"
                 style="@style/myButton_Red"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:onClick="toGetCode"
                 android:text="发送手机验证码"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_16" />
         </LinearLayout>
 
         <TextView

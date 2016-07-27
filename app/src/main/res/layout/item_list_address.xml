@@ -22,7 +22,7 @@
             android:singleLine="true"
             android:text="木子火木子火木子火木子火木子火木子火木子火"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
 
         <TextView
             android:id="@+id/txt_receipt_tel"
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="18600878140"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -54,5 +54,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址"
-        android:textSize="16sp" />
+        android:textSize="@dimen/sp_16" />
 </LinearLayout>

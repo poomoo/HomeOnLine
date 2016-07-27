@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/llayout_cart"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ThemeBg"
-    android:id="@+id/llayout_cart"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -19,7 +19,7 @@
             android:layout_centerInParent="true"
             android:text="购物车"
             android:textColor="@color/black"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
 
         <TextView
             android:id="@+id/txt_edit"
@@ -29,7 +29,7 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="30dp"
             android:text="编辑"
-            android:textSize="12sp" />
+            android:textSize="@dimen/sp_12" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -55,9 +55,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:background="@color/transParentCart"
+                android:clickable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:clickable="true"
                 android:paddingBottom="8dp"
                 android:paddingLeft="10dp"
                 android:paddingTop="8dp">
@@ -75,7 +75,7 @@
                     android:layout_marginLeft="10dp"
                     android:text="全选"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp_14" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -83,7 +83,7 @@
                     android:layout_marginLeft="20dp"
                     android:text="合计：￥"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp_14" />
 
                 <TextView
                     android:id="@+id/txt_totalPrice"
@@ -91,7 +91,7 @@
                     android:layout_height="wrap_content"
                     android:text="0.00"
                     android:textColor="@color/white"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp_14" />
             </LinearLayout>
 
             <LinearLayout
@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:text="结算"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/sp_16" />
             </LinearLayout>
         </LinearLayout>
 
@@ -145,7 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:text="全选"
-                    android:textSize="14sp" />
+                    android:textSize="@dimen/sp_14" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -161,7 +161,7 @@
                         android:paddingBottom="6dp"
                         android:paddingTop="6dp"
                         android:text="移入关注"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp_14" />
 
                     <TextView
                         android:id="@+id/txt_delete"
@@ -175,7 +175,7 @@
                         android:paddingTop="6dp"
                         android:text="删除"
                         android:textColor="@color/ThemeRed"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp_14" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -192,7 +192,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="购物车是空的，您快去买点什么吧^_^"
-                android:textSize="16sp" />
+                android:textSize="@dimen/sp_16" />
         </LinearLayout>
     </RelativeLayout>
 </LinearLayout>

@@ -34,7 +34,7 @@
                     android:layout_height="wrap_content"
                     android:text="贵州特产黔五福传统腌腊品腊仔排680g地道美食送礼佳品"
                     android:textColor="@color/black"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/sp_16" />
 
                 <TextView
                     android:id="@+id/txt_info_price"
@@ -43,7 +43,7 @@
                     android:layout_marginTop="10dp"
                     android:text="￥ 88.00"
                     android:textColor="@color/ThemeRed"
-                    android:textSize="18sp" />
+                    android:textSize="@dimen/sp_18" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -56,7 +56,7 @@
                         android:layout_height="wrap_content"
                         android:text="市场价："
                         android:textColor="@color/ThemeTextColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/sp_16" />
 
                     <TextView
                         android:id="@+id/txt_info_old_price"
@@ -64,7 +64,7 @@
                         android:layout_height="wrap_content"
                         android:text="￥ 98.00"
                         android:textColor="@color/ThemeTextColor"
-                        android:textSize="16sp" />
+                        android:textSize="@dimen/sp_16" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -80,7 +80,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="数量"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp_14" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -104,7 +104,7 @@
                             android:gravity="center"
                             android:inputType="number"
                             android:text="1"
-                            android:textSize="14sp" />
+                            android:textSize="@dimen/sp_14" />
 
                         <ImageView
                             android:layout_width="wrap_content"
@@ -121,7 +121,7 @@
                         android:layout_marginLeft="20dp"
                         android:text="库存998件"
                         android:textColor="@color/ThemeTextColor"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp_14" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -151,7 +151,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
                         android:text="选择"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp_14" />
 
                     <TextView
                         android:id="@+id/txt_commodity_scale"
@@ -161,7 +161,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_toRightOf="@+id/txt_specification"
                         android:text="糖果口味"
-                        android:textSize="14sp" />
+                        android:textSize="@dimen/sp_14" />
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -238,7 +238,7 @@
                 android:drawableTop="@drawable/nav1_normal"
                 android:text="首页"
                 android:textColor="@color/ThemeTextColor"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
         </LinearLayout>
 
         <View
@@ -261,7 +261,7 @@
                 android:drawableTop="@drawable/nav4_normal"
                 android:text="购物车"
                 android:textColor="@color/ThemeTextColor"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
 
             <TextView
                 android:layout_width="14dp"
@@ -272,7 +272,7 @@
                 android:gravity="center"
                 android:text="12"
                 android:textColor="@color/white"
-                android:textSize="8sp" />
+                android:textSize="@dimen/sp_10" />
         </RelativeLayout>
 
         <Button
@@ -283,7 +283,7 @@
             android:background="@color/btn_cart"
             android:onClick="addToCart"
             android:text="加入购物车"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
 
         <Button
             style="@style/myButton_Red"
@@ -292,6 +292,6 @@
             android:layout_weight="1"
             android:onClick="buy"
             android:text="立即购买"
-            android:textSize="16sp" />
+            android:textSize="@dimen/sp_16" />
     </LinearLayout>
 </RelativeLayout>
