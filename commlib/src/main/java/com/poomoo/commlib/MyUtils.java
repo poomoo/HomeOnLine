@@ -387,16 +387,16 @@ public class MyUtils {
 //        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         imm.hideSoftInputFromInputMethod(view.getWindowToken(), 0);
     }
-
-    /**
-     * 打开软键盘
-     *
-     * @param context
-     * @param view
-     */
-    public static void showKeyBoard(Context context, View view) {
-        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.showSoftInputFromInputMethod(view.getWindowToken(), 0);
-    }
+//
+//    /**
+//     * 打开软键盘
+//     *
+//     * @param context
+//     * @param view
+//     */
+//    public static void showKeyBoard(Context context, View view) {
+//        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.showSoftInputFromInputMethod(view.getWindowToken(), 0);
+//    }
 
 }

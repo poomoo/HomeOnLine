@@ -5,6 +5,7 @@ package com.poomoo.homeonline.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 
@@ -168,6 +169,7 @@ public class MainNewActivity extends BaseActivity {
             exitTime = System.currentTimeMillis();
         } else {
             finish();
+            System.exit(0);
         }
     }
 

@@ -55,6 +55,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
     private double totalPrice = 0.00;
     public int removeCount = 0;//选择的删除项
     private int commodityKind = 0;
+    private int commodityCount = 0;
 
     private DialogPlus dialogPlus;
     private EditText dialogCountEdt;
@@ -136,9 +137,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.shopLayout.setOnClickListener(new Group_CheckBox_Click(groupPosition));
 
         setTotalPrice();
-        getTotalCommodity();
+//        getTotalCommodity();
 
-        MainNewActivity.INSTANCE.setInfoNum(3, commodityKind, commodityKind > 0 ? true : false);
         return convertView;
     }
 
@@ -210,6 +210,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.commodityLayout.setOnClickListener(new Child_CheckBox_Click(groupPosition, childPosition));
 
         setTotalPrice();
+        getTotalCommodityCount();
+        MainNewActivity.INSTANCE.setInfoNum(3, commodityCount, commodityCount > 0 ? true : false);
         return convertView;
     }
 
@@ -249,7 +251,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         public void count(int count, boolean isEdit) {
             LogUtils.d(TAG, "isEdit:" + isEdit);
             if (isEdit)
-                cartFragment.showEditPopupWindow(groupPosition,childPosition,addAndMinusView.getCount(), addAndMinusView);
+                cartFragment.showEditPopupWindow(groupPosition, childPosition, addAndMinusView.getCount(), addAndMinusView);
             else {
                 setCount(groupPosition, childPosition, count);
             }
@@ -401,6 +403,19 @@ public class CartAdapter extends BaseExpandableListAdapter {
             commodityKind += getChildrenCount(i);
 
         return commodityKind;
+    }
+
+    public int getTotalCommodityCount() {
+        commodityCount = 0;
+        int groupSize = group.size();
+        for (int i = 0; i < groupSize; i++) {
+            int childSize = getChildrenCount(i);
+            for (int j = 0; j < childSize; j++) {
+                commodityCount += ((RCommodityBO) getChild(i, j)).count;
+            }
+        }
+        MainNewActivity.INSTANCE.application.setCartNum(commodityCount);
+        return commodityCount;
     }
 
     private void createDialog() {

@@ -137,16 +137,16 @@
 
             <TextView
                 android:id="@+id/nav_inform_cart"
-                android:layout_width="@dimen/inform_size"
-                android:layout_height="@dimen/inform_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/nav_txt_cart"
                 android:layout_alignTop="@+id/nav_txt_cart"
                 android:background="@drawable/shape_round"
                 android:gravity="center"
-                android:text="99"
+                android:text="99+"
                 android:textColor="@color/white"
                 android:textSize="8sp"
-                android:visibility="visible" />
+                android:visibility="invisible" />
         </RelativeLayout>
 
         <RelativeLayout

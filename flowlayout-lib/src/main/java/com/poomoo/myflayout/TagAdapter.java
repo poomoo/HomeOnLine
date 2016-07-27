@@ -1,6 +1,5 @@
 package com.poomoo.myflayout;
 
-import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -13,14 +12,14 @@ public abstract class TagAdapter<T> {
     private static final String TAG = "TagFlowLayout";
     private List<T> mTagDatas;
     private OnDataChangedListener mOnDataChangedListener;
-    private HashSet<Integer> mCheckedPosList = new HashSet<Integer>();
+    private HashSet<Integer> mCheckedPosList = new HashSet<>();
 
     public TagAdapter(List<T> datas) {
         mTagDatas = datas;
     }
 
     public TagAdapter(T[] datas) {
-        mTagDatas = new ArrayList<T>(Arrays.asList(datas));
+        mTagDatas = new ArrayList<>(Arrays.asList(datas));
     }
 
     static interface OnDataChangedListener {
@@ -63,6 +62,10 @@ public abstract class TagAdapter<T> {
     public abstract View getView(FlowLayout parent, int position, T t);
 
     public boolean setSelected(int position, T t) {
+        return false;
+    }
+
+    public boolean setEnabled(int position, T t) {
         return false;
     }
 }

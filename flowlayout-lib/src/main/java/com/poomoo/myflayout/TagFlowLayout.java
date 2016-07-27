@@ -63,7 +63,7 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
     }
 
     public interface OnSelectListener {
-        void onSelected(Set<Integer> selectPosSet);
+        void onSelected(Set<Integer> selectPosSet, int position, FlowLayout parent);
     }
 
     private OnSelectListener mOnSelectListener;
@@ -122,6 +122,11 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
                 mSelectedView.add(i);
                 tagViewContainer.setChecked(true);
             }
+            if (mTagAdapter.setEnabled(i, adapter.getItem(i))) {
+                mSelectedView.remove(i);
+                tagViewContainer.setEnabled(true);
+            }
+
             if (len == 1)
                 tagViewContainer.setChecked(true);
             else
@@ -169,6 +174,15 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
 //        return new HashSet<>(mSelectedView);
 //    }
 
+    public String getSelectedItem() {
+        String str = "";
+        Iterator<Integer> iterator = mSelectedView.iterator();
+        if (iterator.hasNext())
+            str = (String) mTagAdapter.getItem(iterator.next());
+        return str;
+    }
+
+
     private void doSelect(TagView child, int position) {
         Log.d(TAG, "doSelect:" + " mAutoSelectEffect" + mAutoSelectEffect + " child" + child.isChecked() + " mSelectedMax" + mSelectedMax + " mSelectedView" + mSelectedView.size());
         if (mAutoSelectEffect) {
@@ -193,7 +207,7 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
                 mSelectedView.remove(position);
             }
             if (mOnSelectListener != null) {
-                mOnSelectListener.onSelected(new HashSet<>(mSelectedView));
+                mOnSelectListener.onSelected(new HashSet<>(mSelectedView), position, this);
             }
         }
     }

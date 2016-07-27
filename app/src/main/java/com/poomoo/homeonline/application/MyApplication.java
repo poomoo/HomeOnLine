@@ -16,6 +16,7 @@ public class MyApplication extends LitePalApplication {
     // 用户信息
     private String userId = "";
     private String tel = "";//--用户手机号码
+    private int cartNum;
 
     @Override
     public void onCreate() {
@@ -64,4 +65,11 @@ public class MyApplication extends LitePalApplication {
         this.tel = tel;
     }
 
+    public int getCartNum() {
+        return cartNum;
+    }
+
+    public void setCartNum(int cartNum) {
+        this.cartNum = cartNum;
+    }
 }
