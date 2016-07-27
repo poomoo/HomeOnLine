@@ -155,7 +155,7 @@ public class IndexViewPagerActivity extends BaseActivity implements OnClickListe
 
     @Override
     public void onClick(View v) {
-        openActivity(MainActivity.class);
+        openActivity(MainNewActivity.class);
         finish();
     }
 }

@@ -30,8 +30,7 @@
         <activity
             android:name=".ui.activity.MainNewActivity"
             android:exported="false"
-            android:launchMode="singleTask"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:launchMode="singleTask" />
         <activity
             android:name=".ui.activity.LogInActivity"
             android:exported="false" />
@@ -86,6 +85,9 @@
             android:exported="false" />
         <activity
             android:name=".ui.activity.pics.PhotoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.pics.PicViewActivity"
             android:exported="false" />
 
     </application>

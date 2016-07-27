@@ -1,15 +1,28 @@
 package com.poomoo.homeonline.adapter;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.orhanobut.dialogplus.DialogPlus;
+import com.orhanobut.dialogplus.Holder;
+import com.orhanobut.dialogplus.OnBackPressListener;
+import com.orhanobut.dialogplus.OnClickListener;
+import com.orhanobut.dialogplus.OnDismissListener;
+import com.orhanobut.dialogplus.ViewHolder;
+import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.listeners.OnBuyCheckChangedListener;
 import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
@@ -28,7 +41,7 @@ import java.util.List;
  * 日期 2016/7/19 11:30
  */
 public class CartAdapter extends BaseExpandableListAdapter {
-    private final String TAG = "MyAdapter";
+    private final String TAG = "CartAdapter";
 
     private Context context;
     private CartFragment cartFragment = null;
@@ -42,6 +55,14 @@ public class CartAdapter extends BaseExpandableListAdapter {
     private double totalPrice = 0.00;
     public int removeCount = 0;//选择的删除项
     private int commodityKind = 0;
+
+    private DialogPlus dialogPlus;
+    private EditText dialogCountEdt;
+    private TextView dialogMinusTxt;
+    private TextView dialogPlusTxt;
+    private AddAndMinusView addAndMinusView;
+    private int count = 1;
+
 
     public CartAdapter(Context context, List<RCartBO> group, OnBuyCheckChangedListener onBuyCheckChangedListener, OnEditCheckChangedListener onEditCheckChangedListener) {
         this.context = context;
@@ -171,8 +192,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.commodityImg = (ImageView) convertView.findViewById(R.id.img_commodity);
         holder.commodityTxt = (TextView) convertView.findViewById(R.id.txt_commodity);
         holder.priceTxt = (TextView) convertView.findViewById(R.id.txt_price);
-        holder.andMinusView = (AddAndMinusView) convertView.findViewById(R.id.addAndMinusView);
-        holder.andMinusView.setOnCountChangeListener(new CountChange(groupPosition, childPosition));
+        holder.addAndMinusView = (AddAndMinusView) convertView.findViewById(R.id.addAndMinusView);
 
         rCommodityBO = group.get(groupPosition).rCommodityBOs.get(childPosition);
         if (isEdit)
@@ -182,7 +202,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
 //        Glide.with(mContext).load(rCommodityBO.img).into(holder.commodityImg);
         holder.commodityTxt.setText(rCommodityBO.name);
         holder.priceTxt.setText(rCommodityBO.price);
-        holder.andMinusView.setCount(rCommodityBO.count);
+
+        holder.addAndMinusView.setCount(rCommodityBO.count);
+        holder.addAndMinusView.setOnCountChangeListener(new CountChange(groupPosition, childPosition, holder.addAndMinusView));
 
         // 點擊 CheckBox 時，將狀態存起來
         holder.commodityLayout.setOnClickListener(new Child_CheckBox_Click(groupPosition, childPosition));
@@ -215,17 +237,28 @@ public class CartAdapter extends BaseExpandableListAdapter {
     class CountChange implements AddAndMinusView.OnCountChangeListener {
         private int groupPosition;
         private int childPosition;
+        private AddAndMinusView addAndMinusView;
 
-        public CountChange(int groupPosition, int childPosition) {
+        public CountChange(int groupPosition, int childPosition, AddAndMinusView andMinusView) {
             this.groupPosition = groupPosition;
             this.childPosition = childPosition;
+            this.addAndMinusView = andMinusView;
         }
 
         @Override
-        public void count(int count) {
-            group.get(groupPosition).rCommodityBOs.get(childPosition).count = count;
-            setTotalPrice();
+        public void count(int count, boolean isEdit) {
+            LogUtils.d(TAG, "isEdit:" + isEdit);
+            if (isEdit)
+                cartFragment.showEditPopupWindow(groupPosition,childPosition,addAndMinusView.getCount(), addAndMinusView);
+            else {
+                setCount(groupPosition, childPosition, count);
+            }
         }
+    }
+
+    public void setCount(int groupPosition, int childPosition, int count) {
+        group.get(groupPosition).rCommodityBOs.get(childPosition).count = count;
+        setTotalPrice();
     }
 
     class GroupViewHolder {
@@ -240,7 +273,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         ImageView commodityImg;
         TextView commodityTxt;
         TextView priceTxt;
-        AddAndMinusView andMinusView;
+        AddAndMinusView addAndMinusView;
     }
 
     public void handleClick(int childPosition, int groupPosition) {
@@ -368,6 +401,92 @@ public class CartAdapter extends BaseExpandableListAdapter {
             commodityKind += getChildrenCount(i);
 
         return commodityKind;
+    }
+
+    private void createDialog() {
+        if (dialogPlus == null) {
+            final View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_count, null);
+            view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+            dialogCountEdt = (EditText) view.findViewById(R.id.edt_dialog_count);
+            dialogMinusTxt = (TextView) view.findViewById(R.id.txt_dialog_minus);
+            dialogPlusTxt = (TextView) view.findViewById(R.id.txt_dialog_plus);
+
+            dialogCountEdt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String temp = s.toString();
+                    if (temp.length() == 0)
+                        return;
+                    if (temp.length() == 1 && temp.equals("0")) {
+                        s.replace(0, 1, "1");
+                        count = 1;
+                    }
+                    if (Integer.parseInt(temp) == 1) {
+                        dialogMinusTxt.setClickable(false);
+                    } else {
+                        dialogMinusTxt.setClickable(true);
+                    }
+                }
+            });
+
+            Holder holder = new ViewHolder(view);
+            OnClickListener clickListener = new OnClickListener() {
+                @Override
+                public void onClick(DialogPlus dialog, View view) {
+                    switch (view.getId()) {
+                        case R.id.txt_dialog_minus:
+                            dialogCountEdt.setText(--count + "");
+                            LogUtils.d(TAG, "减" + count);
+                            break;
+                        case R.id.txt_dialog_plus:
+                            dialogCountEdt.setText(++count + "");
+                            break;
+                        case R.id.btn_dialog_cancel:
+                            dialog.dismiss();
+                            MyUtils.hiddenKeyBoard(context, view);
+                            break;
+                        case R.id.btn_dialog_confirm:
+                            addAndMinusView.setCount(count);
+                            dialog.dismiss();
+                            break;
+                    }
+                }
+            };
+            dialogPlus = DialogPlus.newDialog(context)
+                    .setContentHolder(holder)
+                    .setGravity(Gravity.CENTER)
+                    .setCancelable(true)
+                    .setOnDismissListener(new OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogPlus dialog) {
+                            MyUtils.hiddenKeyBoard(context, view);
+                        }
+                    })
+                    .setOnBackPressListener(new OnBackPressListener() {
+                        @Override
+                        public void onBackPressed(DialogPlus dialogPlus) {
+                            dialogPlus.dismiss();
+                        }
+                    })
+                    .setOnClickListener(clickListener)
+                    .create();
+        }
+        dialogCountEdt.setText(count + "");
+        dialogCountEdt.setFocusableInTouchMode(true);
+        dialogCountEdt.setFocusable(true);
+        dialogCountEdt.requestFocus();
+
+        dialogPlus.show();
     }
 
 }

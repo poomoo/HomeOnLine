@@ -4,13 +4,14 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="ThemeRed">#C20000</color>
+    <!--<color name="ThemeRed">#C20000</color>-->
+    <color name="ThemeRed">#D22F1C</color>
     <color name="ThemeBg">#EEEEEE</color>
     <color name="ThemeText">#646464</color>
     <color name="TitleBarBg">#F4F4F4</color>
     <color name="ThemeTextColor">#50535C</color>
 
-    <color name="transparent">#00000000</color>
+    <color name="transParent">#00000000</color>
     <color name="transParentBlack">#55000000</color>
     <color name="transParentAddress">#33000000</color>
     <color name="transParentCart">#99000000</color>
@@ -21,6 +22,8 @@
     <color name="divide">#DADADA</color>
     <color name="btn_gray">#CCCCCC</color>
     <color name="btn_cart">#F8A30D</color>
+    <color name="bg_commodity_specification">#CCCCCC</color>
+
 
     <!-- swipe refresh color -->
     <color name="swipe_refresh_first">#ff00ddff</color>

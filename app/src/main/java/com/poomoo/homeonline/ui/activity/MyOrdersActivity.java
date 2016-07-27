@@ -53,12 +53,13 @@ public class MyOrdersActivity extends BaseActivity {
                 addTab(getResources().getString(R.string.tab_order_deliver), MyOrdersFragment.class, ROrderBO.ORDER_DELIVER);
                 addTab(getResources().getString(R.string.tab_order_receipt), MyOrdersFragment.class, ROrderBO.ORDER_RECEIPT);
                 addTab(getResources().getString(R.string.tab_order_evaluate), MyOrdersFragment.class, ROrderBO.ORDER_EVALUATE);
-                addTab(getResources().getString(R.string.tab_order_after_sale), MyOrdersFragment.class, ROrderBO.ORDER_AFTER_SALE);
+//                addTab(getResources().getString(R.string.tab_order_after_sale), MyOrdersFragment.class, ROrderBO.ORDER_AFTER_SALE);
             }
         };
         mTab.setPage(type);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.frame_container, mTab)
                 .commit();
+
     }
 }

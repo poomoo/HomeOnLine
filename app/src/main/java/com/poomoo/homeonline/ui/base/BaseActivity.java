@@ -44,8 +44,8 @@ public abstract class BaseActivity extends FragmentActivity {
         application = (MyApplication) this.getApplication();
         appAction = application.getAppAction();
         // 去掉默认标题栏
-        Window window = getWindow();
-        window.requestFeature(Window.FEATURE_NO_TITLE);
+//        Window window = getWindow();
+//        window.requestFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(onBindLayout());
     }

@@ -15,7 +15,9 @@ import android.text.Selection;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -373,4 +375,28 @@ public class MyUtils {
             return false;
         return true;
     }
+
+    /**
+     * 关闭软键盘
+     *
+     * @param context
+     * @param view
+     */
+    public static void hiddenKeyBoard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        imm.hideSoftInputFromInputMethod(view.getWindowToken(), 0);
+    }
+
+    /**
+     * 打开软键盘
+     *
+     * @param context
+     * @param view
+     */
+    public static void showKeyBoard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInputFromInputMethod(view.getWindowToken(), 0);
+    }
+
 }

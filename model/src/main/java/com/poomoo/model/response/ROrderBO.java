@@ -60,4 +60,7 @@ public class ROrderBO {
     public static final int ORDER_RECEIPT = 3;
     public static final int ORDER_EVALUATE = 4;
     public static final int ORDER_AFTER_SALE = 5;
+
+    public int status;//订单状态 1-代付款 2-代发货 3-待收货 4-待评价 5-订单已取消
+    public String name;//商品名称
 }

@@ -126,7 +126,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
     }
 
     public int setDividerColor() {
-        return getResources().getColor(R.color.transparent);
+        return getResources().getColor(R.color.transParent);
     }
 
     /**

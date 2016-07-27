@@ -14,6 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.activity.MainActivity;
 
@@ -23,10 +24,11 @@ import com.poomoo.homeonline.ui.activity.MainActivity;
  * 作者 李苜菲
  * 日期 2016/7/19 11:35
  */
-public class AddAndMinusView extends LinearLayout implements View.OnClickListener, TextWatcher {
+public class AddAndMinusView extends LinearLayout implements View.OnClickListener {
+    private static final String TAG = "AddAndMinusView";
     private Context context;
     private TextView minusTxt;
-    private EditText countEdt;
+    private TextView countTxt;
     private TextView plusTxt;
 
     private int count = 1;
@@ -49,12 +51,12 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
         View view = inflater.inflate(R.layout.add_minus_view, null);
 
         minusTxt = (TextView) view.findViewById(R.id.txt_minus);
-        countEdt = (EditText) view.findViewById(R.id.edt_count);
+        countTxt = (TextView) view.findViewById(R.id.txt_count);
         plusTxt = (TextView) view.findViewById(R.id.txt_plus);
 
         minusTxt.setOnClickListener(this);
+        countTxt.setOnClickListener(this);
         plusTxt.setOnClickListener(this);
-        countEdt.addTextChangedListener(this);
 
         addView(view);
     }
@@ -65,7 +67,8 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
 
     public void setCount(int count) {
         this.count = count;
-        countEdt.setText(count + "");
+        countTxt.setText(count + "");
+        LogUtils.d(TAG, "setCount:" + count);
     }
 
     @Override
@@ -74,30 +77,21 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
             return;
         switch (v.getId()) {
             case R.id.txt_minus:
-                countEdt.setText(--count > 1 ? count + "" : 1 + "");
+                countTxt.setText(--count > 1 ? count + "" : 1 + "");
+                if (count < 1)
+                    count = 1;
+                onCountChangeListener.count(count, false);
                 break;
             case R.id.txt_plus:
-                countEdt.setText(++count + "");
+                countTxt.setText(++count + "");
+                if (count < 1)
+                    count = 1;
+                onCountChangeListener.count(count, false);
+                break;
+            case R.id.txt_count:
+                onCountChangeListener.count(count, true);
                 break;
         }
-        if (count < 1)
-            count = 1;
-        onCountChangeListener.count(count);
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable s) {
-
     }
 
     public void setOnCountChangeListener(OnCountChangeListener onCountChangeListener) {
@@ -105,6 +99,6 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
     }
 
     public interface OnCountChangeListener {
-        void count(int count);
+        void count(int count, boolean isEdit);
     }
 }

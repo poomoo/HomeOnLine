@@ -31,7 +31,7 @@
                 android:drawableTop="@drawable/selector_nav1"
                 android:text="首页"
                 android:textColor="@color/selector_nav_text"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
 
             <TextView
                 android:id="@+id/nav_inform_main"
@@ -44,7 +44,7 @@
                 android:gravity="center"
                 android:text="78"
                 android:textColor="@color/white"
-                android:textSize="10sp"
+                android:textSize="@dimen/sp_10"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -65,7 +65,7 @@
                 android:drawableTop="@drawable/selector_nav2"
                 android:text="分类"
                 android:textColor="@color/selector_nav_text"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
 
             <TextView
                 android:id="@+id/nav_inform_classify"
@@ -78,7 +78,7 @@
                 android:gravity="center"
                 android:text="78"
                 android:textColor="@color/white"
-                android:textSize="10sp"
+                android:textSize="@dimen/sp_10"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -99,7 +99,7 @@
                 android:drawableTop="@drawable/selector_nav3"
                 android:text="家有抢购"
                 android:textColor="@color/selector_nav_text"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
 
             <TextView
                 android:id="@+id/nav_inform_grab"
@@ -112,7 +112,7 @@
                 android:gravity="center"
                 android:text="78"
                 android:textColor="@color/white"
-                android:textSize="10sp"
+                android:textSize="@dimen/sp_10"
                 android:visibility="gone" />
         </RelativeLayout>
 
@@ -133,7 +133,7 @@
                 android:drawableTop="@drawable/selector_nav4"
                 android:text="购物车"
                 android:textColor="@color/selector_nav_text"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
 
             <TextView
                 android:id="@+id/nav_inform_cart"
@@ -143,10 +143,10 @@
                 android:layout_alignTop="@+id/nav_txt_cart"
                 android:background="@drawable/shape_round"
                 android:gravity="center"
-                android:text="78"
+                android:text="99"
                 android:textColor="@color/white"
-                android:textSize="10sp"
-                android:visibility="gone" />
+                android:textSize="8sp"
+                android:visibility="visible" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -166,7 +166,7 @@
                 android:drawableTop="@drawable/selector_nav5"
                 android:text="个人中心"
                 android:textColor="@color/selector_nav_text"
-                android:textSize="12sp" />
+                android:textSize="@dimen/sp_12" />
 
             <TextView
                 android:id="@+id/nav_inform_center"
@@ -179,7 +179,7 @@
                 android:gravity="center"
                 android:text="78"
                 android:textColor="@color/white"
-                android:textSize="10sp"
+                android:textSize="@dimen/sp_10"
                 android:visibility="gone" />
         </RelativeLayout>
 

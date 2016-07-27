@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ThemeBg"
+    android:id="@+id/llayout_cart"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -56,6 +57,7 @@
                 android:background="@color/transParentCart"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
+                android:clickable="true"
                 android:paddingBottom="8dp"
                 android:paddingLeft="10dp"
                 android:paddingTop="8dp">

@@ -28,8 +28,8 @@
 
     <ImageView
         android:id="@+id/img_commodity"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:scaleType="centerCrop"
         android:src="@drawable/commodity" />
 
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:text="369.00"
                     android:textColor="@color/ThemeRed"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
             <com.poomoo.homeonline.ui.custom.AddAndMinusView

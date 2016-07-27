@@ -57,7 +57,7 @@ public class CenterFragment extends BaseFragment {
         openActivity(MyOrdersActivity.class);
     }
 
-    @OnClick({R.id.llayout_pay, R.id.llayout_deliver, R.id.llayout_recepit, R.id.llayout_evaluate, R.id.llayout_after_safe})
+    @OnClick({R.id.llayout_pay, R.id.llayout_deliver, R.id.llayout_recepit, R.id.llayout_evaluate})
     void toMyOrder(View view) {
 //        if (!application.isLogin()) {
 //            Dialog dialog = new AlertDialog.Builder(getActivity()).setMessage("请先登录").setPositiveButton("确定", (new DialogInterface.OnClickListener() {
@@ -88,16 +88,19 @@ public class CenterFragment extends BaseFragment {
             case R.id.llayout_evaluate:
                 bundle.putInt(getString(R.string.intent_value), ROrderBO.ORDER_EVALUATE);
                 break;
-            case R.id.llayout_after_safe:
-                bundle.putInt(getString(R.string.intent_value), ROrderBO.ORDER_AFTER_SALE);
-                break;
+//            case R.id.llayout_after_safe:
+//                bundle.putInt(getString(R.string.intent_value), ROrderBO.ORDER_AFTER_SALE);
+//                break;
         }
         openActivity(MyOrdersActivity.class, bundle);
     }
 
-    @OnClick({R.id.rlayout_my_info, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center})
+    @OnClick({R.id.rlayout_my_info, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_safe})
     void other(View view) {
         switch (view.getId()) {
+            case R.id.llayout_after_safe:
+//                openActivity(MyInfoActivity.class);
+                break;
             case R.id.rlayout_my_info:
                 openActivity(MyInfoActivity.class);
                 break;

@@ -134,7 +134,6 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         topImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                scrollView.fullScroll(ScrollView.FOCUS_UP);
                 scrollView.smoothScrollTo(0, 0);
             }
         });
@@ -229,7 +228,9 @@ public class MainFragment extends BaseFragment implements AdapterView.OnItemClic
         qhcsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                openActivity(CommodityInfoActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(getString(R.string.intent_value), position % 2 == 0 ? true : false);
+                openActivity(CommodityInfoActivity.class, bundle);
             }
         });
     }

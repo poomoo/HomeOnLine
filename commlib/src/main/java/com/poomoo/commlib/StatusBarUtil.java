@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 
 /**
  * Created by Jaeger on 16/2/14.
- * <p/>
+ * <p>
  * Email: chjie.jaeger@gamil.com
  * GitHub: https://github.com/laobie
  */
@@ -86,7 +86,7 @@ public class StatusBarUtil {
 
     /**
      * 使状态栏半透明
-     * <p/>
+     * <p>
      * 适用于图片作为背景的界面,此时需要图片填充到状态栏
      *
      * @param activity 需要设置的activity
@@ -97,7 +97,7 @@ public class StatusBarUtil {
 
     /**
      * 使状态栏半透明
-     * <p/>
+     * <p>
      * 适用于图片作为背景的界面,此时需要图片填充到状态栏
      *
      * @param activity       需要设置的activity
@@ -121,12 +121,24 @@ public class StatusBarUtil {
             return;
         }
         transparentStatusBar(activity);
-//        setRootView(activity);
+        setRootView(activity);
+    }
+
+    /**
+     * 取消状态栏全透明
+     *
+     * @param activity 需要设置的activity
+     */
+    public static void cancelTransparent(Activity activity, int color) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return;
+        }
+        cancelTransparentStatusBar(activity, color);
     }
 
     /**
      * 使状态栏透明(5.0以上半透明效果,不建议使用)
-     * <p/>
+     * <p>
      * 适用于图片作为背景的界面,此时需要图片填充到状态栏
      *
      * @param activity 需要设置的activity
@@ -358,9 +370,9 @@ public class StatusBarUtil {
     /**
      * 设置根布局参数
      */
-    private static void setRootView(Activity activity) {
+    public static void setRootView(Activity activity) {
         ViewGroup rootView = (ViewGroup) ((ViewGroup) activity.findViewById(android.R.id.content)).getChildAt(0);
-        rootView.setFitsSystemWindows(true);
+        rootView.setFitsSystemWindows(false);
         rootView.setClipToPadding(true);
     }
 
@@ -370,15 +382,22 @@ public class StatusBarUtil {
     @TargetApi(Build.VERSION_CODES.KITKAT)
     private static void transparentStatusBar(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+//            activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
         }
-//        else {
-//            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        }
     }
+
+    /**
+     * 使状态栏透明
+     */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    private static void cancelTransparentStatusBar(Activity activity, int color) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            activity.getWindow().setStatusBarColor(color);
+            activity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+    }
+
 
     /**
      * 创建半透明矩形 View

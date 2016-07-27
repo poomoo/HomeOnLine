@@ -9,6 +9,7 @@
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--<item name="colorPrimary">@color/black</item>-->
         <item name="colorPrimaryDark">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
@@ -29,6 +30,14 @@
     <style name="myButton_Gray" parent="android:Widget.Button">
         <item name="android:background">@drawable/selector_button_gray</item>
         <item name="android:textColor">@color/black</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="myButton_White" parent="android:Widget.Button">
+        <item name="android:background">@drawable/selector_button_white</item>
+        <item name="android:textColor">@color/ThemeTextColor</item>
         <item name="android:layout_height">36dp</item>
         <item name="android:textSize">20sp</item>
         <item name="android:gravity">center</item>

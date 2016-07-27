@@ -4,11 +4,22 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.adapter.OrdersAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
+import com.poomoo.homeonline.listeners.CancelClickListener;
+import com.poomoo.homeonline.listeners.DeleteClickListener;
+import com.poomoo.homeonline.listeners.EvaluateClickListener;
+import com.poomoo.homeonline.listeners.PayClickListener;
+import com.poomoo.homeonline.listeners.ReceiptClickListener;
+import com.poomoo.homeonline.listeners.TraceClickListener;
+import com.poomoo.homeonline.listeners.UrgeClickListener;
 import com.poomoo.homeonline.ui.base.BaseListFragment;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.model.response.ROrderBO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 类名 MyOrdersFragment
@@ -16,7 +27,7 @@ import com.poomoo.model.response.ROrderBO;
  * 作者 李苜菲
  * 日期 2016/7/19 11:19
  */
-public class MyOrdersFragment extends BaseListFragment<ROrderBO> implements BaseListAdapter.OnItemClickListener {
+public class MyOrdersFragment extends BaseListFragment<ROrderBO> implements BaseListAdapter.OnItemClickListener, PayClickListener, UrgeClickListener, ReceiptClickListener, EvaluateClickListener, TraceClickListener, CancelClickListener, DeleteClickListener {
     public int mCatalog;
 
     private OrdersAdapter adapter;
@@ -30,7 +41,7 @@ public class MyOrdersFragment extends BaseListFragment<ROrderBO> implements Base
 
     @Override
     protected BaseListAdapter<ROrderBO> onSetupAdapter() {
-        adapter = new OrdersAdapter(getActivity(), BaseListAdapter.ONLY_FOOTER, true);
+        adapter = new OrdersAdapter(getActivity(), BaseListAdapter.ONLY_FOOTER, this, this, this, this, this, this, this);
         return adapter;
     }
 
@@ -41,6 +52,21 @@ public class MyOrdersFragment extends BaseListFragment<ROrderBO> implements Base
         mAdapter.setOnItemClickListener(this);
 
         EMPTY_DATA = ErrorLayout.NO_ORDER;
+
+        onLoadFinishState(action);
+        onLoadResultData(getList());
+    }
+
+    private List<ROrderBO> getList() {
+        List<ROrderBO> rOrderBOs = new ArrayList<>();
+        ROrderBO rOrderBO;
+        for (int i = 0; i < 10; i++) {
+            rOrderBO = new ROrderBO();
+            rOrderBO.status = mCatalog;
+            rOrderBO.name = "测试商品" + (i + 1);
+            rOrderBOs.add(rOrderBO);
+        }
+        return rOrderBOs;
     }
 
     @Override
@@ -98,4 +124,48 @@ public class MyOrdersFragment extends BaseListFragment<ROrderBO> implements Base
 //        allJobListPresenter.getApplyList(application.getUserId(), mCatalog, currPage);
     }
 
+    @Override
+    public void cancel(int position) {
+        MyUtils.showToast(getActivity().getApplicationContext(), "取消订单:" + position);
+    }
+
+    @Override
+    public void delete(int position) {
+        MyUtils.showToast(getActivity().getApplicationContext(), "删除订单:" + position);
+    }
+
+    @Override
+    public void evaluate(int position) {
+        MyUtils.showToast(getActivity().getApplicationContext(), "评价:" + position);
+    }
+
+    @Override
+    public void pay(int position) {
+        MyUtils.showToast(getActivity().getApplicationContext(), "付款:" + position);
+    }
+
+    @Override
+    public void receipt(int position) {
+        MyUtils.showToast(getActivity().getApplicationContext(), "确认收货:" + position);
+        adapter.removeItem(position);
+    }
+
+    @Override
+    public void trace(int position) {
+        MyUtils.showToast(getActivity().getApplicationContext(), "查看物流:" + position);
+    }
+
+    @Override
+    public void urge(int position) {
+        MyUtils.showToast(getActivity().getApplicationContext(), "催单:" + position);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        LogUtils.d(TAG, "onHiddenChanged" + hidden);
+        if (!hidden) {
+            onLoadResultData(getList());
+        }
+    }
 }

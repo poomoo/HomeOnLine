@@ -5,15 +5,26 @@ package com.poomoo.homeonline.ui.fragment;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
@@ -23,6 +34,7 @@ import com.poomoo.homeonline.adapter.CartAdapter;
 import com.poomoo.homeonline.listeners.OnBuyCheckChangedListener;
 import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
 import com.poomoo.homeonline.ui.base.BaseFragment;
+import com.poomoo.homeonline.ui.custom.AddAndMinusView;
 import com.poomoo.model.response.RCartBO;
 import com.poomoo.model.response.RCommodityBO;
 
@@ -67,6 +79,18 @@ public class CartFragment extends BaseFragment implements OnBuyCheckChangedListe
 
     private boolean isClick = true;//是否是点击全选框 true-点击 false-适配器变化
     public static CartFragment inStance = null;
+    private EditText dialogCountEdt;
+    private TextView dialogMinusTxt;
+    private TextView dialogPlusTxt;
+    private Button dialogCancelBtn;
+    private Button dialogConfirmBtn;
+
+    private int count = 1;
+    private AddAndMinusView addAndMinusView;
+    private EditPopUpWindow popUpWindow;
+    private View view;
+    private int groupPosition;
+    private int childPosition;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -85,9 +109,10 @@ public class CartFragment extends BaseFragment implements OnBuyCheckChangedListe
         inStance = this;
 
         adapter = new CartAdapter(getActivity(), getList(), this, this);
-        listView.setAdapter(adapter);
         listView.addHeaderView(LayoutInflater.from(getActivity()).inflate(R.layout.cart_header, null));
         listView.addFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.cart_footer, null));
+        listView.setAdapter(adapter);
+
         //设置 属性 GroupIndicator 去掉默认向下的箭头
         listView.setGroupIndicator(null);
         expandListView();
@@ -232,7 +257,45 @@ public class CartFragment extends BaseFragment implements OnBuyCheckChangedListe
                 }
                 showDialog();
                 break;
+            case R.id.txt_dialog_minus:
+                dialogCountEdt.setText(--count + "");
+                LogUtils.d(TAG, "减" + count);
+                break;
+            case R.id.txt_dialog_plus:
+                dialogCountEdt.setText(++count + "");
+                break;
+            case R.id.btn_dialog_cancel:
+                popUpWindow.dismiss();
+                break;
+            case R.id.btn_dialog_confirm:
+                addAndMinusView.setCount(count);
+                adapter.setCount(groupPosition, childPosition, count);
+                popUpWindow.dismiss();
+                break;
         }
+    }
+
+    public void showEditPopupWindow(int groupPosition, int childPosition, int count, AddAndMinusView addAndMinusView) {
+        if (popUpWindow == null)
+            popUpWindow = new EditPopUpWindow(getActivity());
+
+        this.count = count;
+        this.addAndMinusView = addAndMinusView;
+        this.groupPosition=groupPosition;
+        this.childPosition=childPosition;
+
+        dialogCountEdt.setText(count + "");
+        dialogCountEdt.setSelection(String.valueOf(count).length());
+        dialogCountEdt.setFocusableInTouchMode(true);
+        dialogCountEdt.setFocusable(true);
+        dialogCountEdt.requestFocus();
+
+        popUpWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+
+        InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+
+        popUpWindow.showAtLocation(getActivity().findViewById(R.id.llayout_cart), Gravity.CENTER, 0, 0);
     }
 
     private void showDialog() {
@@ -321,5 +384,82 @@ public class CartFragment extends BaseFragment implements OnBuyCheckChangedListe
         adapter.notifyDataSetChanged();
         expandListView();
         changeState();
+    }
+
+    class EditPopUpWindow extends PopupWindow {
+
+        public EditPopUpWindow(Context context) {
+            super(context);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = inflater.inflate(R.layout.dialog_edit_count, null);
+            dialogCountEdt = (EditText) view.findViewById(R.id.edt_dialog_count);
+            dialogMinusTxt = (TextView) view.findViewById(R.id.txt_dialog_minus);
+            dialogPlusTxt = (TextView) view.findViewById(R.id.txt_dialog_plus);
+            dialogCancelBtn = (Button) view.findViewById(R.id.btn_dialog_cancel);
+            dialogConfirmBtn = (Button) view.findViewById(R.id.btn_dialog_confirm);
+
+            dialogMinusTxt.setOnClickListener(CartFragment.this);
+            dialogPlusTxt.setOnClickListener(CartFragment.this);
+            dialogCancelBtn.setOnClickListener(CartFragment.this);
+            dialogConfirmBtn.setOnClickListener(CartFragment.this);
+
+            dialogCountEdt.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    String temp = s.toString();
+                    if (temp.length() == 0)
+                        return;
+                    if (temp.length() == 1 && temp.equals("0")) {
+                        s.replace(0, 1, "1");
+                        count = 1;
+                    }
+                    if (Integer.parseInt(temp) == 1) {
+                        dialogMinusTxt.setClickable(false);
+                    } else {
+                        dialogMinusTxt.setClickable(true);
+                    }
+                    count = Integer.parseInt(temp);
+                }
+            });
+
+            view.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    int height_top = view.findViewById(R.id.llayout_edit_count).getTop();
+                    int height_bottom = view.findViewById(R.id.llayout_edit_count).getBottom();
+                    int y = (int) event.getY();
+                    if (event.getAction() == MotionEvent.ACTION_UP) {
+                        if (y < height_top || y > height_bottom) {
+                            dismiss();
+                        }
+                    }
+                    return true;
+                }
+            });
+
+            this.setContentView(view);
+            this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
+            this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
+            this.setFocusable(true);
+            this.setOnDismissListener(new OnDismissListener() {
+                @Override
+                public void onDismiss() {
+                    MyUtils.hiddenKeyBoard(getActivity(), view);
+                }
+            });
+
+            ColorDrawable dw = new ColorDrawable(0xb0000000);
+            this.setBackgroundDrawable(dw);
+        }
     }
 }
