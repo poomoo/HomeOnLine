@@ -21,8 +21,8 @@ import javax.inject.Inject;
 
 /**
  * @author 李苜菲
- * @ClassName BaseActivity
- * @Description 基类Activity
+ * @ClassName BaseDaggerActivity
+ * @Description 依赖注入基类Activity
  * @date 2016/7/19 11:15
  */
 public abstract class BaseDaggerActivity<P extends BasePresenter> extends FragmentActivity {
@@ -77,12 +77,9 @@ public abstract class BaseDaggerActivity<P extends BasePresenter> extends Fragme
         headerViewHolder.rightImg = (ImageView) findViewById(R.id.img_titleBar_right);
         headerViewHolder.rightTxt = (TextView) findViewById(R.id.txt_titleBar_right);
         headerViewHolder.titleTxt.setText(getString(onSetTitle()));
-        headerViewHolder.backImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-                getActivityOutToRight();
-            }
+        headerViewHolder.backImg.setOnClickListener(v -> {
+            finish();
+            getActivityOutToRight();
         });
         return headerViewHolder;
     }

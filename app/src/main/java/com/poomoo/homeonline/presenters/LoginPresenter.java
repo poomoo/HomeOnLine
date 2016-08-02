@@ -30,7 +30,7 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.LogInDaggerActivity;
+import com.poomoo.homeonline.ui.activity.LogInActivity;
 import com.poomoo.model.RUserBO;
 import com.poomoo.model.request.QLoginBO;
 
@@ -45,7 +45,7 @@ import rx.schedulers.Schedulers;
  * 作者 李苜菲
  * 日期 2016/8/1 11:14
  */
-public class LoginPresenter extends BasePresenter<LogInDaggerActivity> {
+public class LoginPresenter extends BasePresenter<LogInActivity> {
     @Inject
     public LoginPresenter() {
     }

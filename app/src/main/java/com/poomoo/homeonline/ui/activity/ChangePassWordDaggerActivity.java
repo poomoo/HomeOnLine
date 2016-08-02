@@ -150,8 +150,8 @@ public class ChangePassWordDaggerActivity extends BaseDaggerActivity<ChangePassW
 
     public void loginSucceed(RUserBO rUserBO) {
         closeProgressDialog();
-        if (LogInDaggerActivity.instance != null)
-            LogInDaggerActivity.instance.finish();
+        if (LogInActivity.instance != null)
+            LogInActivity.instance.finish();
         finish();
         SPUtils.put(getApplicationContext(), getString(R.string.sp_id), rUserBO.id + "");
         openActivity(MainActivity.class);

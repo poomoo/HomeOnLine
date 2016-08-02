@@ -23,7 +23,7 @@ package com.poomoo.homeonline.reject.components;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.activity.ChangePassWordDaggerActivity;
 import com.poomoo.homeonline.ui.activity.GetCodeDaggerActivity;
-import com.poomoo.homeonline.ui.activity.LogInDaggerActivity;
+import com.poomoo.homeonline.ui.activity.LogInActivity;
 
 import dagger.Component;
 
@@ -33,7 +33,7 @@ import dagger.Component;
  */
 @Component(modules = {ActivityModule.class})
 public interface ActivityComponent {
-    void inject(LogInDaggerActivity activity);
+    void inject(LogInActivity activity);
 
     void inject(GetCodeDaggerActivity activity);
 

@@ -8,7 +8,6 @@
       <module fileurl="file://$PROJECT_DIR$/commlib/commlib.iml" filepath="$PROJECT_DIR$/commlib/commlib.iml" />
       <module fileurl="file://$PROJECT_DIR$/flowlayout-lib/flowlayout-lib.iml" filepath="$PROJECT_DIR$/flowlayout-lib/flowlayout-lib.iml" />
       <module fileurl="file://$PROJECT_DIR$/model/model.iml" filepath="$PROJECT_DIR$/model/model.iml" />
-      <module fileurl="file://$PROJECT_DIR$/model/mvp.iml" filepath="$PROJECT_DIR$/model/mvp.iml" />
     </modules>
   </component>
 </project>
