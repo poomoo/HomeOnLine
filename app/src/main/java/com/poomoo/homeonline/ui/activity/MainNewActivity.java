@@ -5,7 +5,6 @@ package com.poomoo.homeonline.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
 
@@ -37,7 +36,6 @@ public class MainNewActivity extends BaseActivity {
     private CartFragment cartCartFragment;
     private CenterFragment centerFragment;
     private Fragment curFragment;
-//    private FragmentTransaction fragmentTransaction;
 
     private long exitTime = 0;
     public static MainNewActivity INSTANCE = null;
@@ -50,12 +48,9 @@ public class MainNewActivity extends BaseActivity {
         ButterKnife.bind(this);
         setDefaultFragment();
 
-        bottomBar.setOnItemChangedListener(new BottomBar.OnItemChangedListener() {
-            @Override
-            public void onItemChanged(final int index) {
-                LogUtils.d(TAG, "onItemChanged:" + index);
-                jump(index);
-            }
+        bottomBar.setOnItemChangedListener(index -> {
+            LogUtils.d(TAG, "onItemChanged:" + index);
+            jump(index);
         });
     }
 

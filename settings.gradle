@@ -1,1 +1,1 @@
-include ':app', ':api', ':core', ':model', ':commlib', ':flowlayout-lib'
+include ':app', ':api', ':commlib', ':flowlayout-lib', ':model'

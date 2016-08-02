@@ -8,12 +8,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.poomoo.core.AppAction;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.application.MyApplication;
 
@@ -28,8 +26,6 @@ public abstract class BaseActivity extends FragmentActivity {
     public Context context;
     // 应用全局的实例
     public MyApplication application;
-    // 核心层的Action实例
-    public AppAction appAction;
     //日志标签
     public String TAG = getClass().getSimpleName();
     //进度对话框
@@ -42,10 +38,6 @@ public abstract class BaseActivity extends FragmentActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         application = (MyApplication) this.getApplication();
-        appAction = application.getAppAction();
-        // 去掉默认标题栏
-//        Window window = getWindow();
-//        window.requestFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(onBindLayout());
     }
@@ -57,6 +49,7 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void setBack() {
         getHeaderView();
     }
+
 
     /**
      * 统一头部条
@@ -207,5 +200,11 @@ public abstract class BaseActivity extends FragmentActivity {
             getActivityOutToRight();
         }
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+//        mPresenter.onDestroy();
     }
 }

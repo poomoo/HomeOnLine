@@ -1,7 +1,5 @@
 package com.poomoo.homeonline.application;
 
-import com.poomoo.core.AppAction;
-import com.poomoo.core.AppActionImpl;
 
 import org.litepal.LitePalApplication;
 
@@ -12,7 +10,6 @@ import org.litepal.LitePalApplication;
  * 日期 2016/7/19 11:28
  */
 public class MyApplication extends LitePalApplication {
-    private AppAction appAction;
     // 用户信息
     private String userId = "";
     private String tel = "";//--用户手机号码
@@ -21,7 +18,6 @@ public class MyApplication extends LitePalApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-        appAction = new AppActionImpl(this);
 //
 //        initImageLoader();
 //        CrashHandler crashHandler = CrashHandler.getInstance();
@@ -45,9 +41,6 @@ public class MyApplication extends LitePalApplication {
 //        ImageLoader.getInstance().init(config);
 //    }
 
-    public AppAction getAppAction() {
-        return appAction;
-    }
 
     public String getUserId() {
         return userId;

@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -47,6 +48,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
             android:padding="10dp">
 
@@ -69,16 +71,14 @@
 
         </LinearLayout>
 
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="40dp" />
-
         <Button
+            android:id="@+id/btn_confirm"
             style="@style/myButton_Red"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
             android:onClick="toComplete"
-            android:text="@string/btn_complete" />
+            android:text="@string/btn_complete"
+            android:textColor="@color/selector_btn_text" />
     </LinearLayout>
 </LinearLayout>
