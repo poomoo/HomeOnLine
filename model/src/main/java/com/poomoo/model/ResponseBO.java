@@ -14,7 +14,7 @@ import java.util.List;
 public class ResponseBO<T> {
     public boolean result;    // "result":"true" 成功，false 失败
     public String msg = "";    // "msg":"请求成功",
-    public String content = "";    // "content":"请求的结果集，主要正对查询功能"
+    public T content;    // "content":"请求的结果集，主要正对查询功能"
     public List<T> records = new ArrayList<>();
 
     public ResponseBO(boolean result, String msg) {

@@ -102,10 +102,7 @@ public class ChangePassWordDaggerActivity extends BaseDaggerActivity<ChangePassW
 
                     @Override
                     public void onNext(Boolean verify) {
-                        if (verify)
-                            confirmBtn.setEnabled(true);
-                        else
-                            confirmBtn.setEnabled(false);
+                        confirmBtn.setEnabled(verify);
                     }
                 });
     }
@@ -153,7 +150,7 @@ public class ChangePassWordDaggerActivity extends BaseDaggerActivity<ChangePassW
         if (LogInActivity.instance != null)
             LogInActivity.instance.finish();
         finish();
-        SPUtils.put(getApplicationContext(), getString(R.string.sp_id), rUserBO.id + "");
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_id), rUserBO.userId + "");
         openActivity(MainActivity.class);
     }
 

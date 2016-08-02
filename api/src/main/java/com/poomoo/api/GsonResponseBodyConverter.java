@@ -1,6 +1,7 @@
 package com.poomoo.api;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.poomoo.model.ResponseBO;
@@ -27,11 +28,13 @@ class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
     @Override
     public T convert(ResponseBody value) throws IOException {
         final String response = value.string();
+        Log.d("convert", "返回的数据:" + response + " type" + type);
         ResponseBO responseBO = gson.fromJson(response, ResponseBO.class);
+        Log.d("convert", "responseBO:" + responseBO);
         if (responseBO.result) {
             if (type.equals(ResponseBO.class))
                 return (T) responseBO;
-            //result==1表示成功返回，继续用本来的Model类解析
+            //result true表示成功返回，继续用本来的Model类解析
             String jsonData = responseBO.content.toString();
             if (!TextUtils.isEmpty(jsonData)) {
                 if (jsonData.contains("records")) {

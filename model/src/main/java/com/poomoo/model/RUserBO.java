@@ -8,5 +8,5 @@ package com.poomoo.model;
  * 日期: 2016/1/12 09:49.
  */
 public class RUserBO {
-    public int id;
+    public int userId;
 }
