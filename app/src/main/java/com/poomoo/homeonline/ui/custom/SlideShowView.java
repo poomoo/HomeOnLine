@@ -159,13 +159,10 @@ public class SlideShowView extends FrameLayout {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             ImageView imageView = imageViewsList.get(position);
-            Glide.with(context).load(imageUrls[position]).into(imageView);
-            imageView.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (listener != null)
-                        listener.onAdvClick(position);
-                }
+            Glide.with(context).load(imageUrls[position]).placeholder(R.drawable.replace2).into(imageView);
+            imageView.setOnClickListener(v -> {
+                if (listener != null)
+                    listener.onAdvClick(position);
             });
             container.addView(imageViewsList.get(position));
             return imageViewsList.get(position);

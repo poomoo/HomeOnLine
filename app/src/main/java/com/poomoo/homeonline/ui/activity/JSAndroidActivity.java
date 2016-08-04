@@ -2,6 +2,7 @@ package com.poomoo.homeonline.ui.activity;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -11,8 +12,9 @@ import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.homeonline.ui.base.BaseActivity;
 
-public class JSAndroidActivity extends Activity {
+public class JSAndroidActivity extends BaseActivity {
 
     private Activity mActivity = null;
     private WebView mWebView = null;
@@ -26,6 +28,16 @@ public class JSAndroidActivity extends Activity {
         mActivity = this;
 
         showWebView();
+    }
+
+    @Override
+    protected int onBindLayout() {
+        return 0;
+    }
+
+    @Override
+    protected int onSetTitle() {
+        return 0;
     }
 
     @SuppressLint("JavascriptInterface")
@@ -48,15 +60,12 @@ public class JSAndroidActivity extends Activity {
                 }
             });
 
-            mWebView.setOnKeyListener(new View.OnKeyListener() {        // webview can go back
-                @Override
-                public boolean onKey(View v, int keyCode, KeyEvent event) {
-                    if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
-                        mWebView.goBack();
-                        return true;
-                    }
-                    return false;
+            mWebView.setOnKeyListener((v, keyCode, event) -> {
+                if (keyCode == KeyEvent.KEYCODE_BACK && mWebView.canGoBack()) {
+                    mWebView.goBack();
+                    return true;
                 }
+                return false;
             });
 
             WebSettings webSettings = mWebView.getSettings();
@@ -70,28 +79,27 @@ public class JSAndroidActivity extends Activity {
         }
     }
 
-    @android.webkit.JavascriptInterface
-    public String HtmlCallJava() {
-        LogUtils.d(TAG, "JavascriptInterface");
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(JSAndroidActivity.this, "HtmlCallJava", Toast.LENGTH_SHORT).show();
-            }
-        });
-        return "Html call Java";
-    }
+//    @android.webkit.JavascriptInterface
+//    public String HtmlCallJava() {
+//        LogUtils.d(TAG, "JavascriptInterface");
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Toast.makeText(JSAndroidActivity.this, "HtmlCallJava", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//        return "Html call Java";
+//    }
 
     @android.webkit.JavascriptInterface
     public String jumpToMainActivity() {
         LogUtils.d(TAG, "JavascriptInterface");
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(JSAndroidActivity.this, "jumpToMainActivity", Toast.LENGTH_SHORT).show();
-                finish();
-            }
+        runOnUiThread(() -> {
+            Toast.makeText(JSAndroidActivity.this, "jumpToMainActivity", Toast.LENGTH_SHORT).show();
+            finish();
         });
         return "Html call Java";
     }
+
+
 }

@@ -18,24 +18,23 @@
  *
  */
 
-package com.poomoo.homeonline.reject.components;
+package com.poomoo.homeonline.reject.modules;
 
-import com.poomoo.homeonline.reject.modules.ActivityModule;
-import com.poomoo.homeonline.ui.activity.ChangePassWordActivity;
-import com.poomoo.homeonline.ui.activity.GetCodeActivity;
-import com.poomoo.homeonline.ui.activity.LogInActivity;
+import android.support.v4.app.Fragment;
 
-import dagger.Component;
+import dagger.Module;
+import dagger.Provides;
 
-/**
- * Created by GuDong on 2/28/16 10:42.
- * Contact with gudong.name@gmail.com.
- */
-@Component(modules = {ActivityModule.class})
-public interface ActivityComponent {
-    void inject(LogInActivity activity);
+@Module
+public class FragmentModule {
+    private Fragment mFragment;
 
-    void inject(GetCodeActivity activity);
+    public FragmentModule(Fragment fragment) {
+        mFragment = fragment;
+    }
 
-    void inject(ChangePassWordActivity activity);
+    @Provides
+    public Fragment provideFragment() {
+        return mFragment;
+    }
 }

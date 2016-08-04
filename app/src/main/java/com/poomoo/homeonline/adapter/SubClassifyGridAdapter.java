@@ -8,12 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
 import com.poomoo.homeonline.listeners.ClassifyOnItemClickListener;
-import com.poomoo.model.response.RSubClassifyBO;
+import com.poomoo.model.response.RClassifyBO;
+import com.poomoo.model.response.RThirdClassifyBO;
 
 /**
  * 类名 SubClassifyGridAdapter
@@ -21,9 +21,9 @@ import com.poomoo.model.response.RSubClassifyBO;
  * 作者 李苜菲
  * 日期 2016/7/19 11:33
  */
-public class SubClassifyGridAdapter extends MyBaseAdapter<RSubClassifyBO> {
+public class SubClassifyGridAdapter extends MyBaseAdapter<RThirdClassifyBO> {
     private String TAG = "SubClassifyGridAdapter";
-    private RSubClassifyBO item;
+    private RThirdClassifyBO item;
     private ClassifyOnItemClickListener onItemClickListener;
 
     public SubClassifyGridAdapter(Context context, ClassifyOnItemClickListener onItemClickListener) {
@@ -36,11 +36,11 @@ public class SubClassifyGridAdapter extends MyBaseAdapter<RSubClassifyBO> {
         final ViewHolder viewHolder;
         viewHolder = new ViewHolder();
         item = itemList.get(position);
-        LogUtils.d(TAG, "getView:" + position + ":" + item.name);
+//        LogUtils.d(TAG, "getView:" + position + ":" + item.categoryName);
         convertView = inflater.inflate(R.layout.item_grid_sub_classify, null);
         viewHolder.nameTxt = (TextView) convertView.findViewById(R.id.txt_subClassify);
-        viewHolder.nameTxt.setText(item.name);
-        viewHolder.nameTxt.setOnClickListener(new OnItemClick(item.name));
+        viewHolder.nameTxt.setText(item.categoryName);
+        viewHolder.nameTxt.setOnClickListener(new OnItemClick(item.categoryName));
         return convertView;
     }
 

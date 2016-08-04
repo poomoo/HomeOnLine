@@ -14,12 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.poomoo.homeonline.R;
+import com.poomoo.homeonline.presenters.CenterFragmentPresenter;
+import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
+import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.AddressInfoActivity;
 import com.poomoo.homeonline.ui.activity.AddressListActivity;
 import com.poomoo.homeonline.ui.activity.FeedBackActivity;
 import com.poomoo.homeonline.ui.activity.MyInfoActivity;
 import com.poomoo.homeonline.ui.activity.MyOrdersActivity;
 import com.poomoo.homeonline.ui.activity.SafeActivity;
+import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.model.response.ROrderBO;
 
@@ -32,7 +36,7 @@ import butterknife.OnClick;
  * 作者 李苜菲
  * 日期 2016/7/19 11:20
  */
-public class CenterFragment extends BaseFragment {
+public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> {
 //    @Bind(R.id.scrollView_main)
 //    MyScrollView scrollView;
 
@@ -47,6 +51,14 @@ public class CenterFragment extends BaseFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
+    }
+
+    @Override
+    protected void setupFragmentComponent(FragmentModule fragmentModule) {
+        DaggerFragmentComponent.builder()
+                .fragmentModule(fragmentModule)
+                .build()
+                .inject(this);
     }
 
     private void initView() {

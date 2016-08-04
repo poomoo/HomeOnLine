@@ -28,11 +28,20 @@ package com.poomoo.api.api;
 
 import com.poomoo.model.RUserBO;
 import com.poomoo.model.ResponseBO;
+import com.poomoo.model.request.BaseRequest;
 import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QCodeBO;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
+import com.poomoo.model.response.RAdBO;
+import com.poomoo.model.response.RClassifyBO;
+import com.poomoo.model.response.RGrabBO;
+import com.poomoo.model.response.RGuessBO;
+import com.poomoo.model.response.RSpecialAdBO;
+import com.poomoo.model.response.RTypeBO;
 
+
+import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
@@ -56,4 +65,28 @@ public interface MyApi {
 
     @POST("app/call.json")
     Observable<ResponseBO> Register(@Body QRegisterBO data);
+
+    //获取首页滚动的广告 热门推荐
+    @POST("app/call.json")
+    Observable<List<RAdBO>> GetSlide(@Body BaseRequest data);
+
+    //获取首页分类
+    @POST("app/call.json")
+    Observable<RTypeBO> GetType(@Body BaseRequest data);
+
+    //获取首页的专题广告
+    @POST("app/call.json")
+    Observable<RSpecialAdBO> GetSpecialAd(@Body BaseRequest data);
+
+    //获取首页抢购列表
+    @POST("app/call.json")
+    Observable<List<RGrabBO>> GetGrabList(@Body BaseRequest data);
+
+    //猜你喜欢
+    @POST("app/call.json")
+    Observable<List<RGuessBO>> GetGuess(@Body BaseRequest data);
+
+    //商品分类
+    @POST("app/call.json")
+    Observable<List<RClassifyBO>> GetClassify(@Body BaseRequest data);
 }

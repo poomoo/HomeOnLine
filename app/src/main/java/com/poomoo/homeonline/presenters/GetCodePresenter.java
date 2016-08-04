@@ -30,7 +30,7 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.GetCodeDaggerActivity;
+import com.poomoo.homeonline.ui.activity.GetCodeActivity;
 import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QCodeBO;
@@ -46,7 +46,7 @@ import rx.schedulers.Schedulers;
  * 作者 李苜菲
  * 日期 2016/8/1 14:01
  */
-public class GetCodePresenter extends BasePresenter<GetCodeDaggerActivity> {
+public class GetCodePresenter extends BasePresenter<GetCodeActivity> {
     @Inject
     public GetCodePresenter() {
     }

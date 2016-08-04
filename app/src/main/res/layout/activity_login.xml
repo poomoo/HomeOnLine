@@ -113,6 +113,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="toLogin"
-            android:text="@string/btn_login" />
+            android:text="@string/btn_login"
+            android:textColor="@color/selector_btn_text" />
     </LinearLayout>
 </LinearLayout>

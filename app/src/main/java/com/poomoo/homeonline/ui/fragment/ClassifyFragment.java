@@ -6,6 +6,7 @@ package com.poomoo.homeonline.ui.fragment;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,16 +18,22 @@ import com.google.gson.reflect.TypeToken;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.ClassifyListAdapter;
 import com.poomoo.homeonline.adapter.SubClassifyGridAdapter;
 import com.poomoo.homeonline.adapter.SubClassifyListAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.listeners.ClassifyOnItemClickListener;
+import com.poomoo.homeonline.presenters.ClassifyFragmentPresenter;
+import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
+import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.JSAndroidActivity;
 import com.poomoo.homeonline.ui.activity.WebViewActivity;
+import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.model.response.RClassifyBO;
+import com.poomoo.model.response.RSubClassifyBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.lang.reflect.Type;
@@ -42,7 +49,7 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:20
  */
-public class ClassifyFragment extends BaseFragment implements BaseListAdapter.OnItemClickListener, ClassifyOnItemClickListener {
+public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresenter> implements BaseListAdapter.OnItemClickListener, ClassifyOnItemClickListener {
     @Bind(R.id.recycler_classify)
     RecyclerView classifyRecycler;
     @Bind(R.id.recycler_content)
@@ -50,8 +57,10 @@ public class ClassifyFragment extends BaseFragment implements BaseListAdapter.On
 
     private ClassifyListAdapter classifyListAdapter;
     private SubClassifyListAdapter subClassifyListAdapter;
-    private List<String> classify = new ArrayList<>();
+    private List<RSubClassifyBO> rSubClassifyBOs = new ArrayList<>();
     private List<RClassifyBO> rClassifyBOs = new ArrayList<>();
+
+    public static int SELECTPOSITION = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -66,9 +75,31 @@ public class ClassifyFragment extends BaseFragment implements BaseListAdapter.On
         initView();
     }
 
+    @Override
+    protected void setupFragmentComponent(FragmentModule fragmentModule) {
+        DaggerFragmentComponent.builder()
+                .fragmentModule(fragmentModule)
+                .build()
+                .inject(this);
+    }
+
     private void initView() {
+        mPresenter.getClassify();
+
         initClassify();
-        initSubClassify(MyConfig.gzwdjson);
+        initSubClassify();
+
+        //取缓存
+        String json = (String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_classify), "");
+
+        if (!TextUtils.isEmpty(json)) {
+            Type type = new TypeToken<List<RClassifyBO>>() {
+            }.getType();
+            rClassifyBOs = new Gson().fromJson(json, type);
+            classifyListAdapter.setItems(rClassifyBOs);
+            rSubClassifyBOs = rClassifyBOs.get(0).childrenList;
+            subClassifyListAdapter.setItems(rSubClassifyBOs);
+        }
     }
 
     private void initClassify() {
@@ -78,59 +109,38 @@ public class ClassifyFragment extends BaseFragment implements BaseListAdapter.On
                 .color(getResources().getColor(R.color.ThemeBg))
                 .size((int) getResources().getDimension(R.dimen.divider_height2))
                 .build());
-        int len = MyConfig.classify.length;
-        for (int i = 0; i < len; i++)
-            classify.add(MyConfig.classify[i]);
-        classifyListAdapter = new ClassifyListAdapter(getActivity(), BaseListAdapter.NEITHER, len);
-        classifyRecycler.setAdapter(classifyListAdapter);
-        classifyListAdapter.addItems(classify);
-        classifyListAdapter.setOnItemClickListener(new BaseListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position, long id, View view) {
-                classifyListAdapter.getBooleanHashMap().put(position, true);
-                classifyListAdapter.notifyDataSetChanged();
 
-                String json = MyConfig.gzwdjson;
-                switch (position) {
-                    case 0:
-                        json = MyConfig.gzwdjson;
-                        break;
-                    case 1:
-                        json = MyConfig.gjgcJson;
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                    case 6:
-                        break;
-                    case 7:
-                        break;
-                }
-                initSubClassify(json);
-            }
-        });
+        classifyListAdapter = new ClassifyListAdapter(getActivity(), BaseListAdapter.NEITHER);
+        classifyRecycler.setAdapter(classifyListAdapter);
+        classifyListAdapter.setOnItemClickListener(this);
     }
 
-    private void initSubClassify(String json) {
+    private void initSubClassify() {
         contentRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        Type type = new TypeToken<List<RClassifyBO>>() {
-        }.getType();
-        rClassifyBOs = new Gson().fromJson(json, type);
-        LogUtils.d(TAG, "initSubClassify:" + rClassifyBOs.toString());
         subClassifyListAdapter = new SubClassifyListAdapter(getActivity(), BaseListAdapter.NEITHER, this);
         contentRecycler.setAdapter(subClassifyListAdapter);
-        subClassifyListAdapter.setItems(rClassifyBOs);
-        subClassifyListAdapter.setOnItemClickListener(this);
+    }
+
+    public void loadClassifySucceed(List<RClassifyBO> rClassifyBOs) {
+        LogUtils.d(TAG, "loadClassifySucceed:" + rClassifyBOs);
+        classifyListAdapter.setItems(rClassifyBOs);
+        this.rClassifyBOs = rClassifyBOs;
+        this.rSubClassifyBOs = rClassifyBOs.get(0).childrenList;
+        subClassifyListAdapter.setItems(this.rSubClassifyBOs);
+
+        SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_classify), new Gson().toJson(rClassifyBOs));
+    }
+
+    public void loadClassifyFailed(String msg) {
+        MyUtils.showToast(getActivity().getApplicationContext(), msg);
     }
 
     @Override
     public void onItemClick(int position, long id, View view) {
-
+        rSubClassifyBOs = rClassifyBOs.get(position).childrenList;
+        SELECTPOSITION = position;
+        classifyListAdapter.notifyDataSetChanged();
+        subClassifyListAdapter.setItems(rSubClassifyBOs);
     }
 
     @Override

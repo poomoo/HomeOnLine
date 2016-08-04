@@ -33,6 +33,10 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.CartAdapter;
 import com.poomoo.homeonline.listeners.OnBuyCheckChangedListener;
 import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
+import com.poomoo.homeonline.presenters.CartFragmentPresenter;
+import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
+import com.poomoo.homeonline.reject.modules.FragmentModule;
+import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.homeonline.ui.custom.AddAndMinusView;
 import com.poomoo.model.response.RCartBO;
@@ -51,7 +55,7 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:20
  */
-public class CartFragment extends BaseFragment implements OnBuyCheckChangedListener, OnEditCheckChangedListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> implements OnBuyCheckChangedListener, OnEditCheckChangedListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
     @Bind(R.id.txt_edit)
     TextView editTxt;
     @Bind(R.id.expandableListView)
@@ -103,6 +107,14 @@ public class CartFragment extends BaseFragment implements OnBuyCheckChangedListe
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         initView();
+    }
+
+    @Override
+    protected void setupFragmentComponent(FragmentModule fragmentModule) {
+        DaggerFragmentComponent.builder()
+                .fragmentModule(fragmentModule)
+                .build()
+                .inject(this);
     }
 
     private void initView() {

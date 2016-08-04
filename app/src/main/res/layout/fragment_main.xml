@@ -3,211 +3,264 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ThemeBg"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <include layout="@layout/search_bar" />
 
-    <FrameLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
-        <com.poomoo.homeonline.ui.custom.MyScrollView
-            android:id="@+id/scrollView_main"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scrollbars="vertical">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
+            <com.poomoo.homeonline.ui.custom.MyScrollView
+                android:id="@+id/scrollView_main"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <com.poomoo.homeonline.ui.custom.SlideShowView
-                    android:id="@+id/flipper_ad"
-                    android:layout_width="match_parent"
-                    android:layout_height="150dp"
-
-                    android:layout_marginTop="4dp"
-                    android:background="@color/white" />
-
-                <com.poomoo.homeonline.ui.custom.NoScrollGridView
-                    android:id="@+id/grid_menu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@color/white"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:numColumns="4" />
+                android:scrollbars="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
                     android:orientation="vertical">
+
+                    <com.poomoo.homeonline.ui.custom.SlideShowView
+                        android:id="@+id/flipper_ad"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@color/white" />
+
+                    <com.poomoo.homeonline.ui.custom.NoScrollGridView
+                        android:id="@+id/grid_menu"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/white"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:numColumns="4" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:text="限时抢购"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:id="@+id/txt_hour"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/shape_rectangle"
-                            android:gravity="center"
-                            android:text="20"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text=" : "
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/txt_minute"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/shape_rectangle"
-                            android:gravity="center"
-                            android:text="20"
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:text=" : "
-                            android:textSize="14sp" />
-
-                        <TextView
-                            android:id="@+id/txt_second"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/shape_rectangle"
-                            android:gravity="center"
-                            android:text="20"
-                            android:textSize="14sp" />
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical">
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="right|center_vertical"
-                            android:orientation="horizontal">
+                            android:background="@color/white"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal"
+                            android:padding="10dp">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="更多" />
+                                android:layout_marginRight="10dp"
+                                android:text="限时抢购"
+                                android:textSize="15sp" />
 
-                            <ImageView
+                            <TextView
+                                android:id="@+id/txt_hour"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:src="@drawable/nav_main_normal" />
+                                android:background="@drawable/shape_rectangle"
+                                android:gravity="center"
+                                android:text="20"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text=" : "
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txt_minute"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/shape_rectangle"
+                                android:gravity="center"
+                                android:text="20"
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:text=" : "
+                                android:textSize="14sp" />
+
+                            <TextView
+                                android:id="@+id/txt_second"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/shape_rectangle"
+                                android:gravity="center"
+                                android:text="20"
+                                android:textSize="14sp" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="right|center_vertical"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="更多" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/ic_grab_more" />
+                            </LinearLayout>
                         </LinearLayout>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_main"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:background="@color/white"
+                            android:clipToPadding="false" />
                     </LinearLayout>
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_main"
+                    <!--黔货出山-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/img_qhcs_title"
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:scaleType="fitXY" />
+
+                        <ImageView
+                            android:id="@+id/img_qhcs_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.poomoo.homeonline.ui.custom.NoScrollGridView
+                            android:id="@+id/grid_qhcs"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:numColumns="2" />
+                    </LinearLayout>
+                    <!--黔货出山-->
+
+                    <!--零食驿站-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:background="@color/white"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:id="@+id/img_lsyz_title"
+                            android:layout_width="180dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:scaleType="fitXY" />
+
+                        <ImageView
+                            android:id="@+id/img_lsyz_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
+                        <com.poomoo.homeonline.ui.custom.NoScrollGridView
+                            android:id="@+id/grid_lsyz"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:numColumns="2" />
+                    </LinearLayout>
+                    <!--零食驿站-->
+
+                    <!--专题广告-->
+                    <LinearLayout
+                        android:id="@+id/llayout_specialAd"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:clipToPadding="false" />
-                </LinearLayout>
-                <!--黔货出山-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                        android:orientation="vertical" />
+                    <!--专题广告-->
 
-                    <ImageView
-                        android:id="@+id/img_qhcs_title"
-                        android:layout_width="180dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:scaleType="fitXY" />
-
-                    <ImageView
-                        android:id="@+id/img_qhcs_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <com.poomoo.homeonline.ui.custom.NoScrollGridView
-                        android:id="@+id/grid_qhcs"
+                    <!--热门推荐-->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:numColumns="2" />
-                </LinearLayout>
-                <!--黔货出山-->
+                        android:orientation="vertical">
 
-                <!--零食驿站-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="8dp"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_hot" />
 
-                    <ImageView
-                        android:id="@+id/img_lsyz_title"
-                        android:layout_width="180dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:scaleType="fitXY" />
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_hot"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp" />
+                    </LinearLayout>
+                    <!--热门推荐-->
 
-                    <ImageView
-                        android:id="@+id/img_lsyz_content"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-
-                    <com.poomoo.homeonline.ui.custom.NoScrollGridView
-                        android:id="@+id/grid_lsyz"
+                    <!--猜你喜欢-->
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:numColumns="2" />
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_guess" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_guess"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:paddingLeft="@dimen/recycler_divider" />
+                    </LinearLayout>
+                    <!--猜你喜欢-->
                 </LinearLayout>
-                <!--零食驿站-->
+            </com.poomoo.homeonline.ui.custom.MyScrollView>
 
-            </LinearLayout>
-        </com.poomoo.homeonline.ui.custom.MyScrollView>
-
-        <ImageView
-            android:id="@+id/img_top"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_marginBottom="40dp"
-            android:layout_marginRight="10dp"
-            android:src="@drawable/top"
-            android:visibility="invisible" />
-    </FrameLayout>
+            <ImageView
+                android:id="@+id/img_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="40dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/top"
+                android:visibility="invisible" />
+        </FrameLayout>
+    </android.support.design.widget.CoordinatorLayout>
 </LinearLayout>

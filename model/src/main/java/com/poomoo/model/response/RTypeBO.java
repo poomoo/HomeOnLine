@@ -3,12 +3,23 @@
  */
 package com.poomoo.model.response;
 
+import java.util.List;
+
 /**
- * 作者: 李苜菲
- * 日期: 2016/4/23 16:26.
+ * 类名 RTypeBO
+ * 描述 首页分类
+ * 作者 李苜菲
+ * 日期 2016/8/2 15:46
  */
 public class RTypeBO {
-    public String icon;
-    public String name;
-    public String url;
+    public String picUrl;
+    public List<RCateBO> categotys;
+
+    @Override
+    public String toString() {
+        return "RTypeBO{" +
+                "picUrl='" + picUrl + '\'' +
+                ", categotys=" + categotys +
+                '}';
+    }
 }

@@ -1,5 +1,7 @@
 package com.poomoo.api;
 
+import android.util.Log;
+
 import com.google.gson.JsonParseException;
 
 import org.json.JSONException;
@@ -25,7 +27,7 @@ public abstract class AbsAPICallback<T> extends Subscriber<T> {
         }
 
         ApiException ex;
-//        LogUtils.d("network", "异常:" + e);
+        Log.d("AbsAPICallback", "异常:" + e);
         if (e instanceof SocketTimeoutException) {
             ex = new ApiException(ApiException.TIMEOUTEX);
             onError(ex);
@@ -41,7 +43,7 @@ public abstract class AbsAPICallback<T> extends Subscriber<T> {
             ex = new ApiException(ApiException.PARSEEX);
             onError(ex);
         } else if (e instanceof ApiException) {
-            onError((ApiException)e);
+            onError((ApiException) e);
         } else {
             ex = new ApiException(ApiException.UNKNOWNEX);        //未知错误
             onError(ex);

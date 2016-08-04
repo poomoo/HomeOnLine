@@ -163,7 +163,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
         logger.log(requestStartMessage);
         if (hasRequestBody) {
             Buffer buffer = new Buffer();
-            logger.log("测试-->" + "chain:" + chain + "request:" + request + "buffer" + buffer + ":" + requestBody);
+//            logger.log("测试-->" + "chain:" + chain + "request:" + request + "buffer" + buffer + ":" + requestBody);
             requestBody.writeTo(buffer);
             Charset charset = UTF8;
             MediaType contentType = requestBody.contentType();

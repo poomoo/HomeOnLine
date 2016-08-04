@@ -21,7 +21,10 @@ import javax.inject.Inject;
  * @Description 基类Fragment
  * @date 2016/7/19 11:15
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseDaggerFragment<P extends BasePresenter> extends Fragment {
+    @Inject
+    protected P mPresenter;
+
     public String TAG = getClass().getSimpleName();
     public MyApplication application;
 
@@ -29,7 +32,21 @@ public abstract class BaseFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         application = (MyApplication) getActivity().getApplication();
+        setupFragmentComponent(new FragmentModule(this));
+        mPresenter.onCreate();
+        mPresenter.attachView(this);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
+    }
+
+    /**
+     * 依赖注入的入口
+     */
+    protected abstract void setupFragmentComponent(FragmentModule fragmentModule);
 
     /**
      * @param pClass

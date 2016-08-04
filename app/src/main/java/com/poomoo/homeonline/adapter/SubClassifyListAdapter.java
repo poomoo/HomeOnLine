@@ -12,6 +12,7 @@ import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.listeners.ClassifyOnItemClickListener;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
 import com.poomoo.model.response.RClassifyBO;
+import com.poomoo.model.response.RSubClassifyBO;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,11 +23,12 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:33
  */
-public class SubClassifyListAdapter extends BaseListAdapter<RClassifyBO> {
+public class SubClassifyListAdapter extends BaseListAdapter<RSubClassifyBO> {
 
     private static final String TAG = "SubClassifyListAdapter";
     private SubClassifyGridAdapter subClassifyGridAdapter;
     private ClassifyOnItemClickListener onItemClickListener;
+    private RSubClassifyBO item;
 
     public SubClassifyListAdapter(Context context, int mode, ClassifyOnItemClickListener onItemClickListener) {
         super(context, mode);
@@ -42,13 +44,13 @@ public class SubClassifyListAdapter extends BaseListAdapter<RClassifyBO> {
     protected void onBindDefaultViewHolder(RecyclerView.ViewHolder h, int position) {
 
         BaseViewHolder holder = (BaseViewHolder) h;
-        RClassifyBO item = items.get(position);
-        LogUtils.d(TAG, "item:" + item + "position:" + position);
-        holder.classifyTxt.setText(item.subTitle);
+        item = items.get(position);
+//        LogUtils.d(TAG, "item:" + item + "position:" + position);
+        holder.classifyTxt.setText(item.categoryName);
 
         subClassifyGridAdapter = new SubClassifyGridAdapter(mContext, onItemClickListener);
         holder.gridView.setAdapter(subClassifyGridAdapter);
-        subClassifyGridAdapter.addItems(item.rSubClassifyBOs);
+        subClassifyGridAdapter.addItems(item.childrenList);
     }
 
     public static final class BaseViewHolder extends RecyclerView.ViewHolder {

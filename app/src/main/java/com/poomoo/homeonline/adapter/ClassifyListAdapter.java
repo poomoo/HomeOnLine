@@ -9,6 +9,8 @@ import android.widget.TextView;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
+import com.poomoo.homeonline.ui.fragment.ClassifyFragment;
+import com.poomoo.model.response.RClassifyBO;
 
 import java.util.HashMap;
 
@@ -21,28 +23,11 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:30
  */
-public class ClassifyListAdapter extends BaseListAdapter<String> {
-
+public class ClassifyListAdapter extends BaseListAdapter<RClassifyBO> {
     private static final String TAG = "ClassifyListAdapter";
-    public HashMap<Integer, Boolean> booleanHashMap = new HashMap<>();
-    private int len;
 
-    public ClassifyListAdapter(Context context, int mode, int len) {
+    public ClassifyListAdapter(Context context, int mode) {
         super(context, mode);
-        this.len = len;
-        init(true);
-    }
-
-    public void init(boolean flag) {
-        for (int i = 0; i < len; i++) {
-            if (flag)
-                if (i == 0)
-                    booleanHashMap.put(i, true);
-                else
-                    booleanHashMap.put(i, false);
-            else
-                booleanHashMap.put(i, false);
-        }
     }
 
     @Override
@@ -52,15 +37,13 @@ public class ClassifyListAdapter extends BaseListAdapter<String> {
 
     @Override
     protected void onBindDefaultViewHolder(RecyclerView.ViewHolder h, int position) {
-//        LogUtils.d(TAG, "onBindDefaultViewHolder:" + position + booleanHashMap.size());
         BaseViewHolder holder = (BaseViewHolder) h;
-        holder.classifyTxt.setText(items.get(position));
-        if (booleanHashMap.get(position)) {
+        holder.classifyTxt.setText(items.get(position).categoryName);
+        holder.classifyTxt.setTextColor(mContext.getResources().getColor(R.color.black));
+        holder.classifyTxt.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+        if (position == ClassifyFragment.SELECTPOSITION) {
             holder.classifyTxt.setTextColor(mContext.getResources().getColor(R.color.ThemeRed));
             holder.classifyTxt.setBackgroundColor(mContext.getResources().getColor(R.color.ThemeBg));
-        } else {
-            holder.classifyTxt.setTextColor(mContext.getResources().getColor(R.color.black));
-            holder.classifyTxt.setBackgroundColor(mContext.getResources().getColor(R.color.white));
         }
     }
 
@@ -72,14 +55,5 @@ public class ClassifyListAdapter extends BaseListAdapter<String> {
             super(view);
             ButterKnife.bind(this, view);
         }
-    }
-
-    public HashMap<Integer, Boolean> getBooleanHashMap() {
-        init(false);
-        return booleanHashMap;
-    }
-
-    public void setBooleanHashMap(HashMap<Integer, Boolean> booleanHashMap) {
-        this.booleanHashMap = booleanHashMap;
     }
 }

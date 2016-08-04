@@ -23,14 +23,13 @@ public class TimeCountDownUtil extends CountDownTimer {
     public void onTick(long millisUntilFinished) {
         textView.setClickable(false);// 设置不能点击
         textView.setText(millisUntilFinished / 1000 + "s");// 设置倒计时时间
-        textView.setTextColor(Color.GRAY);
     }
 
     @Override
     public void onFinish() {
         textView.setClickable(true);// 设置点击
         textView.setText("重新获取");
-        textView.setTextColor(Color.parseColor("#0db09b"));
+        textView.setEnabled(true);
     }
 
 }

@@ -30,7 +30,7 @@ import rx.Subscriber;
  * 作者 李苜菲
  * 日期 2016/7/19 11:22
  */
-public class ChangePassWordDaggerActivity extends BaseDaggerActivity<ChangePassWordPresenter> {
+public class ChangePassWordActivity extends BaseDaggerActivity<ChangePassWordPresenter> {
     @Bind(R.id.edt_passWord)
     EditText passWordEdt;
     @Bind(R.id.edt_passWordAgain)
@@ -52,7 +52,7 @@ public class ChangePassWordDaggerActivity extends BaseDaggerActivity<ChangePassW
 
     @Override
     protected int onBindLayout() {
-        return R.layout.activity_change_passwrod2;
+        return R.layout.activity_change_password2;
     }
 
     @Override
@@ -78,10 +78,12 @@ public class ChangePassWordDaggerActivity extends BaseDaggerActivity<ChangePassW
     }
 
     public void toComplete(View view) {
-        if (checkInput()) {
-            showProgressDialog(getString(R.string.dialog));
-            mPresenter.register(phoneNum, passWord1);
+        if (!passWord1.equals(passWord2)) {
+            MyUtils.showToast(getApplicationContext(), "两次输入的密码不一样");
+            return;
         }
+        showProgressDialog(getString(R.string.dialog));
+        mPresenter.register(phoneNum, passWord1);
     }
 
     private void bindViewByRxBinding() {
@@ -119,10 +121,7 @@ public class ChangePassWordDaggerActivity extends BaseDaggerActivity<ChangePassW
 //            MyUtils.showToast(getApplicationContext(), "请输入确认密码");
             return false;
         }
-        if (!passWord1.equals(passWord2)) {
-//            MyUtils.showToast(getApplicationContext(), "两次输入的密码不一样");
-            return false;
-        }
+
         if (passWord1.length() < 6) {
 //            MyUtils.showToast(getApplicationContext(), "请输入6位以上密码");
             return false;

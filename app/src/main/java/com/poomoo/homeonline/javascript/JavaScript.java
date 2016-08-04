@@ -6,8 +6,10 @@ package com.poomoo.homeonline.javascript;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.poomoo.homeonline.R;
+import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
 
 /**
@@ -36,5 +38,16 @@ public class JavaScript {
                 mContext.finish();
             }
         });
+    }
+
+    @android.webkit.JavascriptInterface
+    public String jumpToCommodityInfo(final int id) {
+        mContext.runOnUiThread(() -> {
+            Toast.makeText(mContext, "jumpToCommodityInfo 商品ID:" + id, Toast.LENGTH_SHORT).show();
+            intent = new Intent(mContext, CommodityInfoActivity.class);
+            mContext.startActivity(intent);
+            mContext.finish();
+        });
+        return "Html call Java";
     }
 }

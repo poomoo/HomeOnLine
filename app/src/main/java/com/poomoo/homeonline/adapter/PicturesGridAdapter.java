@@ -7,12 +7,15 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.poomoo.commlib.LogUtils;
+import com.poomoo.api.NetConfig;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
+import com.poomoo.model.response.RAdBO;
 
 /**
  * 类名 PicturesGridAdapter
@@ -20,9 +23,9 @@ import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
  * 作者 李苜菲
  * 日期 2016/7/19 11:33
  */
-public class PicturesGridAdapter extends MyBaseAdapter<String> {
+public class PicturesGridAdapter extends MyBaseAdapter<RAdBO> {
     private String TAG = "PicturesGridAdapter";
-    private String item;
+    private RAdBO item;
 
     public PicturesGridAdapter(Context context) {
         super(context);
@@ -34,9 +37,10 @@ public class PicturesGridAdapter extends MyBaseAdapter<String> {
         final ViewHolder viewHolder;
         viewHolder = new ViewHolder();
         item = itemList.get(position);
-        convertView = inflater.inflate(R.layout.item_grid_pictures, null);
+        convertView = inflater.inflate(R.layout.item_pictures, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.image);
-        Glide.with(context).load(item).placeholder(R.drawable.replace).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(viewHolder.image);
+        viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(context) / 2 * 10 / 13));//设置广告栏的宽高比为13:10
+        Glide.with(context).load(NetConfig.ImageUrl + item.advertisementPic).placeholder(R.drawable.replace13b10).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(viewHolder.image);
         return convertView;
     }
 

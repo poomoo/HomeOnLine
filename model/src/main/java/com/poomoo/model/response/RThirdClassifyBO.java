@@ -3,25 +3,21 @@
  */
 package com.poomoo.model.response;
 
-import java.util.List;
-
 /**
  * 类名 RClassifyBO
- * 描述 一级分类
+ * 描述 三级分类
  * 作者 李苜菲
  * 日期 2016/8/4 16:07
  */
-public class RClassifyBO {
+public class RThirdClassifyBO {
     public int id;
     public String categoryName;
-    public List<RSubClassifyBO> childrenList;
 
     @Override
     public String toString() {
-        return "RClassifyBO{" +
+        return "RThirdClassifyBO{" +
                 "id=" + id +
                 ", categoryName='" + categoryName + '\'' +
-                ", childrenList=" + childrenList +
                 '}';
     }
 }

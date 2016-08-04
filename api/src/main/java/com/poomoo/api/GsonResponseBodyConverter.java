@@ -30,26 +30,29 @@ class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
         final String response = value.string();
         Log.d("convert", "返回的数据:" + response + " type" + type);
         ResponseBO responseBO = gson.fromJson(response, ResponseBO.class);
-        Log.d("convert", "responseBO:" + responseBO);
+//        Log.d("convert", "responseBO:" + responseBO);
         if (responseBO.result) {
             if (type.equals(ResponseBO.class))
                 return (T) responseBO;
             //result true表示成功返回，继续用本来的Model类解析
-            String jsonData = responseBO.content.toString();
-            if (!TextUtils.isEmpty(jsonData)) {
-                if (jsonData.contains("records")) {
-                    responseBO.records = new ArrayList();
-                    JSONObject jsonObject;
-                    try {
+            JSONObject jsonObject = null;
+            String jsonData = "";
+            try {
+                jsonObject = new JSONObject(response.toString());
+                jsonData = jsonObject.getString("content");
+//                Log.d("convert", "jsonData:" + jsonData);
+                if (!TextUtils.isEmpty(jsonData)) {
+                    if (jsonData.contains("records")) {
+                        Log.d("convert", "有records");
+                        responseBO.records = new ArrayList();
                         jsonObject = new JSONObject(jsonData);
                         String records = jsonObject.getString("records");
                         return gson.fromJson(records, type);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                } else
-                    return gson.fromJson(jsonData, type);
+                    } else
+                        return gson.fromJson(jsonData, type);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         } else
             throw new ApiException(ApiException.SERVERERR, responseBO.msg);

@@ -9,16 +9,18 @@ package com.poomoo.model.response;
  * 日期: 2016/4/22 10:08.
  */
 public class RAdBO {
-    public int advId;
-    public String picture;
-    public String url;
+    public String connect;//广告链接
+    public String advertisementPic;//广告图片
+    public int commodityId;//商品主键
+    public boolean isCommodity;//是否是商品广告
 
     @Override
     public String toString() {
         return "RAdBO{" +
-                "advId=" + advId +
-                ", picture='" + picture + '\'' +
-                ", url='" + url + '\'' +
+                "connect='" + connect + '\'' +
+                ", advertisementPic='" + advertisementPic + '\'' +
+                ", commodityId=" + commodityId +
+                ", isCommodity=" + isCommodity +
                 '}';
     }
 }

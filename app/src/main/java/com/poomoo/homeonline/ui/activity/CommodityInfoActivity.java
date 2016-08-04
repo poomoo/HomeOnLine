@@ -153,11 +153,8 @@ public class CommodityInfoActivity extends BaseActivity implements ScrollViewLis
         titleBar.getBackground().mutate().setAlpha(0);
 
         slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, screenWidth));
-        slideShowView.setPics(pics, new AdvertisementListener() {
-            @Override
-            public void onAdvClick(int position) {
+        slideShowView.setPics(pics, position -> {
 
-            }
         });
 
         myScrollView.setScrollViewListener(this);
@@ -361,13 +358,10 @@ public class CommodityInfoActivity extends BaseActivity implements ScrollViewLis
             tagFlowLayouts.add(tagFlowLayout);
             tagFlowLayout.setAdapter(adapterType);
             tagFlowLayout.setTag(i);
-            tagFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-                @Override
-                public boolean onTagClick(View view, int position, FlowLayout parent) {
+            tagFlowLayout.setOnTagClickListener((view1, position, parent) -> {
 //                    MyUtils.showToast(getApplicationContext(), "点击了第" + parent.getTag() + "个属性的" + "第" + position + "个子项");
-                    getSelectedItem();
-                    return false;
-                }
+                getSelectedItem();
+                return false;
             });
             dialog_specificationLayout.addView(view);
         }

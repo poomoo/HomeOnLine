@@ -20,10 +20,14 @@
 
 package com.poomoo.homeonline.reject.components;
 
-import com.poomoo.homeonline.reject.modules.ActivityModule;
+import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.ChangePassWordActivity;
 import com.poomoo.homeonline.ui.activity.GetCodeActivity;
 import com.poomoo.homeonline.ui.activity.LogInActivity;
+import com.poomoo.homeonline.ui.fragment.CartFragment;
+import com.poomoo.homeonline.ui.fragment.CenterFragment;
+import com.poomoo.homeonline.ui.fragment.ClassifyFragment;
+import com.poomoo.homeonline.ui.fragment.MainFragment;
 
 import dagger.Component;
 
@@ -31,11 +35,14 @@ import dagger.Component;
  * Created by GuDong on 2/28/16 10:42.
  * Contact with gudong.name@gmail.com.
  */
-@Component(modules = {ActivityModule.class})
-public interface ActivityComponent {
-    void inject(LogInActivity activity);
+@Component(modules = {FragmentModule.class})
+public interface FragmentComponent {
+    void inject(MainFragment fragment);
 
-    void inject(GetCodeActivity activity);
+    void inject(ClassifyFragment fragment);
 
-    void inject(ChangePassWordActivity activity);
+    void inject(CartFragment fragment);
+
+    void inject(CenterFragment fragment);
+
 }

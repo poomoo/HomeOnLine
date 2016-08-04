@@ -30,11 +30,12 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.ChangePassWordActivity;
-import com.poomoo.model.RUserBO;
-import com.poomoo.model.ResponseBO;
-import com.poomoo.model.request.QLoginBO;
-import com.poomoo.model.request.QRegisterBO;
+import com.poomoo.homeonline.ui.fragment.ClassifyFragment;
+import com.poomoo.homeonline.ui.fragment.MainFragment;
+import com.poomoo.model.request.BaseRequest;
+import com.poomoo.model.response.RClassifyBO;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -42,61 +43,33 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * 类名 ChangePassWordPresenter
- * 描述 修改密码
+ * 类名 MainFragmentPresenter
+ * 描述 分类Presenter
  * 作者 李苜菲
- * 日期 2016/8/1 15:24
+ * 日期 2016/8/2 14:50
  */
-public class ChangePassWordPresenter extends BasePresenter<ChangePassWordActivity> {
+public class ClassifyFragmentPresenter extends BasePresenter<ClassifyFragment> {
     @Inject
-    public ChangePassWordPresenter() {
+    public ClassifyFragmentPresenter() {
     }
 
     /**
-     * 注册
-     *
-     * @param phoneNum
-     * @param passWord
+     * 获取商品分类
      */
-    public void register(String phoneNum, String passWord) {
-        QRegisterBO qRegisterBO = new QRegisterBO(NetConfig.REGISTER, phoneNum, passWord);
-        add(NetWork.getMyApi().Register(qRegisterBO)
+    public void getClassify() {
+        BaseRequest baseRequest = new BaseRequest(NetConfig.CLASSIFY);
+        add(NetWork.getMyApi().GetClassify(baseRequest)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<ResponseBO>() {
+                .subscribe(new AbsAPICallback<List<RClassifyBO>>() {
                     @Override
                     protected void onError(ApiException e) {
-                        mView.registerFailed(e.getMessage());
+                        mView.loadClassifyFailed(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(ResponseBO responseBO) {
-                        mView.registerSucceed();
-                    }
-                }));
-
-    }
-
-    /**
-     * 登录
-     *
-     * @param tel
-     * @param password
-     */
-    public void login(String tel, String password) {
-        QLoginBO qLoginBO = new QLoginBO(NetConfig.LOGIN, tel, password);
-        mSubscriptions.add(NetWork.getMyApi().Login(qLoginBO)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<RUserBO>() {
-                    @Override
-                    protected void onError(ApiException e) {
-                        mView.loginFailed(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(RUserBO rUserBO) {
-                        mView.loginSucceed(rUserBO);
+                    public void onNext(List<RClassifyBO> rClassifyBOs) {
+                        mView.loadClassifySucceed(rClassifyBOs);
                     }
                 }));
     }

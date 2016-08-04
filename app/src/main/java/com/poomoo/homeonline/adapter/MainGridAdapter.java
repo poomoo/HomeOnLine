@@ -10,9 +10,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
-import com.poomoo.model.response.RTypeBO;
+import com.poomoo.model.response.RCateBO;
 
 /**
  * 类名 MainGridAdapter
@@ -20,12 +21,17 @@ import com.poomoo.model.response.RTypeBO;
  * 作者 李苜菲
  * 日期 2016/7/19 11:31
  */
-public class MainGridAdapter extends MyBaseAdapter<RTypeBO> {
+public class MainGridAdapter extends MyBaseAdapter<RCateBO> {
     private String TAG = "MainGridAdapter";
-    private RTypeBO item;
+    private RCateBO item;
+    private String url;
 
     public MainGridAdapter(Context context) {
         super(context);
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
@@ -33,11 +39,13 @@ public class MainGridAdapter extends MyBaseAdapter<RTypeBO> {
         final ViewHolder viewHolder;
         viewHolder = new ViewHolder();
         item = itemList.get(position);
+
+//        LogUtils.d(TAG, "getView" + position + " item:" + item.toString() + " picUrl:" + item.picUrl);
         convertView = inflater.inflate(R.layout.item_grid_main, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.img_main);
         viewHolder.txt = (TextView) convertView.findViewById(R.id.txt_main);
-        Glide.with(context).load(item.icon).placeholder(R.drawable.nav_main_normal).into(viewHolder.image);
-        viewHolder.txt.setText(item.name);
+        Glide.with(context).load(url + item.id + ".png").placeholder(R.drawable.replace).into(viewHolder.image);
+        viewHolder.txt.setText(item.categoryName);
         return convertView;
     }
 
