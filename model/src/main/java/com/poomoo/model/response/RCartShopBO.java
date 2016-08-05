@@ -6,13 +6,15 @@ package com.poomoo.model.response;
 import java.util.List;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/7/11 16:28.
+ * 类名 RCartShopBO
+ * 描述 购物车店铺
+ * 作者 李苜菲
+ * 日期 2016/8/5 16:54
  */
-public class RCartBO {
+public class RCartShopBO {
     public int shopId;
     public String shop;
-    public List<RCommodityBO> rCommodityBOs;
+    public List<RCartCommodityBO> rCartCommodityBOs;
     public boolean isBuyChecked;
     public boolean isEditChecked;
 
@@ -25,22 +27,22 @@ public class RCartBO {
     }
 
     public int getChildrenCount() {
-        return rCommodityBOs.size();
+        return rCartCommodityBOs.size();
     }
 
-    public RCommodityBO getChildItem(int index) {
-        return rCommodityBOs.get(index);
+    public RCartCommodityBO getChildItem(int index) {
+        return rCartCommodityBOs.get(index);
     }
 
     public void setChildChecked(boolean isChecked) {
-        for (RCommodityBO rCommodityBO : rCommodityBOs)
-            rCommodityBO.setBuyChecked(isChecked);
+        for (RCartCommodityBO rCartCommodityBO : rCartCommodityBOs)
+            rCartCommodityBO.setBuyChecked(isChecked);
     }
 
 
     @Override
     public boolean equals(Object o) {
-        if (this.shopId == ((RCartBO) o).shopId)
+        if (this.shopId == ((RCartShopBO) o).shopId)
             return true;
         return false;
     }

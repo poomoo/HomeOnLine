@@ -4,10 +4,12 @@
 package com.poomoo.model.response;
 
 /**
- * 作者: 李苜菲
- * 日期: 2016/7/11 17:10.
+ * 类名 RCartCommodityBO
+ * 描述 购物车商品
+ * 作者 李苜菲
+ * 日期 2016/8/5 16:54
  */
-public class RCommodityBO {
+public class RCartCommodityBO {
     public String img;
     public String name;
     public int commodityId;
@@ -30,7 +32,7 @@ public class RCommodityBO {
 
     @Override
     public boolean equals(Object o) {
-        if (this.commodityId == ((RCommodityBO) o).commodityId)
+        if (this.commodityId == ((RCartCommodityBO) o).commodityId)
             return true;
         return false;
     }

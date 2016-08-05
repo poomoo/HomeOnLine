@@ -1,4 +1,4 @@
-package com.poomoo.homeonline;
+package com.poomoo.homeonline.recyclerLayoutManager;
 
 import android.content.Context;
 import android.support.v7.widget.GridLayoutManager;

@@ -31,10 +31,13 @@ import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.BaseRequest;
 import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QCodeBO;
+import com.poomoo.model.request.QCommodityInfoBO;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
+import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RClassifyBO;
+import com.poomoo.model.response.RCommodityInfoBO;
 import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RGuessBO;
 import com.poomoo.model.response.RSpecialAdBO;
@@ -84,9 +87,13 @@ public interface MyApi {
 
     //猜你喜欢
     @POST("app/call.json")
-    Observable<List<RGuessBO>> GetGuess(@Body BaseRequest data);
+    Observable<List<RGuessBO>> GetGuess(@Body QUserIdBO data);
 
     //商品分类
     @POST("app/call.json")
     Observable<List<RClassifyBO>> GetClassify(@Body BaseRequest data);
+
+    //商品详情
+    @POST("app/call.json")
+    Observable<RCommodityInfoBO> GetCommodityInfo(@Body QCommodityInfoBO data);
 }

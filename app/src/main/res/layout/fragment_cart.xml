@@ -194,5 +194,10 @@
                 android:text="购物车是空的，您快去买点什么吧^_^"
                 android:textSize="@dimen/sp_16" />
         </LinearLayout>
+
+        <include
+            layout="@layout/my_progress_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </RelativeLayout>
 </LinearLayout>

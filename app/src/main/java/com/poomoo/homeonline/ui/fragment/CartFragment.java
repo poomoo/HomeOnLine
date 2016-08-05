@@ -10,6 +10,7 @@ import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -23,8 +24,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
@@ -37,10 +40,9 @@ import com.poomoo.homeonline.presenters.CartFragmentPresenter;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
-import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.homeonline.ui.custom.AddAndMinusView;
-import com.poomoo.model.response.RCartBO;
-import com.poomoo.model.response.RCommodityBO;
+import com.poomoo.model.response.RCartShopBO;
+import com.poomoo.model.response.RCartCommodityBO;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -74,18 +76,22 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     TextView deleteTxt;
     @Bind(R.id.llayout_empty)
     LinearLayout emptyLayout;
+    @Bind(R.id.rlayout_progressBar)
+    RelativeLayout progressBarRlayout;
 
     private CartAdapter adapter;
-    private List<RCartBO> rCartBOs = new ArrayList<>();
-    private List<RCommodityBO> rCommodityBOs = new ArrayList<>();
-    private RCartBO rCartBO;
-    private RCommodityBO rCommodityBO;
+    private List<RCartShopBO> rCartShopBOs = new ArrayList<>();
+    private List<RCartCommodityBO> rCartCommodityBOs = new ArrayList<>();
+    private RCartShopBO rCartShopBO;
+    private RCartCommodityBO rCartCommodityBO;
 
     private boolean isClick = true;//是否是点击全选框 true-点击 false-适配器变化
     public static CartFragment inStance = null;
     private EditText dialogCountEdt;
-    private TextView dialogMinusTxt;
-    private TextView dialogPlusTxt;
+    //    private TextView dialogMinusTxt;
+//    private TextView dialogPlusTxt;
+    private ImageView dialogMinusImg;
+    private ImageView dialogPlusImg;
     private Button dialogCancelBtn;
     private Button dialogConfirmBtn;
 
@@ -95,6 +101,8 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     private View view;
     private int groupPosition;
     private int childPosition;
+    private int minNum = 1;//商品数量下限
+    private int maxNum = 200;//商品数量上限
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -119,6 +127,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
 
     private void initView() {
         inStance = this;
+//        progressBarRlayout.setVisibility(View.VISIBLE);
 
         adapter = new CartAdapter(getActivity(), getList(), this, this);
         listView.addHeaderView(LayoutInflater.from(getActivity()).inflate(R.layout.cart_header, null));
@@ -135,65 +144,65 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         deleteTxt.setOnClickListener(this);
     }
 
-    private List<RCartBO> getList() {
-        rCartBOs = new ArrayList<>();
+    private List<RCartShopBO> getList() {
+        rCartShopBOs = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            rCartBO = new RCartBO();
-            rCartBO.shopId = i + 1;
-            rCartBO.shop = "测试店铺" + (i + 1);
-            rCartBO.rCommodityBOs = getCommodities();
-            rCartBOs.add(rCartBO);
+            rCartShopBO = new RCartShopBO();
+            rCartShopBO.shopId = i + 1;
+            rCartShopBO.shop = "测试店铺" + (i + 1);
+            rCartShopBO.rCartCommodityBOs = getCommodities();
+            rCartShopBOs.add(rCartShopBO);
         }
-        return rCartBOs;
+        return rCartShopBOs;
     }
 
-    private List<RCartBO> getList2() {
-        rCartBOs = new ArrayList<>();
+    private List<RCartShopBO> getList2() {
+        rCartShopBOs = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            rCartBO = new RCartBO();
-            rCartBO.shopId = i + 1;
-            rCartBO.shop = "测试店铺" + (i + 1);
-            rCartBO.rCommodityBOs = getCommodities2();
-            rCartBOs.add(rCartBO);
+            rCartShopBO = new RCartShopBO();
+            rCartShopBO.shopId = i + 1;
+            rCartShopBO.shop = "测试店铺" + (i + 1);
+            rCartShopBO.rCartCommodityBOs = getCommodities2();
+            rCartShopBOs.add(rCartShopBO);
         }
-        rCartBO = new RCartBO();
-        rCartBO.shopId = 10;
-        rCartBO.shop = "测试店铺10";
-        rCartBO.rCommodityBOs = getCommodities2();
-        rCartBOs.add(rCartBO);
-        return rCartBOs;
+        rCartShopBO = new RCartShopBO();
+        rCartShopBO.shopId = 10;
+        rCartShopBO.shop = "测试店铺10";
+        rCartShopBO.rCartCommodityBOs = getCommodities2();
+        rCartShopBOs.add(rCartShopBO);
+        return rCartShopBOs;
     }
 
-    private List<RCommodityBO> getCommodities() {
-        rCommodityBOs = new ArrayList<>();
+    private List<RCartCommodityBO> getCommodities() {
+        rCartCommodityBOs = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            rCommodityBO = new RCommodityBO();
-            rCommodityBO.count = i + 1;
-            rCommodityBO.commodityId = i + 1;
-            rCommodityBO.name = "测试商品" + (i + 1);
-            rCommodityBO.price = 378 + i + "";
-            rCommodityBOs.add(rCommodityBO);
+            rCartCommodityBO = new RCartCommodityBO();
+            rCartCommodityBO.count = i + 1;
+            rCartCommodityBO.commodityId = i + 1;
+            rCartCommodityBO.name = "测试商品" + (i + 1);
+            rCartCommodityBO.price = 378 + i + "";
+            rCartCommodityBOs.add(rCartCommodityBO);
         }
-        return rCommodityBOs;
+        return rCartCommodityBOs;
     }
 
-    private List<RCommodityBO> getCommodities2() {
-        rCommodityBOs = new ArrayList<>();
+    private List<RCartCommodityBO> getCommodities2() {
+        rCartCommodityBOs = new ArrayList<>();
         for (int i = 0; i < 2; i++) {
-            rCommodityBO = new RCommodityBO();
-            rCommodityBO.count = i + 1;
-            rCommodityBO.commodityId = i + 10;
-            rCommodityBO.name = "添加商品" + (i + 1);
-            rCommodityBO.price = 478 + i + "";
-            rCommodityBOs.add(rCommodityBO);
+            rCartCommodityBO = new RCartCommodityBO();
+            rCartCommodityBO.count = i + 1;
+            rCartCommodityBO.commodityId = i + 10;
+            rCartCommodityBO.name = "添加商品" + (i + 1);
+            rCartCommodityBO.price = 478 + i + "";
+            rCartCommodityBOs.add(rCartCommodityBO);
         }
-        rCommodityBO = new RCommodityBO();
-        rCommodityBO.count = 4;
-        rCommodityBO.commodityId = 1;
-        rCommodityBO.name = "测试商品10";
-        rCommodityBO.price = "480";
-        rCommodityBOs.add(rCommodityBO);
-        return rCommodityBOs;
+        rCartCommodityBO = new RCartCommodityBO();
+        rCartCommodityBO.count = 4;
+        rCartCommodityBO.commodityId = 1;
+        rCartCommodityBO.name = "测试商品10";
+        rCartCommodityBO.price = "480";
+        rCartCommodityBOs.add(rCartCommodityBO);
+        return rCartCommodityBOs;
     }
 
     /**
@@ -269,17 +278,19 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 }
                 showDialog();
                 break;
-            case R.id.txt_dialog_minus:
+            case R.id.img_dialog_minus:
                 dialogCountEdt.setText(--count + "");
                 LogUtils.d(TAG, "减" + count);
                 break;
-            case R.id.txt_dialog_plus:
+            case R.id.img_dialog_plus:
                 dialogCountEdt.setText(++count + "");
                 break;
             case R.id.btn_dialog_cancel:
                 popUpWindow.dismiss();
                 break;
             case R.id.btn_dialog_confirm:
+                if (TextUtils.isEmpty(dialogCountEdt.getText().toString()))
+                    return;
                 addAndMinusView.setCount(count);
                 adapter.setCount(groupPosition, childPosition, count);
                 popUpWindow.dismiss();
@@ -293,8 +304,8 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
 
         this.count = count;
         this.addAndMinusView = addAndMinusView;
-        this.groupPosition=groupPosition;
-        this.childPosition=childPosition;
+        this.groupPosition = groupPosition;
+        this.childPosition = childPosition;
 
         dialogCountEdt.setText(count + "");
         dialogCountEdt.setSelection(String.valueOf(count).length());
@@ -365,26 +376,26 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         }
     }
 
-    public void add(List<RCartBO> rCartBOs) {
-        Iterator<RCartBO> iterator = rCartBOs.iterator();
-        final List<RCartBO> data = adapter.getGroups();
+    public void add(List<RCartShopBO> rCartShopBOs) {
+        Iterator<RCartShopBO> iterator = rCartShopBOs.iterator();
+        final List<RCartShopBO> data = adapter.getGroups();
         while (iterator.hasNext()) {
             LogUtils.d(TAG, "While");
-            RCartBO obj = iterator.next();
+            RCartShopBO obj = iterator.next();
             if (data.contains(obj)) {
                 int i = data.indexOf(obj);
                 //遍历新增的商品和老的商品并比较
                 int newLen = obj.getChildrenCount();
                 for (int j = 0; j < newLen; j++) {
-                    if (!data.get(i).rCommodityBOs.contains(obj.rCommodityBOs.get(j))) {//不存在则添加新商品
-                        data.get(i).rCommodityBOs.add(0, obj.rCommodityBOs.get(j));
-                        LogUtils.d(TAG, "店铺" + obj.shop + "添加了商品" + obj.rCommodityBOs.get(j).name);
+                    if (!data.get(i).rCartCommodityBOs.contains(obj.rCartCommodityBOs.get(j))) {//不存在则添加新商品
+                        data.get(i).rCartCommodityBOs.add(0, obj.rCartCommodityBOs.get(j));
+                        LogUtils.d(TAG, "店铺" + obj.shop + "添加了商品" + obj.rCartCommodityBOs.get(j).name);
                     } else {//存在则更新
-                        int position = data.get(i).rCommodityBOs.indexOf(obj.rCommodityBOs.get(j));
-                        data.get(i).rCommodityBOs.set(position, obj.rCommodityBOs.get(j));
-                        LogUtils.d(TAG, "店铺" + obj.shop + "更新了商品" + obj.rCommodityBOs.get(j).name);
+                        int position = data.get(i).rCartCommodityBOs.indexOf(obj.rCartCommodityBOs.get(j));
+                        data.get(i).rCartCommodityBOs.set(position, obj.rCartCommodityBOs.get(j));
+                        LogUtils.d(TAG, "店铺" + obj.shop + "更新了商品" + obj.rCartCommodityBOs.get(j).name);
                     }
-                    obj.rCommodityBOs.get(j).isBuyChecked = data.get(i).isBuyChecked;
+                    obj.rCartCommodityBOs.get(j).isBuyChecked = data.get(i).isBuyChecked;
                 }
             } else {
                 LogUtils.d(TAG, "添加了一个店铺:" + obj.shop);
@@ -405,15 +416,19 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.dialog_edit_count, null);
             dialogCountEdt = (EditText) view.findViewById(R.id.edt_dialog_count);
-            dialogMinusTxt = (TextView) view.findViewById(R.id.txt_dialog_minus);
-            dialogPlusTxt = (TextView) view.findViewById(R.id.txt_dialog_plus);
+//            dialogMinusTxt = (TextView) view.findViewById(R.id.txt_dialog_minus);
+//            dialogPlusTxt = (TextView) view.findViewById(R.id.txt_dialog_plus);
+            dialogPlusImg = (ImageView) view.findViewById(R.id.img_dialog_plus);
+            dialogMinusImg = (ImageView) view.findViewById(R.id.img_dialog_minus);
             dialogCancelBtn = (Button) view.findViewById(R.id.btn_dialog_cancel);
             dialogConfirmBtn = (Button) view.findViewById(R.id.btn_dialog_confirm);
 
-            dialogMinusTxt.setOnClickListener(CartFragment.this);
-            dialogPlusTxt.setOnClickListener(CartFragment.this);
+            dialogMinusImg.setOnClickListener(CartFragment.this);
+            dialogPlusImg.setOnClickListener(CartFragment.this);
             dialogCancelBtn.setOnClickListener(CartFragment.this);
             dialogConfirmBtn.setOnClickListener(CartFragment.this);
+
+//            dialogCountEdt.setFilters(new InputFilter[]{"1", "200"});
 
             dialogCountEdt.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -429,49 +444,61 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 @Override
                 public void afterTextChanged(Editable s) {
                     String temp = s.toString();
+                    LogUtils.d(TAG, "temp:" + temp);
                     if (temp.length() == 0)
                         return;
                     if (temp.length() == 1 && temp.equals("0")) {
                         s.replace(0, 1, "1");
                         count = 1;
                     }
-                    if (Integer.parseInt(temp) == 1) {
-                        dialogMinusTxt.setClickable(false);
-                    } else {
-                        dialogMinusTxt.setClickable(true);
-                    }
                     count = Integer.parseInt(temp);
+                    if (count > maxNum) {
+                        count = maxNum;
+                        LogUtils.d(TAG, "s:" + s.toString() + " len" + s.length());
+                        s.replace(0, s.length(), count + "");
+                    }
+                    setEnabled(count);
                 }
             });
 
-            view.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    int height_top = view.findViewById(R.id.llayout_edit_count).getTop();
-                    int height_bottom = view.findViewById(R.id.llayout_edit_count).getBottom();
-                    int y = (int) event.getY();
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        if (y < height_top || y > height_bottom) {
-                            dismiss();
-                        }
+            view.setOnTouchListener((v, event) -> {
+                int height_top = view.findViewById(R.id.llayout_edit_count).getTop();
+                int height_bottom = view.findViewById(R.id.llayout_edit_count).getBottom();
+                int y = (int) event.getY();
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (y < height_top || y > height_bottom) {
+                        dismiss();
                     }
-                    return true;
                 }
+                return true;
             });
 
             this.setContentView(view);
             this.setWidth(ViewGroup.LayoutParams.MATCH_PARENT);
             this.setHeight(ViewGroup.LayoutParams.MATCH_PARENT);
             this.setFocusable(true);
-            this.setOnDismissListener(new OnDismissListener() {
-                @Override
-                public void onDismiss() {
-                    MyUtils.hiddenKeyBoard(getActivity(), view);
-                }
-            });
+            this.setOnDismissListener(() -> MyUtils.hiddenKeyBoard(getActivity(), view));
 
             ColorDrawable dw = new ColorDrawable(0xb0000000);
             this.setBackgroundDrawable(dw);
+        }
+    }
+
+    /**
+     * 设置是否可以增减商品数量
+     *
+     * @param count
+     */
+    private void setEnabled(int count) {
+        if (count == minNum) {
+            dialogMinusImg.setEnabled(false);
+            dialogPlusImg.setEnabled(true);
+        } else if (count == maxNum) {
+            dialogMinusImg.setEnabled(true);
+            dialogPlusImg.setEnabled(false);
+        } else {
+            dialogPlusImg.setEnabled(true);
+            dialogMinusImg.setEnabled(true);
         }
     }
 }

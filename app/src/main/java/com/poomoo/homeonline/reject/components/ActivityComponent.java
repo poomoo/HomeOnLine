@@ -22,6 +22,7 @@ package com.poomoo.homeonline.reject.components;
 
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.activity.ChangePassWordActivity;
+import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.GetCodeActivity;
 import com.poomoo.homeonline.ui.activity.LogInActivity;
 
@@ -38,4 +39,6 @@ public interface ActivityComponent {
     void inject(GetCodeActivity activity);
 
     void inject(ChangePassWordActivity activity);
+
+    void inject(CommodityInfoActivity activity);
 }

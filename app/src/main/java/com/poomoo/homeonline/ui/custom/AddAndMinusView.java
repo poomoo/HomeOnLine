@@ -4,12 +4,15 @@
 package com.poomoo.homeonline.ui.custom;
 
 import android.content.Context;
+import android.media.Image;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,11 +30,15 @@ import com.poomoo.homeonline.ui.activity.MainActivity;
 public class AddAndMinusView extends LinearLayout implements View.OnClickListener {
     private static final String TAG = "AddAndMinusView";
     private Context context;
-    private TextView minusTxt;
+    //    private TextView minusTxt;
+    private ImageView minusImg;
     private TextView countTxt;
-    private TextView plusTxt;
+    private ImageView plusImg;
+//    private TextView plusTxt;
 
     private int count = 1;
+    private int minNum = 1;
+    private int maxNum = 200;
     private OnCountChangeListener onCountChangeListener;
 
     public AddAndMinusView(Context context) {
@@ -50,13 +57,13 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.add_minus_view, null);
 
-        minusTxt = (TextView) view.findViewById(R.id.txt_minus);
+        minusImg = (ImageView) view.findViewById(R.id.img_minus);
         countTxt = (TextView) view.findViewById(R.id.txt_count);
-        plusTxt = (TextView) view.findViewById(R.id.txt_plus);
+        plusImg = (ImageView) view.findViewById(R.id.img_plus);
 
-        minusTxt.setOnClickListener(this);
+        minusImg.setOnClickListener(this);
         countTxt.setOnClickListener(this);
-        plusTxt.setOnClickListener(this);
+        plusImg.setOnClickListener(this);
 
         addView(view);
     }
@@ -69,6 +76,7 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
         this.count = count;
         countTxt.setText(count + "");
         LogUtils.d(TAG, "setCount:" + count);
+        setEnabled();
     }
 
     @Override
@@ -76,13 +84,15 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
         if (onCountChangeListener == null)
             return;
         switch (v.getId()) {
-            case R.id.txt_minus:
+            case R.id.img_minus:
+                LogUtils.d(TAG, "点击减" + count);
                 countTxt.setText(--count > 1 ? count + "" : 1 + "");
                 if (count < 1)
                     count = 1;
                 onCountChangeListener.count(count, false);
                 break;
-            case R.id.txt_plus:
+            case R.id.img_plus:
+                LogUtils.d(TAG, "点击加" + count);
                 countTxt.setText(++count + "");
                 if (count < 1)
                     count = 1;
@@ -92,6 +102,21 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
                 onCountChangeListener.count(count, true);
                 break;
         }
+        setEnabled();
+    }
+
+    private void setEnabled() {
+        if (count == minNum) {
+            minusImg.setEnabled(false);
+            plusImg.setEnabled(true);
+        } else if (count == maxNum) {
+            minusImg.setEnabled(true);
+            plusImg.setEnabled(false);
+        } else {
+            minusImg.setEnabled(true);
+            plusImg.setEnabled(true);
+        }
+        LogUtils.d(TAG, "minusImg:" + minusImg.isEnabled() + " plusImg:" + plusImg.isEnabled());
     }
 
     public void setOnCountChangeListener(OnCountChangeListener onCountChangeListener) {

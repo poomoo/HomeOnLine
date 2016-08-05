@@ -41,10 +41,12 @@ public class JavaScript {
     }
 
     @android.webkit.JavascriptInterface
-    public String jumpToCommodityInfo(final int id) {
+    public String jumpToCommodityInfo(final int commodityId, final int commodityDetailId) {
         mContext.runOnUiThread(() -> {
-            Toast.makeText(mContext, "jumpToCommodityInfo 商品ID:" + id, Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, "jumpToCommodityInfo 商品ID:" + commodityId, Toast.LENGTH_SHORT).show();
             intent = new Intent(mContext, CommodityInfoActivity.class);
+            intent.putExtra(mContext.getString(R.string.intent_commodityId), commodityId);
+            intent.putExtra(mContext.getString(R.string.intent_commodityDetailId), commodityDetailId);
             mContext.startActivity(intent);
             mContext.finish();
         });

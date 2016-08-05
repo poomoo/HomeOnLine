@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
@@ -147,7 +148,8 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     public void onClick(String categoryId) {
         MyUtils.showToast(getActivity().getApplicationContext(), "点击了" + categoryId);
         Bundle bundle = new Bundle();
-        bundle.putString(getString(R.string.intent_value), "http://www.jiayou9.com/phone/commodity/three_list.html?categoryId=1777");
+//        bundle.putString(getString(R.string.intent_value), "http://www.jiayou9.com/phone/commodity/three_list.html?categoryId=1777");
+        bundle.putString(getString(R.string.intent_value), NetConfig.LocalUrl + "/app/rush.html");
         openActivity(WebViewActivity.class, bundle);
 //        openActivity(WebViewActivity.class);
     }

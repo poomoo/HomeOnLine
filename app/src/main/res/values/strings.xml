@@ -48,7 +48,8 @@
     <string name="intent_receiptName">receiptName</string>
     <string name="intent_receiptTel">receiptTel</string>
     <string name="intent_receiptAddress">receiptAddress</string>
-
+    <string name="intent_commodityId">commodityId</string>
+    <string name="intent_commodityDetailId">commodityDetailId</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>

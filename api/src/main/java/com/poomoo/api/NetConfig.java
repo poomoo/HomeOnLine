@@ -11,7 +11,7 @@ public class NetConfig {
     public static String RemoteUrl = "http://115.28.95.198/";
     public static String LocalUrl = "http://192.168.1.107:8080/";
     public static String ImageUrl = "http://img.jiayou9.com/jyzx";
-    public static String url = RemoteUrl;
+    public static String url = LocalUrl;
 
     public final static boolean FALSE = false;//超时
     public final static String TIME_OUT_EVENT_MSG = "连接服务器失败";
@@ -30,4 +30,6 @@ public class NetConfig {
     public final static String HOT = "1006_06";//首页热门推荐
 
     public final static String CLASSIFY = "1007_01";//商品分类
+
+    public final static String COMMODITY = "1009_01";//商品详情
 }

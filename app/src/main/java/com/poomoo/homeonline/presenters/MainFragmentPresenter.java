@@ -30,8 +30,10 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
+import com.poomoo.homeonline.listeners.UrgeClickListener;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
 import com.poomoo.model.request.BaseRequest;
+import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RGuessBO;
@@ -166,9 +168,9 @@ public class MainFragmentPresenter extends BasePresenter<MainFragment> {
     /**
      * 猜你喜欢
      */
-    public void getGuess() {
-        BaseRequest baseRequest = new BaseRequest(NetConfig.GUESS);
-        add(NetWork.getMyApi().GetGuess(baseRequest)
+    public void getGuess(Integer userId) {
+        QUserIdBO qUserIdBO = new QUserIdBO(NetConfig.GUESS, userId);
+        add(NetWork.getMyApi().GetGuess(qUserIdBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AbsAPICallback<List<RGuessBO>>() {

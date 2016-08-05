@@ -1,7 +1,6 @@
 package com.poomoo.homeonline.adapter;
 
 import android.content.Context;
-import android.graphics.Paint;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
@@ -29,8 +28,8 @@ import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.custom.AddAndMinusView;
 import com.poomoo.homeonline.ui.fragment.CartFragment;
-import com.poomoo.model.response.RCartBO;
-import com.poomoo.model.response.RCommodityBO;
+import com.poomoo.model.response.RCartShopBO;
+import com.poomoo.model.response.RCartCommodityBO;
 
 import java.util.List;
 
@@ -45,9 +44,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private CartFragment cartFragment = null;
-    private List<RCartBO> group;
-    private RCartBO rCartBO;
-    private RCommodityBO rCommodityBO;
+    private List<RCartShopBO> group;
+    private RCartShopBO rCartShopBO;
+    private RCartCommodityBO rCartCommodityBO;
     private OnBuyCheckChangedListener onBuyCheckChangedListener;
     private OnEditCheckChangedListener onEditCheckChangedListener;
 
@@ -65,7 +64,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
     private int count = 1;
 
 
-    public CartAdapter(Context context, List<RCartBO> group, OnBuyCheckChangedListener onBuyCheckChangedListener, OnEditCheckChangedListener onEditCheckChangedListener) {
+    public CartAdapter(Context context, List<RCartShopBO> group, OnBuyCheckChangedListener onBuyCheckChangedListener, OnEditCheckChangedListener onEditCheckChangedListener) {
         this.context = context;
         this.group = group;
         this.onBuyCheckChangedListener = onBuyCheckChangedListener;
@@ -80,7 +79,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return group.get(groupPosition).rCommodityBOs.size();
+        return group.get(groupPosition).rCartCommodityBOs.size();
     }
 
     @Override
@@ -90,7 +89,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return group.get(groupPosition).rCommodityBOs.get(childPosition);
+        return group.get(groupPosition).rCartCommodityBOs.get(childPosition);
     }
 
     @Override
@@ -108,7 +107,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public List<RCartBO> getGroups() {
+    public List<RCartShopBO> getGroups() {
         return group;
     }
 
@@ -126,12 +125,12 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.shopChk = (CheckBox) convertView.findViewById(R.id.chk_shop);
         holder.shopTxt = (TextView) convertView.findViewById(R.id.txt_shop);
 
-        rCartBO = group.get(groupPosition);
+        rCartShopBO = group.get(groupPosition);
         if (isEdit)
-            holder.shopChk.setChecked(rCartBO.isEditChecked);
+            holder.shopChk.setChecked(rCartShopBO.isEditChecked);
         else
-            holder.shopChk.setChecked(rCartBO.isBuyChecked);
-        holder.shopTxt.setText(rCartBO.shop);
+            holder.shopChk.setChecked(rCartShopBO.isBuyChecked);
+        holder.shopTxt.setText(rCartShopBO.shop);
 
         // 點擊 CheckBox 時，將狀態存起來
         holder.shopLayout.setOnClickListener(new Group_CheckBox_Click(groupPosition));
@@ -194,16 +193,16 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.priceTxt = (TextView) convertView.findViewById(R.id.txt_price);
         holder.addAndMinusView = (AddAndMinusView) convertView.findViewById(R.id.addAndMinusView);
 
-        rCommodityBO = group.get(groupPosition).rCommodityBOs.get(childPosition);
+        rCartCommodityBO = group.get(groupPosition).rCartCommodityBOs.get(childPosition);
         if (isEdit)
-            holder.commodityChk.setChecked(rCommodityBO.isEditChecked);
+            holder.commodityChk.setChecked(rCartCommodityBO.isEditChecked);
         else
-            holder.commodityChk.setChecked(rCommodityBO.isBuyChecked);
+            holder.commodityChk.setChecked(rCartCommodityBO.isBuyChecked);
 //        Glide.with(mContext).load(rCommodityBO.img).into(holder.commodityImg);
-        holder.commodityTxt.setText(rCommodityBO.name);
-        holder.priceTxt.setText(rCommodityBO.price);
+        holder.commodityTxt.setText(rCartCommodityBO.name);
+        holder.priceTxt.setText(rCartCommodityBO.price);
 
-        holder.addAndMinusView.setCount(rCommodityBO.count);
+        holder.addAndMinusView.setCount(rCartCommodityBO.count);
         holder.addAndMinusView.setOnCountChangeListener(new CountChange(groupPosition, childPosition, holder.addAndMinusView));
 
         // 點擊 CheckBox 時，將狀態存起來
@@ -259,8 +258,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
     }
 
     public void setCount(int groupPosition, int childPosition, int count) {
-        group.get(groupPosition).rCommodityBOs.get(childPosition).count = count;
-        setTotalPrice();
+        group.get(groupPosition).rCartCommodityBOs.get(childPosition).count = count;
+//        setTotalPrice();
+        notifyDataSetChanged();
     }
 
     class GroupViewHolder {
@@ -312,11 +312,11 @@ public class CartAdapter extends BaseExpandableListAdapter {
             else
                 group.get(i).isBuyChecked = true;
 
-            for (int j = 0; j < group.get(i).rCommodityBOs.size(); j++)
+            for (int j = 0; j < group.get(i).rCartCommodityBOs.size(); j++)
                 if (isEdit)
-                    group.get(i).rCommodityBOs.get(j).isEditChecked = true;
+                    group.get(i).rCartCommodityBOs.get(j).isEditChecked = true;
                 else
-                    group.get(i).rCommodityBOs.get(j).isBuyChecked = true;
+                    group.get(i).rCartCommodityBOs.get(j).isBuyChecked = true;
         }
         notifyDataSetChanged();
     }
@@ -327,11 +327,11 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 group.get(i).isEditChecked = false;
             else
                 group.get(i).isBuyChecked = false;
-            for (int j = 0; j < group.get(i).rCommodityBOs.size(); j++)
+            for (int j = 0; j < group.get(i).rCartCommodityBOs.size(); j++)
                 if (isEdit)
-                    group.get(i).rCommodityBOs.get(j).isEditChecked = false;
+                    group.get(i).rCartCommodityBOs.get(j).isEditChecked = false;
                 else
-                    group.get(i).rCommodityBOs.get(j).isBuyChecked = false;
+                    group.get(i).rCartCommodityBOs.get(j).isBuyChecked = false;
         }
         notifyDataSetChanged();
     }
@@ -343,8 +343,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 i--;
             } else
                 for (int j = 0; j < group.get(i).getChildrenCount(); j++)
-                    if (group.get(i).rCommodityBOs.get(j).isEditChecked) {
-                        group.get(i).rCommodityBOs.remove(j);
+                    if (group.get(i).rCartCommodityBOs.get(j).isEditChecked) {
+                        group.get(i).rCartCommodityBOs.remove(j);
                         j--;
                     }
         }
@@ -363,10 +363,10 @@ public class CartAdapter extends BaseExpandableListAdapter {
         removeCount = 0;
         for (int i = 0; i < group.size(); i++)
             for (int j = 0; j < group.get(i).getChildrenCount(); j++) {
-                rCommodityBO = group.get(i).rCommodityBOs.get(j);
-                if (rCommodityBO.isBuyChecked)
-                    totalPrice += Double.parseDouble(rCommodityBO.price) * rCommodityBO.count;
-                if (rCommodityBO.isEditChecked)
+                rCartCommodityBO = group.get(i).rCartCommodityBOs.get(j);
+                if (rCartCommodityBO.isBuyChecked)
+                    totalPrice += Double.parseDouble(rCartCommodityBO.price) * rCartCommodityBO.count;
+                if (rCartCommodityBO.isEditChecked)
                     removeCount++;
             }
 //        LogUtils.d(TAG, "setTotalPrice:" + totalPrice);
@@ -377,15 +377,15 @@ public class CartAdapter extends BaseExpandableListAdapter {
         if (isEdit)
             for (int i = 0; i < group.size(); i++)
                 for (int j = 0; j < group.get(i).getChildrenCount(); j++) {
-                    rCommodityBO = group.get(i).rCommodityBOs.get(j);
-                    if (!rCommodityBO.isEditChecked)
+                    rCartCommodityBO = group.get(i).rCartCommodityBOs.get(j);
+                    if (!rCartCommodityBO.isEditChecked)
                         return false;
                 }
         else
             for (int i = 0; i < group.size(); i++)
                 for (int j = 0; j < group.get(i).getChildrenCount(); j++) {
-                    rCommodityBO = group.get(i).rCommodityBOs.get(j);
-                    if (!rCommodityBO.isBuyChecked)
+                    rCartCommodityBO = group.get(i).rCartCommodityBOs.get(j);
+                    if (!rCartCommodityBO.isBuyChecked)
                         return false;
                 }
         return true;
@@ -411,7 +411,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         for (int i = 0; i < groupSize; i++) {
             int childSize = getChildrenCount(i);
             for (int j = 0; j < childSize; j++) {
-                commodityCount += ((RCommodityBO) getChild(i, j)).count;
+                commodityCount += ((RCartCommodityBO) getChild(i, j)).count;
             }
         }
         MainNewActivity.INSTANCE.application.setCartNum(commodityCount);

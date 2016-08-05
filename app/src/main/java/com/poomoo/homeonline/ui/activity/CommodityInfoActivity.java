@@ -52,15 +52,23 @@ import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.Holder;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.StatusBarUtil;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.listeners.AdvertisementListener;
 import com.poomoo.homeonline.listeners.ScrollViewListener;
+import com.poomoo.homeonline.presenters.CommodityPresenter;
+import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
+import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
+import com.poomoo.homeonline.reject.modules.ActivityModule;
+import com.poomoo.homeonline.ui.MyProgress;
 import com.poomoo.homeonline.ui.base.BaseActivity;
+import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.PinchImageView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
+import com.poomoo.model.response.RCommodityInfoBO;
 import com.poomoo.myflayout.FlowLayout;
 import com.poomoo.myflayout.TagAdapter;
 import com.poomoo.myflayout.TagFlowLayout;
@@ -79,7 +87,7 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:22
  */
-public class CommodityInfoActivity extends BaseActivity implements ScrollViewListener {
+public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter> implements ScrollViewListener {
     @Bind(R.id.rlayout_info_title)
     RelativeLayout titleBar;
     @Bind(R.id.myScrollView)
@@ -108,12 +116,18 @@ public class CommodityInfoActivity extends BaseActivity implements ScrollViewLis
     LinearLayout specificationLayout;
     @Bind(R.id.txt_cart_num)
     TextView cartNumTxt;
+    @Bind(R.id.rlayout_commodity_info)
+    RelativeLayout contentRlayout;
+    @Bind(R.id.rlayout_progressBar)
+    RelativeLayout progressBarRlayout;
 
     private LayoutInflater mInflater;
 
     private int screenWidth = 0;
     private String[] pics = new String[]{"http://img.jiayou9.com/jyzx//upload/company/20160402/1459581133163.jpg", "http://img.jiayou9.com/jyzx//upload/company/20160402/1459581133960.jpg", "http://img.jiayou9.com/jyzx//upload/company/20160402/1459581136663.jpg", "http://img.jiayou9.com/jyzx//upload/company/20160402/1459581137663.jpg"};
     private boolean hasSpecification = false;//是否有规格参数
+    public int commodityId;//商品ID
+    public int commodityDetailId;//商品规格ID
     private DialogPlus contentDialog = null;
     private ImageView dialogBigImg;
     private EditText dialog_product_sum;
@@ -132,7 +146,9 @@ public class CommodityInfoActivity extends BaseActivity implements ScrollViewLis
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         screenWidth = MyUtils.getScreenWidth(this);
-        hasSpecification = getIntent().getBooleanExtra(getString(R.string.intent_value), false);
+//        hasSpecification = getIntent().getBooleanExtra(getString(R.string.intent_value), false);
+        commodityId = getIntent().getIntExtra(getString(R.string.intent_commodityId), -1);
+        commodityDetailId = getIntent().getIntExtra(getString(R.string.intent_commodityDetailId), -1);
 
         init();
     }
@@ -145,6 +161,14 @@ public class CommodityInfoActivity extends BaseActivity implements ScrollViewLis
     @Override
     protected int onSetTitle() {
         return 0;
+    }
+
+    @Override
+    protected void setupActivityComponent(ActivityModule activityModule) {
+        DaggerActivityComponent.builder()
+                .activityModule(activityModule)
+                .build()
+                .inject(this);
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -182,6 +206,20 @@ public class CommodityInfoActivity extends BaseActivity implements ScrollViewLis
         integers.add(1);
         integers.add(2);
         setSelectedInfo(integers);
+
+        contentRlayout.setVisibility(View.GONE);
+        progressBarRlayout.setVisibility(View.VISIBLE);
+        mPresenter.getCommodity(commodityId, commodityDetailId);
+    }
+
+    public void getCommodityInfoSucceed(RCommodityInfoBO rCommodityInfoBO) {
+        LogUtils.d(TAG, "getCommodityInfoSucceed:" + rCommodityInfoBO);
+        contentRlayout.setVisibility(View.VISIBLE);
+        progressBarRlayout.setVisibility(View.GONE);
+    }
+
+    public void getCommodityInfoFailed(String msg) {
+        MyUtils.showToast(getApplicationContext(), msg);
     }
 
     /**
@@ -258,38 +296,35 @@ public class CommodityInfoActivity extends BaseActivity implements ScrollViewLis
             addView();
 
             Holder holder = new ViewHolder(view);
-            OnClickListener clickListener = new OnClickListener() {
-                @Override
-                public void onClick(DialogPlus dialog, View view) {
-                    switch (view.getId()) {
-                        case R.id.img_commodity_detail:
-                            zoomPic();
-                            break;
-                        case R.id.dialog_close:
-                            dialog.dismiss();
-                            break;
-                        case R.id.txt_dialog_ok:
-                            dialog.dismiss();
-                            break;
-                        case R.id.txt_dialog_cart:
-                            if (!isAllSelected) {
-                                MyUtils.showToast(getApplicationContext(), "请选择商品属性");
-                                return;
-                            }
-                            dialog.dismiss();
-                            break;
-                        case R.id.txt_dialog_buy:
-                            dialog.dismiss();
-                            break;
-                        case R.id.dialog_product_sum_add:
-                            dialog_product_sum.setText(String.valueOf(Integer.parseInt(dialog_product_sum.getText().toString()) + 1));
-                            break;
-                        case R.id.dialog_product_sum_sub:
-                            if (Integer.parseInt(dialog_product_sum.getText().toString()) > 1) {
-                                dialog_product_sum.setText(String.valueOf(Integer.parseInt(dialog_product_sum.getText().toString()) - 1));
-                            }
-                            break;
-                    }
+            OnClickListener clickListener = (dialog, view1) -> {
+                switch (view1.getId()) {
+                    case R.id.img_commodity_detail:
+                        zoomPic();
+                        break;
+                    case R.id.dialog_close:
+                        dialog.dismiss();
+                        break;
+                    case R.id.txt_dialog_ok:
+                        dialog.dismiss();
+                        break;
+                    case R.id.txt_dialog_cart:
+                        if (!isAllSelected) {
+                            MyUtils.showToast(getApplicationContext(), "请选择商品属性");
+                            return;
+                        }
+                        dialog.dismiss();
+                        break;
+                    case R.id.txt_dialog_buy:
+                        dialog.dismiss();
+                        break;
+                    case R.id.dialog_product_sum_add:
+                        dialog_product_sum.setText(String.valueOf(Integer.parseInt(dialog_product_sum.getText().toString()) + 1));
+                        break;
+                    case R.id.dialog_product_sum_sub:
+                        if (Integer.parseInt(dialog_product_sum.getText().toString()) > 1) {
+                            dialog_product_sum.setText(String.valueOf(Integer.parseInt(dialog_product_sum.getText().toString()) - 1));
+                        }
+                        break;
                 }
             };
             contentDialog = DialogPlus.newDialog(this)
@@ -421,15 +456,12 @@ public class CommodityInfoActivity extends BaseActivity implements ScrollViewLis
     private void zoomPic() {
         if (popUpWindow == null)
             popUpWindow = new BigPicPopUpWindow(this);
-        popUpWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                titleBar.setBackgroundColor(ContextCompat.getColor(CommodityInfoActivity.this, R.color.ThemeBg));
-                titleBar.getBackground().mutate().setAlpha(myScrollView.getScrollY() < screenWidth - titleBar.getHeight() ? 0 : 255);
-            }
+        popUpWindow.setOnDismissListener(() -> {
+            titleBar.setBackgroundColor(ContextCompat.getColor(CommodityInfoActivity.this, R.color.ThemeBg));
+            titleBar.getBackground().mutate().setAlpha(myScrollView.getScrollY() < screenWidth - titleBar.getHeight() ? 0 : 255);
         });
         Glide.with(this).load(R.drawable.test).into(dialogBigImg);
-        popUpWindow.showAtLocation(this.findViewById(R.id.rlayout_commodity_info), Gravity.CENTER, 0, 0);
+        popUpWindow.showAtLocation(contentRlayout, Gravity.CENTER, 0, 0);
         titleBar.setBackgroundColor(Color.BLACK);
     }
 

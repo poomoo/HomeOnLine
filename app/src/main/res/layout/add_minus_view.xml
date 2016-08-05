@@ -13,18 +13,25 @@
         android:gravity="center"
         android:padding="4dp"
         android:text="一"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/sp_12"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/img_minus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/selector_minus" />
 
     <TextView
         android:id="@+id/txt_count"
-        android:layout_width="30dp"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@drawable/count"
+        android:background="@drawable/awv"
         android:gravity="center"
         android:maxLength="3"
         android:singleLine="true"
         android:text="200"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/sp_14" />
 
     <TextView
         android:id="@+id/txt_plus"
@@ -34,5 +41,12 @@
         android:gravity="center"
         android:padding="4dp"
         android:text="+"
-        android:textSize="@dimen/sp_12" />
+        android:textSize="@dimen/sp_12"
+        android:visibility="gone" />
+
+    <ImageView
+        android:id="@+id/img_plus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/selector_plus" />
 </LinearLayout>
