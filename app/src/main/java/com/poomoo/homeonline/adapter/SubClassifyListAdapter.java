@@ -24,8 +24,6 @@ import butterknife.ButterKnife;
  * 日期 2016/7/19 11:33
  */
 public class SubClassifyListAdapter extends BaseListAdapter<RSubClassifyBO> {
-
-    private static final String TAG = "SubClassifyListAdapter";
     private SubClassifyGridAdapter subClassifyGridAdapter;
     private ClassifyOnItemClickListener onItemClickListener;
     private RSubClassifyBO item;

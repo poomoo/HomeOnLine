@@ -36,7 +36,6 @@ public abstract class BaseListFragment<T> extends BaseFragment
 
     protected int mCurrentPage = 1;
     protected BaseListAdapter<T> mAdapter;
-    protected int EMPTY_DATA = ErrorLayout.EMPTY_DATA;
 
     public static final int STATE_NONE = 0;
     public static final int STATE_REFRESHING = 1;
@@ -49,6 +48,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
 
     public int mState = STATE_NONE;
     public int action = LOAD_MODE_DEFAULT;
+    private String emptyMsg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -86,24 +86,19 @@ public abstract class BaseListFragment<T> extends BaseFragment
             mAdapter = onSetupAdapter();
             mListView.setAdapter(mAdapter);
             mAdapter.setOnLoadingListener(this);
-            mErrorLayout.setState(ErrorLayout.LOADING);
+            mErrorLayout.setState(ErrorLayout.LOADING, "");
         }
 
 
         if (savedInstanceState != null) {
             if (mState == STATE_REFRESHING && getRefreshable()
                     && savedInstanceState.getInt(BUNDLE_STATE_REFRESH, STATE_NONE) == STATE_REFRESHING) {
-                mSwipeRefreshLayout.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(true);
-                    }
-                });
+                mSwipeRefreshLayout.post(() -> mSwipeRefreshLayout.setRefreshing(true));
             }
 
             if (mState == STATE_CACHE_LOADING && getRefreshable()
                     && savedInstanceState.getInt(BUNDLE_STATE_REFRESH, STATE_NONE) == STATE_CACHE_LOADING) {
-                mErrorLayout.setState(ErrorLayout.LOADING);
+                mErrorLayout.setState(ErrorLayout.LOADING, "");
             }
         }
 
@@ -141,7 +136,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
             mAdapter.clear();
 
         if (mAdapter.getDataSize() + result.size() == 0) {
-            mErrorLayout.setState(EMPTY_DATA);
+            mErrorLayout.setState(ErrorLayout.EMPTY_DATA, getEmptyMsg());
             mSwipeRefreshLayout.setRefreshing(false);
             mSwipeRefreshLayout.setEnabled(false);
             mAdapter.setState(BaseListAdapter.STATE_HIDE);
@@ -180,7 +175,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
     public void onLoadFinishState(int mode) {
         switch (mode) {
             case LOAD_MODE_DEFAULT:
-                mErrorLayout.setState(ErrorLayout.HIDE);
+                mErrorLayout.setState(ErrorLayout.HIDE, "");
                 mSwipeRefreshLayout.setRefreshing(false);
                 mSwipeRefreshLayout.setEnabled(true);
                 mState = STATE_NONE;
@@ -188,7 +183,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
             case LOAD_MODE_UP_DRAG:
                 break;
             case LOAD_MODE_CACHE:
-                mErrorLayout.setState(ErrorLayout.HIDE);
+                mErrorLayout.setState(ErrorLayout.HIDE, "");
                 break;
         }
 
@@ -205,7 +200,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
                     mSwipeRefreshLayout.setRefreshing(false);
                     mState = STATE_NONE;
                 } else {
-                    mErrorLayout.setState(ErrorLayout.LOAD_FAILED);
+                    mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
                 }
                 break;
             case LOAD_MODE_UP_DRAG:
@@ -220,7 +215,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
      */
     @Override
     public void onLoadActiveClick() {
-        mErrorLayout.setState(ErrorLayout.LOADING);
+        mErrorLayout.setState(ErrorLayout.LOADING, "");
         action = LOAD_MODE_DEFAULT;
     }
 
@@ -231,7 +226,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
         switch (mode) {
             case LOAD_MODE_DEFAULT:
                 if (mAdapter == null || mAdapter.getDataSize() == 0) {
-                    mErrorLayout.setState(ErrorLayout.NOT_NETWORK);
+                    mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
                     mSwipeRefreshLayout.setRefreshing(false);
                     mSwipeRefreshLayout.setEnabled(false);
                 } else {
@@ -256,7 +251,7 @@ public abstract class BaseListFragment<T> extends BaseFragment
                 break;
             case LOAD_MODE_CACHE:
                 mState = STATE_CACHE_LOADING;
-                mErrorLayout.setState(ErrorLayout.LOADING);
+                mErrorLayout.setState(ErrorLayout.LOADING, "");
                 break;
         }
     }
@@ -297,4 +292,11 @@ public abstract class BaseListFragment<T> extends BaseFragment
         }
     }
 
+    public void setEmptyMsg(String emptyMsg) {
+        this.emptyMsg = emptyMsg;
+    }
+
+    public String getEmptyMsg() {
+        return emptyMsg;
+    }
 }

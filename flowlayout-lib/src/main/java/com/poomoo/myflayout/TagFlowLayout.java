@@ -174,12 +174,13 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
 //        return new HashSet<>(mSelectedView);
 //    }
 
-    public String getSelectedItem() {
-        String str = "";
+    public Object getSelectedItem() {
+        Object o = null;
         Iterator<Integer> iterator = mSelectedView.iterator();
         if (iterator.hasNext())
-            str = (String) mTagAdapter.getItem(iterator.next());
-        return str;
+            o = mTagAdapter.getItem(iterator.next());
+
+        return o;
     }
 
 

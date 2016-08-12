@@ -22,7 +22,6 @@ import com.poomoo.model.response.RThirdClassifyBO;
  * 日期 2016/7/19 11:33
  */
 public class SubClassifyGridAdapter extends MyBaseAdapter<RThirdClassifyBO> {
-    private String TAG = "SubClassifyGridAdapter";
     private RThirdClassifyBO item;
     private ClassifyOnItemClickListener onItemClickListener;
 

@@ -19,4 +19,6 @@ public class MyConfig {
     public static final String gjgcJson = "[{\"rSubClassifyBOs\":[{\"name\":\"黔品白酒\"},{\"name\":\"洋酒\"},{\"name\":\"其他黔品名酒\"},{\"name\":\"黔品果酒\"},{\"name\":\"黔品收藏酒\"},{\"name\":\"啤酒\"}],\"subTitle\":\"醉美琼浆\"},{\"rSubClassifyBOs\":[{\"name\":\"黔品红茶\"},{\"name\":\"黔品绿茶\"},{\"name\":\"黔品苦荞茶\"},{\"name\":\"其他黔品茗茶\"}],\"subTitle\":\"黔茶飘香\"}]";
     public static final int PAGE_SIZE = 10;
     public static final String EXTRA_IMAGE_LIST = "imageList";
+    public static final int MINCOUNT = 1;//购买数量下限
+    public static final int MAXCOUNT = 999;//购买数量上限
 }

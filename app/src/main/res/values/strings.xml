@@ -16,9 +16,13 @@
     <string name="title_myInfo">我的资料</string>
     <string name="title_address_list">地址管理</string>
     <string name="title_addressInfo">修改地址</string>
+    <string name="title_newAddress">新建地址</string>
     <string name="title_feed_back">我要反馈</string>
     <string name="title_bucket">相册</string>
     <string name="title_safe">账户与安全</string>
+    <string name="title_collection">我的收藏</string>
+    <string name="title_history">我的足迹</string>
+
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -42,14 +46,19 @@
     <string name="intent_parent">parent</string>
     <string name="intent_register">register</string>
     <string name="intent_find">find</string>
+    <string name="intent_receiptBO">receiptBO</string>
     <string name="intent_provinceId">provinceId</string>
     <string name="intent_cityId">cityId</string>
     <string name="intent_areaId">areaId</string>
+    <string name="intent_provinceName">provinceName</string>
+    <string name="intent_cityName">cityName</string>
+    <string name="intent_areaName">areaName</string>
     <string name="intent_receiptName">receiptName</string>
     <string name="intent_receiptTel">receiptTel</string>
     <string name="intent_receiptAddress">receiptAddress</string>
     <string name="intent_commodityId">commodityId</string>
     <string name="intent_commodityDetailId">commodityDetailId</string>
+    <string name="intent_commodityType">commodityType</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>
@@ -60,6 +69,9 @@
     <string name="dialog">请稍后...</string>
 
     <!--tab-->
+    <string name="tab_commodity_info">商品详情</string>
+    <string name="tab_commodity_details">商品描述</string>
+    <string name="tab_commodity_recommend">商品推荐</string>
     <string name="tab_order_all">全部</string>
     <string name="tab_order_pay">待付款</string>
     <string name="tab_order_deliver">待发货</string>
@@ -72,10 +84,12 @@
     <string name="dialog_msg">请稍后...</string>
     <string name="loading">加载中...</string>
     <string name="load_failed">加载失败</string>
-    <string name="invalid_network">无效的网络</string>
-    <string name="load_no_more">没有更多了</string>
+    <string name="invalid_network">网络异常,请检查网络</string>
+    <string name="time_out">连接超时</string>
+    <string name="load_no_more">全部加载完成</string>
     <string name="refreshing">刷新中</string>
     <!--dialog-->
+
 
     <string name="toast_3_pics">最多选择3张图片</string>
 

@@ -40,6 +40,8 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter {
     protected static final int VIEW_TYPE_NORMAL = 0;
     protected static final int VIEW_TYPE_HEADER = -1;
     protected static final int VIEW_TYPE_FOOTER = -2;
+    //日志标签
+    protected final String TAG = getClass().getSimpleName();
 
     protected Context mContext;
     protected List<T> items;

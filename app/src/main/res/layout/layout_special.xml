@@ -15,10 +15,15 @@
         android:paddingTop="10dp"
         android:scaleType="fitXY" />
 
-    <ImageView
-        android:id="@+id/img_special_content"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_special_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 
     <com.poomoo.homeonline.ui.custom.NoScrollGridView
         android:id="@+id/grid_special"

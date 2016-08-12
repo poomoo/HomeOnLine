@@ -1,8 +1,10 @@
 package com.poomoo.homeonline.ui.base;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.application.MyApplication;
 
@@ -186,6 +189,23 @@ public abstract class BaseActivity extends FragmentActivity {
     protected void getActivityOutToRight() {
         overridePendingTransition(R.anim.activity_center,
                 R.anim.activity_out_to_right);
+    }
+
+    protected Dialog createDialog(String msg, DialogInterface.OnClickListener onClickListener) {
+        Dialog dialog = new AlertDialog
+                .Builder(this)
+                .setMessage(msg)
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", onClickListener)
+                .create();
+        return dialog;
+    }
+
+    protected boolean isNetWorkInvalid(String msg) {
+        LogUtils.d(TAG, "isNetWorkInvalid:" + msg + " " + getString(R.string.invalid_network));
+        if (msg.equals(getString(R.string.invalid_network)) || msg.equals(getString(R.string.time_out)))
+            return true;
+        return false;
     }
 
     @Override

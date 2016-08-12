@@ -29,8 +29,6 @@ import java.util.Map;
  * 日期: 2015/11/23 16:13.
  */
 public class ImageGridAdapter extends MyBaseAdapter<ImageItem> {
-    final String TAG = getClass().getSimpleName();
-
     private TextCallback textcallback = null;
     public Map<String, String> map = new HashMap<>();
     public Map<String, File> files = new HashMap<>();
@@ -39,20 +37,16 @@ public class ImageGridAdapter extends MyBaseAdapter<ImageItem> {
     private BitmapCache cache;
     private Handler mHandler;
     private int selectTotal = 0;
-    BitmapCache.ImageCallback callback = new BitmapCache.ImageCallback() {
-        @Override
-        public void imageLoad(ImageView imageView, Bitmap bitmap,
-                              Object... params) {
-            if (imageView != null && bitmap != null) {
-                String url = (String) params[0];
-                if (url != null && url.equals(imageView.getTag())) {
-                    (imageView).setImageBitmap(bitmap);
-                } else {
-                    Log.e(TAG, "callback, bmp not match");
-                }
+    BitmapCache.ImageCallback callback = (imageView, bitmap1, params) -> {
+        if (imageView != null && bitmap1 != null) {
+            String url = (String) params[0];
+            if (url != null && url.equals(imageView.getTag())) {
+                (imageView).setImageBitmap(bitmap1);
             } else {
-                Log.e(TAG, "callback, bmp null");
+                Log.e(TAG, "callback, bmp not match");
             }
+        } else {
+            Log.e(TAG, "callback, bmp null");
         }
     };
 

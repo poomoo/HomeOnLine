@@ -31,6 +31,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.CartAdapter;
@@ -41,8 +42,9 @@ import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.custom.AddAndMinusView;
-import com.poomoo.model.response.RCartShopBO;
 import com.poomoo.model.response.RCartCommodityBO;
+import com.poomoo.model.response.RCartShopBO;
+import com.poomoo.model.response.RCommodityCount;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -95,14 +97,20 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     private Button dialogCancelBtn;
     private Button dialogConfirmBtn;
 
-    private int count = 1;
+
     private AddAndMinusView addAndMinusView;
     private EditPopUpWindow popUpWindow;
     private View view;
+    private int cartId;
+    private int count;
     private int groupPosition;
     private int childPosition;
-    private int minNum = 1;//商品数量下限
-    private int maxNum = 200;//商品数量上限
+    private int commodityType;
+    //    private int minNum = 1;//商品数量下限
+//    private int maxNum = 200;//商品数量上限
+    private boolean isRefresh = false;//true--刷新
+    private int[] deleteIndex;//删除的商品的id集合
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -114,7 +122,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initView();
+        init();
     }
 
     @Override
@@ -125,85 +133,152 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 .inject(this);
     }
 
-    private void initView() {
+    private void init() {
         inStance = this;
-//        progressBarRlayout.setVisibility(View.VISIBLE);
-
-        adapter = new CartAdapter(getActivity(), getList(), this, this);
+        adapter = new CartAdapter(getActivity(), this, this);
         listView.addHeaderView(LayoutInflater.from(getActivity()).inflate(R.layout.cart_header, null));
         listView.addFooterView(LayoutInflater.from(getActivity()).inflate(R.layout.cart_footer, null));
         listView.setAdapter(adapter);
 
         //设置 属性 GroupIndicator 去掉默认向下的箭头
         listView.setGroupIndicator(null);
-        expandListView();
+        listView.setOnGroupClickListener((parent, v, groupPosition1, id) -> true);
+//        adapter.setGroup(getList());
+//        expandListView();
 
         allBuyChk.setOnCheckedChangeListener(this);
         allEditChk.setOnCheckedChangeListener(this);
         editTxt.setOnClickListener(this);
         deleteTxt.setOnClickListener(this);
+
+        progressBarRlayout.setVisibility(View.VISIBLE);
+//        mPresenter.getCartInfo(application.getUserId());
+        mPresenter.getCartInfo(286);
     }
 
-    private List<RCartShopBO> getList() {
-        rCartShopBOs = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            rCartShopBO = new RCartShopBO();
-            rCartShopBO.shopId = i + 1;
-            rCartShopBO.shop = "测试店铺" + (i + 1);
-            rCartShopBO.rCartCommodityBOs = getCommodities();
-            rCartShopBOs.add(rCartShopBO);
-        }
-        return rCartShopBOs;
+    public void getInfoSucceed(List<RCartShopBO> rCartShopBOs) {
+        progressBarRlayout.setVisibility(View.GONE);
+        if (!isRefresh)
+            adapter.setGroup(rCartShopBOs);
+        else
+            add(rCartShopBOs);
+        expandListView();
     }
 
-    private List<RCartShopBO> getList2() {
-        rCartShopBOs = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            rCartShopBO = new RCartShopBO();
-            rCartShopBO.shopId = i + 1;
-            rCartShopBO.shop = "测试店铺" + (i + 1);
-            rCartShopBO.rCartCommodityBOs = getCommodities2();
-            rCartShopBOs.add(rCartShopBO);
-        }
-        rCartShopBO = new RCartShopBO();
-        rCartShopBO.shopId = 10;
-        rCartShopBO.shop = "测试店铺10";
-        rCartShopBO.rCartCommodityBOs = getCommodities2();
-        rCartShopBOs.add(rCartShopBO);
-        return rCartShopBOs;
+    public void getInfoFailed(String msg) {
+        progressBarRlayout.setVisibility(View.GONE);
+        MyUtils.showToast(getActivity().getApplicationContext(), msg);
     }
 
-    private List<RCartCommodityBO> getCommodities() {
-        rCartCommodityBOs = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            rCartCommodityBO = new RCartCommodityBO();
-            rCartCommodityBO.count = i + 1;
-            rCartCommodityBO.commodityId = i + 1;
-            rCartCommodityBO.name = "测试商品" + (i + 1);
-            rCartCommodityBO.price = 378 + i + "";
-            rCartCommodityBOs.add(rCartCommodityBO);
-        }
-        return rCartCommodityBOs;
+    public void changeCount(int cartId, int cartNum, int groupPosition, int childPosition, AddAndMinusView addAndMinusView, int commodityType) {
+        this.cartId = cartId;
+        this.count = cartNum;
+        this.addAndMinusView = addAndMinusView;
+        this.groupPosition = groupPosition;
+        this.childPosition = childPosition;
+        this.commodityType = commodityType;
+        progressBarRlayout.setVisibility(View.VISIBLE);
+        mPresenter.changeCount(cartId, cartNum, commodityType);
     }
 
-    private List<RCartCommodityBO> getCommodities2() {
-        rCartCommodityBOs = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            rCartCommodityBO = new RCartCommodityBO();
-            rCartCommodityBO.count = i + 1;
-            rCartCommodityBO.commodityId = i + 10;
-            rCartCommodityBO.name = "添加商品" + (i + 1);
-            rCartCommodityBO.price = 478 + i + "";
-            rCartCommodityBOs.add(rCartCommodityBO);
-        }
-        rCartCommodityBO = new RCartCommodityBO();
-        rCartCommodityBO.count = 4;
-        rCartCommodityBO.commodityId = 1;
-        rCartCommodityBO.name = "测试商品10";
-        rCartCommodityBO.price = "480";
-        rCartCommodityBOs.add(rCartCommodityBO);
-        return rCartCommodityBOs;
+    public void changeCountSucceed(RCommodityCount rCommodityCount) {
+        count = rCommodityCount.cartNum;
+        progressBarRlayout.setVisibility(View.GONE);
+        addAndMinusView.setCount(count);
+        adapter.setCount(groupPosition, childPosition, count);
     }
+
+    public void changeCountFailed() {
+        progressBarRlayout.setVisibility(View.GONE);
+    }
+
+    public void deleteCommodity() {
+        progressBarRlayout.setVisibility(View.VISIBLE);
+        mPresenter.deleteCommodity(deleteIndex);
+    }
+
+    public void deleteSucceed() {
+        progressBarRlayout.setVisibility(View.GONE);
+        adapter.remove();
+//                adapter.removeCount = 0;
+        adapter.deleteIndex = new ArrayList<>();
+        if (adapter.getGroupCount() == 0) {
+            listView.setVisibility(View.GONE);
+            buyLayout.setVisibility(View.GONE);
+            editLayout.setVisibility(View.GONE);
+            editTxt.setVisibility(View.GONE);
+            emptyLayout.setVisibility(View.VISIBLE);
+
+            allBuyChk.setChecked(false);
+            adapter.isEdit = false;
+        }
+    }
+
+    public void deleteFailed(String msg) {
+        progressBarRlayout.setVisibility(View.GONE);
+        MyUtils.showToast(getActivity().getApplicationContext(), msg);
+    }
+
+//    private List<RCartShopBO> getList() {
+//        rCartShopBOs = new ArrayList<>();
+//        for (int i = 0; i < 2; i++) {
+//            rCartShopBO = new RCartShopBO();
+////            rCartShopBO.shopId = i + 1;
+//            rCartShopBO.shopName = "测试店铺" + (i + 1);
+//            rCartShopBO.carts = getCommodities();
+//            rCartShopBOs.add(rCartShopBO);
+//        }
+//        return rCartShopBOs;
+//    }
+//
+//    private List<RCartShopBO> getList2() {
+//        rCartShopBOs = new ArrayList<>();
+//        for (int i = 0; i < 2; i++) {
+//            rCartShopBO = new RCartShopBO();
+////            rCartShopBO.shopId = i + 1;
+//            rCartShopBO.shopName = "测试店铺" + (i + 1);
+//            rCartShopBO.carts = getCommodities2();
+//            rCartShopBOs.add(rCartShopBO);
+//        }
+//        rCartShopBO = new RCartShopBO();
+////        rCartShopBO.shopId = 10;
+//        rCartShopBO.shopName = "测试店铺10";
+//        rCartShopBO.carts = getCommodities2();
+//        rCartShopBOs.add(rCartShopBO);
+//        return rCartShopBOs;
+//    }
+
+//    private List<RCartCommodityBO> getCommodities() {
+//        rCartCommodityBOs = new ArrayList<>();
+//        for (int i = 0; i < 5; i++) {
+//            rCartCommodityBO = new RCartCommodityBO();
+//            rCartCommodityBO.commodityNum = i + 1;
+//            rCartCommodityBO.commodityId = i + 1;
+//            rCartCommodityBO.commodityName = "测试商品" + (i + 1);
+//            rCartCommodityBO.commodityPrice = 378 + i + "";
+//            rCartCommodityBOs.add(rCartCommodityBO);
+//        }
+//        return rCartCommodityBOs;
+//    }
+//
+//    private List<RCartCommodityBO> getCommodities2() {
+//        rCartCommodityBOs = new ArrayList<>();
+//        for (int i = 0; i < 2; i++) {
+//            rCartCommodityBO = new RCartCommodityBO();
+//            rCartCommodityBO.commodityNum = i + 1;
+//            rCartCommodityBO.commodityId = i + 10;
+//            rCartCommodityBO.commodityName = "添加商品" + (i + 1);
+//            rCartCommodityBO.commodityPrice = 478 + i + "";
+//            rCartCommodityBOs.add(rCartCommodityBO);
+//        }
+//        rCartCommodityBO = new RCartCommodityBO();
+//        rCartCommodityBO.commodityNum = 4;
+//        rCartCommodityBO.commodityId = 1;
+//        rCartCommodityBO.commodityName = "测试商品10";
+//        rCartCommodityBO.commodityPrice = "480";
+//        rCartCommodityBOs.add(rCartCommodityBO);
+//        return rCartCommodityBOs;
+//    }
 
     /**
      * 购买状态
@@ -260,7 +335,8 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                     allEditChk.setChecked(false);
                     isClick = true;
                     adapter.isEdit = true;
-                    adapter.removeCount = 0;
+//                    adapter.removeCount = 0;
+                    adapter.deleteIndex = new ArrayList<>();
                     adapter.cancelAll();
                     adapter.notifyDataSetChanged();
                 } else {//完成
@@ -272,7 +348,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 }
                 break;
             case R.id.txt_delete:
-                if (adapter.removeCount == 0) {
+                if (adapter.deleteIndex.size() == 0) {
                     MyUtils.showToast(getActivity().getApplicationContext(), "您还没有选择商品哦!");
                     return;
                 }
@@ -291,21 +367,25 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
             case R.id.btn_dialog_confirm:
                 if (TextUtils.isEmpty(dialogCountEdt.getText().toString()))
                     return;
-                addAndMinusView.setCount(count);
-                adapter.setCount(groupPosition, childPosition, count);
+//                addAndMinusView.setCount(count);
+//                adapter.setCount(groupPosition, childPosition, count);
+                progressBarRlayout.setVisibility(View.VISIBLE);
+                mPresenter.changeCount(cartId, count, commodityType);
                 popUpWindow.dismiss();
                 break;
         }
     }
 
-    public void showEditPopupWindow(int groupPosition, int childPosition, int count, AddAndMinusView addAndMinusView) {
+    public void showEditPopupWindow(int cartId, int count, int groupPosition, int childPosition, AddAndMinusView addAndMinusView, int commodityType) {
         if (popUpWindow == null)
             popUpWindow = new EditPopUpWindow(getActivity());
 
+        this.cartId = cartId;
         this.count = count;
         this.addAndMinusView = addAndMinusView;
         this.groupPosition = groupPosition;
         this.childPosition = childPosition;
+        this.commodityType = commodityType;
 
         dialogCountEdt.setText(count + "");
         dialogCountEdt.setSelection(String.valueOf(count).length());
@@ -322,21 +402,15 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     }
 
     private void showDialog() {
-        Dialog dialog = new AlertDialog.Builder(getActivity()).setMessage("确认要删除这" + adapter.removeCount + "种商品吗?").setNegativeButton("取消", null).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+        Dialog dialog = new AlertDialog.Builder(getActivity()).setMessage("确认要删除这" + adapter.deleteIndex.size() + "种商品吗?").setNegativeButton("取消", null).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                adapter.remove();
-                adapter.removeCount = 0;
-                if (adapter.getGroupCount() == 0) {
-                    listView.setVisibility(View.GONE);
-                    buyLayout.setVisibility(View.GONE);
-                    editLayout.setVisibility(View.GONE);
-                    editTxt.setVisibility(View.GONE);
-                    emptyLayout.setVisibility(View.VISIBLE);
+                deleteIndex = new int[adapter.deleteIndex.size()];
+                int index = 0;
+                for (Integer integer : adapter.deleteIndex)
+                    deleteIndex[index++] = integer;
 
-                    allBuyChk.setChecked(false);
-                    adapter.isEdit = false;
-                }
+                deleteCommodity();
             }
         }).create();
         dialog.show();
@@ -356,7 +430,10 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         super.onHiddenChanged(hidden);
         if (!hidden) {
             changeState();
-            add(getList2());
+            isRefresh = true;
+            progressBarRlayout.setVisibility(View.VISIBLE);
+            mPresenter.getCartInfo(286);
+//            add(getList2());
         }
     }
 
@@ -387,18 +464,19 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 //遍历新增的商品和老的商品并比较
                 int newLen = obj.getChildrenCount();
                 for (int j = 0; j < newLen; j++) {
-                    if (!data.get(i).rCartCommodityBOs.contains(obj.rCartCommodityBOs.get(j))) {//不存在则添加新商品
-                        data.get(i).rCartCommodityBOs.add(0, obj.rCartCommodityBOs.get(j));
-                        LogUtils.d(TAG, "店铺" + obj.shop + "添加了商品" + obj.rCartCommodityBOs.get(j).name);
+                    if (!data.get(i).carts.contains(obj.carts.get(j))) {//不存在则添加新商品
+                        obj.carts.get(j).isBuyChecked = data.get(i).isBuyChecked;
+                        data.get(i).carts.add(0, obj.carts.get(j));
+                        LogUtils.d(TAG, "店铺" + obj.shopName + "添加了商品" + obj.carts.get(j).commodityName);
                     } else {//存在则更新
-                        int position = data.get(i).rCartCommodityBOs.indexOf(obj.rCartCommodityBOs.get(j));
-                        data.get(i).rCartCommodityBOs.set(position, obj.rCartCommodityBOs.get(j));
-                        LogUtils.d(TAG, "店铺" + obj.shop + "更新了商品" + obj.rCartCommodityBOs.get(j).name);
+                        int position = data.get(i).carts.indexOf(obj.carts.get(j));
+                        obj.carts.get(j).isBuyChecked = data.get(i).carts.get(data.get(i).carts.indexOf(obj.carts.get(j))).isBuyChecked;
+                        data.get(i).carts.set(position, obj.carts.get(j));
+                        LogUtils.d(TAG, "店铺" + obj.shopName + "更新了商品" + obj.carts.get(j).commodityName);
                     }
-                    obj.rCartCommodityBOs.get(j).isBuyChecked = data.get(i).isBuyChecked;
                 }
             } else {
-                LogUtils.d(TAG, "添加了一个店铺:" + obj.shop);
+                LogUtils.d(TAG, "添加了一个店铺:" + obj.shopName);
                 obj.isBuyChecked = allBuyChk.isChecked();
                 obj.setChildChecked(allBuyChk.isChecked());
                 data.add(0, obj);
@@ -447,13 +525,13 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                     LogUtils.d(TAG, "temp:" + temp);
                     if (temp.length() == 0)
                         return;
-                    if (temp.length() == 1 && temp.equals("0")) {
+                    if (temp.length() == MyConfig.MINCOUNT && temp.equals("0")) {
                         s.replace(0, 1, "1");
-                        count = 1;
+                        count = MyConfig.MINCOUNT;
                     }
                     count = Integer.parseInt(temp);
-                    if (count > maxNum) {
-                        count = maxNum;
+                    if (count > MyConfig.MAXCOUNT) {
+                        count = MyConfig.MAXCOUNT;
                         LogUtils.d(TAG, "s:" + s.toString() + " len" + s.length());
                         s.replace(0, s.length(), count + "");
                     }
@@ -490,10 +568,10 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
      * @param count
      */
     private void setEnabled(int count) {
-        if (count == minNum) {
+        if (count == MyConfig.MINCOUNT) {
             dialogMinusImg.setEnabled(false);
             dialogPlusImg.setEnabled(true);
-        } else if (count == maxNum) {
+        } else if (count == MyConfig.MAXCOUNT) {
             dialogMinusImg.setEnabled(true);
             dialogPlusImg.setEnabled(false);
         } else {

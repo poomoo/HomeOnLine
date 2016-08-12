@@ -18,12 +18,12 @@
 
         <CheckBox
             android:id="@+id/chk_commodity"
-            android:focusable="false"
-            android:clickable="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/my_check_box"
-            android:button="@null" />
+            android:button="@null"
+            android:clickable="false"
+            android:focusable="false" />
     </LinearLayout>
 
     <ImageView
@@ -45,13 +45,15 @@
             android:id="@+id/txt_commodity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="测试商品"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试商品测试"
             android:textSize="@dimen/sp_14" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp">
+            android:layout_height="match_parent"
+            android:gravity="bottom">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -74,6 +76,7 @@
                     android:text="369.00"
                     android:textColor="@color/ThemeRed"
                     android:textSize="@dimen/sp_12" />
+
             </LinearLayout>
 
             <com.poomoo.homeonline.ui.custom.AddAndMinusView

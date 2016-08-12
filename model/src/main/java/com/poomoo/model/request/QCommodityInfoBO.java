@@ -34,11 +34,21 @@ package com.poomoo.model.request;
  */
 public class QCommodityInfoBO extends BaseRequest {
     public int commodityId;
-    public int commodityDetailId;
+    public Integer commodityDetailId;
+    public int commodityType;
 
-    public QCommodityInfoBO(String method, int commodityId, int commodityDetailId) {
+//    public QCommodityInfoBO(String method, int commodityId, Integer commodityDetailId) {
+//        super(method);
+//        this.commodityId = commodityId;
+//        if (commodityDetailId != -1)
+//            this.commodityDetailId = commodityDetailId;
+//    }
+
+    public QCommodityInfoBO(String method, int commodityId, Integer commodityDetailId, int commodityType) {
         super(method);
         this.commodityId = commodityId;
-        this.commodityDetailId = commodityDetailId;
+        if (commodityDetailId != -1)
+            this.commodityDetailId = commodityDetailId;
+        this.commodityType = commodityType;
     }
 }

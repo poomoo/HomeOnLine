@@ -26,6 +26,7 @@
  */
 package com.poomoo.model.response;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -34,15 +35,14 @@ import java.util.List;
  * 作者 李苜菲
  * 日期 2016/8/5 16:55
  */
-public class RCommodityInfoBO {
+public class RCommodityInfoBO implements Serializable {
     public List<Pic> commodityPictures;
     public Commodity commodity;
     public List<Paramter> paramters;
     public List<TjCommodity> tjCommodity;
     public List<SpecialParamter> specialParamters;
 
-
-    class Pic {
+    public class Pic implements Serializable {
         public String url;
 
         @Override
@@ -53,14 +53,14 @@ public class RCommodityInfoBO {
         }
     }
 
-    class Commodity {
+    public class Commodity implements Serializable {
         public String commodityName;//商品名称
         public int categoryId;//分类主键
         public String listPic;//列表图片
-        public List<detail> lowestPriceDetail;//当前的明细
+        public Detail lowestPriceDetail;//当前的明细
         public String remark;//商品详情多媒体文本
 
-        public class detail {
+        public class Detail implements Serializable{
             public int id;//主键
             public double commonPrice;//市场价
             public double platformPrice;//平台价格
@@ -92,7 +92,7 @@ public class RCommodityInfoBO {
     /**
      * 商品描述
      */
-    class Paramter {
+    public class Paramter implements Serializable {
         public String parameterName; //参数名字
         public String paramterValue; //参数值
 
@@ -108,11 +108,11 @@ public class RCommodityInfoBO {
     /**
      * 商品规格
      */
-    class SpecialParamter {
+    public class SpecialParamter implements Serializable{
         public String parameterName;//参数名称
         public List<ParametersValues> parametersValues;//参数值实体
 
-        public class ParametersValues {
+        public class ParametersValues implements Serializable{
             public int id;//参数值主键
             public String parameterValue;//参数值
             public boolean isCheck;//是否选中
@@ -139,7 +139,7 @@ public class RCommodityInfoBO {
     /**
      * 推荐商品
      */
-    class TjCommodity {
+    public class TjCommodity implements Serializable{
         public int commodityId;//商品主键
         public double platformPrice;//平台价格
         public double commonPrice;//市场价格

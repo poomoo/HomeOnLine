@@ -10,11 +10,15 @@ package com.poomoo.model.response;
  * 日期 2016/8/5 16:54
  */
 public class RCartCommodityBO {
-    public String img;
-    public String name;
+    public int id;//在购物车里面的ID
+    public String listPic;
+    public String commodityName;
     public int commodityId;
-    public String price;
-    public int count;
+    public double commodityPrice;
+    public int commodityNum;
+    public int orderType; //0.普通商品，2.抢购商品，1.特价商品，4.活动商品，3新年活动商品
+    public int commodityType;
+
     public boolean isBuyChecked;
     public boolean isEditChecked;
 
@@ -32,7 +36,7 @@ public class RCartCommodityBO {
 
     @Override
     public boolean equals(Object o) {
-        if (this.commodityId == ((RCartCommodityBO) o).commodityId)
+        if (this.id == ((RCartCommodityBO) o).id)
             return true;
         return false;
     }

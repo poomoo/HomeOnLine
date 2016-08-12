@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
+        android:onClick="toDo"
         android:layout_marginRight="10dp"
         android:visibility="gone" />
 

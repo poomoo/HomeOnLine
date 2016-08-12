@@ -136,36 +136,36 @@ public class BottomBar extends LinearLayout implements OnClickListener {
             case 0:
                 if (isShow) {
                     inform_mainTxt.setVisibility(View.VISIBLE);
-                    inform_mainTxt.setText(number + "");
+                    inform_mainTxt.setText(number > 99 ? "99+" : number + "");
                 } else
                     inform_mainTxt.setVisibility(View.INVISIBLE);
                 break;
             case 1:
                 if (isShow) {
                     inform_classifyTxt.setVisibility(View.VISIBLE);
-                    inform_classifyTxt.setText(number + "");
+                    inform_classifyTxt.setText(number > 99 ? "99+" : number + "");
                 } else
                     inform_mainTxt.setVisibility(View.INVISIBLE);
                 break;
             case 2:
                 if (isShow) {
                     inform_grabTxt.setVisibility(View.VISIBLE);
-                    inform_grabTxt.setText(number + "");
+                    inform_grabTxt.setText(number > 99 ? "99+" : number + "");
                 } else
                     inform_grabTxt.setVisibility(View.INVISIBLE);
                 break;
             case 3:
                 if (isShow) {
                     inform_cartTxt.setVisibility(View.VISIBLE);
-                    inform_cartTxt.setText(number + "");
-                    LogUtils.d(TAG, "购物车显示数量" + number + "isShow" + inform_cartTxt.getVisibility());
+                    inform_cartTxt.setText(number > 99 ? "99+" : number + "");
+//                    LogUtils.d(TAG, "购物车显示数量" + number + "isShow" + inform_cartTxt.getVisibility());
                 } else
                     inform_cartTxt.setVisibility(View.INVISIBLE);
                 break;
             case 4:
                 if (isShow) {
                     inform_centerTxt.setVisibility(View.VISIBLE);
-                    inform_centerTxt.setText(number + "");
+                    inform_centerTxt.setText(number > 99 ? "99+" : number + "");
                 } else
                     inform_centerTxt.setVisibility(View.INVISIBLE);
                 break;

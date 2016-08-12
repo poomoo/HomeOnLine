@@ -30,7 +30,6 @@ import butterknife.ButterKnife;
  * 日期 2016/7/19 11:33
  */
 public class GuessAdapter extends BaseListAdapter<RGuessBO> {
-    private String TAG = "GuessAdapter";
     private RGuessBO item;
 
     public GuessAdapter(Context context, int mode) {

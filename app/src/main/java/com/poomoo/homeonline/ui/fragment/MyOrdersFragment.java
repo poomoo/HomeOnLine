@@ -51,7 +51,7 @@ public class MyOrdersFragment extends BaseListFragment<ROrderBO> implements Base
         mListView.setPadding(0, setDividerSize(), 0, 0);
         mAdapter.setOnItemClickListener(this);
 
-        EMPTY_DATA = ErrorLayout.NO_ORDER;
+        setEmptyMsg("您还没有订单哦");
 
         onLoadFinishState(action);
         onLoadResultData(getList());

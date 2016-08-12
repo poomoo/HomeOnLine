@@ -20,7 +20,6 @@ import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
  * 日期 2016/7/19 11:34
  */
 public class ZoneAdapter extends MyBaseAdapter<String> {
-    private static final String TAG = "AddressAdapter";
     public static final int PROVINCE = 1;
     public static final int CITY = 2;
     public static final int AREA = 3;

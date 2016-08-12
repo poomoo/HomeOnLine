@@ -13,6 +13,7 @@ public class RAdBO {
     public String advertisementPic;//广告图片
     public int commodityId;//商品主键
     public boolean isCommodity;//是否是商品广告
+    public int commodityType;//1.普通商品，2抢购商品，3.新年活动商品，4活动商品，5.特价商品
 
     @Override
     public String toString() {
@@ -21,6 +22,7 @@ public class RAdBO {
                 ", advertisementPic='" + advertisementPic + '\'' +
                 ", commodityId=" + commodityId +
                 ", isCommodity=" + isCommodity +
+                ", commodityType=" + commodityType +
                 '}';
     }
 }

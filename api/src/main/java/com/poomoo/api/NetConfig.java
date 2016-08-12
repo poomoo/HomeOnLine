@@ -11,7 +11,7 @@ public class NetConfig {
     public static String RemoteUrl = "http://115.28.95.198/";
     public static String LocalUrl = "http://192.168.1.107:8080/";
     public static String ImageUrl = "http://img.jiayou9.com/jyzx";
-    public static String url = LocalUrl;
+    public static String url = RemoteUrl;
 
     public final static boolean FALSE = false;//超时
     public final static String TIME_OUT_EVENT_MSG = "连接服务器失败";
@@ -31,5 +31,21 @@ public class NetConfig {
 
     public final static String CLASSIFY = "1007_01";//商品分类
 
+    public final static String CARTINFO = "1008_01";//购物车信息
+    public final static String ADDCART = "1008_03";//加入购物车
+    public final static String DELETECART = "1008_04";//删除购物车商品
+    public final static String CHANGCOUNT = "1008_05";//购物车某商品数量修改
+
     public final static String COMMODITY = "1009_01";//商品详情
+    public final static String SPECIFICATION = "1009_02";//商品规格详情
+
+    public final static String GETADDRESSLIST = "1011_02";//收货地址列表
+    public final static String GETZONEINFO = "1011_06";//区域信息
+
+    public static final String ADDHISTORY = "1012_01";//增加浏览记录
+    public static final String GETHISTORY = "1012_02";//获取浏览记录
+    public static final String DELETEHISTORY = "1012_03";//删除浏览记录
+
+    public static final String COLLECTIONLIST = "1013_02";//收藏记录
+    public static final String CANCELCOLLECTION = "1013_03";//取消收藏
 }

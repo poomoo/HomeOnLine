@@ -21,7 +21,6 @@ import com.poomoo.model.ImageBucket;
  * 日期: 2015/11/23 15:49.
  */
 public class ImageBucketAdapter extends MyBaseAdapter<ImageBucket> {
-    private final String TAG = getClass().getSimpleName();
     private BitmapCache cache;
     BitmapCache.ImageCallback callback = new BitmapCache.ImageCallback() {
         @Override

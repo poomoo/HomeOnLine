@@ -13,19 +13,28 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
+import com.poomoo.homeonline.database.AreaInfo;
+import com.poomoo.homeonline.database.CityInfo;
+import com.poomoo.homeonline.database.DataBaseHelper;
+import com.poomoo.homeonline.database.ProvinceInfo;
 import com.poomoo.homeonline.presenters.CenterFragmentPresenter;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
-import com.poomoo.homeonline.ui.activity.AddressInfoActivity;
 import com.poomoo.homeonline.ui.activity.AddressListActivity;
+import com.poomoo.homeonline.ui.activity.CollectActivity;
 import com.poomoo.homeonline.ui.activity.FeedBackActivity;
 import com.poomoo.homeonline.ui.activity.MyInfoActivity;
 import com.poomoo.homeonline.ui.activity.MyOrdersActivity;
 import com.poomoo.homeonline.ui.activity.SafeActivity;
+import com.poomoo.homeonline.ui.activity.ScanHistoryActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
-import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.model.response.ROrderBO;
+import com.poomoo.model.response.RZoneBO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -37,9 +46,6 @@ import butterknife.OnClick;
  * 日期 2016/7/19 11:20
  */
 public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> {
-//    @Bind(R.id.scrollView_main)
-//    MyScrollView scrollView;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_center, container, false);
@@ -50,7 +56,7 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initView();
+        init();
     }
 
     @Override
@@ -61,7 +67,8 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
                 .inject(this);
     }
 
-    private void initView() {
+    private void init() {
+        mPresenter.getZoneInfo();
     }
 
     @OnClick(R.id.rlayout_myOrder)
@@ -107,9 +114,15 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         openActivity(MyOrdersActivity.class, bundle);
     }
 
-    @OnClick({R.id.rlayout_my_info, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_safe})
+    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_safe})
     void other(View view) {
         switch (view.getId()) {
+            case R.id.txt_collection:
+                openActivity(CollectActivity.class);
+                break;
+            case R.id.txt_history:
+                openActivity(ScanHistoryActivity.class);
+                break;
             case R.id.llayout_after_safe:
 //                openActivity(MyInfoActivity.class);
                 break;
@@ -151,5 +164,32 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         dialog.show();
     }
 
+
+    private List<ProvinceInfo> provinceInfo;
+    private List<CityInfo> cityInfo;
+    private List<AreaInfo> areaInfo;
+
+    public void getZoneInfo(List<RZoneBO> rZoneBOs) {
+        LogUtils.d(TAG, "getZoneInfo");
+        provinceInfo = new ArrayList<>();
+        for (RZoneBO rZoneBO : rZoneBOs) {
+            ProvinceInfo provinceInfo = new ProvinceInfo(rZoneBO.provinceId, rZoneBO.provinceName);
+            int len = rZoneBO.cities.size();
+            cityInfo = new ArrayList<>();
+            for (int i = 0; i < len; i++) {
+                CityInfo cityInfo = new CityInfo(rZoneBO.cities.get(i).cityId, rZoneBO.cities.get(i).cityName, rZoneBO.cities.get(i).isHot, provinceInfo.getProvinceId());
+                int len2 = rZoneBO.cities.get(i).areas.size();
+                areaInfo = new ArrayList<>();
+                for (int j = 0; j < len2; j++)
+                    areaInfo.add(new AreaInfo(rZoneBO.cities.get(i).areas.get(j).areaId, rZoneBO.cities.get(i).areas.get(j).areaName, cityInfo.getCityId()));
+                DataBaseHelper.saveArea(areaInfo);
+                this.cityInfo.add(cityInfo);
+            }
+            DataBaseHelper.saveCity(cityInfo);
+            this.provinceInfo.add(provinceInfo);
+        }
+        DataBaseHelper.saveProvince(provinceInfo);
+        LogUtils.d(TAG, "插表完成");
+    }
 
 }

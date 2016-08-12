@@ -29,19 +29,33 @@ package com.poomoo.api.api;
 import com.poomoo.model.RUserBO;
 import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.BaseRequest;
+import com.poomoo.model.request.QAddCartBO;
+import com.poomoo.model.request.QCancelCollectionBO;
 import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QCodeBO;
+import com.poomoo.model.request.QPageBO;
 import com.poomoo.model.request.QCommodityInfoBO;
+import com.poomoo.model.request.QCountBO;
+import com.poomoo.model.request.QDeleteBO;
+import com.poomoo.model.request.QHistory;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
+import com.poomoo.model.request.QSpecificationBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.response.RAdBO;
+import com.poomoo.model.response.RCartShopBO;
 import com.poomoo.model.response.RClassifyBO;
+import com.poomoo.model.response.RCollectBO;
+import com.poomoo.model.response.RCommodityCount;
 import com.poomoo.model.response.RCommodityInfoBO;
 import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RGuessBO;
+import com.poomoo.model.response.RListCommodityBO;
+import com.poomoo.model.response.RReceiptBO;
 import com.poomoo.model.response.RSpecialAdBO;
+import com.poomoo.model.response.RSpecificationBO;
 import com.poomoo.model.response.RTypeBO;
+import com.poomoo.model.response.RZoneBO;
 
 
 import java.util.List;
@@ -96,4 +110,52 @@ public interface MyApi {
     //商品详情
     @POST("app/call.json")
     Observable<RCommodityInfoBO> GetCommodityInfo(@Body QCommodityInfoBO data);
+
+    //商品规格详情
+    @POST("app/call.json")
+    Observable<RSpecificationBO> GetCommodityInfoBySpecification(@Body QSpecificationBO data);
+
+    //加入购物车
+    @POST("app/call.json")
+    Observable<ResponseBO> AddToCart(@Body QAddCartBO data);
+
+    //获取购物车信息
+    @POST("app/call.json")
+    Observable<List<RCartShopBO>> GetCartInfo(@Body QUserIdBO data);
+
+    //修改购物车某个商品的数量
+    @POST("app/call.json")
+    Observable<RCommodityCount> ChangeCommodityCount(@Body QCountBO data);
+
+    //删除购物车商品
+    @POST("app/call.json")
+    Observable<ResponseBO> DeleteCartCommodity(@Body QDeleteBO data);
+
+    //增加浏览记录
+    @POST("app/call.json")
+    Observable<ResponseBO> AddHistory(@Body QHistory data);
+
+    //获取浏览记录
+    @POST("app/call.json")
+    Observable<List<RListCommodityBO>> GetHistory(@Body QPageBO data);
+
+    //删除浏览记录
+    @POST("app/call.json")
+    Observable<ResponseBO> DeleteHistory(@Body QCancelCollectionBO data);
+
+    //收藏记录
+    @POST("app/call.json")
+    Observable<List<RCollectBO>> GetCollectionList(@Body QPageBO data);
+
+    //取消收藏
+    @POST("app/call.json")
+    Observable<ResponseBO> CancelCollection(@Body QCancelCollectionBO data);
+
+    //取消收藏
+    @POST("app/call.json")
+    Observable<List<RReceiptBO>> GetAddressList(@Body QUserIdBO data);
+
+    //获取区域信息
+    @POST("app/call.json")
+    Observable<List<RZoneBO>> GetZoneInfo(@Body BaseRequest data);
 }

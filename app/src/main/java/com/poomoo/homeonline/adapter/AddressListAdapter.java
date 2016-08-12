@@ -24,8 +24,6 @@ import butterknife.ButterKnife;
 public class AddressListAdapter extends BaseListAdapter<RReceiptBO> {
     private RReceiptBO item;
 
-    private static final String TAG = "AddressListAdapter";
-
     public AddressListAdapter(Context context, int mode) {
         super(context, mode);
     }
@@ -41,9 +39,9 @@ public class AddressListAdapter extends BaseListAdapter<RReceiptBO> {
         BaseViewHolder holder = (BaseViewHolder) h;
         item = items.get(position);
 
-        holder.nameTxt.setText(item.name);
-        holder.telTxt.setText(item.tel);
-        holder.addressTxt.setText(item.address);
+        holder.nameTxt.setText(item.consigneeName);
+        holder.telTxt.setText(item.consigneeTel);
+        holder.addressTxt.setText(item.pca);
     }
 
     public static final class BaseViewHolder extends RecyclerView.ViewHolder {

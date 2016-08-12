@@ -16,10 +16,10 @@ import java.util.List;
  * 日期 2016/7/19 11:29
  */
 public abstract class MyBaseAdapter<T> extends BaseAdapter {
-    private String TAG = "MyBaseAdapter";
     protected Context context;
     protected LayoutInflater inflater;
     protected List<T> itemList = new ArrayList<>();
+    protected final String TAG = getClass().getSimpleName();
 
     public MyBaseAdapter(Context context) {
         this.context = context;

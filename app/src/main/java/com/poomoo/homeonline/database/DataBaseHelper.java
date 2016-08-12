@@ -44,8 +44,10 @@ public class DataBaseHelper {
     public static void saveCity(List<CityInfo> cityInfos) {
         for (CityInfo cityInfo : cityInfos) {
             Cursor cursor = DataSupport.findBySQL("select * from CityInfo where cityId = ? and provinceId = ?", cityInfo.getCityId() + "", cityInfo.getProvinceId() + "");
-            if (cursor.getCount() == 0)
+            if (cursor.getCount() == 0){
+                LogUtils.d(TAG, "cityInfo"  + cityInfo.toString());
                 cityInfo.save();
+            }
             cursor.close();
         }
         LogUtils.d(TAG, "saveCity完成");
@@ -58,7 +60,7 @@ public class DataBaseHelper {
      */
     public static void saveArea(List<AreaInfo> areaInfos) {
         for (AreaInfo areaInfo : areaInfos) {
-            LogUtils.d(TAG, "areaInfo:" + areaInfo.getAreaId() + ":" + areaInfo.getAreaName());
+//            LogUtils.d(TAG, "areaInfo:" + areaInfo.getAreaId() + ":" + areaInfo.getAreaName());
             Cursor cursor = DataSupport.findBySQL("select * from AreaInfo where cityId = ? and areaId = ?", areaInfo.getCityId() + "", areaInfo.getAreaId() + "");
             if (cursor.getCount() == 0) {
                 areaInfo.save();
@@ -81,7 +83,7 @@ public class DataBaseHelper {
                 typeInfo.save();
             cursor.close();
         }
-        LogUtils.d(TAG, "saveType完成");
+//        LogUtils.d(TAG, "saveType完成");
     }
 
     /**
@@ -121,7 +123,7 @@ public class DataBaseHelper {
      * @return
      */
     public static List<AreaInfo> getAreaList(int cityId) {
-        LogUtils.d(TAG, "getAreaList:" + cityId);
+//        LogUtils.d(TAG, "getAreaList:" + cityId);
         List<AreaInfo> areaList = DataSupport.where("cityId = ?", cityId + "").find(AreaInfo.class);
         return areaList;
     }
@@ -164,7 +166,7 @@ public class DataBaseHelper {
         List<String> list = new ArrayList<>();
         List<ProvinceInfo> provinceInfos = getProvinceList();
         for (ProvinceInfo provinceInfo : provinceInfos) {
-            LogUtils.d(TAG, "ProvinceName" + provinceInfo.getProvinceName());
+//            LogUtils.d(TAG, "ProvinceName" + provinceInfo.getProvinceName());
             list.add(provinceInfo.getProvinceName() + "#" + provinceInfo.getProvinceId());
         }
         return list;
@@ -196,20 +198,20 @@ public class DataBaseHelper {
     }
 
     public static String[] getProvinceCityArea(int provinceId, int cityId, int areaId) {
-        LogUtils.d(TAG, "provinceId:" + provinceId + "cityId:" + cityId + "areaId:" + areaId);
+//        LogUtils.d(TAG, "provinceId:" + provinceId + "cityId:" + cityId + "areaId:" + areaId);
         String[] temp = new String[3];
         Cursor cursor = DataSupport.findBySQL("select provinceName from ProvinceInfo where provinceId = ?", provinceId + "");
         cursor.moveToFirst();
         temp[0] = cursor.getString(0);
-        LogUtils.d(TAG, "province:" + temp[0]);
+//        LogUtils.d(TAG, "province:" + temp[0]);
         cursor = DataSupport.findBySQL("select cityName from CityInfo where provinceId = ? and cityId = ?", provinceId + "", cityId + "");
         cursor.moveToFirst();
         temp[1] = cursor.getString(0);
-        LogUtils.d(TAG, "city:" + temp[1]);
+//        LogUtils.d(TAG, "city:" + temp[1]);
         cursor = DataSupport.findBySQL("select areaName from AreaInfo where cityId = ? and areaId = ?", cityId + "", areaId + "");
         cursor.moveToFirst();
         temp[2] = cursor.getString(0);
-        LogUtils.d(TAG, "area:" + temp[2]);
+//        LogUtils.d(TAG, "area:" + temp[2]);
         cursor.close();
         return temp;
     }

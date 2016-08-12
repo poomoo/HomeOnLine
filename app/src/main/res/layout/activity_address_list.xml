@@ -7,33 +7,30 @@
 
     <include layout="@layout/pub_layout_title_bar" />
 
-    <RelativeLayout
+    <include
+        layout="@layout/fragment_universal_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_address"
+    <LinearLayout
+        android:id="@+id/llayout_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:paddingBottom="10dp"
+
+        android:paddingTop="10dp"
+        android:visibility="gone">
+
+        <Button
+            style="@style/myButton_Red"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/bottom" />
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:onClick="addAddress"
+            android:text="新增地址" />
+    </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/bottom"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@color/white"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp">
-
-            <Button
-                style="@style/myButton_Red"
-                android:layout_width="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-
-                android:onClick="addAddress"
-                android:text="新增地址" />
-        </LinearLayout>
-    </RelativeLayout>
 </LinearLayout>

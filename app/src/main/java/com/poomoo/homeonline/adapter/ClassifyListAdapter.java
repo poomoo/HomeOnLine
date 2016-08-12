@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
  * 日期 2016/7/19 11:30
  */
 public class ClassifyListAdapter extends BaseListAdapter<RClassifyBO> {
-    private static final String TAG = "ClassifyListAdapter";
 
     public ClassifyListAdapter(Context context, int mode) {
         super(context, mode);

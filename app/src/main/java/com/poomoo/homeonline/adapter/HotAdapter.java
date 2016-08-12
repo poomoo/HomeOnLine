@@ -28,7 +28,6 @@ import butterknife.ButterKnife;
  * 日期 2016/7/19 11:33
  */
 public class HotAdapter extends BaseListAdapter<RAdBO> {
-    private String TAG = "HotAdapter";
     private RAdBO item;
 
     public HotAdapter(Context context, int mode) {

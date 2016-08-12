@@ -1,12 +1,16 @@
 package com.poomoo.homeonline.ui.custom;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 
 /**
@@ -22,14 +26,15 @@ public class ErrorLayout extends FrameLayout {
     public static final int LOAD_FAILED = 2;
     public static final int NOT_NETWORK = 3;
     public static final int EMPTY_DATA = 4;
-    public static final int NO_COLLECTED = 5;
-    public static final int NO_ORDER = 6;
+    private final String TAG = getClass().getSimpleName();
 
-    private ProgressBar probar;
+    //    private ProgressBar probar;
+    private RelativeLayout progressLayout;
     private TextView vText;
     private TextView vLoadFailure;
     private OnActiveClickListener listener;
     private int mState = HIDE;
+    private Drawable drawable;
 
     public ErrorLayout(Context context) {
         super(context);
@@ -44,22 +49,21 @@ public class ErrorLayout extends FrameLayout {
     private void initView() {
         View view = View.inflate(getContext(), R.layout.view_error_layout, null);
 
-        probar = (ProgressBar) view.findViewById(R.id.progressbar);
+        progressLayout = (RelativeLayout) view.findViewById(R.id.rlayout_progressBar);
         vText = (TextView) view.findViewById(R.id.state_text);
         vLoadFailure = (TextView) view.findViewById(R.id.load_failed);
 
-        vLoadFailure.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (listener != null)
-                    listener.onLoadActiveClick();
-            }
+        vLoadFailure.setOnClickListener(v -> {
+            if (listener != null)
+                listener.onLoadActiveClick();
         });
         addView(view);
     }
 
 
-    public void setState(int state) {
+    public void setState(int state, String emptyMsg) {
+        LogUtils.d(TAG, "setState:" + state + " emptyMsg:" + emptyMsg);
+
         mState = state;
         switch (state) {
             case HIDE:
@@ -69,50 +73,63 @@ public class ErrorLayout extends FrameLayout {
             case LOADING:
                 setVisibility(VISIBLE);
                 vLoadFailure.setVisibility(GONE);
-                vText.setVisibility(VISIBLE);
+                vText.setVisibility(GONE);
                 vText.setText("加载中...");
-                probar.setVisibility(VISIBLE);
+                progressLayout.setVisibility(VISIBLE);
                 break;
 
             case LOAD_FAILED:
                 setVisibility(VISIBLE);
                 vLoadFailure.setVisibility(VISIBLE);
-                vLoadFailure.setText("数据加载失败");
+                vLoadFailure.setText("数据加载失败,点击重新加载");
+                vLoadFailure.setCompoundDrawables(null, null, null, null);
+//                vLoadFailure.setText("失败");
                 vText.setVisibility(GONE);
-                probar.setVisibility(GONE);
+                progressLayout.setVisibility(GONE);
                 break;
 
             case NOT_NETWORK:
                 setVisibility(VISIBLE);
                 vLoadFailure.setVisibility(VISIBLE);
-                vLoadFailure.setText("请检查网络后再试");
+                drawable = getResources().getDrawable(R.drawable.ic_network_invalid);
+                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), (drawable.getMinimumHeight()));
+                vLoadFailure.setCompoundDrawables(null, drawable, null, null);
+                vLoadFailure.setText("网络请求失败" + "\n\n" + "请检查您的网络" + "\n" + "点击刷新");
                 vText.setVisibility(GONE);
-                probar.setVisibility(GONE);
+                progressLayout.setVisibility(GONE);
                 break;
 
             case EMPTY_DATA:
                 setVisibility(VISIBLE);
-                vLoadFailure.setVisibility(VISIBLE);
-                vLoadFailure.setText("没有数据");
-                vText.setVisibility(GONE);
-                probar.setVisibility(GONE);
+                vLoadFailure.setVisibility(GONE);
+                vText.setVisibility(VISIBLE);
+                vText.setText(emptyMsg);
+                progressLayout.setVisibility(GONE);
                 break;
 
-            case NO_COLLECTED:
-                setVisibility(VISIBLE);
-                vLoadFailure.setVisibility(VISIBLE);
-                vLoadFailure.setText("没有收藏记录");
-                vText.setVisibility(GONE);
-                probar.setVisibility(GONE);
-                break;
-
-            case NO_ORDER:
-                setVisibility(VISIBLE);
-                vLoadFailure.setVisibility(VISIBLE);
-                vLoadFailure.setText("您还没有订单哦");
-                vText.setVisibility(GONE);
-                probar.setVisibility(GONE);
-                break;
+//            case NO_COLLECTED:
+//                setVisibility(VISIBLE);
+//                vLoadFailure.setVisibility(VISIBLE);
+//                vLoadFailure.setText("没有收藏记录");
+//                vText.setVisibility(GONE);
+//                progressLayout.setVisibility(GONE);
+//                break;
+//
+//            case NO_ORDER:
+//                setVisibility(VISIBLE);
+//                vLoadFailure.setVisibility(VISIBLE);
+//                vLoadFailure.setText("您还没有订单哦");
+//                vText.setVisibility(GONE);
+//                progressLayout.setVisibility(GONE);
+//                break;
+//
+//            case CUSTOM:
+//                setVisibility(VISIBLE);
+//                vLoadFailure.setVisibility(VISIBLE);
+//                vLoadFailure.setText(customMsg);
+//                vText.setVisibility(GONE);
+//                progressLayout.setVisibility(GONE);
+//                break;
         }
     }
 

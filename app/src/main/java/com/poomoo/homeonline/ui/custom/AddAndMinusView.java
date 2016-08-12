@@ -4,22 +4,15 @@
 package com.poomoo.homeonline.ui.custom;
 
 import android.content.Context;
-import android.media.Image;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyConfig;
 import com.poomoo.homeonline.R;
-import com.poomoo.homeonline.ui.activity.MainActivity;
 
 /**
  * 类名 AddAndMinusView
@@ -37,8 +30,8 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
 //    private TextView plusTxt;
 
     private int count = 1;
-    private int minNum = 1;
-    private int maxNum = 200;
+//    private int minNum = 1;
+//    private int maxNum = 200;
     private OnCountChangeListener onCountChangeListener;
 
     public AddAndMinusView(Context context) {
@@ -75,7 +68,7 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
     public void setCount(int count) {
         this.count = count;
         countTxt.setText(count + "");
-        LogUtils.d(TAG, "setCount:" + count);
+//        LogUtils.d(TAG, "setCount:" + count);
         setEnabled();
     }
 
@@ -85,15 +78,17 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
             return;
         switch (v.getId()) {
             case R.id.img_minus:
-                LogUtils.d(TAG, "点击减" + count);
-                countTxt.setText(--count > 1 ? count + "" : 1 + "");
+//                LogUtils.d(TAG, "点击减" + count);
+                count--;
+//                countTxt.setText(--count > 1 ? count + "" : 1 + "");
                 if (count < 1)
                     count = 1;
                 onCountChangeListener.count(count, false);
                 break;
             case R.id.img_plus:
-                LogUtils.d(TAG, "点击加" + count);
-                countTxt.setText(++count + "");
+//                LogUtils.d(TAG, "点击加" + count);
+                count++;
+//                countTxt.setText(++count + "");
                 if (count < 1)
                     count = 1;
                 onCountChangeListener.count(count, false);
@@ -106,17 +101,17 @@ public class AddAndMinusView extends LinearLayout implements View.OnClickListene
     }
 
     private void setEnabled() {
-        if (count == minNum) {
+        if (count == MyConfig.MINCOUNT) {
             minusImg.setEnabled(false);
             plusImg.setEnabled(true);
-        } else if (count == maxNum) {
+        } else if (count == MyConfig.MAXCOUNT) {
             minusImg.setEnabled(true);
             plusImg.setEnabled(false);
         } else {
             minusImg.setEnabled(true);
             plusImg.setEnabled(true);
         }
-        LogUtils.d(TAG, "minusImg:" + minusImg.isEnabled() + " plusImg:" + plusImg.isEnabled());
+//        LogUtils.d(TAG, "minusImg:" + minusImg.isEnabled() + " plusImg:" + plusImg.isEnabled());
     }
 
     public void setOnCountChangeListener(OnCountChangeListener onCountChangeListener) {

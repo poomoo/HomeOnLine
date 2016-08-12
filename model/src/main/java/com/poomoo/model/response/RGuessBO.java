@@ -39,4 +39,5 @@ public class RGuessBO {
     public double commonPrice;//市场价格
     public String listPic;//商品显示图片
     public int commodityId;//商品主键
+    public int commodityType;//1.普通商品，2抢购商品，3.新年活动商品，4活动商品，5.特价商品
 }

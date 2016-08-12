@@ -28,7 +28,7 @@ package com.poomoo.model.response;
 
 /**
  * 类名 RGrabBO
- * 描述 抢购f
+ * 描述 抢购
  * 作者 李苜菲
  * 日期 2016/8/3 16:50
  */

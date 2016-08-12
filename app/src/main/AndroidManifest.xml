@@ -77,6 +77,14 @@
             android:exported="false" />
 
         <activity
+            android:name=".ui.activity.CollectActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.ScanHistoryActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".ui.activity.pics.ImageGridActivity"
             android:exported="false" />
 

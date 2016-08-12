@@ -106,9 +106,9 @@
     <orderEntry type="library" exported="" name="gson-2.4" level="project" />
     <orderEntry type="library" exported="" name="retrofit-2.0.0-beta3" level="project" />
     <orderEntry type="library" exported="" name="adapter-rxjava-2.0.0-beta3" level="project" />
-    <orderEntry type="library" exported="" name="rxjava-1.1.0" level="project" />
-    <orderEntry type="library" exported="" name="okhttp-3.0.0-RC1" level="project" />
     <orderEntry type="library" exported="" name="converter-gson-2.0.0-beta3" level="project" />
+    <orderEntry type="library" exported="" name="okhttp-3.0.0-RC1" level="project" />
+    <orderEntry type="library" exported="" name="rxjava-1.1.0" level="project" />
     <orderEntry type="module" module-name="model" exported="" />
   </component>
 </module>

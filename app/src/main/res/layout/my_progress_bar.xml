@@ -7,7 +7,7 @@
     android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <ProgressBar
         style="@style/progressbar_loading"

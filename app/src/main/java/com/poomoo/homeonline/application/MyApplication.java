@@ -11,7 +11,7 @@ import org.litepal.LitePalApplication;
  */
 public class MyApplication extends LitePalApplication {
     // 用户信息
-    private Integer userId;
+    private Integer userId = 286;
     private String tel = "";//--用户手机号码
     private int cartNum;
 

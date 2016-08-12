@@ -34,23 +34,19 @@ public class SplashActivity extends BaseActivity {
 
         importDB();
         isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);
-        new Handler().postDelayed(new Runnable() {
-
-            @Override
-            public void run() {
-                if (isIndex) {
-                    SPUtils.put(getApplicationContext(), getString(R.string.sp_isIndex), false);
-                    openActivity(IndexViewPagerActivity.class);
-                    finish();
-                } else {
+        new Handler().postDelayed(() -> {
+            if (isIndex) {
+                SPUtils.put(getApplicationContext(), getString(R.string.sp_isIndex), false);
+                openActivity(IndexViewPagerActivity.class);
+                finish();
+            } else {
 //                    if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false))
-                    openActivity(MainNewActivity.class);
+                openActivity(MainNewActivity.class);
 //                    else
 //                    openActivity(LogInActivity.class);
-                    finish();
-                }
-
+                finish();
             }
+
         }, SPLASH_DISPLAY_LENGHT);
     }
 

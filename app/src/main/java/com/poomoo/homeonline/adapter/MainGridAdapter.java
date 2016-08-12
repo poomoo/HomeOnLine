@@ -22,7 +22,6 @@ import com.poomoo.model.response.RCateBO;
  * 日期 2016/7/19 11:31
  */
 public class MainGridAdapter extends MyBaseAdapter<RCateBO> {
-    private String TAG = "MainGridAdapter";
     private RCateBO item;
     private String url;
 

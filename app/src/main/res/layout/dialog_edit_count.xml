@@ -50,7 +50,7 @@
                 android:id="@+id/edt_dialog_count"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@drawable/awv"
+                android:background="@drawable/bg_count"
                 android:gravity="center"
                 android:inputType="number"
                 android:singleLine="true"

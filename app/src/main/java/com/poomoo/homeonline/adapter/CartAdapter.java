@@ -14,12 +14,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.Holder;
 import com.orhanobut.dialogplus.OnBackPressListener;
 import com.orhanobut.dialogplus.OnClickListener;
 import com.orhanobut.dialogplus.OnDismissListener;
 import com.orhanobut.dialogplus.ViewHolder;
+import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
@@ -31,6 +33,8 @@ import com.poomoo.homeonline.ui.fragment.CartFragment;
 import com.poomoo.model.response.RCartShopBO;
 import com.poomoo.model.response.RCartCommodityBO;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -44,7 +48,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private CartFragment cartFragment = null;
-    private List<RCartShopBO> group;
+    private List<RCartShopBO> group = new ArrayList<>();
     private RCartShopBO rCartShopBO;
     private RCartCommodityBO rCartCommodityBO;
     private OnBuyCheckChangedListener onBuyCheckChangedListener;
@@ -52,7 +56,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     public boolean isEdit = false;//true -购买模式 false-编辑模式
     private double totalPrice = 0.00;
-    public int removeCount = 0;//选择的删除项
+    //    public int removeCount = 0;//选择的删除项
+    public List<Integer> deleteIndex;//选择的删除项下标
     private int commodityKind = 0;
     private int commodityCount = 0;
 
@@ -62,11 +67,11 @@ public class CartAdapter extends BaseExpandableListAdapter {
     private TextView dialogPlusTxt;
     private AddAndMinusView addAndMinusView;
     private int count = 1;
+    private DecimalFormat df = new DecimalFormat("#.00");
 
 
-    public CartAdapter(Context context, List<RCartShopBO> group, OnBuyCheckChangedListener onBuyCheckChangedListener, OnEditCheckChangedListener onEditCheckChangedListener) {
+    public CartAdapter(Context context, OnBuyCheckChangedListener onBuyCheckChangedListener, OnEditCheckChangedListener onEditCheckChangedListener) {
         this.context = context;
-        this.group = group;
         this.onBuyCheckChangedListener = onBuyCheckChangedListener;
         this.onEditCheckChangedListener = onEditCheckChangedListener;
         cartFragment = CartFragment.inStance;
@@ -79,7 +84,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return group.get(groupPosition).rCartCommodityBOs.size();
+        return group.get(groupPosition).carts.size();
     }
 
     @Override
@@ -87,9 +92,14 @@ public class CartAdapter extends BaseExpandableListAdapter {
         return group.get(groupPosition);
     }
 
+    public void setGroup(List<RCartShopBO> group) {
+        this.group = group;
+        notifyDataSetChanged();
+    }
+
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return group.get(groupPosition).rCartCommodityBOs.get(childPosition);
+        return group.get(groupPosition).carts.get(childPosition);
     }
 
     @Override
@@ -130,7 +140,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
             holder.shopChk.setChecked(rCartShopBO.isEditChecked);
         else
             holder.shopChk.setChecked(rCartShopBO.isBuyChecked);
-        holder.shopTxt.setText(rCartShopBO.shop);
+        holder.shopTxt.setText(rCartShopBO.shopName);
 
         // 點擊 CheckBox 時，將狀態存起來
         holder.shopLayout.setOnClickListener(new Group_CheckBox_Click(groupPosition));
@@ -193,17 +203,17 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.priceTxt = (TextView) convertView.findViewById(R.id.txt_price);
         holder.addAndMinusView = (AddAndMinusView) convertView.findViewById(R.id.addAndMinusView);
 
-        rCartCommodityBO = group.get(groupPosition).rCartCommodityBOs.get(childPosition);
+        rCartCommodityBO = group.get(groupPosition).carts.get(childPosition);
         if (isEdit)
             holder.commodityChk.setChecked(rCartCommodityBO.isEditChecked);
         else
             holder.commodityChk.setChecked(rCartCommodityBO.isBuyChecked);
-//        Glide.with(mContext).load(rCommodityBO.img).into(holder.commodityImg);
-        holder.commodityTxt.setText(rCartCommodityBO.name);
-        holder.priceTxt.setText(rCartCommodityBO.price);
+        Glide.with(context).load(NetConfig.ImageUrl + rCartCommodityBO.listPic).placeholder(R.drawable.replace).into(holder.commodityImg);
+        holder.commodityTxt.setText(rCartCommodityBO.commodityName);
+        holder.priceTxt.setText(rCartCommodityBO.commodityPrice + "");
 
-        holder.addAndMinusView.setCount(rCartCommodityBO.count);
-        holder.addAndMinusView.setOnCountChangeListener(new CountChange(groupPosition, childPosition, holder.addAndMinusView));
+        holder.addAndMinusView.setCount(rCartCommodityBO.commodityNum);
+        holder.addAndMinusView.setOnCountChangeListener(new CountChange(rCartCommodityBO.id, groupPosition, childPosition, holder.addAndMinusView, rCartCommodityBO.commodityType));
 
         // 點擊 CheckBox 時，將狀態存起來
         holder.commodityLayout.setOnClickListener(new Child_CheckBox_Click(groupPosition, childPosition));
@@ -239,26 +249,31 @@ public class CartAdapter extends BaseExpandableListAdapter {
         private int groupPosition;
         private int childPosition;
         private AddAndMinusView addAndMinusView;
+        private int cartId;
+        private int commodityType;
 
-        public CountChange(int groupPosition, int childPosition, AddAndMinusView andMinusView) {
+        public CountChange(int cartId, int groupPosition, int childPosition, AddAndMinusView andMinusView, int commodityType) {
             this.groupPosition = groupPosition;
             this.childPosition = childPosition;
             this.addAndMinusView = andMinusView;
+            this.cartId = cartId;
+            this.commodityType = commodityType;
         }
 
         @Override
         public void count(int count, boolean isEdit) {
             LogUtils.d(TAG, "isEdit:" + isEdit);
             if (isEdit)
-                cartFragment.showEditPopupWindow(groupPosition, childPosition, addAndMinusView.getCount(), addAndMinusView);
+                cartFragment.showEditPopupWindow(cartId, count, groupPosition, childPosition, addAndMinusView, commodityType);
             else {
-                setCount(groupPosition, childPosition, count);
+                cartFragment.changeCount(cartId, count, groupPosition, childPosition, addAndMinusView, commodityType);
+//                setCount(groupPosition, childPosition, count);
             }
         }
     }
 
     public void setCount(int groupPosition, int childPosition, int count) {
-        group.get(groupPosition).rCartCommodityBOs.get(childPosition).count = count;
+        group.get(groupPosition).carts.get(childPosition).commodityNum = count;
 //        setTotalPrice();
         notifyDataSetChanged();
     }
@@ -312,11 +327,11 @@ public class CartAdapter extends BaseExpandableListAdapter {
             else
                 group.get(i).isBuyChecked = true;
 
-            for (int j = 0; j < group.get(i).rCartCommodityBOs.size(); j++)
+            for (int j = 0; j < group.get(i).carts.size(); j++)
                 if (isEdit)
-                    group.get(i).rCartCommodityBOs.get(j).isEditChecked = true;
+                    group.get(i).carts.get(j).isEditChecked = true;
                 else
-                    group.get(i).rCartCommodityBOs.get(j).isBuyChecked = true;
+                    group.get(i).carts.get(j).isBuyChecked = true;
         }
         notifyDataSetChanged();
     }
@@ -327,11 +342,11 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 group.get(i).isEditChecked = false;
             else
                 group.get(i).isBuyChecked = false;
-            for (int j = 0; j < group.get(i).rCartCommodityBOs.size(); j++)
+            for (int j = 0; j < group.get(i).carts.size(); j++)
                 if (isEdit)
-                    group.get(i).rCartCommodityBOs.get(j).isEditChecked = false;
+                    group.get(i).carts.get(j).isEditChecked = false;
                 else
-                    group.get(i).rCartCommodityBOs.get(j).isBuyChecked = false;
+                    group.get(i).carts.get(j).isBuyChecked = false;
         }
         notifyDataSetChanged();
     }
@@ -343,8 +358,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 i--;
             } else
                 for (int j = 0; j < group.get(i).getChildrenCount(); j++)
-                    if (group.get(i).rCartCommodityBOs.get(j).isEditChecked) {
-                        group.get(i).rCartCommodityBOs.remove(j);
+                    if (group.get(i).carts.get(j).isEditChecked) {
+                        group.get(i).carts.remove(j);
                         j--;
                     }
         }
@@ -360,31 +375,35 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     public void setTotalPrice() {
         totalPrice = 0.00;
-        removeCount = 0;
+//        removeCount = 0;
+        deleteIndex = new ArrayList<>();
         for (int i = 0; i < group.size(); i++)
             for (int j = 0; j < group.get(i).getChildrenCount(); j++) {
-                rCartCommodityBO = group.get(i).rCartCommodityBOs.get(j);
+                rCartCommodityBO = group.get(i).carts.get(j);
                 if (rCartCommodityBO.isBuyChecked)
-                    totalPrice += Double.parseDouble(rCartCommodityBO.price) * rCartCommodityBO.count;
-                if (rCartCommodityBO.isEditChecked)
-                    removeCount++;
+                    totalPrice += rCartCommodityBO.commodityPrice * rCartCommodityBO.commodityNum;
+                if (rCartCommodityBO.isEditChecked) {
+//                    removeCount++;
+                    deleteIndex.add(rCartCommodityBO.id);
+                }
+
             }
 //        LogUtils.d(TAG, "setTotalPrice:" + totalPrice);
-        cartFragment.setTotalPrice(totalPrice + "");
+        cartFragment.setTotalPrice(df.format(totalPrice));
     }
 
     public boolean isAllSelected() {
         if (isEdit)
             for (int i = 0; i < group.size(); i++)
                 for (int j = 0; j < group.get(i).getChildrenCount(); j++) {
-                    rCartCommodityBO = group.get(i).rCartCommodityBOs.get(j);
+                    rCartCommodityBO = group.get(i).carts.get(j);
                     if (!rCartCommodityBO.isEditChecked)
                         return false;
                 }
         else
             for (int i = 0; i < group.size(); i++)
                 for (int j = 0; j < group.get(i).getChildrenCount(); j++) {
-                    rCartCommodityBO = group.get(i).rCartCommodityBOs.get(j);
+                    rCartCommodityBO = group.get(i).carts.get(j);
                     if (!rCartCommodityBO.isBuyChecked)
                         return false;
                 }
@@ -396,113 +415,99 @@ public class CartAdapter extends BaseExpandableListAdapter {
      *
      * @return
      */
-    public int getTotalCommodity() {
-        commodityKind = 0;
-        int len = group.size();
-        for (int i = 0; i < len; i++)
-            commodityKind += getChildrenCount(i);
-
-        return commodityKind;
-    }
-
+//    public int getTotalCommodity() {
+//        commodityKind = 0;
+//        int len = group.size();
+//        for (int i = 0; i < len; i++)
+//            commodityKind += getChildrenCount(i);
+//
+//        return commodityKind;
+//    }
     public int getTotalCommodityCount() {
         commodityCount = 0;
         int groupSize = group.size();
         for (int i = 0; i < groupSize; i++) {
             int childSize = getChildrenCount(i);
             for (int j = 0; j < childSize; j++) {
-                commodityCount += ((RCartCommodityBO) getChild(i, j)).count;
+                commodityCount += ((RCartCommodityBO) getChild(i, j)).commodityNum;
             }
         }
         MainNewActivity.INSTANCE.application.setCartNum(commodityCount);
         return commodityCount;
     }
 
-    private void createDialog() {
-        if (dialogPlus == null) {
-            final View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_count, null);
-            view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            dialogCountEdt = (EditText) view.findViewById(R.id.edt_dialog_count);
-            dialogMinusTxt = (TextView) view.findViewById(R.id.txt_dialog_minus);
-            dialogPlusTxt = (TextView) view.findViewById(R.id.txt_dialog_plus);
-
-            dialogCountEdt.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                }
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                    String temp = s.toString();
-                    if (temp.length() == 0)
-                        return;
-                    if (temp.length() == 1 && temp.equals("0")) {
-                        s.replace(0, 1, "1");
-                        count = 1;
-                    }
-                    if (Integer.parseInt(temp) == 1) {
-                        dialogMinusTxt.setClickable(false);
-                    } else {
-                        dialogMinusTxt.setClickable(true);
-                    }
-                }
-            });
-
-            Holder holder = new ViewHolder(view);
-            OnClickListener clickListener = new OnClickListener() {
-                @Override
-                public void onClick(DialogPlus dialog, View view) {
-                    switch (view.getId()) {
-                        case R.id.txt_dialog_minus:
-                            dialogCountEdt.setText(--count + "");
-                            LogUtils.d(TAG, "减" + count);
-                            break;
-                        case R.id.txt_dialog_plus:
-                            dialogCountEdt.setText(++count + "");
-                            break;
-                        case R.id.btn_dialog_cancel:
-                            dialog.dismiss();
-                            MyUtils.hiddenKeyBoard(context, view);
-                            break;
-                        case R.id.btn_dialog_confirm:
-                            addAndMinusView.setCount(count);
-                            dialog.dismiss();
-                            break;
-                    }
-                }
-            };
-            dialogPlus = DialogPlus.newDialog(context)
-                    .setContentHolder(holder)
-                    .setGravity(Gravity.CENTER)
-                    .setCancelable(true)
-                    .setOnDismissListener(new OnDismissListener() {
-                        @Override
-                        public void onDismiss(DialogPlus dialog) {
-                            MyUtils.hiddenKeyBoard(context, view);
-                        }
-                    })
-                    .setOnBackPressListener(new OnBackPressListener() {
-                        @Override
-                        public void onBackPressed(DialogPlus dialogPlus) {
-                            dialogPlus.dismiss();
-                        }
-                    })
-                    .setOnClickListener(clickListener)
-                    .create();
-        }
-        dialogCountEdt.setText(count + "");
-        dialogCountEdt.setFocusableInTouchMode(true);
-        dialogCountEdt.setFocusable(true);
-        dialogCountEdt.requestFocus();
-
-        dialogPlus.show();
-    }
+//    private void createDialog() {
+//        if (dialogPlus == null) {
+//            final View view = LayoutInflater.from(context).inflate(R.layout.dialog_edit_count, null);
+//            view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+//            dialogCountEdt = (EditText) view.findViewById(R.id.edt_dialog_count);
+//            dialogMinusTxt = (TextView) view.findViewById(R.id.txt_dialog_minus);
+//            dialogPlusTxt = (TextView) view.findViewById(R.id.txt_dialog_plus);
+//
+//            dialogCountEdt.addTextChangedListener(new TextWatcher() {
+//                @Override
+//                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//                }
+//
+//                @Override
+//                public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//                }
+//
+//                @Override
+//                public void afterTextChanged(Editable s) {
+//                    String temp = s.toString();
+//                    if (temp.length() == 0)
+//                        return;
+//                    if (temp.length() == 1 && temp.equals("0")) {
+//                        s.replace(0, 1, "1");
+//                        count = 1;
+//                    }
+//                    if (Integer.parseInt(temp) == 1) {
+//                        dialogMinusTxt.setClickable(false);
+//                    } else {
+//                        dialogMinusTxt.setClickable(true);
+//                    }
+//                }
+//            });
+//
+//            Holder holder = new ViewHolder(view);
+//            OnClickListener clickListener = (dialog, view1) -> {
+//                switch (view1.getId()) {
+//                    case R.id.txt_dialog_minus:
+//                        dialogCountEdt.setText(--count + "");
+//                        LogUtils.d(TAG, "减" + count);
+//                        break;
+//                    case R.id.txt_dialog_plus:
+//                        dialogCountEdt.setText(++count + "");
+//                        break;
+//                    case R.id.btn_dialog_cancel:
+//                        dialog.dismiss();
+//                        MyUtils.hiddenKeyBoard(context, view1);
+//                        break;
+//                    case R.id.btn_dialog_confirm:
+//                        addAndMinusView.setCount(count);
+//                        dialog.dismiss();
+//                        break;
+//                }
+//            };
+//            dialogPlus = DialogPlus.newDialog(context)
+//                    .setContentHolder(holder)
+//                    .setGravity(Gravity.CENTER)
+//                    .setCancelable(true)
+//                    .setOnDismissListener(dialog -> MyUtils.hiddenKeyBoard(context, view))
+//                    .setOnBackPressListener(dialogPlus1 -> dialogPlus1.dismiss())
+//                    .setOnClickListener(clickListener)
+//                    .create();
+//        }
+//        dialogCountEdt.setText(count + "");
+//        dialogCountEdt.setFocusableInTouchMode(true);
+//        dialogCountEdt.setFocusable(true);
+//        dialogCountEdt.requestFocus();
+//
+//        dialogPlus.show();
+//    }
 
 }
 

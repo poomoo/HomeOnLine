@@ -12,6 +12,7 @@ import android.view.View;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -84,6 +85,24 @@ public abstract class BaseTabFragment extends BaseFragment {
         LogUtils.d(TAG, "addTab:" + catalog);
         Bundle bundle = new Bundle();
         bundle.putInt(BUNDLE_TYPE, catalog);
+        mTabs.add(new ViewPageInfo(tag, instantiate(getActivity(), fragment.getName(), bundle)));
+    }
+
+//    /**
+//     * 添加Fragment对象到ViewPager
+//     */
+//    public void addTab(String tag, Class<? extends Fragment> fragment, String content) {
+//        Bundle bundle = new Bundle();
+//        bundle.putString(getString(R.string.intent_value), content);
+//        mTabs.add(new ViewPageInfo(tag, instantiate(getActivity(), fragment.getName(), bundle)));
+//    }
+
+    /**
+     * 添加Fragment对象到ViewPager
+     */
+    public void addTab(String tag, Class<? extends Fragment> fragment, Object o) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(getString(R.string.intent_value), (Serializable) o);
         mTabs.add(new ViewPageInfo(tag, instantiate(getActivity(), fragment.getName(), bundle)));
     }
 

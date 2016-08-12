@@ -12,9 +12,10 @@ import java.util.List;
  * 日期 2016/8/5 16:54
  */
 public class RCartShopBO {
-    public int shopId;
-    public String shop;
-    public List<RCartCommodityBO> rCartCommodityBOs;
+    //    public int shopId;
+    public String shopName;
+    public List<RCartCommodityBO> carts;
+
     public boolean isBuyChecked;
     public boolean isEditChecked;
 
@@ -27,22 +28,22 @@ public class RCartShopBO {
     }
 
     public int getChildrenCount() {
-        return rCartCommodityBOs.size();
+        return carts.size();
     }
 
     public RCartCommodityBO getChildItem(int index) {
-        return rCartCommodityBOs.get(index);
+        return carts.get(index);
     }
 
     public void setChildChecked(boolean isChecked) {
-        for (RCartCommodityBO rCartCommodityBO : rCartCommodityBOs)
+        for (RCartCommodityBO rCartCommodityBO : carts)
             rCartCommodityBO.setBuyChecked(isChecked);
     }
 
 
     @Override
     public boolean equals(Object o) {
-        if (this.shopId == ((RCartShopBO) o).shopId)
+        if (this.shopName.equals(((RCartShopBO) o).shopName))
             return true;
         return false;
     }

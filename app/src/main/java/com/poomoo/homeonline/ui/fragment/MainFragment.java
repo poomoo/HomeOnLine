@@ -32,8 +32,8 @@ import com.poomoo.homeonline.listeners.ScrollViewListener;
 import com.poomoo.homeonline.presenters.MainFragmentPresenter;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
-import com.poomoo.homeonline.ui.MyProgress;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
+import com.poomoo.homeonline.ui.activity.TestActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
@@ -115,7 +115,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private final int GRAB = 1;
     private final int HOT = 2;
     private final int GUESS = 3;
-    private MyProgress myProgress;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -179,7 +178,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private void addView(RSpecialAdBO rSpecialAdBO) {
         int len = rSpecialAdBO.advs.size();
         for (int i = 0; i < len; i++) {
-            View view = LayoutInflater.from(getActivity()).inflate(R.layout.special_layout, null);
+            View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_special, null);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             LogUtils.d(TAG, "lp:" + lp);
             lp.setMargins(0, (int) getResources().getDimension(R.dimen.dp_8), 0, 0);
@@ -193,15 +192,37 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             picturesGridAdapter.setItems(rSpecialAdBO.advs.get(i).subList(1, rSpecialAdBO.advs.get(i).size()));
             gridView.setTag(i);
             gridView.setOnItemClickListener((parent, view1, position, id) -> {
-                MainFragment.this.openActivity(CommodityInfoActivity.class);
-                MyUtils.showToast(getActivity().getApplicationContext(), "点击了第" + parent.getTag() + "个专题的" + "第" + position + "个广告" + "  是否是商品广告:" + rSpecialAdBO.advs.get((int) parent.getTag()).get(position).isCommodity);
+                rAdBO = rSpecialAdBO.advs.get((int) parent.getTag()).get(position);
+                if (rAdBO.isCommodity) {//商品广告
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
+                    bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                    MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
+                } else {//链接
+
+                }
+                MyUtils.showToast(getActivity().getApplicationContext(), "点击了第" + parent.getTag() + "个专题的" + "第" + position + "个广告" + "  是否是商品广告:" + rAdBO.isCommodity);
             });
 
             Glide.with(getActivity()).load(getString(R.string.base_url) + "/weixin/images/index-market-" + (i + 1) + ".png").into(titleImg);
+
             contentImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) * 5 / 12));//设置广告栏的宽高比为2:1
             Glide.with(getActivity()).load(NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic).placeholder(R.drawable.replace12b5).into(contentImg);
-//            Glide.with(getActivity()).load("http://img.jiayou9.com/jyzx/upload/company/20160622/20160622173551_317.jpg").placeholder(R.drawable.replace12b5).into(contentImg);
-//            specialAdLayout.addView(view, i + 5);
+            contentImg.setTag(i);
+            contentImg.setOnClickListener(v -> {
+                rAdBO = rSpecialAdBO.advs.get((int) contentImg.getTag()).get(0);
+                MyUtils.showToast(getActivity().getApplicationContext(), "是否是商品广告:" + rAdBO.isCommodity + " url:" + rAdBO.connect);
+                if (rAdBO.isCommodity) {//商品广告
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(getString(R.string.intent_commodityId), 6048);
+                    bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                    MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
+                } else {//链接
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString(getString(R.string.intent_value), NetConfig.LocalUrl + "/app/rush.html");
+//                    openActivity(WebViewActivity.class, bundle);
+                }
+            });
             specialAdLayout.addView(view);
         }
     }

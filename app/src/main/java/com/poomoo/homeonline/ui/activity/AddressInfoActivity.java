@@ -31,9 +31,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -42,7 +40,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -50,7 +47,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
-import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.ZoneAdapter;
@@ -100,7 +96,6 @@ public class AddressInfoActivity extends BaseActivity {
     private String receiptName;
     private String tel;
     private String address;
-    private String[] zone;
     private String flag = "";//new-新建 else-修改
     private static final int NEW = 1;
     private static final int DELETE = 2;
@@ -120,29 +115,31 @@ public class AddressInfoActivity extends BaseActivity {
 
     @Override
     protected int onSetTitle() {
-        return R.string.title_addressInfo;
+        if (!flag.equals("new"))
+            return R.string.title_addressInfo;
+        else
+            return R.string.title_newAddress;
     }
 
     private void init() {
-        setBack();
-
         flag = getIntent().getStringExtra(getString(R.string.intent_value));
+        setBack();
         if (!flag.equals("new")) {
-            receiptName = getIntent().getStringExtra(getString(R.string.intent_receiptName));
-            tel = getIntent().getStringExtra(getString(R.string.intent_receiptTel));
-            address = getIntent().getStringExtra(getString(R.string.intent_receiptAddress));
-            provinceId = getIntent().getIntExtra(getString(R.string.intent_provinceId), -1);
-            cityId = getIntent().getIntExtra(getString(R.string.intent_cityId), -1);
-            areaId = getIntent().getIntExtra(getString(R.string.intent_areaId), -1);
-
+            rReceiptBO = (RReceiptBO) getIntent().getSerializableExtra(getString(R.string.intent_receiptBO));
+            receiptName = rReceiptBO.consigneeName;
+            tel = rReceiptBO.consigneeTel;
+            address = rReceiptBO.streetName;
+            provinceId = rReceiptBO.provinceId;
+            cityId = rReceiptBO.cityId;
+            areaId = rReceiptBO.areaId;
+            provinceName = rReceiptBO.provinceName;
+            cityName = rReceiptBO.cityName;
+            areaName = rReceiptBO.areaName;
+            LogUtils.d(TAG, "rReceiptBO:" + rReceiptBO);
             nameEdt.setText(receiptName);
             telEdt.setText(tel);
             addressEdt.setText(address);
             nameEdt.setText(receiptName);
-            zone = DataBaseHelper.getProvinceCityArea(provinceId, cityId, areaId);
-            provinceName = zone[0];
-            cityName = zone[1];
-            areaName = zone[2];
 
             provinceTxt.setText(TextUtils.isEmpty(provinceName) ? "选择省份" : provinceName);
             cityTxt.setText(TextUtils.isEmpty(cityName) ? "选择城市" : cityName);
@@ -232,49 +229,43 @@ public class AddressInfoActivity extends BaseActivity {
             ColorDrawable dw = new ColorDrawable(0xb0000000);
             this.setBackgroundDrawable(dw);
 
-            list_address.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    dismiss();
-                    adapter.setSelectedPosition(position);
-                    String temp[];
-                    switch (adapter.getCurrAddress()) {
-                        case ZoneAdapter.PROVINCE:
-                            temp = provinceList.get(position).split("#");
-                            provinceTxt.setText(temp[0]);
-                            provinceId = Integer.parseInt(temp[1]);
-                            cityId = -1;
-                            cityTxt.setText("选择城市");
-                            areaTxt.setText("选择城区");
-                            break;
-                        case ZoneAdapter.CITY:
-                            temp = cityList.get(position).split("#");
-                            cityTxt.setText(cityList.get(position).split("#")[0]);
-                            cityId = Integer.parseInt(temp[1]);
-                            areaTxt.setText("选择城区");
-                            break;
-                        case ZoneAdapter.AREA:
-                            temp = areaList.get(position).split("#");
-                            areaTxt.setText(areaList.get(position).split("#")[0]);
-                            areaId = Integer.parseInt(temp[1]);
-                            break;
-                    }
+            list_address.setOnItemClickListener((parent, view, position, id) -> {
+                dismiss();
+                adapter.setSelectedPosition(position);
+                String temp[];
+                switch (adapter.getCurrAddress()) {
+                    case ZoneAdapter.PROVINCE:
+                        temp = provinceList.get(position).split("#");
+                        provinceTxt.setText(temp[0]);
+                        provinceId = Integer.parseInt(temp[1]);
+                        cityId = -1;
+                        cityTxt.setText("选择城市");
+                        areaTxt.setText("选择城区");
+                        break;
+                    case ZoneAdapter.CITY:
+                        temp = cityList.get(position).split("#");
+                        cityTxt.setText(temp[0]);
+                        cityId = Integer.parseInt(temp[1]);
+                        areaTxt.setText("选择城区");
+                        break;
+                    case ZoneAdapter.AREA:
+                        temp = areaList.get(position).split("#");
+                        areaTxt.setText(temp[0]);
+                        areaId = Integer.parseInt(temp[1]);
+                        break;
                 }
             });
 
-            mMenuView.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    int height_top = mMenuView.findViewById(R.id.llayout_address).getTop();
-                    int height_bottom = mMenuView.findViewById(R.id.llayout_address).getBottom();
-                    int y = (int) event.getY();
-                    if (event.getAction() == MotionEvent.ACTION_UP) {
-                        if (y < height_top || y > height_bottom) {
-                            dismiss();
-                        }
+            mMenuView.setOnTouchListener((v, event) -> {
+                int height_top = mMenuView.findViewById(R.id.llayout_address).getTop();
+                int height_bottom = mMenuView.findViewById(R.id.llayout_address).getBottom();
+                int y = (int) event.getY();
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (y < height_top || y > height_bottom) {
+                        dismiss();
                     }
-                    return true;
                 }
+                return true;
             });
         }
     }
@@ -291,7 +282,7 @@ public class AddressInfoActivity extends BaseActivity {
             MyUtils.showToast(getApplicationContext(), "请输入收货人姓名");
             return;
         }
-        rReceiptBO.name = receiptName;
+        rReceiptBO.consigneeName = receiptName;
 
         tel = telEdt.getText().toString().trim();
         if (TextUtils.isEmpty(tel)) {
@@ -302,14 +293,14 @@ public class AddressInfoActivity extends BaseActivity {
             MyUtils.showToast(getApplicationContext(), "收货人电话不合法");
             return;
         }
-        rReceiptBO.tel = tel;
+        rReceiptBO.consigneeTel = tel;
         address = addressEdt.getText().toString();
         if (provinceId == -1 || cityId == -1 || areaId == -1 || TextUtils.isEmpty(address)) {
             MyUtils.showToast(getApplicationContext(), "请输入收货地址");
             return;
         }
 
-        rReceiptBO.address = provinceTxt.getText().toString() + " " + cityTxt.getText().toString() + " " + areaTxt.getText().toString() + " " + address;
+        rReceiptBO.pca = provinceTxt.getText().toString() + " " + cityTxt.getText().toString() + " " + areaTxt.getText().toString() + " " + address;
         getIntent().putExtra(getString(R.string.intent_value), rReceiptBO);
         setResult(NEW, getIntent());
         finish();

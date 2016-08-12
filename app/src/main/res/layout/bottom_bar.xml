@@ -35,8 +35,8 @@
 
             <TextView
                 android:id="@+id/nav_inform_main"
-                android:layout_width="@dimen/inform_size"
-                android:layout_height="@dimen/inform_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/nav_txt_main"
                 android:layout_alignTop="@+id/nav_txt_main"
                 android:layout_gravity="center_horizontal"
@@ -69,8 +69,8 @@
 
             <TextView
                 android:id="@+id/nav_inform_classify"
-                android:layout_width="@dimen/inform_size"
-                android:layout_height="@dimen/inform_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/nav_txt_classify"
                 android:layout_alignTop="@+id/nav_txt_classify"
                 android:layout_gravity="center_horizontal"
@@ -103,8 +103,8 @@
 
             <TextView
                 android:id="@+id/nav_inform_grab"
-                android:layout_width="@dimen/inform_size"
-                android:layout_height="@dimen/inform_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/nav_txt_grab"
                 android:layout_alignTop="@+id/nav_txt_grab"
                 android:layout_gravity="center_horizontal"
@@ -170,8 +170,8 @@
 
             <TextView
                 android:id="@+id/nav_inform_center"
-                android:layout_width="@dimen/inform_size"
-                android:layout_height="@dimen/inform_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignRight="@+id/nav_txt_center"
                 android:layout_alignTop="@+id/nav_txt_center"
                 android:layout_gravity="center_horizontal"

@@ -24,7 +24,6 @@ import com.poomoo.model.response.RAdBO;
  * 日期 2016/7/19 11:33
  */
 public class PicturesGridAdapter extends MyBaseAdapter<RAdBO> {
-    private String TAG = "PicturesGridAdapter";
     private RAdBO item;
 
     public PicturesGridAdapter(Context context) {
