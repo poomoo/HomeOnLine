@@ -310,6 +310,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
      * @param totalPrice
      */
     public void setTotalPrice(String totalPrice) {
+        LogUtils.d(TAG, "totalPrice:" + totalPrice);
         totalPriceTxt.setText(totalPrice);
     }
 

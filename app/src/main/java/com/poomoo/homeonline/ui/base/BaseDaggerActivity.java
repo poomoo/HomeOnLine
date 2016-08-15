@@ -10,9 +10,9 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.poomoo.homeonline.R;
@@ -40,6 +40,7 @@ public abstract class BaseDaggerActivity<P extends BasePresenter> extends Fragme
     public String TAG = getClass().getSimpleName();
     //进度对话框
     public ProgressDialog progressDialog = null;
+    public RelativeLayout mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +93,10 @@ public abstract class BaseDaggerActivity<P extends BasePresenter> extends Fragme
         public TextView rightTxt;//右边标题
         public ImageView backImg;//返回键
         public ImageView rightImg;//右边图标
+    }
+
+    protected void getProgressBar() {
+        mProgressBar = (RelativeLayout) findViewById(R.id.rlayout_progressBar);
     }
 
     /**

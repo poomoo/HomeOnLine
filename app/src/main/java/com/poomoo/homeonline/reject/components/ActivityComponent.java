@@ -21,10 +21,12 @@
 package com.poomoo.homeonline.reject.components;
 
 import com.poomoo.homeonline.reject.modules.ActivityModule;
+import com.poomoo.homeonline.ui.activity.AddressInfoActivity;
 import com.poomoo.homeonline.ui.activity.AddressListActivity;
 import com.poomoo.homeonline.ui.activity.ChangePassWordActivity;
 import com.poomoo.homeonline.ui.activity.CollectActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
+import com.poomoo.homeonline.ui.activity.FeedBackActivity;
 import com.poomoo.homeonline.ui.activity.GetCodeActivity;
 import com.poomoo.homeonline.ui.activity.LogInActivity;
 import com.poomoo.homeonline.ui.activity.ScanHistoryActivity;
@@ -50,4 +52,8 @@ public interface ActivityComponent {
     void inject(ScanHistoryActivity activity);
 
     void inject(AddressListActivity activity);
+
+    void inject(AddressInfoActivity activity);
+
+    void inject(FeedBackActivity activity);
 }

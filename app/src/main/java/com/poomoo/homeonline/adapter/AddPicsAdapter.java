@@ -84,29 +84,28 @@ public class AddPicsAdapter extends MyBaseAdapter {
     }
 
     public void loading() {
-        new Thread(new Runnable() {
-            public void run() {
-                while (true) {
-                    LogUtils.i("lmf", "Bimp.max:" + Bimp.max + " Bimp.drr:" + Bimp.drr.size());
-                    if (Bimp.max == Bimp.drr.size()) {
+        new Thread(() -> {
+            while (true) {
+                LogUtils.d("lmf", "Bimp.max:" + Bimp.max + " Bimp.drr:" + Bimp.drr.size());
+                if (Bimp.max == Bimp.drr.size()) {
+                    Message message = new Message();
+                    message.what = 1;
+                    handler.sendMessage(message);
+                    break;
+                } else {
+                    try {
+                        String path = Bimp.drr.get(Bimp.max);
+                        Bitmap bm = Bimp.revitionImageSize(path);
+                        Bimp.bmp.add(bm);
+                        String newStr = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
+                        Bimp.files.add(FileUtils.saveBitmap(bm, "" + newStr));
+                        LogUtils.d("lmf", " Bimp.files:" +  Bimp.files.get(Bimp.max));
+                        Bimp.max += 1;
                         Message message = new Message();
                         message.what = 1;
                         handler.sendMessage(message);
-                        break;
-                    } else {
-                        try {
-                            String path = Bimp.drr.get(Bimp.max);
-                            Bitmap bm = Bimp.revitionImageSize(path);
-                            Bimp.bmp.add(bm);
-                            String newStr = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
-                            Bimp.files.add(FileUtils.saveBitmap(bm, "" + newStr));
-                            Bimp.max += 1;
-                            Message message = new Message();
-                            message.what = 1;
-                            handler.sendMessage(message);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
                 }
             }

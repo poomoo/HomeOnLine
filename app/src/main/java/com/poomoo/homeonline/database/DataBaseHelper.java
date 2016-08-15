@@ -33,7 +33,7 @@ public class DataBaseHelper {
                 provinceInfo.save();
             cursor.close();
         }
-        LogUtils.d(TAG, "saveProvince完成");
+//        LogUtils.d(TAG, "saveProvince完成");
     }
 
     /**
@@ -45,12 +45,12 @@ public class DataBaseHelper {
         for (CityInfo cityInfo : cityInfos) {
             Cursor cursor = DataSupport.findBySQL("select * from CityInfo where cityId = ? and provinceId = ?", cityInfo.getCityId() + "", cityInfo.getProvinceId() + "");
             if (cursor.getCount() == 0){
-                LogUtils.d(TAG, "cityInfo"  + cityInfo.toString());
+//                LogUtils.d(TAG, "cityInfo"  + cityInfo.toString());
                 cityInfo.save();
             }
             cursor.close();
         }
-        LogUtils.d(TAG, "saveCity完成");
+//        LogUtils.d(TAG, "saveCity完成");
     }
 
     /**
@@ -64,11 +64,11 @@ public class DataBaseHelper {
             Cursor cursor = DataSupport.findBySQL("select * from AreaInfo where cityId = ? and areaId = ?", areaInfo.getCityId() + "", areaInfo.getAreaId() + "");
             if (cursor.getCount() == 0) {
                 areaInfo.save();
-                LogUtils.d(TAG, "areaInfo" + areaInfo.getAreaName() + ":" + areaInfo.toString());
+//                LogUtils.d(TAG, "areaInfo" + areaInfo.getAreaName() + ":" + areaInfo.toString());
             }
             cursor.close();
         }
-        LogUtils.d(TAG, "saveArea完成");
+//        LogUtils.d(TAG, "saveArea完成");
     }
 
     /**

@@ -40,6 +40,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -51,7 +52,11 @@ import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.ZoneAdapter;
 import com.poomoo.homeonline.database.DataBaseHelper;
+import com.poomoo.homeonline.presenters.AddressInfoPresenter;
+import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
+import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseActivity;
+import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.model.response.RReceiptBO;
 
 import java.util.ArrayList;
@@ -66,7 +71,7 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:21
  */
-public class AddressInfoActivity extends BaseActivity {
+public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter> {
     @Bind(R.id.edt_receiptName)
     EditText nameEdt;
     @Bind(R.id.edt_receiptTel)
@@ -79,6 +84,10 @@ public class AddressInfoActivity extends BaseActivity {
     TextView cityTxt;
     @Bind(R.id.txt_area)
     TextView areaTxt;
+    @Bind(R.id.edt_code)
+    EditText codeEdt;
+    @Bind(R.id.chk_default_address)
+    CheckBox defaultChk;
     @Bind(R.id.llayout_bottom)
     LinearLayout bottomLayout;
 
@@ -96,9 +105,11 @@ public class AddressInfoActivity extends BaseActivity {
     private String receiptName;
     private String tel;
     private String address;
+    private String code;
     private String flag = "";//new-新建 else-修改
     private static final int NEW = 1;
-    private static final int DELETE = 2;
+    private static final int UPDATE = 2;
+    private static final int DELETE = 3;
     private RReceiptBO rReceiptBO = new RReceiptBO();
 
     @Override
@@ -121,6 +132,14 @@ public class AddressInfoActivity extends BaseActivity {
             return R.string.title_newAddress;
     }
 
+    @Override
+    protected void setupActivityComponent(ActivityModule activityModule) {
+        DaggerActivityComponent.builder()
+                .activityModule(activityModule)
+                .build()
+                .inject(this);
+    }
+
     private void init() {
         flag = getIntent().getStringExtra(getString(R.string.intent_value));
         setBack();
@@ -129,6 +148,7 @@ public class AddressInfoActivity extends BaseActivity {
             receiptName = rReceiptBO.consigneeName;
             tel = rReceiptBO.consigneeTel;
             address = rReceiptBO.streetName;
+            code = rReceiptBO.postCode;
             provinceId = rReceiptBO.provinceId;
             cityId = rReceiptBO.cityId;
             areaId = rReceiptBO.areaId;
@@ -140,6 +160,8 @@ public class AddressInfoActivity extends BaseActivity {
             telEdt.setText(tel);
             addressEdt.setText(address);
             nameEdt.setText(receiptName);
+            codeEdt.setText(code);
+            defaultChk.setChecked(rReceiptBO.isDefault);
 
             provinceTxt.setText(TextUtils.isEmpty(provinceName) ? "选择省份" : provinceName);
             cityTxt.setText(TextUtils.isEmpty(cityName) ? "选择城市" : cityName);
@@ -157,6 +179,7 @@ public class AddressInfoActivity extends BaseActivity {
         addressPopUpWindow = new AddressPopUpWindow(this);
 
         initZone();
+        getProgressBar();
     }
 
     private void initZone() {
@@ -255,7 +278,6 @@ public class AddressInfoActivity extends BaseActivity {
                         break;
                 }
             });
-
             mMenuView.setOnTouchListener((v, event) -> {
                 int height_top = mMenuView.findViewById(R.id.llayout_address).getTop();
                 int height_bottom = mMenuView.findViewById(R.id.llayout_address).getBottom();
@@ -270,42 +292,88 @@ public class AddressInfoActivity extends BaseActivity {
         }
     }
 
-
     /**
-     * 新建保存
+     * 检查输入项合法性
      *
-     * @param view
+     * @return
      */
-    public void toDo(View view) {
+    private boolean checkInput() {
         receiptName = nameEdt.getText().toString();
         if (TextUtils.isEmpty(receiptName)) {
             MyUtils.showToast(getApplicationContext(), "请输入收货人姓名");
-            return;
+            return false;
         }
         rReceiptBO.consigneeName = receiptName;
 
         tel = telEdt.getText().toString().trim();
         if (TextUtils.isEmpty(tel)) {
             MyUtils.showToast(getApplicationContext(), "请输入收货人电话");
-            return;
+            return false;
         }
         if (!MyUtils.checkPhoneNum(tel)) {
             MyUtils.showToast(getApplicationContext(), "收货人电话不合法");
-            return;
+            return false;
         }
         rReceiptBO.consigneeTel = tel;
-        address = addressEdt.getText().toString();
-        if (provinceId == -1 || cityId == -1 || areaId == -1 || TextUtils.isEmpty(address)) {
-            MyUtils.showToast(getApplicationContext(), "请输入收货地址");
-            return;
-        }
 
-        rReceiptBO.pca = provinceTxt.getText().toString() + " " + cityTxt.getText().toString() + " " + areaTxt.getText().toString() + " " + address;
-        getIntent().putExtra(getString(R.string.intent_value), rReceiptBO);
-        setResult(NEW, getIntent());
+        address = addressEdt.getText().toString();
+        if (provinceId == -1 || cityId == -1 || areaId == -1) {
+            MyUtils.showToast(getApplicationContext(), "请选择收货地址");
+            return false;
+        }
+        rReceiptBO.provinceId = provinceId;
+        rReceiptBO.cityId = cityId;
+        rReceiptBO.areaId = areaId;
+
+        if (TextUtils.isEmpty(address)) {
+            MyUtils.showToast(getApplicationContext(), "请输入详细地址");
+            return false;
+        }
+        rReceiptBO.streetName = address;
+
+        code = codeEdt.getText().toString().trim();
+        rReceiptBO.postCode = code;
+
+        rReceiptBO.isDefault = defaultChk.isChecked();
+        return true;
+    }
+
+    /**
+     * 新建
+     *
+     * @param view
+     */
+    public void toDo(View view) {
+        if (checkInput()) {
+            mProgressBar.setVisibility(View.VISIBLE);
+            mPresenter.newAddress(application.getUserId(), rReceiptBO.consigneeName, rReceiptBO.consigneeTel, rReceiptBO.postCode, rReceiptBO.provinceId, rReceiptBO.cityId, rReceiptBO.areaId, rReceiptBO.streetName, rReceiptBO.isDefault);
+        }
+    }
+
+    public void newSucceed() {
+        mProgressBar.setVisibility(View.GONE);
+        setResult(NEW);
         finish();
     }
 
+
+    /**
+     * 修改
+     *
+     * @param view
+     */
+    public void updateAddress(View view) {
+        if (checkInput()) {
+            mProgressBar.setVisibility(View.VISIBLE);
+            mPresenter.updateAddress(rReceiptBO.id, application.getUserId(), rReceiptBO.consigneeName, rReceiptBO.consigneeTel, rReceiptBO.postCode, rReceiptBO.provinceId, rReceiptBO.cityId, rReceiptBO.areaId, rReceiptBO.streetName, rReceiptBO.isDefault);
+        }
+    }
+
+    public void updateSucceed() {
+        mProgressBar.setVisibility(View.GONE);
+        setResult(UPDATE);
+        finish();
+    }
 
     /**
      * 删除
@@ -313,23 +381,23 @@ public class AddressInfoActivity extends BaseActivity {
      * @param view
      */
     public void deleteAddress(View view) {
-        Dialog dialog = new AlertDialog.Builder(this).setMessage("确定删除?").setNegativeButton("取消", null).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                setResult(DELETE);
-                finish();
-            }
+        Dialog dialog = new AlertDialog.Builder(this).setMessage("确定删除?").setNegativeButton("取消", null).setPositiveButton("确定", (dialog1, which) -> {
+            mProgressBar.setVisibility(View.VISIBLE);
+            mPresenter.deleteAddress(rReceiptBO.id);
         }).create();
 
         dialog.show();
     }
 
-    /**
-     * 保存
-     *
-     * @param view
-     */
-    public void saveAddress(View view) {
+    public void deleteSucceed() {
+        mProgressBar.setVisibility(View.GONE);
+        setResult(DELETE);
+        finish();
+    }
 
+
+    public void failed(String msg) {
+        mProgressBar.setVisibility(View.GONE);
+        MyUtils.showToast(getApplicationContext(), msg);
     }
 }

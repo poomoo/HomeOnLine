@@ -67,7 +67,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
     private TextView dialogPlusTxt;
     private AddAndMinusView addAndMinusView;
     private int count = 1;
-    private DecimalFormat df = new DecimalFormat("#.00");
+    private DecimalFormat df = new DecimalFormat("0.00");
 
 
     public CartAdapter(Context context, OnBuyCheckChangedListener onBuyCheckChangedListener, OnEditCheckChangedListener onEditCheckChangedListener) {
@@ -388,7 +388,6 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 }
 
             }
-//        LogUtils.d(TAG, "setTotalPrice:" + totalPrice);
         cartFragment.setTotalPrice(df.format(totalPrice));
     }
 

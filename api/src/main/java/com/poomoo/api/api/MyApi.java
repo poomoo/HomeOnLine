@@ -30,9 +30,12 @@ import com.poomoo.model.RUserBO;
 import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.BaseRequest;
 import com.poomoo.model.request.QAddCartBO;
+import com.poomoo.model.request.QAddressBO;
 import com.poomoo.model.request.QCancelCollectionBO;
 import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QCodeBO;
+import com.poomoo.model.request.QFeedBackBO;
+import com.poomoo.model.request.QIdBO;
 import com.poomoo.model.request.QPageBO;
 import com.poomoo.model.request.QCommodityInfoBO;
 import com.poomoo.model.request.QCountBO;
@@ -151,11 +154,27 @@ public interface MyApi {
     @POST("app/call.json")
     Observable<ResponseBO> CancelCollection(@Body QCancelCollectionBO data);
 
-    //取消收藏
+    //收货地址列表
     @POST("app/call.json")
     Observable<List<RReceiptBO>> GetAddressList(@Body QUserIdBO data);
 
     //获取区域信息
     @POST("app/call.json")
     Observable<List<RZoneBO>> GetZoneInfo(@Body BaseRequest data);
+
+    //新建收货地址
+    @POST("app/call.json")
+    Observable<ResponseBO> NewAddress(@Body QAddressBO data);
+
+    //更新收货地址
+    @POST("app/call.json")
+    Observable<ResponseBO> UpdateAddress(@Body QAddressBO data);
+
+    //删除收货地址
+    @POST("app/call.json")
+    Observable<ResponseBO> DeleteAddress(@Body QIdBO data);
+
+    //意见反馈
+    @POST("app/call.json")
+    Observable<ResponseBO> FeedBack(@Body QFeedBackBO data);
 }

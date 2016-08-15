@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.model.response.RReceiptBO;
@@ -40,8 +41,9 @@ public class AddressListAdapter extends BaseListAdapter<RReceiptBO> {
         item = items.get(position);
 
         holder.nameTxt.setText(item.consigneeName);
-        holder.telTxt.setText(item.consigneeTel);
+        holder.telTxt.setText(MyUtils.hiddenTel(item.consigneeTel));
         holder.addressTxt.setText(item.pca);
+        holder.defaultTxt.setVisibility(item.isDefault?View.VISIBLE:View.GONE);
     }
 
     public static final class BaseViewHolder extends RecyclerView.ViewHolder {
@@ -51,6 +53,8 @@ public class AddressListAdapter extends BaseListAdapter<RReceiptBO> {
         TextView telTxt;
         @Bind(R.id.txt_receipt_address)
         TextView addressTxt;
+        @Bind(R.id.txt_receipt_default)
+        TextView defaultTxt;
 
         public BaseViewHolder(View view) {
             super(view);

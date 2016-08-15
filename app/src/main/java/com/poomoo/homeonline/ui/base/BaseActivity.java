@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
@@ -38,6 +39,8 @@ public abstract class BaseActivity extends FragmentActivity {
     public String TAG = getClass().getSimpleName();
     //进度对话框
     public ProgressDialog progressDialog = null;
+
+    public RelativeLayout progressRlayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +86,10 @@ public abstract class BaseActivity extends FragmentActivity {
         public TextView rightTxt;//右边标题
         public ImageView backImg;//返回键
         public ImageView rightImg;//右边图标
+    }
+
+    protected void getProgressBar() {
+        progressRlayout = (RelativeLayout) findViewById(R.id.rlayout_progressBar);
     }
 
     /**

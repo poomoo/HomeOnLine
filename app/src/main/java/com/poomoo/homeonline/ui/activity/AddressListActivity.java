@@ -48,6 +48,7 @@ import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.homeonline.ui.base.BaseListDaggerActivity;
+import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.model.response.RReceiptBO;
 import com.poomoo.model.response.RZoneBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -69,11 +70,11 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
     LinearLayout bottomLayout;
 
     private static final int NEW = 1;
-    private static final int DELETE = 2;
+    private static final int UPDATE = 2;
+    private static final int DELETE = 3;
 
     private AddressListAdapter adapter;
     private List<RReceiptBO> rReceiptBOs;
-    private RReceiptBO rReceiptBO;
     private int deletePosition = -1;//删除的地址item的下标
 
     @Override
@@ -151,28 +152,26 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
         deletePosition = position;
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.intent_value), "old");
-//        bundle.putString(getString(R.string.intent_receiptName), rReceiptBOs.get(position).consigneeName);
-//        bundle.putString(getString(R.string.intent_receiptTel), rReceiptBOs.get(position).consigneeTel);
-//        bundle.putString(getString(R.string.intent_receiptAddress), rReceiptBOs.get(position).streetName);
-//        bundle.putString(getString(R.string.intent_provinceName), rReceiptBOs.get(position).provinceName);
-//        bundle.putString(getString(R.string.intent_cityName), rReceiptBOs.get(position).cityName);
-//        bundle.putString(getString(R.string.intent_areaName), rReceiptBOs.get(position).areaName);
-//        bundle.putInt(getString(R.string.intent_provinceId), rReceiptBOs.get(position).provinceId);
-//        bundle.putInt(getString(R.string.intent_cityId), rReceiptBOs.get(position).cityId);
-//        bundle.putInt(getString(R.string.intent_areaId), rReceiptBOs.get(position).areaId);
         bundle.putSerializable(getString(R.string.intent_receiptBO), rReceiptBOs.get(position));
-        openActivityForResult(AddressInfoActivity.class, bundle, DELETE);
+        openActivityForResult(AddressInfoActivity.class, bundle, UPDATE);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == DELETE) {
-            adapter.removeItem(deletePosition);
+        if (resultCode == NEW) {
+            mAdapter.clear();
+            mErrorLayout.setState(ErrorLayout.LOADING, "");
+            mPresenter.getAddressList(application.getUserId());
         }
 
-        if (resultCode == NEW) {
-            rReceiptBO = (RReceiptBO) data.getSerializableExtra(getString(R.string.intent_value));
-            adapter.addItem(0, rReceiptBO);
+        if (requestCode == UPDATE && resultCode == UPDATE) {
+            mAdapter.clear();
+            mErrorLayout.setState(ErrorLayout.LOADING, "");
+            mPresenter.getAddressList(application.getUserId());
+        }
+
+        if (requestCode == UPDATE && resultCode == DELETE) {
+            adapter.removeItem(deletePosition);
         }
     }
 
