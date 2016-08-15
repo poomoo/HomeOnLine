@@ -387,6 +387,16 @@ public class MyUtils {
 //        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         imm.hideSoftInputFromInputMethod(view.getWindowToken(), 0);
     }
+
+    /**
+     * 是否登录
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isLogin(Context context) {
+        return (boolean) SPUtils.get(context, "isLogin", false);
+    }
 //
 //    /**
 //     * 打开软键盘

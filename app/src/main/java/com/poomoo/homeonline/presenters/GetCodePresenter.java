@@ -34,6 +34,7 @@ import com.poomoo.homeonline.ui.activity.GetCodeActivity;
 import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QCodeBO;
+import com.poomoo.model.request.QUpdateInfoBO;
 
 import javax.inject.Inject;
 
@@ -65,7 +66,7 @@ public class GetCodePresenter extends BasePresenter<GetCodeActivity> {
                 .subscribe(new AbsAPICallback<ResponseBO>() {
                     @Override
                     protected void onError(ApiException e) {
-                        mView.getCodeFailed(e.getMessage());
+                        mView.failed(e.getMessage());
                     }
 
                     @Override
@@ -89,12 +90,37 @@ public class GetCodePresenter extends BasePresenter<GetCodeActivity> {
                 .subscribe(new AbsAPICallback<ResponseBO>() {
                     @Override
                     protected void onError(ApiException e) {
-                        mView.checkCodeFailed(e.getMessage());
+                        mView.failed(e.getMessage());
                     }
 
                     @Override
                     public void onNext(ResponseBO responseBO) {
                         mView.checkCodeSucceed();
+                    }
+                }));
+    }
+
+    /**
+     * 修改个人信息
+     *
+     * @param userId
+     * @param nickName
+     * @param phoneNum
+     */
+    public void updateTel(int userId, String nickName, String phoneNum) {
+        QUpdateInfoBO qUpdateInfoBO = new QUpdateInfoBO(NetConfig.UPDATEINFO, userId, nickName, phoneNum);
+        add(NetWork.getMyApi().UpdateUserInfo(qUpdateInfoBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.failed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        mView.updateSucceed();
                     }
                 }));
     }

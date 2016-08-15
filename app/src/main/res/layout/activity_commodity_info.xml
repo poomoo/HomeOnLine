@@ -23,6 +23,8 @@
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:background="@color/TitleBarBg"
+            android:clickable="true"
+            android:onClick="toMain"
             android:gravity="center"
             android:paddingBottom="4dp"
             android:paddingTop="4dp">
@@ -45,6 +47,8 @@
             android:layout_width="70dp"
             android:layout_height="match_parent"
             android:background="@color/TitleBarBg"
+            android:clickable="true"
+            android:onClick="toCart"
             android:paddingBottom="4dp"
             android:paddingTop="4dp">
 
@@ -54,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:drawableTop="@drawable/nav4_normal"
+
                 android:text="购物车"
                 android:textColor="@color/ThemeTextColor"
                 android:textSize="@dimen/sp_12" />

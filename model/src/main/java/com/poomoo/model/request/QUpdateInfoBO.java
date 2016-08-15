@@ -22,51 +22,25 @@
  * #                                                   #
  * #               佛祖保佑         永无BUG            #
  * #                                                   #
- * Copyright (c) 2016. 李苜菲 Inc. All rights reserved.
+ * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.homeonline.ui.activity;
-
-import android.os.Bundle;
-import android.widget.TextView;
-
-import com.poomoo.homeonline.R;
-import com.poomoo.homeonline.ui.base.BaseActivity;
-
-import butterknife.Bind;
-import butterknife.ButterKnife;
+package com.poomoo.model.request;
 
 /**
- * 类名 MyInfoActivity
- * 描述 我的资料
+ * 类名 QUpdateInfoBO
+ * 描述 更新个人信息
  * 作者 李苜菲
- * 日期 2016/7/19 11:22
+ * 日期 2016/8/15 17:14
  */
-public class MyInfoActivity extends BaseActivity {
-    @Bind(R.id.txt_myInfo_nickName)
-    TextView nameTxt;
-    @Bind(R.id.txt_myInfo_tel)
-    TextView telTxt;
+public class QUpdateInfoBO extends BaseRequest {
+    public int userId;
+    public String nickName;
+    public String phoneNum;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        ButterKnife.bind(this);
-        init();
-    }
-
-    @Override
-    protected int onBindLayout() {
-        return R.layout.activity_my_info;
-    }
-
-    @Override
-    protected int onSetTitle() {
-        return R.string.title_myInfo;
-    }
-
-    private void init() {
-        setBack();
-        nameTxt.setText(application.getNickName());
-        telTxt.setText(application.getTel());
+    public QUpdateInfoBO(String method, int userId, String nickName, String phoneNum) {
+        super(method);
+        this.userId = userId;
+        this.nickName = nickName;
+        this.phoneNum = phoneNum;
     }
 }

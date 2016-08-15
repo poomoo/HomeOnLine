@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.poomoo.commlib.LogUtils;
@@ -34,6 +35,8 @@ import rx.Subscriber;
  * 日期 2016/7/19 11:22
  */
 public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
+    @Bind(R.id.llayout_input)
+    LinearLayout llayout;
     @Bind(R.id.edt_tel)
     EditText phoneEdt;
     @Bind(R.id.edt_code)
@@ -48,6 +51,7 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
     private String phoneNum = "";
     private String code = "";
     private String PARENT = "";
+    private int where = 0;//0-注册 1-找回密码 2-更换手机
     private boolean flag;//true-找回密码 false-注册
 
     @Override
@@ -66,8 +70,10 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
     protected int onSetTitle() {
         if (PARENT.equals(getString(R.string.intent_register)))
             return R.string.title_register;
-        else
+        else if (PARENT.equals(getString(R.string.intent_find)))
             return R.string.title_findPassWord;
+        else
+            return R.string.title_updateTel;
     }
 
     @Override
@@ -81,13 +87,28 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
     private void init() {
         PARENT = getIntent().getStringExtra(getString(R.string.intent_parent));
         setBack();
+        getProgressBar();
 
-        if (PARENT.equals(getString(R.string.intent_register)))
+        if (PARENT.equals(getString(R.string.intent_register))) {
+            where = 0;
             flag = false;
-        else
+            bindViewByRxBinding();
+        } else if (PARENT.equals(getString(R.string.intent_find))) {
             flag = true;
+            where = 1;
+            bindViewByRxBinding();
+        } else {
+            flag = true;
+            where = 2;
+        }
 
-        bindViewByRxBinding();
+        if (where == 2) {
+            llayout.setVisibility(View.GONE);
+            phoneNum = getIntent().getStringExtra(getString(R.string.intent_value));
+            nextBtn.setTag("old");
+            showProgressBar();
+            mPresenter.getCode(phoneNum, flag);
+        }
 
         getCodeBtn.setEnabled(false);
         phoneEdt.addTextChangedListener(new TextWatcher() {
@@ -150,37 +171,70 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
     }
 
     public void toGetCode(View view) {
+        showProgressBar();
+        if (where != 2)
         phoneNum = phoneEdt.getText().toString().trim();
         mPresenter.getCode(phoneNum, flag);
     }
 
     public void toNext(View view) {
-        phoneNum = phoneEdt.getText().toString().trim();
+        if (where != 2)
+            phoneNum = phoneEdt.getText().toString().trim();
         code = codeEdt.getText().toString().trim();
-//        mPresenter.checkCode(phoneNum, code);
-        checkCodeSucceed();
+        mPresenter.checkCode(phoneNum, code);
     }
 
     public void getCodeSucceed() {
+        hideProgressBar();
         MyUtils.showToast(getApplicationContext(), "验证码发送成功");
         timeCountDownUtil = new TimeCountDownUtil(60 * 1000, 1000, getCodeBtn);
         timeCountDownUtil.start();
         getCodeBtn.setEnabled(false);
     }
 
-    public void getCodeFailed(String msg) {
-        MyUtils.showToast(getApplicationContext(), msg);
+    public void checkCodeSucceed() {
+        switch (where) {
+            case 2:
+                if (nextBtn.getTag().equals("old")) {
+                    hideProgressBar();
+                    bindViewByRxBinding();
+                    flag = false;
+                    llayout.setVisibility(View.VISIBLE);
+                    phoneEdt.setFocusable(true);
+                    phoneEdt.setFocusableInTouchMode(true);
+                    phoneEdt.requestFocus();
+                    timeCountDownUtil.cancel();
+                    getCodeBtn.setText("发送验证码");
+                    codeEdt.setText("");
+                    nextBtn.setText("完成");
+                    nextBtn.setTag("new");
+                } else {
+                    showProgressBar();
+                    mPresenter.updateTel(application.getUserId(), "", phoneNum);
+                }
+                break;
+            default:
+                Bundle bundle = new Bundle();
+                bundle.putString(getString(R.string.intent_parent), PARENT);
+                bundle.putString(getString(R.string.intent_value), phoneNum);
+                openActivity(ChangePassWordActivity.class, bundle);
+                finish();
+                break;
+        }
+
     }
 
-    public void checkCodeSucceed() {
-        Bundle bundle = new Bundle();
-        bundle.putString(getString(R.string.intent_parent), PARENT);
-        bundle.putString(getString(R.string.intent_value), phoneNum);
-        openActivity(ChangePassWordActivity.class, bundle);
+    public void updateSucceed() {
+        hideProgressBar();
+        MyUtils.showToast(getApplicationContext(), "修改手机号成功");
+        application.setTel(phoneNum);
         finish();
     }
 
-    public void checkCodeFailed(String msg) {
+    public void failed(String msg) {
+        hideProgressBar();
         MyUtils.showToast(getApplicationContext(), msg);
     }
+
+
 }

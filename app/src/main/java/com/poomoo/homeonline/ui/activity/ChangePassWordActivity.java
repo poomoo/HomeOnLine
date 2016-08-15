@@ -82,7 +82,7 @@ public class ChangePassWordActivity extends BaseDaggerActivity<ChangePassWordPre
             MyUtils.showToast(getApplicationContext(), "两次输入的密码不一样");
             return;
         }
-        showProgressDialog(getString(R.string.dialog));
+        showProgressBar();
         mPresenter.register(phoneNum, passWord1);
     }
 
@@ -133,24 +133,25 @@ public class ChangePassWordActivity extends BaseDaggerActivity<ChangePassWordPre
         if (PARENT.equals(getString(R.string.intent_register)))
             mPresenter.login(phoneNum, passWord1);
         else {
-            closeProgressDialog();
+            hideProgressBar();
             finish();
             MyUtils.showToast(getApplicationContext(), "修改密码成功");
         }
     }
 
     public void registerFailed(String msg) {
-        closeProgressDialog();
+        hideProgressBar();
         MyUtils.showToast(getApplicationContext(), msg);
     }
 
     public void loginSucceed(RUserBO rUserBO) {
-        closeProgressDialog();
+        hideProgressBar();
         if (LogInActivity.instance != null)
             LogInActivity.instance.finish();
         finish();
-        SPUtils.put(getApplicationContext(), getString(R.string.sp_id), rUserBO.userId + "");
-        openActivity(MainActivity.class);
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), rUserBO.userId + "");
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_phoneNum), phoneNum);
+//        openActivity(MainNewActivity.class);
     }
 
     public void loginFailed(String msg) {

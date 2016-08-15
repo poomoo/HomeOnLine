@@ -12,7 +12,8 @@ import org.litepal.LitePalApplication;
 public class MyApplication extends LitePalApplication {
     // 用户信息
     private Integer userId = 286;
-    private String tel = "";//--用户手机号码
+    private String tel = "";//用户手机号码
+    private String nickName = "";//用户昵称
     private int cartNum;
 
     @Override
@@ -56,6 +57,14 @@ public class MyApplication extends LitePalApplication {
 
     public void setTel(String tel) {
         this.tel = tel;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
     }
 
     public int getCartNum() {

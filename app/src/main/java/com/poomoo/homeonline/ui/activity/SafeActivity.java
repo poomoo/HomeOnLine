@@ -27,9 +27,17 @@
 package com.poomoo.homeonline.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.base.BaseActivity;
+
+import org.w3c.dom.Text;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * 类名 SafeActivity
@@ -38,11 +46,15 @@ import com.poomoo.homeonline.ui.base.BaseActivity;
  * 日期 2016/7/19 11:22
  */
 public class SafeActivity extends BaseActivity {
+    @Bind(R.id.txt_safe_nickName)
+    TextView nameTxt;
+    @Bind(R.id.txt_safe_tel)
+    TextView telTxt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ButterKnife.bind(this);
         init();
     }
 
@@ -59,6 +71,38 @@ public class SafeActivity extends BaseActivity {
 
     private void init() {
         setBack();
+        nameTxt.setText(application.getNickName());
+        telTxt.setText(MyUtils.hiddenTel(application.getTel()));
+    }
+
+    /**
+     * 设置昵称
+     *
+     * @param view
+     */
+    public void setNickName(View view) {
+
+    }
+
+    /**
+     * 修改手机号码
+     *
+     * @param view
+     */
+    public void updateTel(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_parent), getString(R.string.intent_updateTel));
+        bundle.putString(getString(R.string.intent_value), application.getTel());
+        openActivity(GetCodeActivity.class, bundle);
+    }
+
+    /**
+     * 修改登录密码
+     *
+     * @param view
+     */
+    public void updateLoginPW(View view) {
+
     }
 
 }

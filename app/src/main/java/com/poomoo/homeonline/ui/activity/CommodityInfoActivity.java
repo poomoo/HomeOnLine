@@ -27,6 +27,7 @@
 package com.poomoo.homeonline.ui.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
@@ -242,9 +243,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
 
         viewPager.setVisibility(View.GONE);
         progressBarRlayout.setVisibility(View.VISIBLE);
-//        commodityId = 6048;
         mPresenter.getCommodity(commodityId, commodityDetailId, 0);
-        mPresenter.addHistory(286, commodityId, 1);
+        mPresenter.addHistory(application.getUserId(), commodityId, 1);
     }
 
     private void addView() {
@@ -326,6 +326,25 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         viewList.add(view2);
     }
 
+    public void toMain(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(getString(R.string.intent_value), 0);
+        openActivity(MainNewActivity.class, bundle);
+        finish();
+    }
+
+    public void toCart(View view) {
+        if (!MyUtils.isLogin(this)) {
+            openActivity(LogInActivity.class);
+            MyUtils.showToast(context, "请先登录");
+            return;
+        }
+        Bundle bundle = new Bundle();
+        bundle.putInt(getString(R.string.intent_value), 3);
+        openActivity(MainNewActivity.class, bundle);
+        finish();
+    }
+
     /**
      * tab变化
      *
@@ -365,6 +384,11 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
 
     @OnClick({R.id.btn_info_addToCart, R.id.btn_info_buy})
     public void btnClick(View v) {
+        if (!MyUtils.isLogin(this)) {
+            openActivity(LogInActivity.class);
+            MyUtils.showToast(context, "请先登录");
+            return;
+        }
         switch (v.getId()) {
             case R.id.btn_info_addToCart:
                 if (hasSpecification)

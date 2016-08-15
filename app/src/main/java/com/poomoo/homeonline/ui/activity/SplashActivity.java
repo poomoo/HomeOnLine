@@ -40,10 +40,10 @@ public class SplashActivity extends BaseActivity {
                 openActivity(IndexViewPagerActivity.class);
                 finish();
             } else {
-//                    if ((boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isLogin), false))
+                application.setUserId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), null));
+                application.setNickName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_nickName), ""));
+                application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
                 openActivity(MainNewActivity.class);
-//                    else
-//                    openActivity(LogInActivity.class);
                 finish();
             }
 

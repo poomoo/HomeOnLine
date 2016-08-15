@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
@@ -33,9 +34,12 @@ import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.RZoneBO;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -46,6 +50,9 @@ import butterknife.OnClick;
  * 日期 2016/7/19 11:20
  */
 public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> {
+    @Bind(R.id.txt_center_nickName)
+    TextView nameTxt;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_center, container, false);
@@ -68,6 +75,7 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
     }
 
     private void init() {
+        nameTxt.setText(application.getNickName());
         mPresenter.getZoneInfo();
     }
 

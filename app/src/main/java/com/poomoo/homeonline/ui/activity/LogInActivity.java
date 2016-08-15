@@ -47,9 +47,8 @@ public class LogInActivity extends BaseDaggerActivity<LoginPresenter> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setBack();
-        instance = this;
         ButterKnife.bind(this);
+        instance = this;
         init();
     }
 
@@ -72,6 +71,8 @@ public class LogInActivity extends BaseDaggerActivity<LoginPresenter> {
     }
 
     private void init() {
+        setBack();
+        getProgressBar();
         bindViewByRxBinding();
     }
 
@@ -131,20 +132,21 @@ public class LogInActivity extends BaseDaggerActivity<LoginPresenter> {
     public void toLogin(View view) {
         name = nameEdt.getText().toString().trim();
         passWord = passWordEdt.getText().toString().trim();
-        showProgressDialog(getString(R.string.dialog));
+        showProgressBar();
         mPresenter.login(name, passWord);
     }
 
     public void loginSucceed(RUserBO rUserBO) {
-        closeProgressDialog();
+        hideProgressBar();
         finish();
         SPUtils.put(getApplicationContext(), getString(R.string.sp_isLogin), true);
-        SPUtils.put(getApplicationContext(), getString(R.string.sp_id), rUserBO.userId + "");
-        openActivity(MainNewActivity.class);
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), rUserBO.userId + "");
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_phoneNum), name);
+//        openActivity(MainNewActivity.class);
     }
 
     public void loginFailed(String msg) {
-        closeProgressDialog();
+        hideProgressBar();
         MyUtils.showToast(getApplicationContext(), msg);
     }
 }

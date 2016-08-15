@@ -29,14 +29,11 @@ public class JavaScript {
 
     @android.webkit.JavascriptInterface
     public void jumpToMainActivity(final int flag) {
-        mContext.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                intent = new Intent(mContext, MainNewActivity.class);
-                intent.putExtra(mContext.getString(R.string.intent_value), flag);
-                mContext.startActivity(intent);
-                mContext.finish();
-            }
+        mContext.runOnUiThread(() -> {
+            intent = new Intent(mContext, MainNewActivity.class);
+            intent.putExtra(mContext.getString(R.string.intent_value), flag);
+            mContext.startActivity(intent);
+            mContext.finish();
         });
     }
 

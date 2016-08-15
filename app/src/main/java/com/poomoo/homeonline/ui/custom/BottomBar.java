@@ -1,6 +1,7 @@
 package com.poomoo.homeonline.ui.custom;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
+import com.poomoo.homeonline.ui.activity.LogInActivity;
 
 
 /**
@@ -96,10 +99,22 @@ public class BottomBar extends LinearLayout implements OnClickListener {
                 cancelLinearBackground(2);
                 break;
             case R.id.rlayout_cart:
+                if (!MyUtils.isLogin(context)) {
+                    Intent login = new Intent(context, LogInActivity.class);
+                    context.startActivity(login);
+                    MyUtils.showToast(context, "请先登录");
+                    return;
+                }
                 onItemChangedListener.onItemChanged(3);
                 cancelLinearBackground(3);
                 break;
             case R.id.rlayout_center:
+                if (!MyUtils.isLogin(context)) {
+                    Intent login = new Intent(context, LogInActivity.class);
+                    context.startActivity(login);
+                    MyUtils.showToast(context, "请先登录");
+                    return;
+                }
                 onItemChangedListener.onItemChanged(4);
                 cancelLinearBackground(4);
                 break;

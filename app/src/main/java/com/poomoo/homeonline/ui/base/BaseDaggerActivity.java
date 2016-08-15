@@ -10,6 +10,7 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -98,6 +99,15 @@ public abstract class BaseDaggerActivity<P extends BasePresenter> extends Fragme
     protected void getProgressBar() {
         mProgressBar = (RelativeLayout) findViewById(R.id.rlayout_progressBar);
     }
+
+    protected void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgressBar() {
+        mProgressBar.setVisibility(View.GONE);
+    }
+
 
     /**
      * @param pClass

@@ -44,6 +44,7 @@ import com.poomoo.model.request.QHistory;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
 import com.poomoo.model.request.QSpecificationBO;
+import com.poomoo.model.request.QUpdateInfoBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCartShopBO;
@@ -177,4 +178,8 @@ public interface MyApi {
     //意见反馈
     @POST("app/call.json")
     Observable<ResponseBO> FeedBack(@Body QFeedBackBO data);
+
+    //修改个人信息
+    @POST("app/call.json")
+    Observable<ResponseBO> UpdateUserInfo(@Body QUpdateInfoBO data);
 }

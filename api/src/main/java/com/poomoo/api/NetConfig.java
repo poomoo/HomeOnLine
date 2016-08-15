@@ -24,6 +24,7 @@ public class NetConfig {
     public final static String CHANGEPASSWORD = "1005";//修改密码
     public final static String USERINFO = "1005_01";//用户基本信息
     public final static String FEEDBACK = "1005_02";//意见反馈
+    public final static String UPDATEINFO = "1005_03";//修改个人信息
 
     public final static String SLIDE = "1006_01";//首页滚动广告
     public final static String SPECIAL = "1006_02";//首页专题广告
