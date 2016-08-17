@@ -34,10 +34,9 @@ import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.RZoneBO;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.prefs.AbstractPreferences;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -76,7 +75,7 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
 
     private void init() {
         nameTxt.setText(application.getNickName());
-        mPresenter.getZoneInfo();
+//        mPresenter.getZoneInfo();
     }
 
     @OnClick(R.id.rlayout_myOrder)
@@ -86,21 +85,6 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
 
     @OnClick({R.id.llayout_pay, R.id.llayout_deliver, R.id.llayout_recepit, R.id.llayout_evaluate})
     void toMyOrder(View view) {
-//        if (!application.isLogin()) {
-//            Dialog dialog = new AlertDialog.Builder(getActivity()).setMessage("请先登录").setPositiveButton("确定", (new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//
-//                }
-//            })).setNegativeButton("取消", (new DialogInterface.OnClickListener() {
-//                @Override
-//                public void onClick(DialogInterface dialog, int which) {
-//
-//                }
-//            })).create();
-//            dialog.show();
-//            return;
-//        }
         Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.llayout_pay:
@@ -115,14 +99,11 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
             case R.id.llayout_evaluate:
                 bundle.putInt(getString(R.string.intent_value), ROrderBO.ORDER_EVALUATE);
                 break;
-//            case R.id.llayout_after_safe:
-//                bundle.putInt(getString(R.string.intent_value), ROrderBO.ORDER_AFTER_SALE);
-//                break;
         }
         openActivity(MyOrdersActivity.class, bundle);
     }
 
-    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_safe})
+    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale})
     void other(View view) {
         switch (view.getId()) {
             case R.id.txt_collection:
@@ -131,14 +112,16 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
             case R.id.txt_history:
                 openActivity(ScanHistoryActivity.class);
                 break;
-            case R.id.llayout_after_safe:
+            case R.id.llayout_after_sale:
 //                openActivity(MyInfoActivity.class);
                 break;
             case R.id.rlayout_my_info:
                 openActivity(MyInfoActivity.class);
                 break;
             case R.id.rlayout_my_address:
-                openActivity(AddressListActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putBoolean(getString(R.string.intent_isEdit), true);
+                openActivity(AddressListActivity.class,bundle);
                 break;
             case R.id.rlayout_tel:
                 dial();
@@ -156,10 +139,6 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
      * 打电话
      */
     private void dial() {
-//        if (!application.isLogin()) {
-//            MyUtils.showToast(getApplicationContext(), MyConfig.pleaseLogin);
-//            return;
-//        }
         Dialog dialog = new AlertDialog.Builder(getActivity()).setMessage("拨打电话 4008865355").setNegativeButton("取消", null).setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -200,4 +179,10 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         LogUtils.d(TAG, "插表完成");
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden)
+            nameTxt.setText(application.getNickName());
+    }
 }

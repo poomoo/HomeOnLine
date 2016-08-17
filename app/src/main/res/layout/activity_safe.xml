@@ -105,4 +105,12 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/divide" />
+
+    <Button
+        style="@style/myButton_Red"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="50dp"
+        android:onClick="logOut"
+        android:text="退出登录" />
 </LinearLayout>

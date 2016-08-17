@@ -9,4 +9,6 @@ package com.poomoo.model;
  */
 public class RUserBO {
     public int userId;
+    public String nickName;
+    public String phoneNum;
 }

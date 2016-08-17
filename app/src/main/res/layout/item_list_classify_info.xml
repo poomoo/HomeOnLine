@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/chk_classify_info"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/classify_info_bg"
+    android:button="@null"
+    android:gravity="center"
+    android:text="黔品米面杂粮"
+    android:textColor="@color/commodity_specification_text" />

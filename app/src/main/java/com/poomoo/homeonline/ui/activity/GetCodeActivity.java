@@ -51,7 +51,7 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
     private String phoneNum = "";
     private String code = "";
     private String PARENT = "";
-    private int where = 0;//0-注册 1-找回密码 2-更换手机
+    private int where = 0;//0-注册 1-找回密码 2-更换手机 3-修改登录密码
     private boolean flag;//true-找回密码 false-注册
 
     @Override
@@ -72,8 +72,10 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
             return R.string.title_register;
         else if (PARENT.equals(getString(R.string.intent_find)))
             return R.string.title_findPassWord;
-        else
+        else if (PARENT.equals(getString(R.string.intent_updateTel)))
             return R.string.title_updateTel;
+        else
+            return R.string.title_updateLoginPW;
     }
 
     @Override
@@ -97,15 +99,25 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
             flag = true;
             where = 1;
             bindViewByRxBinding();
-        } else {
+        } else if (PARENT.equals(getString(R.string.intent_updateTel))) {
             flag = true;
             where = 2;
+        } else {
+            flag = true;
+            where = 3;
         }
 
         if (where == 2) {
             llayout.setVisibility(View.GONE);
-            phoneNum = getIntent().getStringExtra(getString(R.string.intent_value));
+            phoneNum = application.getTel();
             nextBtn.setTag("old");
+            showProgressBar();
+            mPresenter.getCode(phoneNum, flag);
+        }
+
+        if (where == 3) {
+            llayout.setVisibility(View.GONE);
+            phoneNum = application.getTel();
             showProgressBar();
             mPresenter.getCode(phoneNum, flag);
         }
@@ -129,6 +141,7 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
                     getCodeBtn.setEnabled(true);
                 else
                     getCodeBtn.setEnabled(false);
+                LogUtils.d(TAG, "getCodeBtn:" + getCodeBtn.isEnabled());
             }
         });
 
@@ -171,14 +184,17 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
     }
 
     public void toGetCode(View view) {
+        MyUtils.hiddenKeyBoard(this, phoneEdt);
         showProgressBar();
-        if (where != 2)
-        phoneNum = phoneEdt.getText().toString().trim();
+        if (where == 0 || where == 1)
+            phoneNum = phoneEdt.getText().toString().trim();
         mPresenter.getCode(phoneNum, flag);
     }
 
     public void toNext(View view) {
-        if (where != 2)
+        MyUtils.hiddenKeyBoard(this, codeEdt);
+        showProgressBar();
+        if (where == 0 || where == 1)
             phoneNum = phoneEdt.getText().toString().trim();
         code = codeEdt.getText().toString().trim();
         mPresenter.checkCode(phoneNum, code);
@@ -193,10 +209,10 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
     }
 
     public void checkCodeSucceed() {
+        hideProgressBar();
         switch (where) {
             case 2:
                 if (nextBtn.getTag().equals("old")) {
-                    hideProgressBar();
                     bindViewByRxBinding();
                     flag = false;
                     llayout.setVisibility(View.VISIBLE);
@@ -205,6 +221,7 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
                     phoneEdt.requestFocus();
                     timeCountDownUtil.cancel();
                     getCodeBtn.setText("发送验证码");
+                    getCodeBtn.setClickable(true);
                     codeEdt.setText("");
                     nextBtn.setText("完成");
                     nextBtn.setTag("new");
@@ -235,6 +252,4 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
         hideProgressBar();
         MyUtils.showToast(getApplicationContext(), msg);
     }
-
-
 }

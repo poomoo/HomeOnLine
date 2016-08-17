@@ -38,8 +38,8 @@ public class PicturesGridAdapter extends MyBaseAdapter<RAdBO> {
         item = itemList.get(position);
         convertView = inflater.inflate(R.layout.item_pictures, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.image);
-        viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(context) / 2 * 10 / 13));//设置广告栏的宽高比为13:10
-        Glide.with(context).load(NetConfig.ImageUrl + item.advertisementPic).placeholder(R.drawable.replace13b10).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(viewHolder.image);
+//        viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(context) / 2 * 10 / 13));//设置广告栏的宽高比为13:10
+        Glide.with(context).load(NetConfig.ImageUrl + item.advertisementPic).placeholder(R.drawable.replace13b10).into(viewHolder.image);
         return convertView;
     }
 

@@ -37,6 +37,7 @@ public class QUserIdBO extends BaseRequest {
 
     public QUserIdBO(String method, Integer userId) {
         super(method);
-        this.userId = userId;
+        if (userId != null)
+            this.userId = userId;
     }
 }

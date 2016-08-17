@@ -36,6 +36,7 @@ import android.widget.LinearLayout;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.AddressListAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
@@ -43,6 +44,7 @@ import com.poomoo.homeonline.database.AreaInfo;
 import com.poomoo.homeonline.database.CityInfo;
 import com.poomoo.homeonline.database.DataBaseHelper;
 import com.poomoo.homeonline.database.ProvinceInfo;
+import com.poomoo.homeonline.listeners.EditAddressListener;
 import com.poomoo.homeonline.presenters.AddressListPresenter;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
@@ -65,20 +67,23 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:21
  */
-public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, AddressListPresenter> implements BaseListAdapter.OnItemClickListener {
+public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, AddressListPresenter> implements BaseListAdapter.OnItemClickListener, EditAddressListener {
     @Bind(R.id.llayout_bottom)
     LinearLayout bottomLayout;
 
     private static final int NEW = 1;
     private static final int UPDATE = 2;
     private static final int DELETE = 3;
+    private static final int SELECT = 4;
 
     private AddressListAdapter adapter;
     private List<RReceiptBO> rReceiptBOs;
     private int deletePosition = -1;//删除的地址item的下标
+    private boolean isEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        isEdit = getIntent().getBooleanExtra(getString(R.string.intent_isEdit), false);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         init();
@@ -94,7 +99,10 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
 
     @Override
     protected BaseListAdapter onSetupAdapter() {
-        adapter = new AddressListAdapter(this, BaseListAdapter.NEITHER);
+        if (isEdit)
+            adapter = new AddressListAdapter(this, BaseListAdapter.NEITHER, isEdit, null);
+        else
+            adapter = new AddressListAdapter(this, BaseListAdapter.NEITHER, isEdit, this);
         return adapter;
     }
 
@@ -110,6 +118,7 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
 
     private void init() {
         setBack();
+
         adapter.setOnItemClickListener(this);
         mSwipeRefreshLayout.setEnabled(false);
         mPresenter.getAddressList(application.getUserId());
@@ -148,12 +157,31 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
 //    }
 
     @Override
-    public void onItemClick(int position, long id, View view) {
+    public void OnEdit(int position) {
         deletePosition = position;
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.intent_value), "old");
         bundle.putSerializable(getString(R.string.intent_receiptBO), rReceiptBOs.get(position));
-        openActivityForResult(AddressInfoActivity.class, bundle, UPDATE);
+        bundle.putBoolean(getString(R.string.intent_isEdit), isEdit);
+        openActivityForResult(AddressInfoActivity.class, bundle, SELECT);
+    }
+
+    @Override
+    public void onItemClick(int position, long id, View view) {
+        if (isEdit) {
+            deletePosition = position;
+            Bundle bundle = new Bundle();
+            bundle.putString(getString(R.string.intent_value), "old");
+            bundle.putSerializable(getString(R.string.intent_receiptBO), rReceiptBOs.get(position));
+            bundle.putBoolean(getString(R.string.intent_isEdit), isEdit);
+            openActivityForResult(AddressInfoActivity.class, bundle, UPDATE);
+        } else {
+            SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptId), rReceiptBOs.get(position).id);
+            SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptName), rReceiptBOs.get(position).consigneeName);
+            SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptTel), rReceiptBOs.get(position).consigneeTel);
+            SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptAddress), rReceiptBOs.get(position).pca);
+            finish();
+        }
     }
 
     @Override
@@ -172,6 +200,12 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
 
         if (requestCode == UPDATE && resultCode == DELETE) {
             adapter.removeItem(deletePosition);
+        }
+
+        if (requestCode == SELECT && resultCode == SELECT) {
+            mAdapter.clear();
+            mErrorLayout.setState(ErrorLayout.LOADING, "");
+            mPresenter.getAddressList(application.getUserId());
         }
     }
 

@@ -32,7 +32,9 @@ import com.poomoo.model.request.BaseRequest;
 import com.poomoo.model.request.QAddCartBO;
 import com.poomoo.model.request.QAddressBO;
 import com.poomoo.model.request.QCancelCollectionBO;
+import com.poomoo.model.request.QCategoryIdBO;
 import com.poomoo.model.request.QCheckCodeBO;
+import com.poomoo.model.request.QClassifyListBO;
 import com.poomoo.model.request.QCodeBO;
 import com.poomoo.model.request.QFeedBackBO;
 import com.poomoo.model.request.QIdBO;
@@ -43,21 +45,24 @@ import com.poomoo.model.request.QDeleteBO;
 import com.poomoo.model.request.QHistory;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
+import com.poomoo.model.request.QSearchBO;
 import com.poomoo.model.request.QSpecificationBO;
+import com.poomoo.model.request.QTransferPriceBO;
 import com.poomoo.model.request.QUpdateInfoBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCartShopBO;
 import com.poomoo.model.response.RClassifyBO;
+import com.poomoo.model.response.RClassifyInfoBO;
 import com.poomoo.model.response.RCollectBO;
 import com.poomoo.model.response.RCommodityCount;
 import com.poomoo.model.response.RCommodityInfoBO;
 import com.poomoo.model.response.RGrabBO;
-import com.poomoo.model.response.RGuessBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.RReceiptBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RSpecificationBO;
+import com.poomoo.model.response.RTransferPriceBO;
 import com.poomoo.model.response.RTypeBO;
 import com.poomoo.model.response.RZoneBO;
 
@@ -67,6 +72,7 @@ import java.util.List;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
+import rx.Subscription;
 
 /**
  * 类名 MyApi
@@ -105,7 +111,7 @@ public interface MyApi {
 
     //猜你喜欢
     @POST("app/call.json")
-    Observable<List<RGuessBO>> GetGuess(@Body QUserIdBO data);
+    Observable<List<RListCommodityBO>> GetGuess(@Body QUserIdBO data);
 
     //商品分类
     @POST("app/call.json")
@@ -182,4 +188,24 @@ public interface MyApi {
     //修改个人信息
     @POST("app/call.json")
     Observable<ResponseBO> UpdateUserInfo(@Body QUpdateInfoBO data);
+
+    //商品搜素
+    @POST("app/call.json")
+    Observable<List<RListCommodityBO>> search(@Body QSearchBO data);
+
+    //导航商品列表
+    @POST("app/call.json")
+    Observable<RClassifyInfoBO> getClassifyInfo(@Body QCategoryIdBO data);
+
+    //三级分类下的商品
+    @POST("app/call.json")
+    Observable<List<RListCommodityBO>> getClassifyCommodityList(@Body QClassifyListBO data);
+
+    //计算运费
+    @POST("app/call.json")
+    Observable<RTransferPriceBO> getTransferPrice(@Body QTransferPriceBO data);
+
+    //默认地址
+    @POST("app/call.json")
+    Observable<RReceiptBO> getDefaultAddress(@Body QUserIdBO data);
 }

@@ -59,8 +59,9 @@ public class RCommodityInfoBO implements Serializable {
         public String listPic;//列表图片
         public Detail lowestPriceDetail;//当前的明细
         public String remark;//商品详情多媒体文本
+        public boolean isFreePostage;//是否包邮 true-包邮
 
-        public class Detail implements Serializable{
+        public class Detail implements Serializable {
             public int id;//主键
             public double commonPrice;//市场价
             public double platformPrice;//平台价格
@@ -108,11 +109,11 @@ public class RCommodityInfoBO implements Serializable {
     /**
      * 商品规格
      */
-    public class SpecialParamter implements Serializable{
+    public class SpecialParamter implements Serializable {
         public String parameterName;//参数名称
         public List<ParametersValues> parametersValues;//参数值实体
 
-        public class ParametersValues implements Serializable{
+        public class ParametersValues implements Serializable {
             public int id;//参数值主键
             public String parameterValue;//参数值
             public boolean isCheck;//是否选中
@@ -139,7 +140,7 @@ public class RCommodityInfoBO implements Serializable {
     /**
      * 推荐商品
      */
-    public class TjCommodity implements Serializable{
+    public class TjCommodity implements Serializable {
         public int commodityId;//商品主键
         public double platformPrice;//平台价格
         public double commonPrice;//市场价格

@@ -40,6 +40,7 @@ import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
 import com.poomoo.homeonline.presenters.CartFragmentPresenter;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
+import com.poomoo.homeonline.ui.activity.ConfirmOrderActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.custom.AddAndMinusView;
 import com.poomoo.model.response.RCartCommodityBO;
@@ -71,6 +72,8 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     @Bind(R.id.txt_totalPrice)
     TextView totalPriceTxt;
     @Bind(R.id.llayout_cart_buy)
+    LinearLayout cartBuyLayout;
+    @Bind(R.id.llayout_buy)
     LinearLayout buyLayout;
     @Bind(R.id.llayout_cart_edit)
     LinearLayout editLayout;
@@ -150,10 +153,10 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         allEditChk.setOnCheckedChangeListener(this);
         editTxt.setOnClickListener(this);
         deleteTxt.setOnClickListener(this);
+        buyLayout.setOnClickListener(this);
 
         progressBarRlayout.setVisibility(View.VISIBLE);
-//        mPresenter.getCartInfo(application.getUserId());
-        mPresenter.getCartInfo(286);
+        mPresenter.getCartInfo(application.getUserId());
     }
 
     public void getInfoSucceed(List<RCartShopBO> rCartShopBOs) {
@@ -204,7 +207,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         adapter.deleteIndex = new ArrayList<>();
         if (adapter.getGroupCount() == 0) {
             listView.setVisibility(View.GONE);
-            buyLayout.setVisibility(View.GONE);
+            cartBuyLayout.setVisibility(View.GONE);
             editLayout.setVisibility(View.GONE);
             editTxt.setVisibility(View.GONE);
             emptyLayout.setVisibility(View.VISIBLE);
@@ -329,7 +332,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
             case R.id.txt_edit:
                 if (editTxt.getText().toString().equals("编辑")) {//编辑
                     editTxt.setText("完成");
-                    buyLayout.setVisibility(View.GONE);
+                    cartBuyLayout.setVisibility(View.GONE);
                     editLayout.setVisibility(View.VISIBLE);
                     //初始化选中状态
                     isClick = false;
@@ -342,7 +345,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                     adapter.notifyDataSetChanged();
                 } else {//完成
                     editTxt.setText("编辑");
-                    buyLayout.setVisibility(View.VISIBLE);
+                    cartBuyLayout.setVisibility(View.VISIBLE);
                     editLayout.setVisibility(View.GONE);
                     adapter.isEdit = false;
                     adapter.notifyDataSetChanged();
@@ -373,6 +376,16 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 progressBarRlayout.setVisibility(View.VISIBLE);
                 mPresenter.changeCount(cartId, count, commodityType);
                 popUpWindow.dismiss();
+                break;
+            case R.id.llayout_buy:
+                if (adapter.getrCartCommodityBOs().size() == 0) {
+                    MyUtils.showToast(getActivity().getApplicationContext(), "您还没有选择商品哦!");
+                    return;
+                }
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(getString(R.string.intent_commodityList), adapter.getrCartCommodityBOs());
+                bundle.putSerializable(getString(R.string.intent_totalPrice), adapter.getTotalPrice());
+                openActivity(ConfirmOrderActivity.class, bundle);
                 break;
         }
     }
@@ -446,7 +459,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
             adapter.isEdit = false;
             adapter.notifyDataSetChanged();
             listView.setVisibility(View.VISIBLE);
-            buyLayout.setVisibility(View.VISIBLE);
+            cartBuyLayout.setVisibility(View.VISIBLE);
             editLayout.setVisibility(View.GONE);
             editTxt.setText("编辑");
             editTxt.setVisibility(View.VISIBLE);

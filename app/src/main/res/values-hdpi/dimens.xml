@@ -7,7 +7,8 @@
     <dimen name="inform_size">14dp</dimen>
     <dimen name="divider_height2">1dp</dimen>
 
-    <dimen name="dp_40">34dp</dimen>
+    <dimen name="dp_10">8dp</dimen>
+    <dimen name="dp_20">15dp</dimen>
 
     <dimen name="sp_10">8sp</dimen>
     <dimen name="sp_12">10sp</dimen>

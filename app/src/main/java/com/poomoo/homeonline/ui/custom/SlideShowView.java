@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.listeners.AdvertisementListener;
@@ -159,7 +160,7 @@ public class SlideShowView extends FrameLayout {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             ImageView imageView = imageViewsList.get(position);
-            Glide.with(context).load(imageUrls[position]).placeholder(R.drawable.replace2).into(imageView);
+            Glide.with(context).load(imageUrls[position]).placeholder(R.drawable.replace2).priority(Priority.IMMEDIATE).into(imageView);
             imageView.setOnClickListener(v -> {
                 if (listener != null)
                     listener.onAdvClick(position);

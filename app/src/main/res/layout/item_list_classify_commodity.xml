@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:background="@drawable/shape_rectangle_gray"
     android:gravity="center_vertical"
     android:orientation="vertical"
-    android:padding="10dp">
+    android:padding="4dp">
 
     <ImageView
-        android:id="@+id/img_guess"
+        android:id="@+id/img_commodity"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"/>
 
     <TextView
-        android:id="@+id/txt_guess_name"
+        android:id="@+id/txt_commodity_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ellipsize="end"
@@ -23,7 +24,7 @@
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/txt_guess_price"
+        android:id="@+id/txt_commodity_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="￥52.00"

@@ -42,12 +42,19 @@ public class NetConfig {
 
     public final static String COMMODITY = "1009_01";//商品详情
     public final static String SPECIFICATION = "1009_02";//商品规格详情
+    public final static String SEARCH = "1009_03";//商品搜索
+    public final static String CLASSINFO = "1009_04";//导航商品列表
+    public final static String CLASSCOMMODITYLIST = "1009_05";//三级分类下的商品
+
+    public final static String TRANSFERPRICE = "1010_08";//计算运费
+
 
     public final static String NEWADDRESS = "1011_01";//收货地址列表
     public final static String GETADDRESSLIST = "1011_02";//收货地址列表
     public final static String UPDATEADDRESS = "1011_03";//更新收货地址
     public final static String DELETEADDRESS = "1011_04";//删除收货地址
     public final static String GETZONEINFO = "1011_06";//区域信息
+    public final static String DEFAULTADDRESS = "1011_07";//默认收货地址
 
     public static final String ADDHISTORY = "1012_01";//增加浏览记录
     public static final String GETHISTORY = "1012_02";//获取浏览记录

@@ -1,9 +1,6 @@
 package com.poomoo.homeonline.adapter;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +13,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.Holder;
-import com.orhanobut.dialogplus.OnBackPressListener;
-import com.orhanobut.dialogplus.OnClickListener;
-import com.orhanobut.dialogplus.OnDismissListener;
-import com.orhanobut.dialogplus.ViewHolder;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
-import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.listeners.OnBuyCheckChangedListener;
 import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
@@ -58,6 +49,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
     private double totalPrice = 0.00;
     //    public int removeCount = 0;//选择的删除项
     public List<Integer> deleteIndex;//选择的删除项下标
+    public ArrayList<RCartCommodityBO> rCartCommodityBOs;//选择购买的商品集合
     private int commodityKind = 0;
     private int commodityCount = 0;
 
@@ -194,7 +186,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 //        LogUtils.d(TAG, "getChildView:" + childPosition);
         ChildViewHolder holder;
-        convertView = LayoutInflater.from(context).inflate(R.layout.item_list_commodity, null);
+        convertView = LayoutInflater.from(context).inflate(R.layout.item_list_cart, null);
         holder = new ChildViewHolder();
         holder.commodityLayout = (LinearLayout) convertView.findViewById(R.id.llayout_commodity);
         holder.commodityChk = (CheckBox) convertView.findViewById(R.id.chk_commodity);
@@ -377,18 +369,26 @@ public class CartAdapter extends BaseExpandableListAdapter {
         totalPrice = 0.00;
 //        removeCount = 0;
         deleteIndex = new ArrayList<>();
+        rCartCommodityBOs = new ArrayList<>();
         for (int i = 0; i < group.size(); i++)
             for (int j = 0; j < group.get(i).getChildrenCount(); j++) {
                 rCartCommodityBO = group.get(i).carts.get(j);
-                if (rCartCommodityBO.isBuyChecked)
+                if (rCartCommodityBO.isBuyChecked) {
                     totalPrice += rCartCommodityBO.commodityPrice * rCartCommodityBO.commodityNum;
-                if (rCartCommodityBO.isEditChecked) {
-//                    removeCount++;
-                    deleteIndex.add(rCartCommodityBO.id);
+                    rCartCommodityBOs.add(rCartCommodityBO);
                 }
-
+                if (rCartCommodityBO.isEditChecked)
+                    deleteIndex.add(rCartCommodityBO.id);
             }
         cartFragment.setTotalPrice(df.format(totalPrice));
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public ArrayList<RCartCommodityBO> getrCartCommodityBOs() {
+        return rCartCommodityBOs;
     }
 
     public boolean isAllSelected() {

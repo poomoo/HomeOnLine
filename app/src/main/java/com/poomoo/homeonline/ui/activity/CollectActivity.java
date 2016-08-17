@@ -76,7 +76,7 @@ public class CollectActivity extends BaseListDaggerActivity<RCollectBO, CollectP
         mAdapter.setOnItemClickListener(this);
 
         adapter = (CollectionListAdapter) mAdapter;
-        mPresenter.getCollectionList(286, mCurrentPage);
+        mPresenter.getCollectionList(application.getUserId(), mCurrentPage);
     }
 
     @Override
@@ -105,6 +105,13 @@ public class CollectActivity extends BaseListDaggerActivity<RCollectBO, CollectP
     @Override
     public void onRefresh() {
         super.onRefresh();
+        mCurrentPage = 1;
+        mPresenter.getCollectionList(286, mCurrentPage);
+    }
+
+    @Override
+    public void onLoadActiveClick() {
+        super.onLoadActiveClick();
         mCurrentPage = 1;
         mPresenter.getCollectionList(286, mCurrentPage);
     }
@@ -144,7 +151,10 @@ public class CollectActivity extends BaseListDaggerActivity<RCollectBO, CollectP
     }
 
     public void getListFailed(String msg) {
-        MyUtils.showToast(getApplicationContext(), msg);
+        if (isNetWorkInvalid(msg))
+            onNetworkInvalid(LOAD_MODE_DEFAULT);
+        else
+            onLoadErrorState(LOAD_MODE_DEFAULT);
     }
 
 

@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ThemeBg"
     android:orientation="vertical">
 
-    <include layout="@layout/search_bar" />
+    <include
+        android:id="@+id/title"
+        layout="@layout/search_bar" />
 
     <LinearLayout
+        android:id="@+id/llayout_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/title"
         android:layout_marginTop="2dp"
+        android:visibility="invisible"
         android:orientation="horizontal">
 
         <android.support.v7.widget.RecyclerView
@@ -25,4 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="4dp" />
     </LinearLayout>
-</LinearLayout>
+
+    <include
+        layout="@layout/my_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

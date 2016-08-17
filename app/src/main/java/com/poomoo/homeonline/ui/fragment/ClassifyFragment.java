@@ -10,29 +10,25 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
-import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.ClassifyListAdapter;
-import com.poomoo.homeonline.adapter.SubClassifyGridAdapter;
 import com.poomoo.homeonline.adapter.SubClassifyListAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.listeners.ClassifyOnItemClickListener;
 import com.poomoo.homeonline.presenters.ClassifyFragmentPresenter;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
-import com.poomoo.homeonline.ui.activity.JSAndroidActivity;
+import com.poomoo.homeonline.ui.activity.ClassifyListActivity;
 import com.poomoo.homeonline.ui.activity.WebViewActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
-import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.model.response.RClassifyBO;
 import com.poomoo.model.response.RSubClassifyBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -55,6 +51,8 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     RecyclerView classifyRecycler;
     @Bind(R.id.recycler_content)
     RecyclerView contentRecycler;
+    @Bind(R.id.llayout_content)
+    LinearLayout layout;
 
     private ClassifyListAdapter classifyListAdapter;
     private SubClassifyListAdapter subClassifyListAdapter;
@@ -73,7 +71,7 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initView();
+        init();
     }
 
     @Override
@@ -84,7 +82,9 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
                 .inject(this);
     }
 
-    private void initView() {
+    private void init() {
+        getProgressBar();
+
         mPresenter.getClassify();
 
         initClassify();
@@ -94,13 +94,16 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
         String json = (String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_classify), "");
 
         if (!TextUtils.isEmpty(json)) {
+            layout.setVisibility(View.VISIBLE);
             Type type = new TypeToken<List<RClassifyBO>>() {
             }.getType();
             rClassifyBOs = new Gson().fromJson(json, type);
             classifyListAdapter.setItems(rClassifyBOs);
             rSubClassifyBOs = rClassifyBOs.get(0).childrenList;
             subClassifyListAdapter.setItems(rSubClassifyBOs);
-        }
+        } else
+            showProgressBar();
+
     }
 
     private void initClassify() {
@@ -123,6 +126,8 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     }
 
     public void loadClassifySucceed(List<RClassifyBO> rClassifyBOs) {
+        hideProgressBar();
+        layout.setVisibility(View.VISIBLE);
         LogUtils.d(TAG, "loadClassifySucceed:" + rClassifyBOs);
         classifyListAdapter.setItems(rClassifyBOs);
         this.rClassifyBOs = rClassifyBOs;
@@ -133,6 +138,7 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     }
 
     public void loadClassifyFailed(String msg) {
+        hideProgressBar();
         MyUtils.showToast(getActivity().getApplicationContext(), msg);
     }
 
@@ -146,11 +152,11 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
 
     @Override
     public void onClick(String categoryId) {
-        MyUtils.showToast(getActivity().getApplicationContext(), "点击了" + categoryId);
         Bundle bundle = new Bundle();
 //        bundle.putString(getString(R.string.intent_value), "http://www.jiayou9.com/phone/commodity/three_list.html?categoryId=1777");
-        bundle.putString(getString(R.string.intent_value), NetConfig.LocalUrl + "/app/rush.html");
-        openActivity(WebViewActivity.class, bundle);
-//        openActivity(WebViewActivity.class);
+//        bundle.putString(getString(R.string.intent_value), NetConfig.LocalUrl + "/app/rush.html");
+//        openActivity(WebViewActivity.class, bundle);
+        bundle.putString(getString(R.string.intent_categoryId), categoryId);
+        openActivity(ClassifyListActivity.class, bundle);
     }
 }

@@ -26,6 +26,8 @@
  */
 package com.poomoo.model.request;
 
+import android.text.TextUtils;
+
 /**
  * 类名 QUpdateInfoBO
  * 描述 更新个人信息
@@ -40,7 +42,9 @@ public class QUpdateInfoBO extends BaseRequest {
     public QUpdateInfoBO(String method, int userId, String nickName, String phoneNum) {
         super(method);
         this.userId = userId;
-        this.nickName = nickName;
-        this.phoneNum = phoneNum;
+        if (!TextUtils.isEmpty(nickName))
+            this.nickName = nickName;
+        if (!TextUtils.isEmpty(phoneNum))
+            this.phoneNum = phoneNum;
     }
 }

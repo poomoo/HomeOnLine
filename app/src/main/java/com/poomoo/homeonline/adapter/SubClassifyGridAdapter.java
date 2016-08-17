@@ -39,7 +39,7 @@ public class SubClassifyGridAdapter extends MyBaseAdapter<RThirdClassifyBO> {
         convertView = inflater.inflate(R.layout.item_grid_sub_classify, null);
         viewHolder.nameTxt = (TextView) convertView.findViewById(R.id.txt_subClassify);
         viewHolder.nameTxt.setText(item.categoryName);
-        viewHolder.nameTxt.setOnClickListener(new OnItemClick(item.categoryName));
+        viewHolder.nameTxt.setOnClickListener(new OnItemClick(item.id + ""));
         return convertView;
     }
 
@@ -48,15 +48,15 @@ public class SubClassifyGridAdapter extends MyBaseAdapter<RThirdClassifyBO> {
     }
 
     class OnItemClick implements View.OnClickListener {
-        private String name;
+        private String categoryId;
 
-        public OnItemClick(String name) {
-            this.name = name;
+        public OnItemClick(String categoryId) {
+            this.categoryId = categoryId;
         }
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onClick(this.name);
+            onItemClickListener.onClick(this.categoryId);
         }
     }
 

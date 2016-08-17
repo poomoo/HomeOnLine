@@ -40,6 +40,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -88,6 +89,12 @@ public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter
     EditText codeEdt;
     @Bind(R.id.chk_default_address)
     CheckBox defaultChk;
+    @Bind(R.id.llayout_default)
+    LinearLayout defaultLayout;
+    @Bind(R.id.btn_del)
+    Button delBtn;
+    @Bind(R.id.txt_place)
+    TextView placeTxt;
     @Bind(R.id.llayout_bottom)
     LinearLayout bottomLayout;
 
@@ -110,7 +117,9 @@ public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter
     private static final int NEW = 1;
     private static final int UPDATE = 2;
     private static final int DELETE = 3;
+    private static final int SELECT = 4;
     private RReceiptBO rReceiptBO = new RReceiptBO();
+    private boolean isEdit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +151,9 @@ public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter
 
     private void init() {
         flag = getIntent().getStringExtra(getString(R.string.intent_value));
+        isEdit = getIntent().getBooleanExtra(getString(R.string.intent_isEdit), false);
         setBack();
+        getProgressBar();
         if (!flag.equals("new")) {
             rReceiptBO = (RReceiptBO) getIntent().getSerializableExtra(getString(R.string.intent_receiptBO));
             receiptName = rReceiptBO.consigneeName;
@@ -175,11 +186,16 @@ public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter
             headerViewHolder.rightTxt.setVisibility(View.VISIBLE);
         }
 
+        if (!isEdit) {
+            defaultLayout.setVisibility(View.GONE);
+            delBtn.setVisibility(View.GONE);
+            placeTxt.setVisibility(View.GONE);
+        }
+
         adapter = new ZoneAdapter(context);
         addressPopUpWindow = new AddressPopUpWindow(this);
 
         initZone();
-        getProgressBar();
     }
 
     private void initZone() {
@@ -345,14 +361,17 @@ public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter
      */
     public void toDo(View view) {
         if (checkInput()) {
-            mProgressBar.setVisibility(View.VISIBLE);
+            showProgressBar();
             mPresenter.newAddress(application.getUserId(), rReceiptBO.consigneeName, rReceiptBO.consigneeTel, rReceiptBO.postCode, rReceiptBO.provinceId, rReceiptBO.cityId, rReceiptBO.areaId, rReceiptBO.streetName, rReceiptBO.isDefault);
         }
     }
 
     public void newSucceed() {
-        mProgressBar.setVisibility(View.GONE);
-        setResult(NEW);
+        hideProgressBar();
+        if (isEdit)
+            setResult(NEW);
+        else
+            setResult(SELECT);
         finish();
     }
 
@@ -364,14 +383,17 @@ public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter
      */
     public void updateAddress(View view) {
         if (checkInput()) {
-            mProgressBar.setVisibility(View.VISIBLE);
+            showProgressBar();
             mPresenter.updateAddress(rReceiptBO.id, application.getUserId(), rReceiptBO.consigneeName, rReceiptBO.consigneeTel, rReceiptBO.postCode, rReceiptBO.provinceId, rReceiptBO.cityId, rReceiptBO.areaId, rReceiptBO.streetName, rReceiptBO.isDefault);
         }
     }
 
     public void updateSucceed() {
         mProgressBar.setVisibility(View.GONE);
-        setResult(UPDATE);
+        if (isEdit)
+            setResult(UPDATE);
+        else
+            setResult(SELECT);
         finish();
     }
 

@@ -34,10 +34,27 @@ package com.poomoo.model.response;
  */
 public class RListCommodityBO {
     public int id; //主键
-    public int commodityDetailId; //商品明细主键
-    public String listPic;
     public double commodityPrice;//商品价格
-    public int commodityType;//商品类型
+    public double platformPrice; //平台价格
+    public int commodityDetailId; //明细主键
     public String commodityName;//商品名称
+    public double commonPrice;//市场价格
+    public String listPic;//商品显示图片
     public int commodityId;//商品主键
+    public int commodityType;//1.普通商品，2抢购商品，3.新年活动商品，4活动商品，5.特价商品
+
+    @Override
+    public String toString() {
+        return "RListCommodityBO{" +
+                "id=" + id +
+                ", commodityPrice=" + commodityPrice +
+                ", platformPrice=" + platformPrice +
+                ", commodityDetailId=" + commodityDetailId +
+                ", commodityName='" + commodityName + '\'' +
+                ", commonPrice=" + commonPrice +
+                ", listPic='" + listPic + '\'' +
+                ", commodityId=" + commodityId +
+                ", commodityType=" + commodityType +
+                '}';
+    }
 }

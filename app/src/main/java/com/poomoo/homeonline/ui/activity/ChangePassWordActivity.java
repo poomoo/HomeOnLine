@@ -70,6 +70,7 @@ public class ChangePassWordActivity extends BaseDaggerActivity<ChangePassWordPre
 
     private void initView() {
         setBack();
+        getProgressBar();
 
         PARENT = getIntent().getStringExtra(getString(R.string.intent_parent));
         phoneNum = getIntent().getStringExtra(getString(R.string.intent_value));
@@ -78,6 +79,7 @@ public class ChangePassWordActivity extends BaseDaggerActivity<ChangePassWordPre
     }
 
     public void toComplete(View view) {
+        MyUtils.hiddenKeyBoard(this, passWordAgainEdt);
         if (!passWord1.equals(passWord2)) {
             MyUtils.showToast(getApplicationContext(), "两次输入的密码不一样");
             return;
@@ -146,12 +148,16 @@ public class ChangePassWordActivity extends BaseDaggerActivity<ChangePassWordPre
 
     public void loginSucceed(RUserBO rUserBO) {
         hideProgressBar();
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_isLogin), true);
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), rUserBO.userId);
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_phoneNum), phoneNum);
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_nickName), rUserBO.nickName);
+        application.setUserId(rUserBO.userId);
+        application.setNickName(rUserBO.nickName);
+        application.setTel(phoneNum);
         if (LogInActivity.instance != null)
             LogInActivity.instance.finish();
         finish();
-        SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), rUserBO.userId + "");
-        SPUtils.put(getApplicationContext(), getString(R.string.sp_phoneNum), phoneNum);
-//        openActivity(MainNewActivity.class);
     }
 
     public void loginFailed(String msg) {

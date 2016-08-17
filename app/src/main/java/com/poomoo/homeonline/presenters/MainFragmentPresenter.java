@@ -30,13 +30,12 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.listeners.UrgeClickListener;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
 import com.poomoo.model.request.BaseRequest;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RGrabBO;
-import com.poomoo.model.response.RGuessBO;
+import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RTypeBO;
 
@@ -173,15 +172,15 @@ public class MainFragmentPresenter extends BasePresenter<MainFragment> {
         add(NetWork.getMyApi().GetGuess(qUserIdBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<List<RGuessBO>>() {
+                .subscribe(new AbsAPICallback<List<RListCommodityBO>>() {
                     @Override
                     protected void onError(ApiException e) {
                         mView.loadGuessFailed(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(List<RGuessBO> rGuessBOs) {
-                        mView.loadGuessSucceed(rGuessBOs);
+                    public void onNext(List<RListCommodityBO> rCommodityListBOs) {
+                        mView.loadGuessSucceed(rCommodityListBOs);
                     }
                 }));
     }

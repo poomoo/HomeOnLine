@@ -20,27 +20,29 @@ import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.TimeCountDownUtilBy3View;
 import com.poomoo.homeonline.R;
-import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
-import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
-import com.poomoo.homeonline.adapter.GuessAdapter;
+import com.poomoo.homeonline.adapter.ListCommodityAdapter;
 import com.poomoo.homeonline.adapter.HotAdapter;
 import com.poomoo.homeonline.adapter.MainGridAdapter;
-import com.poomoo.homeonline.adapter.MainListAdapter;
+import com.poomoo.homeonline.adapter.MainGrabAdapter;
 import com.poomoo.homeonline.adapter.PicturesGridAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.listeners.ScrollViewListener;
 import com.poomoo.homeonline.presenters.MainFragmentPresenter;
+import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
+import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
+import com.poomoo.homeonline.ui.activity.ClassifyInfoActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
-import com.poomoo.homeonline.ui.activity.TestActivity;
+import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.model.response.RAdBO;
+import com.poomoo.model.response.RCateBO;
 import com.poomoo.model.response.RGrabBO;
-import com.poomoo.model.response.RGuessBO;
+import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RTypeBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -51,6 +53,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 类名 MainFragment
@@ -69,7 +72,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     TextView minuteTxt;
     @Bind(R.id.txt_second)
     TextView secondTxt;
-    @Bind(R.id.recycler_main)
+    @Bind(R.id.recycler_grab)
     RecyclerView grabRecycler;
     @Bind(R.id.img_qhcs_title)
     ImageView qhcsTitleImg;
@@ -95,9 +98,9 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     RecyclerView guessRecycler;
 
     private MainGridAdapter gridAdapter;
-    private MainListAdapter adapter;
+    private MainGrabAdapter grabAdapter;
     private HotAdapter hotAdapter;
-    private GuessAdapter guessAdapter;
+    private ListCommodityAdapter listCommodityAdapter;
     private PicturesGridAdapter qhcsGridAdapter;
     private PicturesGridAdapter lsyzGridAdapter;
     private TimeCountDownUtilBy3View timeCountDownUtilBy3View;
@@ -111,10 +114,13 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private RTypeBO rTypeBO;
     private int len = 0;
     private RAdBO rAdBO;
+    private RListCommodityBO rListCommodityBO;
+    private RGrabBO rGrabBO;
     private boolean isLoadAd = false;
     private final int GRAB = 1;
     private final int HOT = 2;
     private final int GUESS = 3;
+    private Bundle bundle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -126,7 +132,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        initView();
+        init();
     }
 
     @Override
@@ -138,7 +144,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
 
-    private void initView() {
+    private void init() {
         slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) / 2));//设置广告栏的宽高比为2:1
         gridAdapter = new MainGridAdapter(getActivity());
         menuGrid.setAdapter(gridAdapter);
@@ -150,8 +156,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         mPresenter.getHot();
         mPresenter.getGuess(application.getUserId());
 
-//        myProgress = new MyProgress(getActivity());
-//        myProgress.showDialog("测试一下");
         initCountDownTime();
 
         initGrab();
@@ -171,6 +175,10 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         topImg.setOnClickListener(v -> scrollView.smoothScrollTo(0, 0));
     }
 
+    @OnClick(R.id.llayout_search)
+    void search(View view) {
+        openActivity(SearchActivity.class);
+    }
 
     /**
      * 动态增加专题广告
@@ -201,7 +209,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 } else {//链接
 
                 }
-                MyUtils.showToast(getActivity().getApplicationContext(), "点击了第" + parent.getTag() + "个专题的" + "第" + position + "个广告" + "  是否是商品广告:" + rAdBO.isCommodity);
+//                MyUtils.showToast(getActivity().getApplicationContext(), "点击了第" + parent.getTag() + "个专题的" + "第" + position + "个广告" + "  是否是商品广告:" + rAdBO.isCommodity);
             });
 
             Glide.with(getActivity()).load(getString(R.string.base_url) + "/weixin/images/index-market-" + (i + 1) + ".png").into(titleImg);
@@ -211,7 +219,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             contentImg.setTag(i);
             contentImg.setOnClickListener(v -> {
                 rAdBO = rSpecialAdBO.advs.get((int) contentImg.getTag()).get(0);
-                MyUtils.showToast(getActivity().getApplicationContext(), "是否是商品广告:" + rAdBO.isCommodity + " url:" + rAdBO.connect);
+//                MyUtils.showToast(getActivity().getApplicationContext(), "是否是商品广告:" + rAdBO.isCommodity + " url:" + rAdBO.connect);
                 if (rAdBO.isCommodity) {//商品广告
                     Bundle bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), 6048);
@@ -232,23 +240,16 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
      */
     private void initGrab() {
         grabRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
-//        grabRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
-//                .color(getResources().getColor(R.color.transparent))
-//                .size((int) getResources().getDimension(R.dimen.divider_height2))
-//                .build());
-
-        adapter = new MainListAdapter(getActivity(), BaseListAdapter.NEITHER);
-        grabRecycler.setAdapter(adapter);
+        grabAdapter = new MainGrabAdapter(getActivity(), BaseListAdapter.NEITHER);
+        grabRecycler.setAdapter(grabAdapter);
         grabRecycler.setTag(GRAB);
-        adapter.setOnItemClickListener(this);
-//        initCommodities();
+        grabAdapter.setOnItemClickListener(this);
     }
 
     /**
      * 热门推荐
      */
     private void initHot() {
-//        hotRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         hotRecycler.setLayoutManager(new ScrollLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         hotRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transParent))
@@ -265,7 +266,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
      * 猜你喜欢
      */
     private void initGuess() {
-//        guessRecycler.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         guessRecycler.setLayoutManager(new ScrollGridLayoutManager(getActivity(), 2));
         guessRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.transParent))
@@ -276,10 +276,10 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
 
-        guessAdapter = new GuessAdapter(getActivity(), BaseListAdapter.NEITHER);
-        guessRecycler.setAdapter(guessAdapter);
+        listCommodityAdapter = new ListCommodityAdapter(getActivity(), BaseListAdapter.NEITHER, true);
+        guessRecycler.setAdapter(listCommodityAdapter);
         guessRecycler.setTag(GUESS);
-        guessAdapter.setOnItemClickListener(this);
+        listCommodityAdapter.setOnItemClickListener(this);
     }
 
 //    private void initCommodities() {
@@ -325,59 +325,13 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 //        rRecommendBO.oldPrice = "15.20";
 //        rRecommendBOs.add(rRecommendBO);
 //
-//        adapter.addItems(rRecommendBOs);
+//        grabAdapter.addItems(rRecommendBOs);
 //    }
 
     private void initCountDownTime() {
-//        timeCountDownUtilBy3View = new TimeCountDownUtilBy3View(5 * 60 * 60 * 1000, 1000, hourTxt, minuteTxt, secondTxt);
-        timeCountDownUtilBy3View = new TimeCountDownUtilBy3View(MyUtils.DateToTime("2016-06-28 18:00:00"), 1000, hourTxt, minuteTxt, secondTxt);
+        timeCountDownUtilBy3View = new TimeCountDownUtilBy3View(MyUtils.DateToTime("2016-08-28 18:00:00"), 1000, hourTxt, minuteTxt, secondTxt);
         timeCountDownUtilBy3View.start();
     }
-
-//    private void initType() {
-////        for (int i = 0; i < 8; i++) {
-////            rTypeBO = new RTypeBO();
-////            rTypeBO.icon = getString(R.string.base_url) + "/weixin/images/icon" + (i + 1) + ".png";
-////            rTypeBO.name = MyConfig.classify[i];
-////            rTypeBOs.add(rTypeBO);
-////        }
-//
-//    }
-//
-//    private void initQhcs() {
-//        Glide.with(getActivity()).load(getString(R.string.base_url) + "/weixin/images/index-market-1.png").into(qhcsTitleImg);
-//        Glide.with(getActivity()).load("http://img.jiayou9.com/jyzx/upload/company/20160622/20160622173551_317.jpg").into(qhcsContentImg);
-//
-//        len = qhcs.length;
-//        LogUtils.d(TAG, "initQhcs" + len);
-//        for (int i = 0; i < len; i++)
-//            qhcsList.add(qhcs[i]);
-//        qhcsGridAdapter = new PicturesGridAdapter(getActivity());
-//        qhcsGrid.setAdapter(qhcsGridAdapter);
-//        qhcsGridAdapter.setItems(qhcsList);
-//
-//        qhcsGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Bundle bundle = new Bundle();
-//                bundle.putBoolean(getString(R.string.intent_value), position % 2 == 0 ? true : false);
-//                openActivity(CommodityInfoActivity.class, bundle);
-//            }
-//        });
-//    }
-//
-//    private void initLsyz() {
-//        Glide.with(getActivity()).load(getString(R.string.base_url) + "/weixin/images/index-market-2.png").into(lsyzTitleImg);
-//        Glide.with(getActivity()).load("http://img.jiayou9.com/jyzx/upload/company/20160622/20160622172550_936.jpg").into(lsyzContentImg);
-//
-//        len = lsyz.length;
-//        LogUtils.d(TAG, "initLsyz" + len);
-//        for (int i = 0; i < len; i++)
-//            lsyzList.add(lsyz[i]);
-//        lsyzGridAdapter = new PicturesGridAdapter(getActivity());
-//        lsyzGrid.setAdapter(lsyzGridAdapter);
-//        lsyzGridAdapter.setItems(lsyzList);
-//    }
 
     public void loadSlideSucceed(List<RAdBO> rAdBOs) {
         isLoadAd = true;
@@ -407,7 +361,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadGrabListSucceed(List<RGrabBO> rGrabBOs) {
-        adapter.addItems(rGrabBOs);
+        grabAdapter.addItems(rGrabBOs);
     }
 
     public void loadGrabListFailed(String msg) {
@@ -431,8 +385,8 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         MyUtils.showToast(getActivity().getApplicationContext(), msg);
     }
 
-    public void loadGuessSucceed(List<RGuessBO> rGuessBOs) {
-        guessAdapter.setItems(rGuessBOs);
+    public void loadGuessSucceed(List<RListCommodityBO> rListCommodityBOs) {
+        listCommodityAdapter.setItems(rListCommodityBOs);
     }
 
     public void loadGuessFailed(String msg) {
@@ -449,7 +403,10 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
+        bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_value), ((RCateBO) gridAdapter.getItem(position)).categoryName);
+        bundle.putString(getString(R.string.intent_categoryId), ((RCateBO) gridAdapter.getItem(position)).id + "");
+        openActivity(ClassifyInfoActivity.class, bundle);
     }
 
     /**
@@ -462,12 +419,32 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     @Override
     public void onItemClick(int position, long id, View view) {
         switch (((View) view.getParent()).getId()) {
-            case R.id.recycler_main:
+            case R.id.recycler_grab:
+//                rGrabBO = grabAdapter.getItem(position);
+//                bundle = new Bundle();
+//                bundle.putInt(getString(R.string.intent_commodityId), rGrabBO.commodityId);
+//                bundle.putInt(getString(R.string.intent_commodityType), rGrabBO.commodityType);
+//                MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
                 break;
             case R.id.recycler_hot:
+                rAdBO = hotAdapter.getItem(position);
+                if (rAdBO.isCommodity) {//商品广告
+                    bundle = new Bundle();
+                    bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
+                    bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                    MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
+                } else {
+//                     bundle = new Bundle();
+//                    bundle.putString(getString(R.string.intent_value), NetConfig.LocalUrl + "/app/rush.html");
+//                    openActivity(WebViewActivity.class, bundle);
+                }
                 break;
             case R.id.recycler_guess:
-                MyUtils.showToast(getActivity().getApplicationContext(), "点击了猜你喜欢的第" + position + "个");
+                rListCommodityBO = listCommodityAdapter.getItem(position);
+                bundle = new Bundle();
+                bundle.putInt(getString(R.string.intent_commodityId), rListCommodityBO.commodityId);
+                bundle.putInt(getString(R.string.intent_commodityType), rListCommodityBO.commodityType);
+                MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
                 break;
         }
     }

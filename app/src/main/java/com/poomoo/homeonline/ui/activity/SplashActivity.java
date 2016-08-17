@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.WindowManager;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.base.BaseActivity;
@@ -40,9 +41,14 @@ public class SplashActivity extends BaseActivity {
                 openActivity(IndexViewPagerActivity.class);
                 finish();
             } else {
-                application.setUserId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), null));
-                application.setNickName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_nickName), ""));
-                application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
+                LogUtils.d(TAG, "sp_userId:" + SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), -1));
+                if (MyUtils.isLogin(this)) {
+                    application.setUserId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), -1));
+                    application.setNickName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_nickName), ""));
+                    application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
+                }
+                LogUtils.d(TAG, "userId:" + application.getUserId());
+                LogUtils.d(TAG, "tel:" + application.getTel());
                 openActivity(MainNewActivity.class);
                 finish();
             }

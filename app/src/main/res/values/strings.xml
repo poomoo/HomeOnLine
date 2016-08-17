@@ -23,6 +23,9 @@
     <string name="title_collection">我的收藏</string>
     <string name="title_history">我的足迹</string>
     <string name="title_updateTel">修改手机号</string>
+    <string name="title_updateLoginPW">修改登录密码</string>
+    <string name="title_updateNickName">修改昵称</string>
+    <string name="title_classify_info">%1$s</string>
 
 
     <string name="label_userName">"用户名　"</string>
@@ -48,6 +51,7 @@
     <string name="intent_register">register</string>
     <string name="intent_find">find</string>
     <string name="intent_updateTel">updateTel</string>
+    <string name="intent_updatePW">updatePW</string>
     <string name="intent_receiptBO">receiptBO</string>
     <string name="intent_provinceId">provinceId</string>
     <string name="intent_cityId">cityId</string>
@@ -61,6 +65,10 @@
     <string name="intent_commodityId">commodityId</string>
     <string name="intent_commodityDetailId">commodityDetailId</string>
     <string name="intent_commodityType">commodityType</string>
+    <string name="intent_categoryId">categoryId</string>
+    <string name="intent_isEdit">isEdit</string>
+    <string name="intent_commodityList">commodityList</string>
+    <string name="intent_totalPrice">totalPrice</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>
@@ -68,6 +76,10 @@
     <string name="sp_userId">userId</string>
     <string name="sp_nickName">nickName</string>
     <string name="sp_classify">classify</string>
+    <string name="sp_receiptId">receiptId</string>
+    <string name="sp_receiptName">receiptName</string>
+    <string name="sp_receiptTel">receiptTel</string>
+    <string name="sp_receiptAddress">receiptAddress</string>
 
     <string name="dialog">请稍后...</string>
 
@@ -95,5 +107,6 @@
 
 
     <string name="toast_3_pics">最多选择3张图片</string>
+    <string name="title_confirm_order">确认订单</string>
 
 </resources>

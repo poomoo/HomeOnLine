@@ -88,7 +88,7 @@ public class ScanHistoryActivity extends BaseListDaggerActivity<RListCommodityBO
         HeaderViewHolder headerViewHolder = getHeaderView();
         headerViewHolder.rightImg.setImageResource(R.drawable.ic_delete);
         headerViewHolder.rightImg.setVisibility(View.VISIBLE);
-        mPresenter.getHistory(286, mCurrentPage);
+        mPresenter.getHistory(application.getUserId(), mCurrentPage);
     }
 
     public void toDo(View view) {
@@ -106,9 +106,16 @@ public class ScanHistoryActivity extends BaseListDaggerActivity<RListCommodityBO
     }
 
     @Override
+    public void onLoadActiveClick() {
+        super.onLoadActiveClick();
+        mCurrentPage=1;
+        mPresenter.getHistory(application.getUserId(), mCurrentPage);
+    }
+
+    @Override
     public void onLoading() {
         super.onLoading();
-        mPresenter.getHistory(286, mCurrentPage);
+        mPresenter.getHistory(application.getUserId(), mCurrentPage);
     }
 
     public void getListSucceed(List<RListCommodityBO> rListCommodityBOs) {
@@ -117,7 +124,10 @@ public class ScanHistoryActivity extends BaseListDaggerActivity<RListCommodityBO
     }
 
     public void getListFailed(String msg) {
-        MyUtils.showToast(getApplicationContext(), msg);
+        if (isNetWorkInvalid(msg))
+            onNetworkInvalid(LOAD_MODE_DEFAULT);
+        else
+            onLoadErrorState(LOAD_MODE_DEFAULT);
     }
 
     public void deleteSucceed() {

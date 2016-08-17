@@ -86,9 +86,29 @@
             android:exported="false" />
 
         <activity
-            android:name=".ui.activity.pics.ImageGridActivity"
+            android:name=".ui.activity.UpdateNickNameActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.activity.SearchActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.ClassifyInfoActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.ClassifyListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.ConfirmOrderActivity"
+            android:exported="false" />
+
+        <!--图片相关-->
+        <activity
+            android:name=".ui.activity.pics.ImageGridActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activity.pics.PhotosActivity"
             android:exported="false" />
@@ -98,6 +118,7 @@
         <activity
             android:name=".ui.activity.pics.PicViewActivity"
             android:exported="false" />
+        <!--图片相关-->
 
     </application>
 

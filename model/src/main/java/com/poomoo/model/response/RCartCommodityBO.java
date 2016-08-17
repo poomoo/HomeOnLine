@@ -3,13 +3,15 @@
  */
 package com.poomoo.model.response;
 
+import java.io.Serializable;
+
 /**
  * 类名 RCartCommodityBO
  * 描述 购物车商品
  * 作者 李苜菲
  * 日期 2016/8/5 16:54
  */
-public class RCartCommodityBO {
+public class RCartCommodityBO implements Serializable{
     public int id;//在购物车里面的ID
     public String listPic;
     public String commodityName;
@@ -18,6 +20,7 @@ public class RCartCommodityBO {
     public int commodityNum;
     public int orderType; //0.普通商品，2.抢购商品，1.特价商品，4.活动商品，3新年活动商品
     public int commodityType;
+    public boolean isFreePostage;//是否包邮 true-包邮
 
     public boolean isBuyChecked;
     public boolean isEditChecked;
@@ -39,5 +42,21 @@ public class RCartCommodityBO {
         if (this.id == ((RCartCommodityBO) o).id)
             return true;
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "RCartCommodityBO{" +
+                "id=" + id +
+                ", listPic='" + listPic + '\'' +
+                ", commodityName='" + commodityName + '\'' +
+                ", commodityId=" + commodityId +
+                ", commodityPrice=" + commodityPrice +
+                ", commodityNum=" + commodityNum +
+                ", orderType=" + orderType +
+                ", commodityType=" + commodityType +
+                ", isBuyChecked=" + isBuyChecked +
+                ", isEditChecked=" + isEditChecked +
+                '}';
     }
 }

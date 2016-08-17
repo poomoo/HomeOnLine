@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.application.MyApplication;
 import com.poomoo.homeonline.presenters.BasePresenter;
@@ -230,6 +231,13 @@ public abstract class BaseDaggerActivity<P extends BasePresenter> extends Fragme
                 .setPositiveButton("确定", onClickListener)
                 .create();
         return dialog;
+    }
+
+    protected boolean isNetWorkInvalid(String msg) {
+        LogUtils.d(TAG, "isNetWorkInvalid:" + msg + " " + getString(R.string.invalid_network));
+        if (msg.equals(getString(R.string.invalid_network)) || msg.equals(getString(R.string.time_out)))
+            return true;
+        return false;
     }
 
     @Override

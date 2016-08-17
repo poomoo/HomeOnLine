@@ -1,6 +1,5 @@
 package com.poomoo.commlib;
 
-import android.graphics.Color;
 import android.os.CountDownTimer;
 import android.widget.TextView;
 

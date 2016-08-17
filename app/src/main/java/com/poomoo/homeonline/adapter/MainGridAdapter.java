@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
@@ -43,7 +44,7 @@ public class MainGridAdapter extends MyBaseAdapter<RCateBO> {
         convertView = inflater.inflate(R.layout.item_grid_main, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.img_main);
         viewHolder.txt = (TextView) convertView.findViewById(R.id.txt_main);
-        Glide.with(context).load(url + item.id + ".png").placeholder(R.drawable.replace).into(viewHolder.image);
+        Glide.with(context).load(url + item.id + ".png").placeholder(R.drawable.replace).priority(Priority.IMMEDIATE).into(viewHolder.image);
         viewHolder.txt.setText(item.categoryName);
         return convertView;
     }

@@ -18,7 +18,6 @@ import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.model.response.RCommodityInfoBO;
-import com.poomoo.model.response.RGuessBO;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,7 +37,7 @@ public class CommodityRecommendAdapter extends BaseListAdapter<RCommodityInfoBO.
 
     @Override
     protected RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
-        return new BaseViewHolder(mInflater.inflate(R.layout.item_list_guess, parent, false));
+        return new BaseViewHolder(mInflater.inflate(R.layout.item_list_commodity, parent, false));
     }
 
     @Override
@@ -53,11 +52,11 @@ public class CommodityRecommendAdapter extends BaseListAdapter<RCommodityInfoBO.
     }
 
     public static final class BaseViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.img_guess)
+        @Bind(R.id.img_commodity)
         ImageView image;
-        @Bind(R.id.txt_guess_name)
+        @Bind(R.id.txt_commodity_name)
         TextView nameTxt;
-        @Bind(R.id.txt_guess_price)
+        @Bind(R.id.txt_commodity_price)
         TextView priceTxt;
 
         public BaseViewHolder(View view) {

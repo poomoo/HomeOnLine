@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
 import com.poomoo.homeonline.R;
@@ -19,15 +20,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 类名 MainListAdapter
+ * 类名 MainGrabAdapter
  * 描述 首页推荐适配器
  * 作者 李苜菲
  * 日期 2016/7/19 11:32
  */
-public class MainListAdapter extends BaseListAdapter<RGrabBO> {
+public class MainGrabAdapter extends BaseListAdapter<RGrabBO> {
     private RGrabBO item;
 
-    public MainListAdapter(Context context, int mode) {
+    public MainGrabAdapter(Context context, int mode) {
         super(context, mode);
     }
 
@@ -40,7 +41,7 @@ public class MainListAdapter extends BaseListAdapter<RGrabBO> {
     protected void onBindDefaultViewHolder(RecyclerView.ViewHolder h, int position) {
         BaseViewHolder holder = (BaseViewHolder) h;
         item = items.get(position);
-        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).placeholder(R.drawable.replace).into(holder.commodityImg);
+        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).placeholder(R.drawable.replace).priority(Priority.HIGH).into(holder.commodityImg);
         holder.newPriceTxt.setText("￥" + item.rushPurchasePrice);
         holder.oldPriceTxt.setText("￥" + item.platformPrice);
         holder.oldPriceTxt.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);

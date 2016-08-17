@@ -24,20 +24,19 @@
  * #                                                   #
  * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.model.response;
+package com.poomoo.model.request;
 
 /**
- * 类名 RGuessBO
- * 描述 猜你喜欢
+ * 类名 QCategoryIdBO
+ * 描述 QCategoryIdBO
  * 作者 李苜菲
- * 日期 2016/8/4 11:44
+ * 日期 2016/8/16 16:33
  */
-public class RGuessBO {
-    public double platformPrice; //平台价格
-    public int commodityDetailId; //明细主键
-    public String commodityName;//商品名称
-    public double commonPrice;//市场价格
-    public String listPic;//商品显示图片
-    public int commodityId;//商品主键
-    public int commodityType;//1.普通商品，2抢购商品，3.新年活动商品，4活动商品，5.特价商品
+public class QCategoryIdBO extends BaseRequest {
+    public String categoryId;
+
+    public QCategoryIdBO(String method, String categoryId) {
+        super(method);
+        this.categoryId = categoryId;
+    }
 }

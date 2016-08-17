@@ -138,11 +138,14 @@ public class LogInActivity extends BaseDaggerActivity<LoginPresenter> {
 
     public void loginSucceed(RUserBO rUserBO) {
         hideProgressBar();
-        finish();
         SPUtils.put(getApplicationContext(), getString(R.string.sp_isLogin), true);
-        SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), rUserBO.userId + "");
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_userId), rUserBO.userId);
         SPUtils.put(getApplicationContext(), getString(R.string.sp_phoneNum), name);
-//        openActivity(MainNewActivity.class);
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_nickName), rUserBO.nickName);
+        application.setUserId(rUserBO.userId);
+        application.setNickName(rUserBO.nickName);
+        application.setTel(name);
+        finish();
     }
 
     public void loginFailed(String msg) {

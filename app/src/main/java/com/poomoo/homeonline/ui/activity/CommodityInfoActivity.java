@@ -244,7 +244,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         viewPager.setVisibility(View.GONE);
         progressBarRlayout.setVisibility(View.VISIBLE);
         mPresenter.getCommodity(commodityId, commodityDetailId, 0);
-        mPresenter.addHistory(application.getUserId(), commodityId, 1);
+        if (application.getUserId() != null)
+            mPresenter.addHistory(application.getUserId(), commodityId, 1);
     }
 
     private void addView() {

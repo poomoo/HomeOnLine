@@ -40,7 +40,7 @@ public abstract class BaseActivity extends FragmentActivity {
     //进度对话框
     public ProgressDialog progressDialog = null;
 
-    public RelativeLayout progressRlayout;
+    private RelativeLayout mProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +89,15 @@ public abstract class BaseActivity extends FragmentActivity {
     }
 
     protected void getProgressBar() {
-        progressRlayout = (RelativeLayout) findViewById(R.id.rlayout_progressBar);
+        mProgressBar = (RelativeLayout) findViewById(R.id.rlayout_progressBar);
+    }
+
+    protected void showProgressBar() {
+        mProgressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgressBar() {
+        mProgressBar.setVisibility(View.GONE);
     }
 
     /**
