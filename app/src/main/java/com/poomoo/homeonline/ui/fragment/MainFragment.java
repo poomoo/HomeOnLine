@@ -20,10 +20,10 @@ import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.TimeCountDownUtilBy3View;
 import com.poomoo.homeonline.R;
-import com.poomoo.homeonline.adapter.ListCommodityAdapter;
 import com.poomoo.homeonline.adapter.HotAdapter;
-import com.poomoo.homeonline.adapter.MainGridAdapter;
+import com.poomoo.homeonline.adapter.ListCommodityAdapter;
 import com.poomoo.homeonline.adapter.MainGrabAdapter;
+import com.poomoo.homeonline.adapter.MainGridAdapter;
 import com.poomoo.homeonline.adapter.PicturesGridAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.listeners.ScrollViewListener;
@@ -48,7 +48,9 @@ import com.poomoo.model.response.RTypeBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -329,7 +331,10 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 //    }
 
     private void initCountDownTime() {
-        timeCountDownUtilBy3View = new TimeCountDownUtilBy3View(MyUtils.DateToTime("2016-08-28 18:00:00"), 1000, hourTxt, minuteTxt, secondTxt);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String tonight = sdf.format(new Date());
+        tonight += " 23:59:59";
+        timeCountDownUtilBy3View = new TimeCountDownUtilBy3View(MyUtils.DateToTime(tonight), 1000, hourTxt, minuteTxt, secondTxt);
         timeCountDownUtilBy3View.start();
     }
 

@@ -42,5 +42,5 @@
         android:gravity="center"
         android:textColor="@color/ThemeTextColor"
         android:textSize="@dimen/sp_16"
-        android:visibility="visible" />
+        android:visibility="gone" />
 </RelativeLayout>

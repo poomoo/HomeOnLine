@@ -27,40 +27,20 @@
 package com.poomoo.model.response;
 
 /**
- * #                                                   #
- * #                       _oo0oo_                     #
- * #                      o8888888o                    #
- * #                      88" . "88                    #
- * #                      (| -_- |)                    #
- * #                      0\  =  /0                    #
- * #                    ___/`---'\___                  #
- * #                  .' \\|     |# '.                 #
- * #                 / \\|||  :  |||# \                #
- * #                / _||||| -:- |||||- \              #
- * #               |   | \\\  -  #/ |   |              #
- * #               | \_|  ''\---/''  |_/ |             #
- * #               \  .-\__  '-'  ___/-. /             #
- * #             ___'. .'  /--.--\  `. .'___           #
- * #          ."" '<  `.___\_<|>_/___.' >' "".         #
- * #         | | :  `- \`.;`\ _ /`;.`/ - ` : | |       #
- * #         \  \ `_.   \_ __\ /__ _/   .-` /  /       #
- * #     =====`-.____`.___ \_____/___.-`___.-'=====    #
- * #                       `=---='                     #
- * #     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   #
- * #                                                   #
- * #               佛祖保佑         永无BUG            #
- * #                                                   #
- * 作者: 李苜菲
- * 日期: 2016/7/14 10:11.
+ * 类名 ROrderBO
+ * 描述 订单
+ * 作者 李苜菲
+ * 日期 2016/8/19 10:30
  */
 public class ROrderBO {
     public static final int ORDER_ALL = 0;
     public static final int ORDER_PAY = 1;
     public static final int ORDER_DELIVER = 2;
-    public static final int ORDER_RECEIPT = 3;
-    public static final int ORDER_EVALUATE = 4;
-    public static final int ORDER_AFTER_SALE = 5;
+    public static final int ORDER_RECEIPT = 4;
+    public static final int ORDER_EVALUATE = 5;
+    public static final int ORDER_FINISH = 6;
+    public static final int ORDER_USERCANCEL = 7;
+    public static final int ORDER_SYSYCANCEL = 8;
 
-    public int status;//订单状态 1-代付款 2-代发货 3-待收货 4-待评价 5-订单已取消
-    public String name;//商品名称
+    public String orderId;
 }

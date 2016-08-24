@@ -33,10 +33,15 @@ import com.poomoo.api.NetWork;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.QAddCartBO;
+import com.poomoo.model.request.QCancelCollectionBO;
+import com.poomoo.model.request.QCollectBO;
 import com.poomoo.model.request.QCommodityInfoBO;
 import com.poomoo.model.request.QHistory;
+import com.poomoo.model.request.QIsCollectBO;
 import com.poomoo.model.request.QSpecificationBO;
+import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.response.RCommodityInfoBO;
+import com.poomoo.model.response.RIsCollect;
 import com.poomoo.model.response.RSpecificationBO;
 
 import javax.inject.Inject;
@@ -124,6 +129,32 @@ public class CommodityPresenter extends BasePresenter<CommodityInfoActivity> {
     }
 
     /**
+     * 收藏
+     *
+     * @param userId
+     * @param commodityId
+     * @param commodityDetailId
+     * @param commodityType
+     */
+    public void collect(int userId, int commodityId, int commodityDetailId, int commodityType) {
+        QCollectBO qCollectBO = new QCollectBO(NetConfig.COLLECT, userId, commodityId, commodityDetailId, commodityType);
+        add(NetWork.getMyApi().collect(qCollectBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.collectFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        mView.collectSucceed();
+                    }
+                }));
+    }
+
+    /**
      * 添加历史记录
      *
      * @param userId
@@ -144,6 +175,54 @@ public class CommodityPresenter extends BasePresenter<CommodityInfoActivity> {
                     @Override
                     public void onNext(ResponseBO responseBO) {
 
+                    }
+                }));
+    }
+
+    /**
+     * 查看是否收藏过
+     *
+     * @param userId
+     * @param commodityId
+     * @param commodityDetailId
+     */
+    public void isCollect(Integer userId, int commodityId, int commodityDetailId) {
+        QIsCollectBO qIsCollectBO = new QIsCollectBO(NetConfig.ISCOLLECT, userId, commodityId, commodityDetailId);
+        add(NetWork.getMyApi().isCollect(qIsCollectBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<RIsCollect>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.getCollectFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(RIsCollect rIsCollect) {
+                        mView.getCollectSucceed(rIsCollect);
+                    }
+                }));
+    }
+
+    /**
+     * 取消收藏
+     *
+     * @param ids
+     */
+    public void cancelCollection(int[] ids) {
+        QCancelCollectionBO qCancelCollectionBO = new QCancelCollectionBO(NetConfig.CANCELCOLLECTION, ids);
+        add(NetWork.getMyApi().CancelCollection(qCancelCollectionBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.cancelFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        mView.cancelSucceed();
                     }
                 }));
     }

@@ -26,18 +26,21 @@
  */
 package com.poomoo.homeonline.presenters;
 
-import com.jakewharton.rxbinding.widget.AdapterViewNothingSelectionEvent;
 import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
 import com.poomoo.homeonline.ui.activity.ConfirmOrderActivity;
+import com.poomoo.model.ResponseBO;
+import com.poomoo.model.request.QOrderBO;
 import com.poomoo.model.request.QTransferPriceBO;
 import com.poomoo.model.request.QUserIdBO;
+import com.poomoo.model.response.RCartCommodityBO;
+import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.RReceiptBO;
 import com.poomoo.model.response.RTransferPriceBO;
 
-import java.net.NetworkInterface;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -57,6 +60,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderActivity> {
 
     /**
      * 默认地址
+     *
      * @param userId
      */
     public void getDefaultAddress(int userId) {
@@ -67,7 +71,7 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderActivity> {
                 .subscribe(new AbsAPICallback<RReceiptBO>() {
                     @Override
                     protected void onError(ApiException e) {
-                        mView.failed(e.getMessage());
+                        mView.getDefaultAddressFailed(e.getMessage());
                     }
 
                     @Override
@@ -92,12 +96,52 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderActivity> {
                 .subscribe(new AbsAPICallback<RTransferPriceBO>() {
                     @Override
                     protected void onError(ApiException e) {
-                        mView.failed(e.getMessage());
+                        mView.getTransferPriceFailed(e.getMessage());
                     }
 
                     @Override
                     public void onNext(RTransferPriceBO rTransferPriceBO) {
                         mView.getTransferPriceSucceed(rTransferPriceBO);
+                    }
+                }));
+    }
+
+    public void sign() {
+        add(NetWork.getPayApi().sign()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.failed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        mView.signed(responseBO.msg);
+                    }
+                }));
+    }
+
+    /**
+     * 提交订单
+     *
+     * @param OrderBO
+     */
+    public void putOrder(QOrderBO OrderBO) {
+        QOrderBO qOrderBO = new QOrderBO(NetConfig.PUTORDER, OrderBO.order, OrderBO.orderDetailsList);
+        add(NetWork.getMyApi().subOrder(qOrderBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ROrderBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.subFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ROrderBO rOrderBO) {
+                        mView.subSucceed(rOrderBO);
                     }
                 }));
     }

@@ -14,10 +14,15 @@ import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
+import com.poomoo.homeonline.application.MyApplication;
+import com.poomoo.homeonline.presenters.BasePresenter;
+import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * 类名 BaseListFragment
@@ -25,8 +30,10 @@ import java.util.List;
  * 作者 李苜菲
  * 日期 2016/7/19 11:35
  */
-public abstract class BaseListFragment<T> extends BaseFragment
+public abstract class BaseDaggerListFragment<T,P extends BasePresenter> extends BaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, ErrorLayout.OnActiveClickListener, BaseListAdapter.OnLoadingListener {
+    @Inject
+    protected P mPresenter;
 
     protected static final String BUNDLE_STATE_REFRESH = "BUNDLE_STATE_REFRESH";
 
@@ -49,6 +56,20 @@ public abstract class BaseListFragment<T> extends BaseFragment
     public int mState = STATE_NONE;
     public int action = LOAD_MODE_DEFAULT;
     private String emptyMsg;
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        application = (MyApplication) getActivity().getApplication();
+        setupFragmentComponent(new FragmentModule(this));
+        mPresenter.onCreate();
+        mPresenter.attachView(this);
+    }
+
+    /**
+     * 依赖注入的入口
+     */
+    protected abstract void setupFragmentComponent(FragmentModule fragmentModule);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -298,5 +319,11 @@ public abstract class BaseListFragment<T> extends BaseFragment
 
     public String getEmptyMsg() {
         return emptyMsg;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.onDestroy();
     }
 }

@@ -1,6 +1,7 @@
 package com.poomoo.homeonline.adapter;
 
 import android.content.Context;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +15,15 @@ import com.poomoo.homeonline.listeners.CancelClickListener;
 import com.poomoo.homeonline.listeners.DeleteClickListener;
 import com.poomoo.homeonline.listeners.EvaluateClickListener;
 import com.poomoo.homeonline.listeners.PayClickListener;
+import com.poomoo.homeonline.listeners.ReFundClickListener;
 import com.poomoo.homeonline.listeners.ReceiptClickListener;
 import com.poomoo.homeonline.listeners.TraceClickListener;
 import com.poomoo.homeonline.listeners.UrgeClickListener;
+import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
 import com.poomoo.model.response.ROrderBO;
+import com.poomoo.model.response.ROrderListBO;
+
+import java.text.DecimalFormat;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -29,7 +35,7 @@ import retrofit2.http.DELETE;
  * 作者 李苜菲
  * 日期 2016/7/19 11:32
  */
-public class OrdersAdapter extends BaseListAdapter<ROrderBO> {
+public class OrdersAdapter extends BaseListAdapter<ROrderListBO> {
     private PayClickListener payClickListener;
     private UrgeClickListener urgeClickListener;
     private ReceiptClickListener receiptClickListener;
@@ -37,8 +43,12 @@ public class OrdersAdapter extends BaseListAdapter<ROrderBO> {
     private CancelClickListener cancelClickListener;
     private TraceClickListener traceClickListener;
     private DeleteClickListener deleteClickListener;
+    private ReFundClickListener reFundClickListener;
+    private OrderCommoditiesAdapter orderCommoditiesAdapter;
 
-    public OrdersAdapter(Context context, int mode, PayClickListener payClickListener, UrgeClickListener urgeClickListener, ReceiptClickListener receiptClickListener, EvaluateClickListener evaluateClickListener, CancelClickListener cancelClickListener, TraceClickListener traceClickListener, DeleteClickListener deleteClickListener) {
+    private DecimalFormat df = new DecimalFormat("0.00");
+
+    public OrdersAdapter(Context context, int mode, PayClickListener payClickListener, UrgeClickListener urgeClickListener, ReceiptClickListener receiptClickListener, EvaluateClickListener evaluateClickListener, CancelClickListener cancelClickListener, TraceClickListener traceClickListener, DeleteClickListener deleteClickListener, ReFundClickListener reFundClickListener) {
         super(context, mode);
         this.payClickListener = payClickListener;
         this.urgeClickListener = urgeClickListener;
@@ -46,6 +56,7 @@ public class OrdersAdapter extends BaseListAdapter<ROrderBO> {
         this.evaluateClickListener = evaluateClickListener;
         this.cancelClickListener = cancelClickListener;
         this.traceClickListener = traceClickListener;
+        this.reFundClickListener = reFundClickListener;
         this.deleteClickListener = deleteClickListener;
     }
 
@@ -57,42 +68,84 @@ public class OrdersAdapter extends BaseListAdapter<ROrderBO> {
     @Override
     protected void onBindDefaultViewHolder(RecyclerView.ViewHolder h, int position) {
         BaseViewHolder holder = (BaseViewHolder) h;
-        ROrderBO item = items.get(position);
-        holder.nameTxt.setText(item.name);
-        switch (item.status) {
-            case 1:
+        ROrderListBO item = items.get(position);
+
+        holder.orderIdTxt.setText(item.order.orderId + "");
+
+        orderCommoditiesAdapter = new OrderCommoditiesAdapter(mContext, BaseListAdapter.NEITHER, position, reFundClickListener);
+        holder.recyclerView.setLayoutManager(new ScrollLinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
+        holder.recyclerView.setAdapter(orderCommoditiesAdapter);
+        orderCommoditiesAdapter.setItems(item.orderDetails);
+
+        holder.allPriceTxt.setText("￥" + df.format(item.order.sumMoney));
+        holder.freightPriceTxt.setText("￥" + df.format(item.order.deliveryFee));
+
+        switch (item.order.state) {
+            case ROrderBO.ORDER_PAY:
                 holder.btn1.setText("付款");
                 holder.btn1.setOnClickListener(new payOnclick(position));
                 holder.btn2.setText("取消订单");
                 holder.btn2.setOnClickListener(new cancelOnclick(position));
                 holder.btn3.setVisibility(View.GONE);
+
+                holder.orderPayWayTxt.setVisibility(View.GONE);
+                holder.orderStatusTxt.setText("待付款");
                 break;
-            case 2:
+            case ROrderBO.ORDER_DELIVER:
                 holder.btn1.setText("催单");
                 holder.btn1.setOnClickListener(new urgeOnclick(position));
                 holder.btn2.setText("取消订单");
                 holder.btn2.setOnClickListener(new cancelOnclick(position));
                 holder.btn3.setVisibility(View.GONE);
+
+                holder.orderPayWayTxt.setText(item.order.payWay == 1 ? "在线支付" : "货到付款");
+                holder.orderStatusTxt.setText("待发货");
                 break;
-            case 3:
+            case ROrderBO.ORDER_RECEIPT:
                 holder.btn1.setText("确认收货");
                 holder.btn1.setOnClickListener(new confirmOnclick(position));
                 holder.btn2.setText("查看物流");
                 holder.btn2.setOnClickListener(new traceOnclick(position));
                 holder.btn3.setVisibility(View.GONE);
+
+                holder.orderPayWayTxt.setText(item.order.payWay == 1 ? "在线支付" : "货到付款");
+                holder.orderStatusTxt.setText("待收货");
                 break;
-            case 4:
+            case ROrderBO.ORDER_EVALUATE:
                 holder.btn1.setText("评价");
                 holder.btn1.setOnClickListener(new evaluateOnclick(position));
                 holder.btn2.setText("查看物流");
                 holder.btn2.setOnClickListener(new traceOnclick(position));
                 holder.btn3.setVisibility(View.GONE);
+
+                holder.orderPayWayTxt.setText(item.order.payWay == 1 ? "在线支付" : "货到付款");
+                holder.orderStatusTxt.setText("待评价");
                 break;
-            default:
-                holder.btn1.setText("已完成");
+
+            case ROrderBO.ORDER_FINISH:
+                holder.btn1.setVisibility(View.GONE);
                 holder.btn2.setText("查看物流");
                 holder.btn2.setOnClickListener(new traceOnclick(position));
                 holder.btn3.setVisibility(View.GONE);
+
+                holder.orderPayWayTxt.setText(item.order.payWay == 1 ? "在线支付" : "货到付款");
+                holder.orderStatusTxt.setText("已完成");
+                break;
+            case ROrderBO.ORDER_USERCANCEL:
+                holder.btn1.setVisibility(View.GONE);
+                holder.btn2.setVisibility(View.GONE);
+                holder.btn3.setVisibility(View.GONE);
+
+                holder.orderPayWayTxt.setVisibility(View.GONE);
+                holder.orderStatusTxt.setText("用户取消");
+                break;
+            case ROrderBO.ORDER_SYSYCANCEL:
+                holder.btn1.setVisibility(View.GONE);
+                holder.btn2.setVisibility(View.GONE);
+                holder.btn3.setVisibility(View.GONE);
+
+                holder.orderPayWayTxt.setVisibility(View.GONE);
+                holder.orderStatusTxt.setText("系统取消");
                 break;
         }
     }
@@ -104,16 +157,8 @@ public class OrdersAdapter extends BaseListAdapter<ROrderBO> {
         TextView orderStatusTxt;
         @Bind(R.id.txt_orderPayWay)
         TextView orderPayWayTxt;
-        @Bind(R.id.img_order)
-        ImageView orderImg;
-        @Bind(R.id.txt_commodity_name)
-        TextView nameTxt;
-        @Bind(R.id.txt_commodity_price)
-        TextView priceTxt;
-        @Bind(R.id.txt_commodity_count)
-        TextView countTxt;
-        @Bind(R.id.txt_commodity_total_price)
-        TextView totalPriceTxt;
+        @Bind(R.id.recycler_order_commodities)
+        RecyclerView recyclerView;
         @Bind(R.id.txt_all_commodity_price)
         TextView allPriceTxt;
         @Bind(R.id.txt_freight_price)
@@ -124,7 +169,6 @@ public class OrdersAdapter extends BaseListAdapter<ROrderBO> {
         Button btn2;
         @Bind(R.id.btn_order_3)
         Button btn3;
-
 
         public BaseViewHolder(View view) {
             super(view);

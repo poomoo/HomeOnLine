@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.application.MyApplication;
 import com.poomoo.homeonline.presenters.BasePresenter;
@@ -76,5 +77,12 @@ public abstract class BaseFragment extends Fragment {
     protected void getActivityOutToRight() {
         getActivity().overridePendingTransition(R.anim.activity_center,
                 R.anim.activity_out_to_right);
+    }
+
+    protected boolean isNetWorkInvalid(String msg) {
+        LogUtils.d(TAG, "isNetWorkInvalid:" + msg + " " + getString(R.string.invalid_network));
+        if (msg.equals(getString(R.string.invalid_network)) || msg.equals(getString(R.string.time_out)))
+            return true;
+        return false;
     }
 }

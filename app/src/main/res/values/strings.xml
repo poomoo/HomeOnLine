@@ -26,7 +26,8 @@
     <string name="title_updateLoginPW">修改登录密码</string>
     <string name="title_updateNickName">修改昵称</string>
     <string name="title_classify_info">%1$s</string>
-
+    <string name="title_refund">申请退款</string>
+    <string name="title_evaluate">评价</string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -69,6 +70,11 @@
     <string name="intent_isEdit">isEdit</string>
     <string name="intent_commodityList">commodityList</string>
     <string name="intent_totalPrice">totalPrice</string>
+    <string name="intent_isFreePostage">isFreePostage</string>
+    <string name="intent_orderId">orderId</string>
+    <string name="intent_date">date</string>
+    <string name="intent_orderDetails">orderDetails</string>
+    <string name="intent_orderDetailId">orderDetailId</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>
@@ -108,5 +114,8 @@
 
     <string name="toast_3_pics">最多选择3张图片</string>
     <string name="title_confirm_order">确认订单</string>
+    <string name="intent_count">count</string>
+    <string name="intent_amount">amount</string>
+    <string name="title_refundInfo">退款详情</string>
 
 </resources>

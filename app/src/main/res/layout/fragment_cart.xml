@@ -196,9 +196,13 @@
                 android:textSize="@dimen/sp_16" />
         </LinearLayout>
 
-        <include
-            layout="@layout/my_progress_bar"
+        <include layout="@layout/my_progress_bar" />
+
+        <com.poomoo.homeonline.ui.custom.ErrorLayout
+            android:id="@+id/error_frame"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:visibility="gone" />
     </RelativeLayout>
+
 </LinearLayout>

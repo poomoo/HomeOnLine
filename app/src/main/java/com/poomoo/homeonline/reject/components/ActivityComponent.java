@@ -29,9 +29,12 @@ import com.poomoo.homeonline.ui.activity.ClassifyListActivity;
 import com.poomoo.homeonline.ui.activity.CollectActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.ConfirmOrderActivity;
+import com.poomoo.homeonline.ui.activity.EvaluateActivity;
 import com.poomoo.homeonline.ui.activity.FeedBackActivity;
 import com.poomoo.homeonline.ui.activity.GetCodeActivity;
 import com.poomoo.homeonline.ui.activity.LogInActivity;
+import com.poomoo.homeonline.ui.activity.ReFundActivity;
+import com.poomoo.homeonline.ui.activity.RefundInfoActivity;
 import com.poomoo.homeonline.ui.activity.ScanHistoryActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.activity.UpdateNickNameActivity;
@@ -71,4 +74,11 @@ public interface ActivityComponent {
     void inject(ClassifyListActivity activity);
 
     void inject(ConfirmOrderActivity activity);
+
+    void inject(ReFundActivity activity);
+
+    void inject(EvaluateActivity activity);
+
+    void inject(RefundInfoActivity activity);
+
 }

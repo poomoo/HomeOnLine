@@ -76,6 +76,8 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
     private static final int DELETE = 3;
     private static final int SELECT = 4;
 
+    private static final int ADDRESS = 2;
+
     private AddressListAdapter adapter;
     private List<RReceiptBO> rReceiptBOs;
     private int deletePosition = -1;//删除的地址item的下标
@@ -180,6 +182,7 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
             SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptName), rReceiptBOs.get(position).consigneeName);
             SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptTel), rReceiptBOs.get(position).consigneeTel);
             SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptAddress), rReceiptBOs.get(position).pca);
+            setResult(ADDRESS);
             finish();
         }
     }

@@ -52,6 +52,8 @@ public abstract class TabFragment extends BaseTabFragment {
     }
 
     public void setPage(int currItem) {
+        if (currItem >= 4)
+            currItem--;
         this.currItem = currItem;
     }
 

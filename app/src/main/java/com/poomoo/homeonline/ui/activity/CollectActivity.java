@@ -106,20 +106,20 @@ public class CollectActivity extends BaseListDaggerActivity<RCollectBO, CollectP
     public void onRefresh() {
         super.onRefresh();
         mCurrentPage = 1;
-        mPresenter.getCollectionList(286, mCurrentPage);
+        mPresenter.getCollectionList(application.getUserId(), mCurrentPage);
     }
 
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
         mCurrentPage = 1;
-        mPresenter.getCollectionList(286, mCurrentPage);
+        mPresenter.getCollectionList(application.getUserId(), mCurrentPage);
     }
 
     @Override
     public void onLoading() {
         super.onLoading();
-        mPresenter.getCollectionList(286, mCurrentPage);
+        mPresenter.getCollectionList(application.getUserId(), mCurrentPage);
     }
 
     /**

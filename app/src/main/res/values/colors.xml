@@ -6,6 +6,7 @@
 
     <!--<color name="ThemeRed">#C20000</color>-->
     <color name="ThemeRed">#D22F1C</color>
+    <color name="ThemeDarkRed">#B22F1C</color>
     <color name="ThemeBg">#EEEEEE</color>
     <color name="ThemeText">#646464</color>
     <color name="TitleBarBg">#F4F4F4</color>
@@ -23,6 +24,7 @@
     <color name="btn_gray">#CCCCCC</color>
     <color name="btn_cart">#F8A30D</color>
     <color name="bg_commodity_specification">#CCCCCC</color>
+    <color name="refund_text">#FF5503</color>
 
 
     <!-- swipe refresh color -->

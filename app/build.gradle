@@ -2,6 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'com.neenbedankt.android-apt'
 
+def releaseTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC+8"))
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -19,9 +23,41 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+//    signingConfigs {
+//        //指定名叫release的一个签名对象，下面会动态根据配置文件设置属性
+//        releaseConfig
+//    }
+
     buildTypes {
-        release {
+//        release {
+//            //设置是否混淆
+//            minifyEnabled false
+//            //设置压缩对齐
+//            zipAlignEnabled true
+//            //移除无用的资源文件
+//            shrinkResources false
+//            //设置混淆配置文件
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            //指定签名包得输入文件名称
+//            applicationVariants.all { variant ->
+//                variant.outputs.each { output ->
+//                    def outputFile = output.outputFile
+//                    if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                        def fileName = "家有在线${releaseTime()}_${defaultConfig.versionName}.apk"
+//                        output.outputFile = new File(outputFile.parent, fileName)
+//                    }
+//                }
+//            }
+//        }
+
+        debug {
+            //设置压缩对齐
+            zipAlignEnabled true
+            //移除无用的资源文件
+            shrinkResources true
+            //设置是否混淆
             minifyEnabled false
+            //设置混淆配置文件
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

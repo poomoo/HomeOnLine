@@ -26,6 +26,7 @@
  */
 package com.poomoo.api.api;
 
+import com.poomoo.api.NetConfig;
 import com.poomoo.model.RUserBO;
 import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.BaseRequest;
@@ -36,8 +37,12 @@ import com.poomoo.model.request.QCategoryIdBO;
 import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QClassifyListBO;
 import com.poomoo.model.request.QCodeBO;
+import com.poomoo.model.request.QCollectBO;
 import com.poomoo.model.request.QFeedBackBO;
 import com.poomoo.model.request.QIdBO;
+import com.poomoo.model.request.QIsCollectBO;
+import com.poomoo.model.request.QOrderBO;
+import com.poomoo.model.request.QOrderListBO;
 import com.poomoo.model.request.QPageBO;
 import com.poomoo.model.request.QCommodityInfoBO;
 import com.poomoo.model.request.QCountBO;
@@ -58,7 +63,10 @@ import com.poomoo.model.response.RCollectBO;
 import com.poomoo.model.response.RCommodityCount;
 import com.poomoo.model.response.RCommodityInfoBO;
 import com.poomoo.model.response.RGrabBO;
+import com.poomoo.model.response.RIsCollect;
 import com.poomoo.model.response.RListCommodityBO;
+import com.poomoo.model.response.ROrderBO;
+import com.poomoo.model.response.ROrderListBO;
 import com.poomoo.model.response.RReceiptBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RSpecificationBO;
@@ -81,131 +89,151 @@ import rx.Subscription;
  * 日期 2016/8/1 9:59
  */
 public interface MyApi {
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<RUserBO> Login(@Body QLoginBO data);
 
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> GetCode(@Body QCodeBO data);
 
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> CheckCode(@Body QCheckCodeBO data);
 
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> Register(@Body QRegisterBO data);
 
     //获取首页滚动的广告 热门推荐
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RAdBO>> GetSlide(@Body BaseRequest data);
 
     //获取首页分类
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<RTypeBO> GetType(@Body BaseRequest data);
 
     //获取首页的专题广告
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<RSpecialAdBO> GetSpecialAd(@Body BaseRequest data);
 
     //获取首页抢购列表
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RGrabBO>> GetGrabList(@Body BaseRequest data);
 
     //猜你喜欢
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RListCommodityBO>> GetGuess(@Body QUserIdBO data);
 
     //商品分类
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RClassifyBO>> GetClassify(@Body BaseRequest data);
 
     //商品详情
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<RCommodityInfoBO> GetCommodityInfo(@Body QCommodityInfoBO data);
 
     //商品规格详情
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<RSpecificationBO> GetCommodityInfoBySpecification(@Body QSpecificationBO data);
 
     //加入购物车
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> AddToCart(@Body QAddCartBO data);
 
     //获取购物车信息
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RCartShopBO>> GetCartInfo(@Body QUserIdBO data);
 
     //修改购物车某个商品的数量
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<RCommodityCount> ChangeCommodityCount(@Body QCountBO data);
 
     //删除购物车商品
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> DeleteCartCommodity(@Body QDeleteBO data);
 
     //增加浏览记录
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> AddHistory(@Body QHistory data);
 
     //获取浏览记录
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RListCommodityBO>> GetHistory(@Body QPageBO data);
 
     //删除浏览记录
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> DeleteHistory(@Body QCancelCollectionBO data);
 
     //收藏记录
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RCollectBO>> GetCollectionList(@Body QPageBO data);
 
     //取消收藏
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> CancelCollection(@Body QCancelCollectionBO data);
 
     //收货地址列表
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RReceiptBO>> GetAddressList(@Body QUserIdBO data);
 
     //获取区域信息
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RZoneBO>> GetZoneInfo(@Body BaseRequest data);
 
     //新建收货地址
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> NewAddress(@Body QAddressBO data);
 
     //更新收货地址
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> UpdateAddress(@Body QAddressBO data);
 
     //删除收货地址
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> DeleteAddress(@Body QIdBO data);
 
     //意见反馈
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> FeedBack(@Body QFeedBackBO data);
 
     //修改个人信息
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<ResponseBO> UpdateUserInfo(@Body QUpdateInfoBO data);
 
     //商品搜素
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RListCommodityBO>> search(@Body QSearchBO data);
 
     //导航商品列表
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<RClassifyInfoBO> getClassifyInfo(@Body QCategoryIdBO data);
 
+    //导航商品列表
+    @POST(NetConfig.suffix)
+    Observable<List<RListCommodityBO>> getClassifyInfoList(@Body QCategoryIdBO data);
+
     //三级分类下的商品
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<List<RListCommodityBO>> getClassifyCommodityList(@Body QClassifyListBO data);
 
     //计算运费
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<RTransferPriceBO> getTransferPrice(@Body QTransferPriceBO data);
 
     //默认地址
-    @POST("app/call.json")
+    @POST(NetConfig.suffix)
     Observable<RReceiptBO> getDefaultAddress(@Body QUserIdBO data);
+
+    //订单列表
+    @POST(NetConfig.suffix)
+    Observable<List<ROrderListBO>> getOrderList(@Body QOrderListBO data);
+
+    //收藏
+    @POST(NetConfig.suffix)
+    Observable<ResponseBO> collect(@Body QCollectBO data);
+
+    //是否收藏
+    @POST(NetConfig.suffix)
+    Observable<RIsCollect> isCollect(@Body QIsCollectBO data);
+
+    //提交订单
+    @POST(NetConfig.suffix)
+    Observable<ROrderBO> subOrder(@Body QOrderBO data);
 }

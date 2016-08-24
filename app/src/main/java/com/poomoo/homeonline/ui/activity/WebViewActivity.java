@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -16,9 +19,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.javascript.JavaScript;
 import com.poomoo.homeonline.ui.base.BaseActivity;
+import com.poomoo.homeonline.ui.custom.ErrorLayout;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -70,10 +75,7 @@ public class WebViewActivity extends BaseActivity {
         pubWeb.getSettings().setAppCachePath(appCachePath);
         pubWeb.getSettings().setAllowFileAccess(true);
         pubWeb.getSettings().setAppCacheEnabled(true);
-
-        WebSettings webSettings = pubWeb.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setDefaultTextEncodingName("utf-8");
+        pubWeb.getSettings().setDefaultTextEncodingName("utf-8");
 
         pubWeb.addJavascriptInterface(new JavaScript(this), "android");
 //        pubWeb.loadUrl("file:///android_asset/index.html");
@@ -90,6 +92,19 @@ public class WebViewActivity extends BaseActivity {
             view.loadUrl(url);
             //如果不需要其他对点击链接事件的处理返回true，否则返回false
             return true;
+        }
+
+        @Override
+        public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
+            LogUtils.d(TAG, "onReceivedError" + error);
+            pubWeb.setVisibility(View.GONE);
+            MyUtils.showToast(getApplicationContext(), "onReceivedError");
+        }
+
+        @Override
+        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+            LogUtils.d(TAG, "onReceivedHttpError" + errorResponse);
+            MyUtils.showToast(getApplicationContext(), "onReceivedHttpError");
         }
     }
 

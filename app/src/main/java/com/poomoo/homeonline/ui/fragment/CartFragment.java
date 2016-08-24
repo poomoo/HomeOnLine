@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -40,9 +41,11 @@ import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
 import com.poomoo.homeonline.presenters.CartFragmentPresenter;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
+import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.ConfirmOrderActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.custom.AddAndMinusView;
+import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.RCartShopBO;
 import com.poomoo.model.response.RCommodityCount;
@@ -60,7 +63,7 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:20
  */
-public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> implements OnBuyCheckChangedListener, OnEditCheckChangedListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener {
+public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> implements OnBuyCheckChangedListener, OnEditCheckChangedListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener, ErrorLayout.OnActiveClickListener {
     @Bind(R.id.txt_edit)
     TextView editTxt;
     @Bind(R.id.expandableListView)
@@ -81,8 +84,8 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     TextView deleteTxt;
     @Bind(R.id.llayout_empty)
     LinearLayout emptyLayout;
-    @Bind(R.id.rlayout_progressBar)
-    RelativeLayout progressBarRlayout;
+    @Bind(R.id.error_frame)
+    ErrorLayout mErrorLayout;
 
     private CartAdapter adapter;
     private List<RCartShopBO> rCartShopBOs = new ArrayList<>();
@@ -146,6 +149,16 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         //设置 属性 GroupIndicator 去掉默认向下的箭头
         listView.setGroupIndicator(null);
         listView.setOnGroupClickListener((parent, v, groupPosition1, id) -> true);
+        listView.setOnItemClickListener((parent, view1, position, id) -> LogUtils.d(TAG,"onItemClick"));
+        listView.setOnChildClickListener((parent, v, groupPosition1, childPosition1, id) -> {
+            LogUtils.d(TAG,"setOnChildClickListener");
+            Bundle bundle = new Bundle();
+            bundle.putInt(getString(R.string.intent_commodityId), ((RCartCommodityBO) adapter.getChild(groupPosition1, childPosition1)).commodityId);
+            bundle.putInt(getString(R.string.intent_commodityDetailId), ((RCartCommodityBO) adapter.getChild(groupPosition1, childPosition1)).commodityDetailId);
+            bundle.putInt(getString(R.string.intent_commodityType), ((RCartCommodityBO) adapter.getChild(groupPosition1, childPosition1)).commodityType);
+            openActivity(CommodityInfoActivity.class, bundle);
+            return true;
+        });
 //        adapter.setGroup(getList());
 //        expandListView();
 
@@ -154,23 +167,48 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         editTxt.setOnClickListener(this);
         deleteTxt.setOnClickListener(this);
         buyLayout.setOnClickListener(this);
+        mErrorLayout.setOnActiveClickListener(this);
 
-        progressBarRlayout.setVisibility(View.VISIBLE);
+        getProgressBar();
+
+        mErrorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.getCartInfo(application.getUserId());
     }
 
     public void getInfoSucceed(List<RCartShopBO> rCartShopBOs) {
-        progressBarRlayout.setVisibility(View.GONE);
+        mErrorLayout.setState(ErrorLayout.HIDE, "");
+        hideProgressBar();
+
         if (!isRefresh)
             adapter.setGroup(rCartShopBOs);
         else
             add(rCartShopBOs);
+        if (adapter.getGroupCount() == 0) {
+            listView.setVisibility(View.GONE);
+            cartBuyLayout.setVisibility(View.GONE);
+            editTxt.setVisibility(View.GONE);
+            emptyLayout.setVisibility(View.VISIBLE);
+        } else {
+            listView.setVisibility(View.VISIBLE);
+            cartBuyLayout.setVisibility(View.VISIBLE);
+            editTxt.setVisibility(View.VISIBLE);
+            emptyLayout.setVisibility(View.GONE);
+        }
+
         expandListView();
     }
 
     public void getInfoFailed(String msg) {
-        progressBarRlayout.setVisibility(View.GONE);
-        MyUtils.showToast(getActivity().getApplicationContext(), msg);
+        mErrorLayout.setState(ErrorLayout.HIDE, "");
+        if (isNetWorkInvalid(msg))
+            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
+        else
+            mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+
+        listView.setVisibility(View.GONE);
+        cartBuyLayout.setVisibility(View.GONE);
+        editLayout.setVisibility(View.GONE);
+        editTxt.setVisibility(View.GONE);
     }
 
     public void changeCount(int cartId, int cartNum, int groupPosition, int childPosition, AddAndMinusView addAndMinusView, int commodityType) {
@@ -180,30 +218,29 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         this.groupPosition = groupPosition;
         this.childPosition = childPosition;
         this.commodityType = commodityType;
-        progressBarRlayout.setVisibility(View.VISIBLE);
+        mErrorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.changeCount(cartId, cartNum, commodityType);
     }
 
     public void changeCountSucceed(RCommodityCount rCommodityCount) {
+        mErrorLayout.setState(ErrorLayout.HIDE, "");
         count = rCommodityCount.cartNum;
-        progressBarRlayout.setVisibility(View.GONE);
         addAndMinusView.setCount(count);
         adapter.setCount(groupPosition, childPosition, count);
     }
 
     public void changeCountFailed() {
-        progressBarRlayout.setVisibility(View.GONE);
+        mErrorLayout.setState(ErrorLayout.HIDE, "");
     }
 
     public void deleteCommodity() {
-        progressBarRlayout.setVisibility(View.VISIBLE);
+        mErrorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.deleteCommodity(deleteIndex);
     }
 
     public void deleteSucceed() {
-        progressBarRlayout.setVisibility(View.GONE);
+        mErrorLayout.setState(ErrorLayout.HIDE, "");
         adapter.remove();
-//                adapter.removeCount = 0;
         adapter.deleteIndex = new ArrayList<>();
         if (adapter.getGroupCount() == 0) {
             listView.setVisibility(View.GONE);
@@ -218,7 +255,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     }
 
     public void deleteFailed(String msg) {
-        progressBarRlayout.setVisibility(View.GONE);
+        mErrorLayout.setState(ErrorLayout.HIDE, "");
         MyUtils.showToast(getActivity().getApplicationContext(), msg);
     }
 
@@ -282,6 +319,12 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
 //        rCartCommodityBOs.add(rCartCommodityBO);
 //        return rCartCommodityBOs;
 //    }
+
+    @Override
+    public void onLoadActiveClick() {
+        mErrorLayout.setState(ErrorLayout.LOADING, "");
+        mPresenter.getCartInfo(application.getUserId());
+    }
 
     /**
      * 购买状态
@@ -373,7 +416,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                     return;
 //                addAndMinusView.setCount(count);
 //                adapter.setCount(groupPosition, childPosition, count);
-                progressBarRlayout.setVisibility(View.VISIBLE);
+                showProgressBar();
                 mPresenter.changeCount(cartId, count, commodityType);
                 popUpWindow.dismiss();
                 break;
@@ -384,7 +427,8 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 }
                 Bundle bundle = new Bundle();
                 bundle.putSerializable(getString(R.string.intent_commodityList), adapter.getrCartCommodityBOs());
-                bundle.putSerializable(getString(R.string.intent_totalPrice), adapter.getTotalPrice());
+                bundle.putDouble(getString(R.string.intent_totalPrice), adapter.getTotalPrice());
+                bundle.putBoolean(getString(R.string.intent_isFreePostage), adapter.isFreePostage());
                 openActivity(ConfirmOrderActivity.class, bundle);
                 break;
         }
@@ -445,9 +489,8 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         if (!hidden) {
             changeState();
             isRefresh = true;
-            progressBarRlayout.setVisibility(View.VISIBLE);
-            mPresenter.getCartInfo(286);
-//            add(getList2());
+            showProgressBar();
+            mPresenter.getCartInfo(application.getUserId());
         }
     }
 

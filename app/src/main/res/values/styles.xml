@@ -59,5 +59,11 @@
         <item name="android:indeterminateOnly">true</item>
     </style>
 
+    <style name="roomRatingBar">
+        <item name="android:progressDrawable">@drawable/bg_rating_bar</item>
+        <item name="android:minHeight">30dp</item>
+        <item name="android:maxHeight">30dp</item>
+    </style>
+
 
 </resources>

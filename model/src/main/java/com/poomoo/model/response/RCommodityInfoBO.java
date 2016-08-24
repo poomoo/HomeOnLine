@@ -41,6 +41,9 @@ public class RCommodityInfoBO implements Serializable {
     public List<Paramter> paramters;
     public List<TjCommodity> tjCommodity;
     public List<SpecialParamter> specialParamters;
+    public boolean isStar;//是否开抢（只有抢购类型的商品才会有该项）
+    public int orderType;//0.普通商品，2.抢购商品，1.特价商品，4.活动商品，3新年活动商品
+    public int commodityType;//1.普通商品，2抢购商品，3.新年活动商品，4活动商品，5.特价商品
 
     public class Pic implements Serializable {
         public String url;
@@ -54,6 +57,7 @@ public class RCommodityInfoBO implements Serializable {
     }
 
     public class Commodity implements Serializable {
+        public int id;
         public String commodityName;//商品名称
         public int categoryId;//分类主键
         public String listPic;//列表图片

@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.application.MyApplication;
 import com.poomoo.homeonline.presenters.BasePresenter;
@@ -117,5 +118,12 @@ public abstract class BaseDaggerFragment<P extends BasePresenter> extends Fragme
     protected void getActivityOutToRight() {
         getActivity().overridePendingTransition(R.anim.activity_center,
                 R.anim.activity_out_to_right);
+    }
+
+    protected boolean isNetWorkInvalid(String msg) {
+        LogUtils.d(TAG, "isNetWorkInvalid:" + msg + " " + getString(R.string.invalid_network));
+        if (msg.equals(getString(R.string.invalid_network)) || msg.equals(getString(R.string.time_out)))
+            return true;
+        return false;
     }
 }

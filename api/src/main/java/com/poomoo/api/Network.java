@@ -4,6 +4,7 @@ package com.poomoo.api;
 
 
 import com.poomoo.api.api.MyApi;
+import com.poomoo.api.api.PayApi;
 import com.poomoo.api.api.UploadApi;
 
 import java.util.concurrent.TimeUnit;
@@ -18,6 +19,7 @@ import retrofit2.RxJavaCallAdapterFactory;
 public class NetWork {
     private static MyApi myApi;
     private static UploadApi uploadApi;
+    private static PayApi payApi;
 
     private static Converter.Factory gsonConverterFactory = GsonConverterFactory.create();
     private static CallAdapter.Factory rxJavaCallAdapterFactory = RxJavaCallAdapterFactory.create();
@@ -56,6 +58,23 @@ public class NetWork {
             uploadApi = retrofit.create(UploadApi.class);
         }
         return uploadApi;
+    }
+
+    public static PayApi getPayApi() {
+        if (payApi == null) {
+            HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+            loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder().addInterceptor(loggingInterceptor);
+            clientBuilder.connectTimeout(1, TimeUnit.MINUTES);
+            Retrofit retrofit = new Retrofit.Builder()
+                    .client(clientBuilder.build())
+                    .baseUrl(NetConfig.url)
+                    .addConverterFactory(gsonConverterFactory)
+                    .addCallAdapterFactory(rxJavaCallAdapterFactory)
+                    .build();
+            payApi = retrofit.create(PayApi.class);
+        }
+        return payApi;
     }
 
 }

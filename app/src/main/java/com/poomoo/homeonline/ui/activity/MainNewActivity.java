@@ -16,6 +16,7 @@ import com.poomoo.homeonline.ui.custom.BottomBar;
 import com.poomoo.homeonline.ui.fragment.CartFragment;
 import com.poomoo.homeonline.ui.fragment.CenterFragment;
 import com.poomoo.homeonline.ui.fragment.ClassifyFragment;
+import com.poomoo.homeonline.ui.fragment.GrabFragment;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
 
 import butterknife.Bind;
@@ -33,6 +34,7 @@ public class MainNewActivity extends BaseActivity {
 
     private MainFragment mainFragment;
     private ClassifyFragment classifyFragment;
+    private GrabFragment grabFragment;
     private CartFragment cartCartFragment;
     private CenterFragment centerFragment;
     private Fragment curFragment;
@@ -57,7 +59,7 @@ public class MainNewActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        flag = getIntent().getIntExtra(getString(R.string.intent_value), 0);
+        flag = intent.getIntExtra(getString(R.string.intent_value), -1);
         LogUtils.d(TAG, "onNewIntent:" + flag);
         jump(flag);
         bottomBar.cancelLinearBackground(flag);
@@ -105,7 +107,10 @@ public class MainNewActivity extends BaseActivity {
                 curFragment = classifyFragment;
                 break;
             case 2:
-
+                if (grabFragment == null)
+                    grabFragment = new GrabFragment();
+                switchFragment(grabFragment);
+                curFragment = grabFragment;
                 break;
             case 3:
                 if (cartCartFragment == null)

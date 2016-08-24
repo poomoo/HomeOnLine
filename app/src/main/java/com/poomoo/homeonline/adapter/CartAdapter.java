@@ -47,18 +47,11 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     public boolean isEdit = false;//true -购买模式 false-编辑模式
     private double totalPrice = 0.00;
-    //    public int removeCount = 0;//选择的删除项
     public List<Integer> deleteIndex;//选择的删除项下标
     public ArrayList<RCartCommodityBO> rCartCommodityBOs;//选择购买的商品集合
-    private int commodityKind = 0;
     private int commodityCount = 0;
+    private boolean isFreePostage = true;//是否包邮
 
-    private DialogPlus dialogPlus;
-    private EditText dialogCountEdt;
-    private TextView dialogMinusTxt;
-    private TextView dialogPlusTxt;
-    private AddAndMinusView addAndMinusView;
-    private int count = 1;
     private DecimalFormat df = new DecimalFormat("0.00");
 
 
@@ -362,7 +355,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
-        return false;
+        return true;
     }
 
     public void setTotalPrice() {
@@ -376,6 +369,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 if (rCartCommodityBO.isBuyChecked) {
                     totalPrice += rCartCommodityBO.commodityPrice * rCartCommodityBO.commodityNum;
                     rCartCommodityBOs.add(rCartCommodityBO);
+                    if (!rCartCommodityBO.isFreePostage)
+                        isFreePostage = false;
                 }
                 if (rCartCommodityBO.isEditChecked)
                     deleteIndex.add(rCartCommodityBO.id);
@@ -385,6 +380,10 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     public double getTotalPrice() {
         return totalPrice;
+    }
+
+    public boolean isFreePostage() {
+        return isFreePostage;
     }
 
     public ArrayList<RCartCommodityBO> getrCartCommodityBOs() {

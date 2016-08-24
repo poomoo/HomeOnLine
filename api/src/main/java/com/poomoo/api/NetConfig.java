@@ -11,7 +11,13 @@ public class NetConfig {
     public static String RemoteUrl = "http://115.28.95.198/";
     public static String LocalUrl = "http://192.168.1.107:8080/";
     public static String ImageUrl = "http://img.jiayou9.com/jyzx";
-    public static String url = LocalUrl;
+    public final static String suffixRemote = "jyzx/app/call.json";
+    public final static String suffixLocal = "app/call.json";
+
+    public final static String suffix = suffixRemote;
+    public static String url = RemoteUrl;
+
+    public static final String grabUrl = url + "jyzx/app/rush.html";
 
     public final static boolean FALSE = false;//超时
     public final static String TIME_OUT_EVENT_MSG = "连接服务器失败";
@@ -45,7 +51,10 @@ public class NetConfig {
     public final static String SEARCH = "1009_03";//商品搜索
     public final static String CLASSINFO = "1009_04";//导航商品列表
     public final static String CLASSCOMMODITYLIST = "1009_05";//三级分类下的商品
+    public final static String CLASSINFOLIST = "1009_06";//导航商品分类
 
+    public final static String PUTORDER = "1010_01";//提交订单
+    public final static String ORDERLIST = "1010_02";//订单列表
     public final static String TRANSFERPRICE = "1010_08";//计算运费
 
 
@@ -60,6 +69,9 @@ public class NetConfig {
     public static final String GETHISTORY = "1012_02";//获取浏览记录
     public static final String DELETEHISTORY = "1012_03";//删除浏览记录
 
+    public static final String COLLECT = "1013_01";//收藏
     public static final String COLLECTIONLIST = "1013_02";//收藏记录
     public static final String CANCELCOLLECTION = "1013_03";//取消收藏
+    public static final String ISCOLLECT = "1013_04";//该商品是否收藏过
+
 }

@@ -56,7 +56,7 @@ public class ListCommodityAdapter extends BaseListAdapter<RListCommodityBO> {
 //            holder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(mContext) * 2 / 5));//设置广告栏的宽高比为1:1
 
         item = items.get(position);
-        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).placeholder(R.drawable.replace).priority(Priority.HIGH).into(holder.image);
+        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.replace).priority(Priority.HIGH).into(holder.image);
         holder.nameTxt.setText(item.commodityName);
         holder.priceTxt.setText("￥" + item.platformPrice);
     }

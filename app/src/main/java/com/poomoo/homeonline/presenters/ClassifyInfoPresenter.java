@@ -33,6 +33,9 @@ import com.poomoo.api.NetWork;
 import com.poomoo.homeonline.ui.activity.ClassifyInfoActivity;
 import com.poomoo.model.request.QCategoryIdBO;
 import com.poomoo.model.response.RClassifyInfoBO;
+import com.poomoo.model.response.RListCommodityBO;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -71,5 +74,26 @@ public class ClassifyInfoPresenter extends BasePresenter<ClassifyInfoActivity> {
                     }
                 }));
 
+    }
+
+    /**
+     * @param categoryId
+     */
+    public void loadClassifyList(String categoryId) {
+        QCategoryIdBO qCategoryIdBO = new QCategoryIdBO(NetConfig.CLASSINFOLIST, categoryId);
+        add(NetWork.getMyApi().getClassifyInfoList(qCategoryIdBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<List<RListCommodityBO>>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.loadInfoFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(List<RListCommodityBO> rListCommodityBOs) {
+                        mView.loadInfoSucceed(rListCommodityBOs);
+                    }
+                }));
     }
 }

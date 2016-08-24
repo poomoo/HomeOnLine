@@ -6,6 +6,7 @@ package com.poomoo.homeonline.ui.activity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.homeonline.ui.fragment.MyOrdersFragment;

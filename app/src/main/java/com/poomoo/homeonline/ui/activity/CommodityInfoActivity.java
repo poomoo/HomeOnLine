@@ -27,7 +27,6 @@
 package com.poomoo.homeonline.ui.activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
@@ -44,11 +43,11 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -77,7 +76,9 @@ import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.PinchImageView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.homeonline.ui.custom.VerticalViewPager;
+import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.RCommodityInfoBO;
+import com.poomoo.model.response.RIsCollect;
 import com.poomoo.model.response.RSpecificationBO;
 import com.poomoo.myflayout.FlowLayout;
 import com.poomoo.myflayout.TagAdapter;
@@ -107,10 +108,12 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     ImageView collectImg;
     @Bind(R.id.vp_commodity_info)
     VerticalViewPager viewPager;
-    @Bind(R.id.rlayout_progressBar)
-    RelativeLayout progressBarRlayout;
     @Bind(R.id.txt_cart_num)
     TextView cartNumTxt;
+    @Bind(R.id.btn_info_addToCart)
+    Button cartBtn;
+    @Bind(R.id.btn_info_buy)
+    Button buyBtn;
 
     //view1
     private SlideShowView slideShowView;
@@ -162,16 +165,27 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private int count = 1;//购买的数量
     private int maxNum = 0;//购买的最大量
     private boolean hasSpecification = false;//是否有商品规格
+    private ArrayList<RCartCommodityBO> rCartCommodityBOs = new ArrayList<>();
+    private RCartCommodityBO cartCommodityBO = new RCartCommodityBO();
+    private boolean isFreePostage = true;//是否包邮
+    private double totalPrice = 0.00;
+    private boolean isStar;//是否开抢（只有抢购类型的商品才会有该项）
+    private boolean isCollect;//是否收藏
+    private int[] ids = new int[1];//取消收藏
+    public static CommodityInfoActivity inStance = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        inStance = this;
+
         screenWidth = MyUtils.getScreenWidth(this);
         mInflater = LayoutInflater.from(this);
         commodityId = getIntent().getIntExtra(getString(R.string.intent_commodityId), -1);
         commodityDetailId = getIntent().getIntExtra(getString(R.string.intent_commodityDetailId), -1);
         commodityType = getIntent().getIntExtra(getString(R.string.intent_commodityType), -1);
+        LogUtils.d(TAG, "onCreate");
         init();
     }
 
@@ -242,10 +256,14 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         });
 
         viewPager.setVisibility(View.GONE);
-        progressBarRlayout.setVisibility(View.VISIBLE);
+        getProgressBar();
+        showProgressBar();
         mPresenter.getCommodity(commodityId, commodityDetailId, 0);
-        if (application.getUserId() != null)
+        if (application.getUserId() != null) {
             mPresenter.addHistory(application.getUserId(), commodityId, 1);
+            mPresenter.isCollect(application.getUserId(), commodityId, commodityDetailId);
+        }
+
     }
 
     private void addView() {
@@ -400,14 +418,24 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             case R.id.btn_info_buy:
                 if (hasSpecification)
                     createDialog(false);
-                else
-                    ;
+                else {
+                    cartCommodityBO.commodityNum = count;
+                    cartCommodityBO.commodityDetailsId = commodityDetailId;
+                    totalPrice = count * cartCommodityBO.commodityPrice;
+                    rCartCommodityBOs = new ArrayList<>();
+                    rCartCommodityBOs.add(cartCommodityBO);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(getString(R.string.intent_commodityList), rCartCommodityBOs);
+                    bundle.putDouble(getString(R.string.intent_totalPrice), totalPrice);
+                    bundle.putBoolean(getString(R.string.intent_isFreePostage), isFreePostage);
+                    openActivity(ConfirmOrderActivity.class, bundle);
+                }
                 break;
         }
     }
 
     public void getCommodityInfoSucceed(RCommodityInfoBO rCommodityInfoBO) {
-        LogUtils.d(TAG, "getCommodityInfoSucceed:" + rCommodityInfoBO.commodityPictures + "\n" + rCommodityInfoBO.commodity + "\n" + rCommodityInfoBO.paramters + "\n" + rCommodityInfoBO.tjCommodity + "\n" + rCommodityInfoBO.specialParamters);
+//        LogUtils.d(TAG, "getCommodityInfoSucceed:" + rCommodityInfoBO.commodityPictures + "\n" + rCommodityInfoBO.commodity + "\n" + rCommodityInfoBO.paramters + "\n" + rCommodityInfoBO.tjCommodity + "\n" + rCommodityInfoBO.specialParamters);
 
         int len = rCommodityInfoBO.commodityPictures.size();
         pics = new String[len];
@@ -424,6 +452,20 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         inventoryTxt.setText("库存" + rCommodityInfoBO.commodity.lowestPriceDetail.repertory + "件");
         maxNum = rCommodityInfoBO.commodity.lowestPriceDetail.repertory;
         commodityDetailId = rCommodityInfoBO.commodity.lowestPriceDetail.id;
+
+        isFreePostage = rCommodityInfoBO.commodity.isFreePostage;
+        isStar = rCommodityInfoBO.isStar;
+
+        if (commodityType == 2 && !isStar) {
+            cartBtn.setEnabled(false);
+            buyBtn.setEnabled(false);
+        }
+        cartCommodityBO.commodityId = rCommodityInfoBO.commodity.id;
+        cartCommodityBO.listPic = rCommodityInfoBO.commodity.listPic;
+        cartCommodityBO.commodityName = rCommodityInfoBO.commodity.commodityName;
+        cartCommodityBO.commodityPrice = rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice;
+        cartCommodityBO.orderType = rCommodityInfoBO.orderType;
+        cartCommodityBO.commodityType = commodityType;
 
         len = rCommodityInfoBO.specialParamters.size();
         if (len > 0) {
@@ -450,7 +492,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         initDetails();
         initRecommend();
         viewPager.setVisibility(View.VISIBLE);
-        progressBarRlayout.setVisibility(View.GONE);
+        hideProgressBar();
     }
 
     public void getCommodityInfoFailed(String msg) {
@@ -474,12 +516,12 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     }
 
     private void addToCart() {
-        mPresenter.addToCart(286, commodityId, rCommodityInfoBO.commodity.commodityName, commodityType, count, rCommodityInfoBO.commodity.listPic, commodityDetailId);
-        progressBarRlayout.setVisibility(View.VISIBLE);
+        showProgressBar();
+        mPresenter.addToCart(application.getUserId(), commodityId, rCommodityInfoBO.commodity.commodityName, commodityType, count, rCommodityInfoBO.commodity.listPic, commodityDetailId);
     }
 
     public void addToCartSucceed(String msg) {
-        progressBarRlayout.setVisibility(View.GONE);
+        hideProgressBar();
         MyUtils.showToast(getApplicationContext(), "添加购物车成功");
         application.setCartNum(application.getCartNum() + count);
         cartNumTxt.setText(application.getCartNum() > 99 ? "99+" : application.getCartNum() + "");
@@ -487,8 +529,44 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     }
 
     public void addToCartFailed(String msg) {
-        progressBarRlayout.setVisibility(View.GONE);
+        hideProgressBar();
         MyUtils.showToast(getApplicationContext(), msg);
+    }
+
+    public void getCollectSucceed(RIsCollect rIsCollect) {
+        changeCollection(rIsCollect.isCollect);
+    }
+
+    public void getCollectFailed(String msg) {
+
+    }
+
+    public void collectSucceed() {
+        hideProgressBar();
+        changeCollection(true);
+        MyUtils.showToast(getApplicationContext(), "收藏成功");
+
+    }
+
+    public void collectFailed(String msg) {
+        hideProgressBar();
+        MyUtils.showToast(getApplicationContext(), msg);
+    }
+
+    public void cancelSucceed() {
+        hideProgressBar();
+        changeCollection(false);
+        MyUtils.showToast(getApplicationContext(), "取消收藏成功");
+    }
+
+    public void cancelFailed(String msg) {
+        hideProgressBar();
+        MyUtils.showToast(getApplicationContext(), msg);
+    }
+
+    private void changeCollection(boolean isCollect) {
+        this.isCollect = isCollect;
+        collectImg.setImageResource(isCollect ? R.drawable.ic_info_collect_checked : R.drawable.ic_info_collect_normal);
     }
 
     /**
@@ -746,12 +824,25 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                 getActivityOutToRight();
                 break;
             case R.id.img_info_collect:
+                if (!MyUtils.isLogin(this)) {
+                    openActivity(LogInActivity.class);
+                    MyUtils.showToast(context, "请先登录");
+                    return;
+                }
+                if (!isCollect)
+                    mPresenter.collect(application.getUserId(), commodityId, commodityDetailId, commodityType);
+                else {
+                    ids[0] = commodityId;
+                    mPresenter.cancelCollection(ids);
+                }
+                showProgressBar();
                 break;
             case R.id.layout_commodity_specification:
                 createDialog(true);
                 break;
         }
     }
+
 
     /**
      * 查看大图的PopupWindow
