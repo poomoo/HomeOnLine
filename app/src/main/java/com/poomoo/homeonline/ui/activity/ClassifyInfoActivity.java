@@ -216,6 +216,7 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
         rListCommodityBO = listCommodityAdapter.getItem(position);
         Bundle bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_commodityId), rListCommodityBO.commodityId);
+        bundle.putInt(getString(R.string.intent_commodityDetailId), rListCommodityBO.commodityDetailId);
         bundle.putInt(getString(R.string.intent_commodityType), rListCommodityBO.commodityType);
         openActivity(CommodityInfoActivity.class, bundle);
     }

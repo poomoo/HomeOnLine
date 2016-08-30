@@ -18,6 +18,7 @@ import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.model.RUserBO;
+import com.poomoo.model.request.QUserBO;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -85,7 +86,10 @@ public class ChangePassWordActivity extends BaseDaggerActivity<ChangePassWordPre
             return;
         }
         showProgressBar();
-        mPresenter.register(phoneNum, passWord1);
+        if (PARENT.equals(getString(R.string.intent_register)))
+            mPresenter.register(phoneNum, passWord1);
+        else
+            mPresenter.changePW(new QUserBO("").new User(application.getUserId(), passWord1));
     }
 
     private void bindViewByRxBinding() {
@@ -161,7 +165,19 @@ public class ChangePassWordActivity extends BaseDaggerActivity<ChangePassWordPre
     }
 
     public void loginFailed(String msg) {
-        closeProgressDialog();
+        hideProgressBar();
+        MyUtils.showToast(getApplicationContext(), msg);
+    }
+
+
+    public void changeSuccessful() {
+        hideProgressBar();
+        MyUtils.showToast(getApplicationContext(), "修改密码成功");
+        finish();
+    }
+
+    public void changeFailed(String msg) {
+        hideProgressBar();
         MyUtils.showToast(getApplicationContext(), msg);
     }
 }

@@ -114,6 +114,14 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
     }
 
     class webViewClient extends WebViewClient {
+        //重写shouldOverrideUrlLoading方法，使点击链接后不使用其他的浏览器打开。
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            //如果不需要其他对点击链接事件的处理返回true，否则返回false
+            return true;
+        }
+
+
         @SuppressWarnings("deprecation")
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {

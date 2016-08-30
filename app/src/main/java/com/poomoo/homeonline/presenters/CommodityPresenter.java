@@ -40,6 +40,7 @@ import com.poomoo.model.request.QHistory;
 import com.poomoo.model.request.QIsCollectBO;
 import com.poomoo.model.request.QSpecificationBO;
 import com.poomoo.model.request.QUserIdBO;
+import com.poomoo.model.response.RCartNumBO;
 import com.poomoo.model.response.RCommodityInfoBO;
 import com.poomoo.model.response.RIsCollect;
 import com.poomoo.model.response.RSpecificationBO;
@@ -60,8 +61,8 @@ public class CommodityPresenter extends BasePresenter<CommodityInfoActivity> {
     public CommodityPresenter() {
     }
 
-    public void getCommodity(int commodityId, Integer commodityDetailId, int commodityType) {
-        QCommodityInfoBO qCommodityInfoBO = new QCommodityInfoBO(NetConfig.COMMODITY, commodityId, commodityDetailId, commodityType);
+    public void getCommodity(int commodityId, Integer commodityDetailId, int commodityType, Integer matchId) {
+        QCommodityInfoBO qCommodityInfoBO = new QCommodityInfoBO(NetConfig.COMMODITY, commodityId, commodityDetailId, commodityType, matchId);
         add(NetWork.getMyApi().GetCommodityInfo(qCommodityInfoBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -101,6 +102,30 @@ public class CommodityPresenter extends BasePresenter<CommodityInfoActivity> {
     }
 
     /**
+     * 获取购物车数量
+     *
+     * @param userId
+     */
+    public void getCartNum(int userId) {
+        QUserIdBO qUserIdBO = new QUserIdBO(NetConfig.CARTNUM, userId);
+        add(NetWork.getMyApi().GetCartNum(qUserIdBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<RCartNumBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+
+                    }
+
+                    @Override
+                    public void onNext(RCartNumBO rCartNumBO) {
+                        mView.getNum(rCartNumBO);
+                    }
+                }));
+
+    }
+
+    /**
      * 添加到购物车
      *
      * @param commodityId
@@ -110,8 +135,8 @@ public class CommodityPresenter extends BasePresenter<CommodityInfoActivity> {
      * @param listPic
      * @param commodityDetailId
      */
-    public void addToCart(int userId, int commodityId, String commodityName, int commodityType, int commodityNum, String listPic, int commodityDetailId) {
-        QAddCartBO qAddCartBO = new QAddCartBO(NetConfig.ADDCART, userId, -1, -1, commodityDetailId, listPic, commodityNum, -1, commodityType, commodityId, commodityName);
+    public void addToCart(int userId, int commodityId, String commodityName, int commodityType, int commodityNum, String listPic, int commodityDetailId, Integer rushPurchaseId) {
+        QAddCartBO qAddCartBO = new QAddCartBO(NetConfig.ADDCART, userId, -1, -1, commodityDetailId, listPic, commodityNum, rushPurchaseId, commodityType, commodityId, commodityName);
         add(NetWork.getMyApi().AddToCart(qAddCartBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

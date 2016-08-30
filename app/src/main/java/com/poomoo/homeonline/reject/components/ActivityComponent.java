@@ -34,7 +34,7 @@ import com.poomoo.homeonline.ui.activity.FeedBackActivity;
 import com.poomoo.homeonline.ui.activity.GetCodeActivity;
 import com.poomoo.homeonline.ui.activity.LogInActivity;
 import com.poomoo.homeonline.ui.activity.ReFundActivity;
-import com.poomoo.homeonline.ui.activity.RefundInfoActivity;
+import com.poomoo.homeonline.ui.activity.ReFundInfoActivity;
 import com.poomoo.homeonline.ui.activity.ScanHistoryActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.activity.UpdateNickNameActivity;
@@ -79,6 +79,6 @@ public interface ActivityComponent {
 
     void inject(EvaluateActivity activity);
 
-    void inject(RefundInfoActivity activity);
+    void inject(ReFundInfoActivity activity);
 
 }

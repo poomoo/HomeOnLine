@@ -35,13 +35,13 @@ package com.poomoo.model.request;
 public class QOrderListBO extends BaseRequest {
     public int userId;
     public Integer state;//1.待付款,2.已付款3.配货中，4.已发货，5.已签收6.已完成，7.用户取消，8系统取消
-    public int currPage;
+    public int index;
 
-    public QOrderListBO(String method, int userId, int state, int currPage) {
+    public QOrderListBO(String method, int userId, int state, int index) {
         super(method);
         this.userId = userId;
         if (state != 0)
             this.state = state;
-        this.currPage = currPage;
+        this.index = index;
     }
 }

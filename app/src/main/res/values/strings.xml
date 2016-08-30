@@ -75,6 +75,10 @@
     <string name="intent_date">date</string>
     <string name="intent_orderDetails">orderDetails</string>
     <string name="intent_orderDetailId">orderDetailId</string>
+    <string name="intent_commodityName">commodityName</string>
+    <string name="intent_deliveryId">deliveryId</string>
+    <string name="intent_deliveryFee">deliveryFee</string>
+    <string name="intent_matchId">matchId</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>
@@ -110,7 +114,6 @@
     <string name="load_no_more">全部加载完成</string>
     <string name="refreshing">刷新中</string>
     <!--dialog-->
-
 
     <string name="toast_3_pics">最多选择3张图片</string>
     <string name="title_confirm_order">确认订单</string>

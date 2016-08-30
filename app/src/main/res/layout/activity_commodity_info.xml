@@ -58,7 +58,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:drawableTop="@drawable/nav4_normal"
-
                 android:text="购物车"
                 android:textColor="@color/ThemeTextColor"
                 android:textSize="@dimen/sp_12" />
@@ -78,11 +77,10 @@
 
         <Button
             android:id="@+id/btn_info_addToCart"
-            style="@style/myButton_Red"
+            style="@style/myButton_Yellow"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/btn_cart"
             android:text="加入购物车"
             android:textSize="@dimen/sp_16" />
 

@@ -192,9 +192,9 @@ public abstract class BaseListAdapter<T> extends RecyclerView.Adapter {
                 break;
 
             case VIEW_TYPE_FOOTER:
-                LogUtils.d("BaseListAdapter", "VIEW_TYPE_FOOTER:" + mState + ":" + onLoadingListener);
+//                LogUtils.d("BaseListAdapter", "VIEW_TYPE_FOOTER:" + mState + ":" + onLoadingListener);
                 if (mState == STATE_LOAD_MORE && onLoadingListener != null) {
-                    LogUtils.d("thanatos", "loading...");
+//                    LogUtils.d("thanatos", "loading...");
                     onLoadingListener.onLoading();
                 }
                 FooterViewHolder fvh = (FooterViewHolder) h;

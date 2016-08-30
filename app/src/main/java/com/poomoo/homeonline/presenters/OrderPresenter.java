@@ -31,6 +31,9 @@ import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
 import com.poomoo.homeonline.ui.fragment.MyOrdersFragment;
+import com.poomoo.model.ResponseBO;
+import com.poomoo.model.request.QCancelOrderBO;
+import com.poomoo.model.request.QOrderId;
 import com.poomoo.model.request.QOrderListBO;
 import com.poomoo.model.response.ROrderListBO;
 
@@ -57,10 +60,10 @@ public class OrderPresenter extends BasePresenter<MyOrdersFragment> {
      *
      * @param userId
      * @param state
-     * @param currPage
+     * @param index
      */
-    public void getOrderList(int userId, int state, int currPage) {
-        QOrderListBO qOrderListBO = new QOrderListBO(NetConfig.ORDERLIST, userId, state, currPage);
+    public void getOrderList(int userId, int state, int index) {
+        QOrderListBO qOrderListBO = new QOrderListBO(NetConfig.ORDERLIST, userId, state, index);
         add(NetWork.getMyApi().getOrderList(qOrderListBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -77,4 +80,75 @@ public class OrderPresenter extends BasePresenter<MyOrdersFragment> {
                 }));
     }
 
+    /**
+     * 取消订单
+     *
+     * @param userId
+     * @param orderId
+     */
+    public void cancelOrder(int userId, String orderId) {
+        QCancelOrderBO qCancelOrderBO = new QCancelOrderBO(NetConfig.CANCELORDER, userId, orderId);
+        add(NetWork.getMyApi().cancelOrder(qCancelOrderBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.failed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        mView.successful();
+                    }
+                }));
+    }
+
+
+    /**
+     * 确认收货
+     *
+     * @param orderId
+     */
+    public void confirm(String orderId) {
+        QOrderId qOrderId = new QOrderId(NetConfig.CONFIRM, orderId);
+        add(NetWork.getMyApi().confirm(qOrderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.failed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        mView.successful();
+                    }
+                }));
+    }
+
+    /**
+     * 删除订单
+     *
+     * @param userId
+     * @param orderId
+     */
+    public void deleteOrder(Integer userId, String orderId) {
+        QCancelOrderBO qCancelOrderBO = new QCancelOrderBO(NetConfig.DELETEORDER, userId, orderId);
+        add(NetWork.getMyApi().cancelOrder(qCancelOrderBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.failed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        mView.successful();
+                    }
+                }));
+    }
 }

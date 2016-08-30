@@ -43,6 +43,14 @@
         <item name="android:gravity">center</item>
     </style>
 
+    <style name="myButton_Yellow" parent="android:Widget.Button">
+        <item name="android:background">@drawable/selector_button_yellow</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_height">36dp</item>
+        <item name="android:textSize">@dimen/sp_18</item>
+        <item name="android:gravity">center</item>
+    </style>
+
     <!-- 加载滚动条样式 -->
     <style name="loading">
         <item name="android:indeterminate">true</item>

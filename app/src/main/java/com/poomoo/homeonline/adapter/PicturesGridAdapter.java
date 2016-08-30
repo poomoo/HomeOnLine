@@ -10,8 +10,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
@@ -32,14 +34,14 @@ public class PicturesGridAdapter extends MyBaseAdapter<RAdBO> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-//        LogUtils.d(TAG,"getView"+ position+"len:"+itemList.size());
         final ViewHolder viewHolder;
         viewHolder = new ViewHolder();
         item = itemList.get(position);
+        LogUtils.d(TAG, "getView" + position + " picUrl:" + item.advertisementPic);
         convertView = inflater.inflate(R.layout.item_pictures, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.image);
 //        viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(context) / 2 * 10 / 13));//设置广告栏的宽高比为13:10
-        Glide.with(context).load(NetConfig.ImageUrl + item.advertisementPic).placeholder(R.drawable.replace13b10).into(viewHolder.image);
+        Glide.with(context).load(NetConfig.ImageUrl + item.advertisementPic).placeholder(R.drawable.replace13b10).priority(Priority.HIGH).into(viewHolder.image);
         return convertView;
     }
 

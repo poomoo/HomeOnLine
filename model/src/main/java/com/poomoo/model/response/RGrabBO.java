@@ -40,4 +40,6 @@ public class RGrabBO {
     public String commonPrice;//市场价格
     public String rushPurchasePrice;//抢购价格
     public String listPic;//商品列表图片
+    public int commodityId;
+    public int commodityDetailId;
 }

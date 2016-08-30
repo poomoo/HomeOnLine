@@ -33,11 +33,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.poomoo.commlib.MyConfig;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.presenters.RefundInfoPresenter;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
+import com.poomoo.homeonline.ui.custom.ErrorLayout;
+import com.poomoo.model.response.RReFundInfoBO;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -48,7 +51,9 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/8/24 17:28
  */
-public class RefundInfoActivity extends BaseDaggerActivity<RefundInfoPresenter> {
+public class ReFundInfoActivity extends BaseDaggerActivity<RefundInfoPresenter> implements ErrorLayout.OnActiveClickListener {
+    @Bind(R.id.llayout_refund_info)
+    LinearLayout infoLayout;
     @Bind(R.id.llayout_refund_wait)
     LinearLayout waitLayout;
     @Bind(R.id.llayout_refund_successful)
@@ -67,6 +72,38 @@ public class RefundInfoActivity extends BaseDaggerActivity<RefundInfoPresenter> 
     ImageView arrowImg;
     @Bind(R.id.scroll_refund)
     ScrollView scrollView;
+    @Bind(R.id.error_frame)
+    ErrorLayout errorLayout;
+    @Bind(R.id.txt_refund_type)
+    TextView typeTxt;
+    @Bind(R.id.txt_refund_amount)
+    TextView amountTxt;
+    @Bind(R.id.txt_refund_reason)
+    TextView reasonTxt;
+    @Bind(R.id.txt_refund_des)
+    TextView desTxt;
+    @Bind(R.id.txt_refund_id)
+    TextView idTxt;
+    @Bind(R.id.txt_refund_apply_date)
+    TextView applyDateTxt;
+    @Bind(R.id.txt_refund_shop)
+    TextView shopTxt;
+    @Bind(R.id.txt_refund_commodity)
+    TextView commodityTxt;
+    @Bind(R.id.txt_refund_price)
+    TextView priceTxt;
+    @Bind(R.id.txt_refund_count)
+    TextView countTxt;
+    @Bind(R.id.txt_refund_transfer)
+    TextView transferTxt;
+    @Bind(R.id.txt_refund_total_price)
+    TextView totalPriceTxt;
+    @Bind(R.id.txt_refund_orderId)
+    TextView orderIdTxt;
+    @Bind(R.id.txt_refund_deal_date)
+    TextView dealDateTxt;
+
+    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +133,12 @@ public class RefundInfoActivity extends BaseDaggerActivity<RefundInfoPresenter> 
 
     private void init() {
         setBack();
+        id = getIntent().getStringExtra(getString(R.string.intent_value));
+
+        errorLayout.setOnActiveClickListener(this);
+
+        errorLayout.setState(ErrorLayout.LOADING, "");
+        mPresenter.getReFundInfo(id);
     }
 
     /**
@@ -121,4 +164,61 @@ public class RefundInfoActivity extends BaseDaggerActivity<RefundInfoPresenter> 
         }
     }
 
+
+    public void successful(RReFundInfoBO rReFundInfoBO) {
+        errorLayout.setState(ErrorLayout.HIDE, "");
+        switch (rReFundInfoBO.returnNote.returnStatus) {
+            //处理中
+            case MyConfig.GOODS_RETURN_NOTE_STATUS_SUBMIT:
+            case MyConfig.GOODS_RETURN_NOTE_STATUS_CHECK:
+                waitLayout.setVisibility(View.VISIBLE);
+                successfulLayout.setVisibility(View.GONE);
+                failedLayout.setVisibility(View.GONE);
+                break;
+            case MyConfig.GOODS_RETURN_NOTE_STATUS_CHECK_YES:
+                waitLayout.setVisibility(View.GONE);
+                successfulLayout.setVisibility(View.VISIBLE);
+                failedLayout.setVisibility(View.GONE);
+                topAmountTxt.setText(rReFundInfoBO.returnNote.returnMoney + "");
+                successfulDateTxt.setText(rReFundInfoBO.returnNote.payCashTime);
+                break;
+            case MyConfig.GOODS_RETURN_NOTE_STATUS_CHECK_NO:
+                waitLayout.setVisibility(View.GONE);
+                successfulLayout.setVisibility(View.GONE);
+                failedLayout.setVisibility(View.VISIBLE);
+                failedReasonTxt.setText(rReFundInfoBO.returnNote.returnReason);
+                failedDateTxt.setText(rReFundInfoBO.returnNote.checkTime);
+                break;
+        }
+        typeTxt.setText(rReFundInfoBO.returnNote.returnType == 1 ? "退货且退款" : "仅退款");
+        amountTxt.setText(rReFundInfoBO.returnNote.returnMoney + "");
+        reasonTxt.setText(MyConfig.reason[rReFundInfoBO.returnNote.returnReason]);
+        desTxt.setText(rReFundInfoBO.returnNote.returnExplain);
+        idTxt.setText(rReFundInfoBO.returnNote.id);
+        applyDateTxt.setText(rReFundInfoBO.returnNote.submitTime);
+        shopTxt.setText(rReFundInfoBO.shopName);
+        commodityTxt.setText(rReFundInfoBO.commodityName);
+        priceTxt.setText(rReFundInfoBO.unitPrice + "");
+        countTxt.setText(rReFundInfoBO.returnNote.returnNum + "");
+        transferTxt.setText(rReFundInfoBO.deliveryFee + "");
+        totalPriceTxt.setText(rReFundInfoBO.totalPrice + "");
+        orderIdTxt.setText(rReFundInfoBO.orderId);
+        dealDateTxt.setText(rReFundInfoBO.createTime);
+
+        infoLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void failed(String msg) {
+//        if (isNetWorkInvalid(msg))
+//            errorLayout.setState(ErrorLayout.NOT_NETWORK, "");
+//        else
+        errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+    }
+
+
+    @Override
+    public void onLoadActiveClick() {
+        errorLayout.setState(ErrorLayout.LOADING, "");
+        mPresenter.getReFundInfo(id);
+    }
 }

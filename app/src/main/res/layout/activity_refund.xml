@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ThemeBg"
-    android:orientation="vertical">
+    android:background="@color/ThemeBg">
 
-    <include layout="@layout/pub_layout_title_bar" />
+    <include
+        android:id="@+id/title"
+        layout="@layout/pub_layout_title_bar" />
 
     <ScrollView
+        android:id="@+id/scroll_refund"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
         android:scrollbars="none">
 
         <LinearLayout
@@ -461,6 +464,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/edt_refund_explain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
@@ -512,10 +516,17 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/btn_submit"
                 style="@style/myButton_Red"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/dp_10"
+                android:onClick="submitReFund"
                 android:text="提交" />
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+
+    <com.poomoo.homeonline.ui.custom.ErrorLayout
+        android:id="@+id/error_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

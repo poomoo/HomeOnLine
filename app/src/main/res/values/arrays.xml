@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="reason">
+    <string-array name="no_good_reason">
         <item>请选择退款原因</item>
         <item>买错,不需要</item>
         <item>快递无跟踪记录</item>
         <item>快递一直未送到</item>
         <item>空包裹,少货</item>
         <item>未按规定时间发货</item>
+        <item>其他</item>
+    </string-array>
+
+    <string-array name="with_good_reason">
+        <item>请选择退款原因</item>
+        <item>商品描述不符</item>
+        <item>卖家发错货</item>
+        <item>少件/漏发</item>
+        <item>7天无理由退货</item>
         <item>其他</item>
     </string-array>
 

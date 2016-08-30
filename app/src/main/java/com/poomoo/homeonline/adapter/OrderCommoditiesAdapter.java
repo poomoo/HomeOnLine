@@ -40,6 +40,7 @@ import com.poomoo.api.NetConfig;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.listeners.ReFundClickListener;
+import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.ROrderListBO;
 
 import java.text.DecimalFormat;
@@ -57,11 +58,13 @@ public class OrderCommoditiesAdapter extends BaseListAdapter<ROrderListBO.OrderD
     private DecimalFormat df = new DecimalFormat("0.00");
     private ReFundClickListener reFundClickListener;
     private int groupPosition;
+    private int state;
 
-    public OrderCommoditiesAdapter(Context context, int mode, int groupPosition, ReFundClickListener reFundClickListener) {
+    public OrderCommoditiesAdapter(Context context, int mode, int groupPosition, ReFundClickListener reFundClickListener, int state) {
         super(context, mode);
         this.reFundClickListener = reFundClickListener;
         this.groupPosition = groupPosition;
+        this.state = state;
     }
 
     @Override
@@ -81,7 +84,7 @@ public class OrderCommoditiesAdapter extends BaseListAdapter<ROrderListBO.OrderD
             holder.reFundTxt.setText("已申请退款/退货");
         else
             holder.reFundTxt.setText("退款/退货");
-        if (item.state == 4 || item.state == 6)
+        if (state != ROrderBO.ORDER_PAY && state != ROrderBO.ORDER_USERCANCEL && state != ROrderBO.ORDER_SYSYCANCEL)
             holder.reFundTxt.setVisibility(View.VISIBLE);
         else
             holder.reFundTxt.setVisibility(View.GONE);

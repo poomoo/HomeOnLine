@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
@@ -34,7 +35,9 @@ import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.ClassifyInfoActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
+import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
+import com.poomoo.homeonline.ui.activity.WebViewActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
@@ -103,8 +106,8 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private MainGrabAdapter grabAdapter;
     private HotAdapter hotAdapter;
     private ListCommodityAdapter listCommodityAdapter;
-    private PicturesGridAdapter qhcsGridAdapter;
-    private PicturesGridAdapter lsyzGridAdapter;
+    //    private PicturesGridAdapter qhcsGridAdapter;
+//    private PicturesGridAdapter lsyzGridAdapter;
     private TimeCountDownUtilBy3View timeCountDownUtilBy3View;
 
     private String[] ad = {"http://img.jiayou9.com/jyzx/upload/company/20160621/20160621235614_798.jpg", "http://img.jiayou9.com/jyzx//upload/company/20160617/20160617152510_21.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160617/20160617153952_548.jpg"};
@@ -177,9 +180,16 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         topImg.setOnClickListener(v -> scrollView.smoothScrollTo(0, 0));
     }
 
-    @OnClick(R.id.llayout_search)
+    @OnClick({R.id.llayout_search, R.id.llayout_toGrab})
     void search(View view) {
-        openActivity(SearchActivity.class);
+        switch (view.getId()) {
+            case R.id.llayout_search:
+                openActivity(SearchActivity.class);
+                break;
+            case R.id.llayout_toGrab:
+                ((MainNewActivity) getActivity()).jump(2);
+                break;
+        }
     }
 
     /**
@@ -190,7 +200,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         for (int i = 0; i < len; i++) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_special, null);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            LogUtils.d(TAG, "lp:" + lp);
             lp.setMargins(0, (int) getResources().getDimension(R.dimen.dp_8), 0, 0);
             view.setLayoutParams(lp);
             ImageView titleImg = (ImageView) view.findViewById(R.id.img_special_title);
@@ -204,33 +213,34 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             gridView.setOnItemClickListener((parent, view1, position, id) -> {
                 rAdBO = rSpecialAdBO.advs.get((int) parent.getTag()).get(position);
                 if (rAdBO.isCommodity) {//商品广告
-                    Bundle bundle = new Bundle();
+                    bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
                     MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
-
+                    bundle = new Bundle();
+                    bundle.putString(getString(R.string.intent_value), rAdBO.connect);
+                    openActivity(WebViewActivity.class, bundle);
                 }
-//                MyUtils.showToast(getActivity().getApplicationContext(), "点击了第" + parent.getTag() + "个专题的" + "第" + position + "个广告" + "  是否是商品广告:" + rAdBO.isCommodity);
             });
 
-            Glide.with(getActivity()).load(getString(R.string.base_url) + "/weixin/images/index-market-" + (i + 1) + ".png").into(titleImg);
+            Glide.with(this).load(getString(R.string.base_url) + "/weixin/images/index-market-" + (i + 1) + ".png").into(titleImg);
 
-            contentImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) * 5 / 12));//设置广告栏的宽高比为2:1
-            Glide.with(getActivity()).load(NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic).placeholder(R.drawable.replace12b5).into(contentImg);
+            contentImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) * 5 / 12));//设置广告栏的宽高比为12:5
+            Glide.with(this).load(NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic).placeholder(R.drawable.replace12b5).priority(Priority.HIGH).into(contentImg);
+            LogUtils.d(TAG, "专题广告图片:" + NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic);
             contentImg.setTag(i);
             contentImg.setOnClickListener(v -> {
                 rAdBO = rSpecialAdBO.advs.get((int) contentImg.getTag()).get(0);
-//                MyUtils.showToast(getActivity().getApplicationContext(), "是否是商品广告:" + rAdBO.isCommodity + " url:" + rAdBO.connect);
                 if (rAdBO.isCommodity) {//商品广告
-                    Bundle bundle = new Bundle();
-                    bundle.putInt(getString(R.string.intent_commodityId), 6048);
+                    bundle = new Bundle();
+                    bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
                     MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString(getString(R.string.intent_value), NetConfig.LocalUrl + "/app/rush.html");
-//                    openActivity(WebViewActivity.class, bundle);
+                    bundle = new Bundle();
+                    bundle.putString(getString(R.string.intent_value), rAdBO.connect);
+                    openActivity(WebViewActivity.class, bundle);
                 }
             });
             specialAdLayout.addView(view);
@@ -374,7 +384,8 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadSpecialAdSucceed(RSpecialAdBO rSpecialAdBO) {
-        LogUtils.d(TAG, "loadSpecialAdSucceed:" + rSpecialAdBO);
+        for (List<RAdBO> rAdBOs : rSpecialAdBO.advs)
+            LogUtils.d(TAG, "loadSpecialAdSucceed rAdBOs:" + rAdBOs);
         addView(rSpecialAdBO);
     }
 
@@ -425,32 +436,44 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     public void onItemClick(int position, long id, View view) {
         switch (((View) view.getParent()).getId()) {
             case R.id.recycler_grab:
-//                rGrabBO = grabAdapter.getItem(position);
-//                bundle = new Bundle();
-//                bundle.putInt(getString(R.string.intent_commodityId), rGrabBO.commodityId);
-//                bundle.putInt(getString(R.string.intent_commodityType), rGrabBO.commodityType);
-//                MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
+                rGrabBO = grabAdapter.getItem(position);
+                bundle = new Bundle();
+                bundle.putInt(getString(R.string.intent_commodityId), rGrabBO.commodityId);
+                bundle.putInt(getString(R.string.intent_commodityDetailId), rGrabBO.commodityDetailId);
+                bundle.putInt(getString(R.string.intent_commodityType), 2);//抢购商品
+                bundle.putInt(getString(R.string.intent_matchId), rGrabBO.id);//matchId
+                MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
                 break;
             case R.id.recycler_hot:
                 rAdBO = hotAdapter.getItem(position);
                 if (rAdBO.isCommodity) {//商品广告
                     bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
+                    bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
                     bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
                     MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
                 } else {
-//                     bundle = new Bundle();
-//                    bundle.putString(getString(R.string.intent_value), NetConfig.LocalUrl + "/app/rush.html");
-//                    openActivity(WebViewActivity.class, bundle);
+                    Bundle bundle = new Bundle();
+                    bundle.putString(getString(R.string.intent_value), rAdBO.connect);
+                    openActivity(WebViewActivity.class, bundle);
                 }
                 break;
             case R.id.recycler_guess:
                 rListCommodityBO = listCommodityAdapter.getItem(position);
                 bundle = new Bundle();
                 bundle.putInt(getString(R.string.intent_commodityId), rListCommodityBO.commodityId);
+                bundle.putInt(getString(R.string.intent_commodityDetailId), rListCommodityBO.commodityDetailId);
                 bundle.putInt(getString(R.string.intent_commodityType), rListCommodityBO.commodityType);
                 MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
                 break;
+        }
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            mPresenter.getGuess(application.getUserId());
         }
     }
 

@@ -33,6 +33,7 @@ import com.poomoo.model.request.BaseRequest;
 import com.poomoo.model.request.QAddCartBO;
 import com.poomoo.model.request.QAddressBO;
 import com.poomoo.model.request.QCancelCollectionBO;
+import com.poomoo.model.request.QCancelOrderBO;
 import com.poomoo.model.request.QCategoryIdBO;
 import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QClassifyListBO;
@@ -42,6 +43,7 @@ import com.poomoo.model.request.QFeedBackBO;
 import com.poomoo.model.request.QIdBO;
 import com.poomoo.model.request.QIsCollectBO;
 import com.poomoo.model.request.QOrderBO;
+import com.poomoo.model.request.QOrderId;
 import com.poomoo.model.request.QOrderListBO;
 import com.poomoo.model.request.QPageBO;
 import com.poomoo.model.request.QCommodityInfoBO;
@@ -49,13 +51,18 @@ import com.poomoo.model.request.QCountBO;
 import com.poomoo.model.request.QDeleteBO;
 import com.poomoo.model.request.QHistory;
 import com.poomoo.model.request.QLoginBO;
+import com.poomoo.model.request.QReFundBO;
+import com.poomoo.model.request.QReFundInfoBO;
 import com.poomoo.model.request.QRegisterBO;
 import com.poomoo.model.request.QSearchBO;
+import com.poomoo.model.request.QSignBO;
 import com.poomoo.model.request.QSpecificationBO;
 import com.poomoo.model.request.QTransferPriceBO;
 import com.poomoo.model.request.QUpdateInfoBO;
+import com.poomoo.model.request.QUserBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.response.RAdBO;
+import com.poomoo.model.response.RCartNumBO;
 import com.poomoo.model.response.RCartShopBO;
 import com.poomoo.model.response.RClassifyBO;
 import com.poomoo.model.response.RClassifyInfoBO;
@@ -67,7 +74,10 @@ import com.poomoo.model.response.RIsCollect;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.ROrderListBO;
+import com.poomoo.model.response.RReFundBO;
+import com.poomoo.model.response.RReFundInfoBO;
 import com.poomoo.model.response.RReceiptBO;
+import com.poomoo.model.response.RSignBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RSpecificationBO;
 import com.poomoo.model.response.RTransferPriceBO;
@@ -78,9 +88,10 @@ import com.poomoo.model.response.RZoneBO;
 import java.util.List;
 
 import retrofit2.http.Body;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import rx.Observable;
-import rx.Subscription;
 
 /**
  * 类名 MyApi
@@ -136,6 +147,10 @@ public interface MyApi {
     //加入购物车
     @POST(NetConfig.suffix)
     Observable<ResponseBO> AddToCart(@Body QAddCartBO data);
+
+    //购物车数量
+    @POST(NetConfig.suffix)
+    Observable<RCartNumBO> GetCartNum(@Body QUserIdBO data);
 
     //获取购物车信息
     @POST(NetConfig.suffix)
@@ -236,4 +251,29 @@ public interface MyApi {
     //提交订单
     @POST(NetConfig.suffix)
     Observable<ROrderBO> subOrder(@Body QOrderBO data);
+
+    //退款详情
+    @POST(NetConfig.suffix)
+    Observable<RReFundInfoBO> getReFundInfo(@Body QReFundInfoBO data);
+
+    //确认收货
+    @POST(NetConfig.suffix)
+    Observable<ResponseBO> confirm(@Body QOrderId data);
+
+    //取消订单
+    @POST(NetConfig.suffix)
+    Observable<ResponseBO> cancelOrder(@Body QCancelOrderBO data);
+
+    //申请退款
+    @POST(NetConfig.suffix)
+    Observable<RReFundBO> subReFund(@Body QReFundBO data);
+
+
+    //获取地址详情
+    @POST(NetConfig.suffix)
+    Observable<RReceiptBO> getAddressById(@Body QIdBO qIdBO);
+
+    //修改密码
+    @POST(NetConfig.suffix)
+    Observable<ResponseBO> changePW(@Body QUserBO data);
 }

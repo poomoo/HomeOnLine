@@ -5,6 +5,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -31,10 +32,12 @@ public class ErrorLayout extends FrameLayout {
     //    private ProgressBar probar;
     private RelativeLayout progressLayout;
     private TextView vText;
-    private TextView vLoadFailure;
+    //    private TextView vLoadFailure;
+    private ImageView vLoadFailure;
     private OnActiveClickListener listener;
     private int mState = HIDE;
-    private Drawable drawable;
+    private Drawable drawable_error;
+    private Drawable drawable_network;
 
     public ErrorLayout(Context context) {
         super(context);
@@ -51,13 +54,21 @@ public class ErrorLayout extends FrameLayout {
 
         progressLayout = (RelativeLayout) view.findViewById(R.id.rlayout_progressBar);
         vText = (TextView) view.findViewById(R.id.state_text);
-        vLoadFailure = (TextView) view.findViewById(R.id.load_failed);
+//        vLoadFailure = (TextView) view.findViewById(R.id.load_failed);
+        vLoadFailure = (ImageView) view.findViewById(R.id.img_failed);
 
         vLoadFailure.setOnClickListener(v -> {
             if (listener != null)
                 listener.onLoadActiveClick();
         });
         addView(view);
+
+//        drawable_error = getResources().getDrawable(R.drawable.ic_error);
+//        drawable_error.setBounds(0, 0, drawable_error.getIntrinsicWidth(), (drawable_error.getMinimumHeight()));
+//
+//        drawable_error = getResources().getDrawable(R.drawable.ic_error);
+//        drawable_error.setBounds(0, 0, drawable_error.getIntrinsicWidth(), (drawable_error.getMinimumHeight()));
+
     }
 
 
@@ -81,9 +92,10 @@ public class ErrorLayout extends FrameLayout {
             case LOAD_FAILED:
                 setVisibility(VISIBLE);
                 vLoadFailure.setVisibility(VISIBLE);
-                vLoadFailure.setText("数据加载失败,点击重新加载");
-                vLoadFailure.setCompoundDrawables(null, null, null, null);
+//                vLoadFailure.setText("数据加载失败,点击重新加载");
+//                vLoadFailure.setCompoundDrawables(null, null, null, null);
 //                vLoadFailure.setText("失败");
+//                vLoadFailure.setImageResource(R.drawable.ic_network_error);
                 vText.setVisibility(GONE);
                 progressLayout.setVisibility(GONE);
                 break;
@@ -91,10 +103,9 @@ public class ErrorLayout extends FrameLayout {
             case NOT_NETWORK:
                 setVisibility(VISIBLE);
                 vLoadFailure.setVisibility(VISIBLE);
-                drawable = getResources().getDrawable(R.drawable.ic_network_invalid);
-                drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), (drawable.getMinimumHeight()));
-                vLoadFailure.setCompoundDrawables(null, drawable, null, null);
-                vLoadFailure.setText("网络请求失败" + "\n\n" + "请检查您的网络" + "\n" + "点击刷新");
+//                vLoadFailure.setImageResource(R.drawable.ic_network_error);
+//                vLoadFailure.setCompoundDrawables(null, drawable, null, null);
+//                vLoadFailure.setText("网络请求失败" + "\n\n" + "请检查您的网络" + "\n" + "点击刷新");
                 vText.setVisibility(GONE);
                 progressLayout.setVisibility(GONE);
                 break;

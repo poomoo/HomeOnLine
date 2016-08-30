@@ -48,14 +48,14 @@
                     android:id="@+id/img_personalAvatar"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="@dimen/dp_20"
                     android:src="@drawable/ic_default_avatar" />
 
                 <TextView
                     android:id="@+id/txt_center_nickName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
+                    android:layout_marginLeft="@dimen/dp_20"
                     android:text="木子火"
                     android:textColor="@color/white"
                     android:textSize="@dimen/sp_16" />
@@ -100,10 +100,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="12dp">
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_10">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -141,8 +141,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:paddingBottom="12dp"
-                android:paddingTop="12dp">
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_10">
 
                 <LinearLayout
                     android:id="@+id/llayout_pay"
@@ -234,7 +234,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <ImageView
                         android:layout_width="wrap_content"
@@ -262,10 +263,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="12dp">
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_10">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -304,10 +305,10 @@
                 android:layout_marginBottom="10dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="12dp">
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_10">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -340,10 +341,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="12dp">
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_10">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -381,10 +382,10 @@
                 android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="12dp">
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_10">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -420,13 +421,12 @@
                 android:id="@+id/rlayout_safe_center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="30dp"
                 android:background="@color/white"
                 android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="12dp">
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_10">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -454,6 +454,49 @@
                     android:text="手机绑定、修改密码"
                     android:textColor="@color/ThemeTextColor"
                     android:textSize="@dimen/sp_12" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_right" />
+            </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/divide" />
+
+            <RelativeLayout
+                android:id="@+id/rlayout_logOut"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="30dp"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/dp_10"
+                android:paddingLeft="@dimen/dp_20"
+                android:paddingRight="@dimen/dp_20"
+                android:paddingTop="@dimen/dp_10">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_logout" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="40dp"
+                    android:text="退出登录"
+                    android:textColor="@color/ThemeTextColor"
+                    android:textSize="@dimen/sp_16" />
+
 
                 <ImageView
                     android:layout_width="wrap_content"

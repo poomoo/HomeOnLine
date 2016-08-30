@@ -11,25 +11,18 @@
         android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:adjustViewBounds="true"
-        android:paddingBottom="10dp"
-        android:paddingTop="10dp"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
         android:scaleType="fitXY" />
 
-    <LinearLayout
+    <ImageView
+        android:id="@+id/img_special_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/img_special_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <com.poomoo.homeonline.ui.custom.NoScrollGridView
         android:id="@+id/grid_special"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
         android:numColumns="2" />
 </LinearLayout>

@@ -49,7 +49,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
     private double totalPrice = 0.00;
     public List<Integer> deleteIndex;//选择的删除项下标
     public ArrayList<RCartCommodityBO> rCartCommodityBOs;//选择购买的商品集合
-    private int commodityCount = 0;
+    //    private int commodityCount = 0;
+    private int commodityKind = 0;
+
     private boolean isFreePostage = true;//是否包邮
 
     private DecimalFormat df = new DecimalFormat("0.00");
@@ -204,8 +206,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.commodityLayout.setOnClickListener(new Child_CheckBox_Click(groupPosition, childPosition));
 
         setTotalPrice();
-        getTotalCommodityCount();
-        MainNewActivity.INSTANCE.setInfoNum(3, commodityCount, commodityCount > 0 ? true : false);
+//        getTotalCommodityCount();
+        getTotalCommodity();
+        MainNewActivity.INSTANCE.setInfoNum(3, commodityKind, commodityKind > 0 ? true : false);
         return convertView;
     }
 
@@ -413,26 +416,26 @@ public class CartAdapter extends BaseExpandableListAdapter {
      *
      * @return
      */
-//    public int getTotalCommodity() {
-//        commodityKind = 0;
-//        int len = group.size();
-//        for (int i = 0; i < len; i++)
-//            commodityKind += getChildrenCount(i);
-//
-//        return commodityKind;
-//    }
-    public int getTotalCommodityCount() {
-        commodityCount = 0;
-        int groupSize = group.size();
-        for (int i = 0; i < groupSize; i++) {
-            int childSize = getChildrenCount(i);
-            for (int j = 0; j < childSize; j++) {
-                commodityCount += ((RCartCommodityBO) getChild(i, j)).commodityNum;
-            }
-        }
-        MainNewActivity.INSTANCE.application.setCartNum(commodityCount);
-        return commodityCount;
+    public int getTotalCommodity() {
+        commodityKind = 0;
+        int len = group.size();
+        for (int i = 0; i < len; i++)
+            commodityKind += getChildrenCount(i);
+        MainNewActivity.INSTANCE.application.setCartNum(commodityKind);
+        return commodityKind;
     }
+//    public int getTotalCommodityCount() {
+//        commodityCount = 0;
+//        int groupSize = group.size();
+//        for (int i = 0; i < groupSize; i++) {
+//            int childSize = getChildrenCount(i);
+//            for (int j = 0; j < childSize; j++) {
+//                commodityCount += ((RCartCommodityBO) getChild(i, j)).commodityNum;
+//            }
+//        }
+//        MainNewActivity.INSTANCE.application.setCartNum(commodityCount);
+//        return commodityCount;
+//    }
 
 //    private void createDialog() {
 //        if (dialogPlus == null) {

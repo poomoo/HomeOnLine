@@ -55,7 +55,7 @@ public class ROrderListBO implements Serializable {
         public String listPic;
         public int state;
         public boolean isReturnGood;//是否有退货
-        public int returnGoodId;//退货主键
+        public String returnGoodId;//退货主键
 
         @Override
         public String toString() {
@@ -86,6 +86,7 @@ public class ROrderListBO implements Serializable {
         public int state;
         public int payWay;//1.在线支付 2.货到付款
         public String createTime;
+        public String deliveryAddress;
 
         @Override
         public String toString() {
@@ -96,6 +97,9 @@ public class ROrderListBO implements Serializable {
                     ", deliveryFee=" + deliveryFee +
                     ", sumMoney=" + sumMoney +
                     ", state=" + state +
+                    ", payWay=" + payWay +
+                    ", createTime='" + createTime + '\'' +
+                    ", deliveryAddress='" + deliveryAddress + '\'' +
                     '}';
         }
     }

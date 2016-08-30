@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 
+import com.poomoo.api.HttpLoggingInterceptor;
+import com.poomoo.api.NetWork;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
@@ -32,6 +34,10 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         //去掉Activity上面的状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        //不显示日志
+        LogUtils.isDebug = false;
+        NetWork.level = HttpLoggingInterceptor.Level.NONE;
 
         importDB();
         isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);

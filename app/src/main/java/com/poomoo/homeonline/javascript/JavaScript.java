@@ -38,15 +38,14 @@ public class JavaScript {
     }
 
     @android.webkit.JavascriptInterface
-    public String jumpToCommodityInfo(final int commodityId, final int commodityDetailId) {
+    public void jumpToCommodityInfo(final int commodityId, final int commodityDetailId, final int rushId, final int commodityType) {
         mContext.runOnUiThread(() -> {
-            Toast.makeText(mContext, "jumpToCommodityInfo 商品ID:" + commodityId, Toast.LENGTH_SHORT).show();
             intent = new Intent(mContext, CommodityInfoActivity.class);
             intent.putExtra(mContext.getString(R.string.intent_commodityId), commodityId);
             intent.putExtra(mContext.getString(R.string.intent_commodityDetailId), commodityDetailId);
+            intent.putExtra(mContext.getString(R.string.intent_commodityType), commodityType);
+            intent.putExtra(mContext.getString(R.string.intent_matchId), rushId);
             mContext.startActivity(intent);
-            mContext.finish();
         });
-        return "Html call Java";
     }
 }

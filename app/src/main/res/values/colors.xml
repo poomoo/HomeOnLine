@@ -23,6 +23,7 @@
     <color name="divide">#DADADA</color>
     <color name="btn_gray">#CCCCCC</color>
     <color name="btn_cart">#F8A30D</color>
+    <color name="btn_cart_dark">#D8A30D</color>
     <color name="bg_commodity_specification">#CCCCCC</color>
     <color name="refund_text">#FF5503</color>
 

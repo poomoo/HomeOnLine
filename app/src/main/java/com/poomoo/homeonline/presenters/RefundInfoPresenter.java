@@ -26,9 +26,18 @@
  */
 package com.poomoo.homeonline.presenters;
 
-import com.poomoo.homeonline.ui.activity.RefundInfoActivity;
+import com.poomoo.api.AbsAPICallback;
+import com.poomoo.api.ApiException;
+import com.poomoo.api.NetConfig;
+import com.poomoo.api.NetWork;
+import com.poomoo.homeonline.ui.activity.ReFundInfoActivity;
+import com.poomoo.model.request.QReFundInfoBO;
+import com.poomoo.model.response.RReFundInfoBO;
 
 import javax.inject.Inject;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * 类名 RefundInfoPresenter
@@ -36,8 +45,27 @@ import javax.inject.Inject;
  * 作者 李苜菲
  * 日期 2016/8/24 17:28
  */
-public class RefundInfoPresenter extends BasePresenter<RefundInfoActivity> {
+public class RefundInfoPresenter extends BasePresenter<ReFundInfoActivity> {
     @Inject
     public RefundInfoPresenter() {
     }
+
+    public void getReFundInfo(String returnNoteId) {
+        QReFundInfoBO qReFundInfoBO = new QReFundInfoBO(NetConfig.REFUNDINFO, returnNoteId);
+        add(NetWork.getMyApi().getReFundInfo(qReFundInfoBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<RReFundInfoBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.failed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(RReFundInfoBO rReFundInfoBO) {
+                        mView.successful(rReFundInfoBO);
+                    }
+                }));
+    }
+
 }

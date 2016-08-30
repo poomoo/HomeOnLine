@@ -429,6 +429,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 bundle.putSerializable(getString(R.string.intent_commodityList), adapter.getrCartCommodityBOs());
                 bundle.putDouble(getString(R.string.intent_totalPrice), adapter.getTotalPrice());
                 bundle.putBoolean(getString(R.string.intent_isFreePostage), adapter.isFreePostage());
+                bundle.putBoolean(getString(R.string.intent_value), false);
                 openActivity(ConfirmOrderActivity.class, bundle);
                 break;
         }

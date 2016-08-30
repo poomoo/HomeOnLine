@@ -62,7 +62,6 @@ public class MainNewActivity extends BaseActivity {
         flag = intent.getIntExtra(getString(R.string.intent_value), -1);
         LogUtils.d(TAG, "onNewIntent:" + flag);
         jump(flag);
-        bottomBar.cancelLinearBackground(flag);
     }
 
     @Override
@@ -94,7 +93,8 @@ public class MainNewActivity extends BaseActivity {
                 .commit();
     }
 
-    private void jump(int position) {
+    public void jump(int position) {
+        bottomBar.cancelLinearBackground(position);
         switch (position) {
             case 0:
                 switchFragment(mainFragment);

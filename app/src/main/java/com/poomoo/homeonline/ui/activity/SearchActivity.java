@@ -112,6 +112,7 @@ public class SearchActivity extends BaseListDaggerActivity<RListCommodityBO, Sea
     }
 
     public void search(View view) {
+        mCurrentPage = 1;
         content = searchEdt.getText().toString().trim();
         MyUtils.hiddenKeyBoard(this, searchEdt);
         listCommodityAdapter.clear();
@@ -151,6 +152,7 @@ public class SearchActivity extends BaseListDaggerActivity<RListCommodityBO, Sea
         bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_commodityId), rListCommodityBO.commodityId);
         bundle.putInt(getString(R.string.intent_commodityType), rListCommodityBO.commodityType);
+        bundle.putInt(getString(R.string.intent_commodityDetailId), rListCommodityBO.commodityDetailId);
         openActivity(CommodityInfoActivity.class, bundle);
     }
 }

@@ -147,6 +147,7 @@ public class ClassifyListActivity extends BaseListDaggerActivity<RListCommodityB
         bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_commodityId), rListCommodityBO.commodityId);
         bundle.putInt(getString(R.string.intent_commodityType), rListCommodityBO.commodityType);
+        bundle.putInt(getString(R.string.intent_commodityDetailId), rListCommodityBO.commodityDetailId);
         openActivity(CommodityInfoActivity.class, bundle);
     }
 }

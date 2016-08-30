@@ -21,4 +21,37 @@ public class MyConfig {
     public static final String EXTRA_IMAGE_LIST = "imageList";
     public static final int MINCOUNT = 1;//购买数量下限
     public static final int MAXCOUNT = 999;//购买数量上限
+
+    //订单退货状态
+    /**
+     * 退货状态：提交申请
+     */
+    public static final int GOODS_RETURN_NOTE_STATUS_SUBMIT = 1;
+    /**
+     * 退货状态：审核中
+     */
+    public static final int GOODS_RETURN_NOTE_STATUS_CHECK = 2;
+    /**
+     * 退货状态：审核未通过
+     */
+    public static final int GOODS_RETURN_NOTE_STATUS_CHECK_NO = 3;
+    /**
+     * 退货状态：审核通过
+     */
+    public static final int GOODS_RETURN_NOTE_STATUS_CHECK_YES = 4;
+    /**
+     * 退货状态：完成
+     */
+    public static final int GOODS_RETURN_NOTE_STATUS_FINISH = 5;
+    /**
+     * 退货状态：退款到账
+     */
+    public static final int GOODS_RETURN_NOTE_STATUS_PAY_CASH = 6;
+    /**
+     * 退货状态：用户取消
+     */
+    public static final int GOODS_RETUEN_NOTE_STATUS_USER_CANCLE = 7;
+
+    //退款原因
+    public static final String[] reason = {"", "商品描述不符", "卖家发错货", "少件/漏发", "7天无理由退换货", "买错，不需要", "快递无跟踪记录", "快递一直未送到", "空包裹，少货", "未按规定时间发货", "其他"};
 }

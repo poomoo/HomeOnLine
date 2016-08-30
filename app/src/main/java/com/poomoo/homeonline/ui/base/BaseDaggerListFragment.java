@@ -30,7 +30,7 @@ import javax.inject.Inject;
  * 作者 李苜菲
  * 日期 2016/7/19 11:35
  */
-public abstract class BaseDaggerListFragment<T,P extends BasePresenter> extends BaseFragment
+public abstract class BaseDaggerListFragment<T, P extends BasePresenter> extends BaseFragment
         implements SwipeRefreshLayout.OnRefreshListener, ErrorLayout.OnActiveClickListener, BaseListAdapter.OnLoadingListener {
     @Inject
     protected P mPresenter;
@@ -155,7 +155,7 @@ public abstract class BaseDaggerListFragment<T,P extends BasePresenter> extends 
 
         if (mCurrentPage == 1)
             mAdapter.clear();
-
+        LogUtils.d(TAG, "mAdapter.getDataSize():" + mAdapter.getDataSize()  + " result.size():" + result.size());
         if (mAdapter.getDataSize() + result.size() == 0) {
             mErrorLayout.setState(ErrorLayout.EMPTY_DATA, getEmptyMsg());
             mSwipeRefreshLayout.setRefreshing(false);

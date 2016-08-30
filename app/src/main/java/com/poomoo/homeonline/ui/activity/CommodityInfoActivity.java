@@ -77,6 +77,7 @@ import com.poomoo.homeonline.ui.custom.PinchImageView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.homeonline.ui.custom.VerticalViewPager;
 import com.poomoo.model.response.RCartCommodityBO;
+import com.poomoo.model.response.RCartNumBO;
 import com.poomoo.model.response.RCommodityInfoBO;
 import com.poomoo.model.response.RIsCollect;
 import com.poomoo.model.response.RSpecificationBO;
@@ -160,6 +161,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private int commodityId;//商品ID
     private int commodityDetailId;//商品规格ID
     private int commodityType;//商品类型
+    private int matchId;
     private RCommodityInfoBO rCommodityInfoBO;
     private List<Integer> specification = new ArrayList<>();
     private int count = 1;//购买的数量
@@ -185,7 +187,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         commodityId = getIntent().getIntExtra(getString(R.string.intent_commodityId), -1);
         commodityDetailId = getIntent().getIntExtra(getString(R.string.intent_commodityDetailId), -1);
         commodityType = getIntent().getIntExtra(getString(R.string.intent_commodityType), -1);
-        LogUtils.d(TAG, "onCreate");
+        matchId = getIntent().getIntExtra(getString(R.string.intent_matchId), -1);
+        LogUtils.d(TAG, "commodityType:" + commodityType);
         init();
     }
 
@@ -212,13 +215,17 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         titleBar.getBackground().mutate().setAlpha(0);
         backImg.setOnClickListener(this);
         collectImg.setOnClickListener(this);
-
-        if (application.getCartNum() == 0)
-            cartNumTxt.setVisibility(View.INVISIBLE);
-        else {
-            cartNumTxt.setVisibility(View.VISIBLE);
-            cartNumTxt.setText(application.getCartNum() > 99 ? "99+" : application.getCartNum() + "");
+        if (application.getCartNum() == -1) {
+            mPresenter.getCartNum(application.getUserId());
+        } else {
+            if (application.getCartNum() == 0)
+                cartNumTxt.setVisibility(View.INVISIBLE);
+            else {
+                cartNumTxt.setVisibility(View.VISIBLE);
+                cartNumTxt.setText(application.getCartNum() > 99 ? "99+" : application.getCartNum() + "");
+            }
         }
+
 
         addView();
         viewPagerAdapter = new ViewPagerAdapter(viewList);
@@ -258,9 +265,9 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         viewPager.setVisibility(View.GONE);
         getProgressBar();
         showProgressBar();
-        mPresenter.getCommodity(commodityId, commodityDetailId, 0);
+        mPresenter.getCommodity(commodityId, commodityDetailId, commodityType, matchId);
         if (application.getUserId() != null) {
-            mPresenter.addHistory(application.getUserId(), commodityId, 1);
+            mPresenter.addHistory(application.getUserId(), commodityId, commodityType);
             mPresenter.isCollect(application.getUserId(), commodityId, commodityDetailId);
         }
 
@@ -428,6 +435,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                     bundle.putSerializable(getString(R.string.intent_commodityList), rCartCommodityBOs);
                     bundle.putDouble(getString(R.string.intent_totalPrice), totalPrice);
                     bundle.putBoolean(getString(R.string.intent_isFreePostage), isFreePostage);
+                    bundle.putBoolean(getString(R.string.intent_value), false);
                     openActivity(ConfirmOrderActivity.class, bundle);
                 }
                 break;
@@ -435,8 +443,6 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     }
 
     public void getCommodityInfoSucceed(RCommodityInfoBO rCommodityInfoBO) {
-//        LogUtils.d(TAG, "getCommodityInfoSucceed:" + rCommodityInfoBO.commodityPictures + "\n" + rCommodityInfoBO.commodity + "\n" + rCommodityInfoBO.paramters + "\n" + rCommodityInfoBO.tjCommodity + "\n" + rCommodityInfoBO.specialParamters);
-
         int len = rCommodityInfoBO.commodityPictures.size();
         pics = new String[len];
         int i = 0;
@@ -455,6 +461,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
 
         isFreePostage = rCommodityInfoBO.commodity.isFreePostage;
         isStar = rCommodityInfoBO.isStar;
+        LogUtils.d(TAG, "isStar:" + rCommodityInfoBO.isStar);
 
         if (commodityType == 2 && !isStar) {
             cartBtn.setEnabled(false);
@@ -500,6 +507,17 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         finish();
     }
 
+    public void getNum(RCartNumBO rCartNumBO) {
+        hideProgressBar();
+        application.setCartNum(rCartNumBO.cartNum);
+        if (application.getCartNum() == 0)
+            cartNumTxt.setVisibility(View.INVISIBLE);
+        else {
+            cartNumTxt.setVisibility(View.VISIBLE);
+            cartNumTxt.setText(application.getCartNum() > 99 ? "99+" : application.getCartNum() + "");
+        }
+    }
+
     public void getSpecificationSucceed(RSpecificationBO rSpecificationBO) {
         dialog_progressBarRlayout.setVisibility(View.GONE);
         dialog_newPriceTxt.setText("￥" + rSpecificationBO.commodityDetail.platformPrice);
@@ -517,15 +535,16 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
 
     private void addToCart() {
         showProgressBar();
-        mPresenter.addToCart(application.getUserId(), commodityId, rCommodityInfoBO.commodity.commodityName, commodityType, count, rCommodityInfoBO.commodity.listPic, commodityDetailId);
+        mPresenter.addToCart(application.getUserId(), commodityId, rCommodityInfoBO.commodity.commodityName, commodityType, count, rCommodityInfoBO.commodity.listPic, commodityDetailId, matchId);
     }
 
     public void addToCartSucceed(String msg) {
         hideProgressBar();
         MyUtils.showToast(getApplicationContext(), "添加购物车成功");
-        application.setCartNum(application.getCartNum() + count);
-        cartNumTxt.setText(application.getCartNum() > 99 ? "99+" : application.getCartNum() + "");
-        cartNumTxt.setVisibility(View.VISIBLE);
+        mPresenter.getCartNum(application.getUserId());
+//        application.setCartNum(application.getCartNum() + count);
+//        cartNumTxt.setText(application.getCartNum() > 99 ? "99+" : application.getCartNum() + "");
+//        cartNumTxt.setVisibility(View.VISIBLE);
     }
 
     public void addToCartFailed(String msg) {
@@ -842,7 +861,6 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                 break;
         }
     }
-
 
     /**
      * 查看大图的PopupWindow

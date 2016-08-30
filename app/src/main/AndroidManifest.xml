@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity
-            android:name=".ui.activity.RefundInfoActivity"
+            android:name=".ui.activity.SplashActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -110,6 +110,10 @@
 
         <activity
             android:name=".ui.activity.ReFundActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.ReFundInfoActivity"
             android:exported="false" />
 
         <activity

@@ -26,7 +26,6 @@
  */
 package com.poomoo.homeonline.ui.activity;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -35,8 +34,6 @@ import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.base.BaseActivity;
-
-import org.w3c.dom.Text;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -106,21 +103,6 @@ public class SafeActivity extends BaseActivity {
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.intent_parent), getString(R.string.intent_updatePW));
         openActivity(GetCodeActivity.class, bundle);
-    }
-
-    /**
-     * 退出登录
-     *
-     * @param view
-     */
-    public void logOut(View view) {
-        createDialog("确认退出登录?", (dialog, which) -> {
-            SPUtils.put(getApplicationContext(), getString(R.string.sp_isLogin), false);
-            finish();
-            Bundle bundle = new Bundle();
-            bundle.putInt(getString(R.string.intent_value), 0);
-            openActivity(MainNewActivity.class, bundle);
-        }).show();
     }
 
     @Override

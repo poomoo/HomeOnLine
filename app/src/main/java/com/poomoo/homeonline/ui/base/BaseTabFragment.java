@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
@@ -22,25 +23,24 @@ import java.util.ArrayList;
  * 日期 2016/7/19 11:35
  */
 public abstract class BaseTabFragment extends BaseFragment {
-
     protected ViewPager mViewPager;
-
     protected FragmentStatePagerAdapter mAdapter;
     protected ArrayList<ViewPageInfo> mTabs;
     public static final String BUNDLE_TYPE = "BUNDLE_TYPE";
     public Context mContext;
+
+    private int POSITION = 1;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mViewPager = (ViewPager) view.findViewById(R.id.view_pager);
-
         if (mAdapter == null) {
             mTabs = new ArrayList<>();
             onSetupTabs();
 
-            mViewPager.setAdapter(new FragmentStatePagerAdapter(getGenuineFragmentManager()) {
+            mAdapter = new FragmentStatePagerAdapter(getGenuineFragmentManager()) {
                 @Override
                 public Fragment getItem(int position) {
                     return mTabs.get(position).fragment;
@@ -55,7 +55,19 @@ public abstract class BaseTabFragment extends BaseFragment {
                 public CharSequence getPageTitle(int position) {
                     return mTabs.get(position).tag;
                 }
-            });
+
+                @Override
+                public void destroyItem(ViewGroup container, int position, Object object) {
+                    if (position == POSITION)
+                        super.destroyItem(container, position, object);
+                }
+
+                @Override
+                public int getItemPosition(Object object) {
+                    return POSITION_NONE;
+                }
+            };
+            mViewPager.setAdapter(mAdapter);
         } else {
             mViewPager.setAdapter(mAdapter);
         }
@@ -88,6 +100,9 @@ public abstract class BaseTabFragment extends BaseFragment {
         mTabs.add(new ViewPageInfo(tag, instantiate(getActivity(), fragment.getName(), bundle)));
     }
 
+    public void setPOSITION(int POSITION) {
+        this.POSITION = POSITION;
+    }
 //    /**
 //     * 添加Fragment对象到ViewPager
 //     */

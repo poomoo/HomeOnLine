@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.database.AreaInfo;
 import com.poomoo.homeonline.database.CityInfo;
@@ -26,6 +27,7 @@ import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.AddressListActivity;
 import com.poomoo.homeonline.ui.activity.CollectActivity;
 import com.poomoo.homeonline.ui.activity.FeedBackActivity;
+import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.activity.MyInfoActivity;
 import com.poomoo.homeonline.ui.activity.MyOrdersActivity;
 import com.poomoo.homeonline.ui.activity.SafeActivity;
@@ -51,6 +53,8 @@ import butterknife.OnClick;
 public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> {
     @Bind(R.id.txt_center_nickName)
     TextView nameTxt;
+
+    private Bundle bundle;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -103,7 +107,7 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         openActivity(MyOrdersActivity.class, bundle);
     }
 
-    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale})
+    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale, R.id.rlayout_logOut})
     void other(View view) {
         switch (view.getId()) {
             case R.id.txt_collection:
@@ -113,15 +117,14 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
                 openActivity(ScanHistoryActivity.class);
                 break;
             case R.id.llayout_after_sale:
-//                openActivity(MyInfoActivity.class);
                 break;
             case R.id.rlayout_my_info:
                 openActivity(MyInfoActivity.class);
                 break;
             case R.id.rlayout_my_address:
-                Bundle bundle = new Bundle();
+                bundle = new Bundle();
                 bundle.putBoolean(getString(R.string.intent_isEdit), true);
-                openActivity(AddressListActivity.class,bundle);
+                openActivity(AddressListActivity.class, bundle);
                 break;
             case R.id.rlayout_tel:
                 dial();
@@ -131,6 +134,12 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
                 break;
             case R.id.rlayout_safe_center:
                 openActivity(SafeActivity.class);
+                break;
+            case R.id.rlayout_logOut:
+                createDialog("确定退出登录?", (dialog, which) -> {
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_isLogin), false);
+                    ((MainNewActivity) getActivity()).jump(0);
+                }).show();
                 break;
         }
     }

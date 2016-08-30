@@ -36,6 +36,7 @@ public class QCommodityInfoBO extends BaseRequest {
     public int commodityId;
     public Integer commodityDetailId;
     public int commodityType;
+    public Integer matchId;
 
 //    public QCommodityInfoBO(String method, int commodityId, Integer commodityDetailId) {
 //        super(method);
@@ -44,11 +45,13 @@ public class QCommodityInfoBO extends BaseRequest {
 //            this.commodityDetailId = commodityDetailId;
 //    }
 
-    public QCommodityInfoBO(String method, int commodityId, Integer commodityDetailId, int commodityType) {
+    public QCommodityInfoBO(String method, int commodityId, Integer commodityDetailId, int commodityType, int matchId) {
         super(method);
         this.commodityId = commodityId;
         if (commodityDetailId != -1)
             this.commodityDetailId = commodityDetailId;
         this.commodityType = commodityType;
+        if (matchId != -1)
+            this.matchId = matchId;
     }
 }

@@ -35,6 +35,7 @@ import com.poomoo.model.RUserBO;
 import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QRegisterBO;
+import com.poomoo.model.request.QUserBO;
 
 import javax.inject.Inject;
 
@@ -100,4 +101,28 @@ public class ChangePassWordPresenter extends BasePresenter<ChangePassWordActivit
                     }
                 }));
     }
+
+    /**
+     * 修改密码
+     *
+     * @param user
+     */
+    public void changePW(QUserBO.User user) {
+        QUserBO qUserBO = new QUserBO(NetConfig.CHANGEPASSWORD, user);
+        add(NetWork.getMyApi().changePW(qUserBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.changeFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        mView.changeSuccessful();
+                    }
+                }));
+    }
+
 }

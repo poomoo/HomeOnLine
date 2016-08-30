@@ -3,6 +3,9 @@
  */
 package com.poomoo.homeonline.ui.base;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -78,6 +81,17 @@ public abstract class BaseFragment extends Fragment {
         getActivity().overridePendingTransition(R.anim.activity_center,
                 R.anim.activity_out_to_right);
     }
+
+    protected Dialog createDialog(String msg, DialogInterface.OnClickListener onClickListener) {
+        Dialog dialog = new AlertDialog
+                .Builder(getActivity())
+                .setMessage(msg)
+                .setNegativeButton("取消", null)
+                .setPositiveButton("确定", onClickListener)
+                .create();
+        return dialog;
+    }
+
 
     protected boolean isNetWorkInvalid(String msg) {
         LogUtils.d(TAG, "isNetWorkInvalid:" + msg + " " + getString(R.string.invalid_network));

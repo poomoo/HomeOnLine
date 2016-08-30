@@ -30,17 +30,18 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.ui.activity.ConfirmOrderActivity;
 import com.poomoo.model.ResponseBO;
+import com.poomoo.model.request.QIdBO;
 import com.poomoo.model.request.QOrderBO;
+import com.poomoo.model.request.QSignBO;
 import com.poomoo.model.request.QTransferPriceBO;
 import com.poomoo.model.request.QUserIdBO;
-import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.RReceiptBO;
+import com.poomoo.model.response.RSignBO;
 import com.poomoo.model.response.RTransferPriceBO;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -54,6 +55,8 @@ import rx.schedulers.Schedulers;
  * 日期 2016/8/17 15:42
  */
 public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderActivity> {
+    private final String TAG = getClass().getSimpleName();
+
     @Inject
     public ConfirmOrderPresenter() {
     }
@@ -106,19 +109,20 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderActivity> {
                 }));
     }
 
-    public void sign() {
-        add(NetWork.getPayApi().sign()
+    public void sign(String orderId, String commodityName) {
+        QSignBO qSignBO = new QSignBO(NetConfig.SIGN, orderId, commodityName);
+        add(NetWork.getPayApi().sign(qSignBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<ResponseBO>() {
+                .subscribe(new AbsAPICallback<RSignBO>() {
                     @Override
                     protected void onError(ApiException e) {
                         mView.failed(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(ResponseBO responseBO) {
-                        mView.signed(responseBO.msg);
+                    public void onNext(RSignBO rSignBO) {
+                        mView.subSucceed(rSignBO.sign);
                     }
                 }));
     }
@@ -141,8 +145,50 @@ public class ConfirmOrderPresenter extends BasePresenter<ConfirmOrderActivity> {
 
                     @Override
                     public void onNext(ROrderBO rOrderBO) {
-                        mView.subSucceed(rOrderBO);
+                        mView.subSucceed(rOrderBO.sign);
                     }
                 }));
     }
+
+    /**
+     * 验签
+     */
+    public void checkSign(String resultStatus, String result, String memo) {
+        add(NetWork.getPayApi().checkSign(resultStatus, result, memo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.payFailed();
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        if (responseBO.content.equals("success"))
+                            mView.paySuccessful();
+                        else
+                            mView.payFailed();
+                    }
+                }));
+    }
+
+    public void getAddressById(int id) {
+        QIdBO qIdBO = new QIdBO(NetConfig.GETADDRESS, id);
+        add(NetWork.getMyApi().getAddressById(qIdBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<RReceiptBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.getAddressFailed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(RReceiptBO rReceiptBO) {
+                        mView.getAddressSucceed(rReceiptBO);
+                    }
+                }));
+    }
+
 }

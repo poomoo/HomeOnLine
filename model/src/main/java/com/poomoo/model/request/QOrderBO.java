@@ -53,7 +53,7 @@ public class QOrderBO extends BaseRequest {
     public class Order {
         public int userId;
         public int deliveryId;
-        public int payWay;//0.在线支付 1.货到付款
+        public int payWay;//1.在线支付 2.货到付款
         public int orderFrom;//2 APP
 
         public Order(int userId) {

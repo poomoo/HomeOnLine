@@ -27,11 +27,11 @@
         android:visibility="gone" />
 
     <ImageView
-        android:id="@+id/img_net"
+        android:id="@+id/img_failed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/ic_network_invalid"
+        android:src="@drawable/ic_network_error"
         android:visibility="gone" />
 
     <TextView
