@@ -4,7 +4,6 @@
 package com.poomoo.homeonline.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,18 +11,14 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.javascript.JavaScript;
 import com.poomoo.homeonline.ui.base.BaseActivity;
-import com.poomoo.homeonline.ui.custom.ErrorLayout;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -37,10 +32,10 @@ import butterknife.ButterKnife;
 public class WebViewActivity extends BaseActivity {
     @Bind(R.id.web_pub)
     WebView pubWeb;
-    @Bind(R.id.img_load)
-    ImageView loadImg;
-    @Bind(R.id.txt_progress)
-    TextView progressTxt;
+//    @Bind(R.id.img_load)
+//    ImageView loadImg;
+//    @Bind(R.id.txt_progress)
+//    TextView progressTxt;
 
     private String url;
 
@@ -49,7 +44,7 @@ public class WebViewActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         ButterKnife.bind(this);
-        initView();
+        init();
     }
 
     @Override
@@ -63,7 +58,7 @@ public class WebViewActivity extends BaseActivity {
     }
 
     @SuppressLint("JavascriptInterface")
-    private void initView() {
+    private void init() {
         url = getIntent().getStringExtra(getString(R.string.intent_value));
         pubWeb.setWebViewClient(new webViewClient());
         pubWeb.setWebChromeClient(new MyWebChromeClient());
@@ -79,16 +74,17 @@ public class WebViewActivity extends BaseActivity {
 
         pubWeb.addJavascriptInterface(new JavaScript(this), "android");
 //        pubWeb.loadUrl("file:///android_asset/index.html");
+        getProgressBar();
     }
 
     class webViewClient extends WebViewClient {
         //重写shouldOverrideUrlLoading方法，使点击链接后不使用其他的浏览器打开。
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            progressTxt.setVisibility(View.VISIBLE);
-            loadImg.setVisibility(View.VISIBLE);
-            pubWeb.setVisibility(View.GONE);
-
+//            progressTxt.setVisibility(View.VISIBLE);
+//            loadImg.setVisibility(View.VISIBLE);
+//            pubWeb.setVisibility(View.GONE);
+            showProgressBar();
             view.loadUrl(url);
             //如果不需要其他对点击链接事件的处理返回true，否则返回false
             return true;
@@ -112,11 +108,12 @@ public class WebViewActivity extends BaseActivity {
 
         public void onProgressChanged(WebView view, int progress) {
             LogUtils.i(TAG, "onProgressChanged:" + progress);
-            progressTxt.setText(progress + "%");
-            if (progress == 100) {
-                progressTxt.setVisibility(View.GONE);
-                loadImg.setVisibility(View.GONE);
+//            progressTxt.setText(progress + "%");
+            if (progress > 50) {
+//                progressTxt.setVisibility(View.GONE);
+//                loadImg.setVisibility(View.GONE);
                 pubWeb.setVisibility(View.VISIBLE);
+                hideProgressBar();
             }
         }
     }

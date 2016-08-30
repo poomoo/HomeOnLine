@@ -216,7 +216,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                    MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
+                    openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
                     bundle = new Bundle();
                     bundle.putString(getString(R.string.intent_value), rAdBO.connect);
@@ -236,7 +236,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                    MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
+                    openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
                     bundle = new Bundle();
                     bundle.putString(getString(R.string.intent_value), rAdBO.connect);
@@ -358,7 +358,18 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             ad[i] = NetConfig.ImageUrl + rAdBO.advertisementPic;
         }
         slideShowView.setPics(ad, position -> {
-
+            rAdBO = rAdBOs.get(position);
+            if (rAdBO.isCommodity) {
+                bundle = new Bundle();
+                bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
+                bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
+                bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                openActivity(CommodityInfoActivity.class, bundle);
+            } else {
+                bundle = new Bundle();
+                bundle.putString(getString(R.string.intent_value), rAdBO.connect);
+                openActivity(WebViewActivity.class, bundle);
+            }
         });
     }
 
@@ -442,7 +453,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 bundle.putInt(getString(R.string.intent_commodityDetailId), rGrabBO.commodityDetailId);
                 bundle.putInt(getString(R.string.intent_commodityType), 2);//抢购商品
                 bundle.putInt(getString(R.string.intent_matchId), rGrabBO.id);//matchId
-                MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
+                openActivity(CommodityInfoActivity.class, bundle);
                 break;
             case R.id.recycler_hot:
                 rAdBO = hotAdapter.getItem(position);
@@ -451,9 +462,9 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
                     bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                    MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
+                    openActivity(CommodityInfoActivity.class, bundle);
                 } else {
-                    Bundle bundle = new Bundle();
+                    bundle = new Bundle();
                     bundle.putString(getString(R.string.intent_value), rAdBO.connect);
                     openActivity(WebViewActivity.class, bundle);
                 }
@@ -464,7 +475,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 bundle.putInt(getString(R.string.intent_commodityId), rListCommodityBO.commodityId);
                 bundle.putInt(getString(R.string.intent_commodityDetailId), rListCommodityBO.commodityDetailId);
                 bundle.putInt(getString(R.string.intent_commodityType), rListCommodityBO.commodityType);
-                MainFragment.this.openActivity(CommodityInfoActivity.class, bundle);
+                openActivity(CommodityInfoActivity.class, bundle);
                 break;
         }
     }
