@@ -24,7 +24,7 @@ import java.io.InputStream;
  */
 public class SplashActivity extends BaseActivity {
 
-    private final int SPLASH_DISPLAY_LENGHT = 3000;
+    private final int SPLASH_DISPLAY_LENGTH = 3000;
     private boolean isIndex = false;//是否需要引导
     private static String DB_PATH = "/data/data/com.poomoo.homeonline/databases/";
     private static String DB_NAME = "homeOnLine.db";
@@ -59,7 +59,7 @@ public class SplashActivity extends BaseActivity {
                 finish();
             }
 
-        }, SPLASH_DISPLAY_LENGHT);
+        }, SPLASH_DISPLAY_LENGTH);
     }
 
     @Override
