@@ -19,6 +19,8 @@ import com.poomoo.homeonline.ui.fragment.ClassifyFragment;
 import com.poomoo.homeonline.ui.fragment.GrabFragment;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
 
+import java.util.zip.Deflater;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -42,6 +44,7 @@ public class MainNewActivity extends BaseActivity {
     private long exitTime = 0;
     public static MainNewActivity INSTANCE = null;
     private int flag = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,17 +78,6 @@ public class MainNewActivity extends BaseActivity {
     }
 
     private void setDefaultFragment() {
-        // TODO 自动生成的方法存根
-//        FragmentManager fragmentManager = getFragmentManager();
-//        fragmentTransaction = fragmentManager.beginTransaction();
-//
-//        mainFragment = new MainFragment();
-//        curFragment = mainFragment;
-//        fragmentTransaction.add(R.id.frameLayout_main, curFragment);
-//        fragmentTransaction.commit();
-
-//        mainFragment = Fragment.instantiate(this, MainFragment.class.getName());
-
         mainFragment = new MainFragment();
         curFragment = mainFragment;
         getSupportFragmentManager().beginTransaction()

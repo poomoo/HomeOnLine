@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -63,7 +65,9 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:20
  */
-public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> implements OnBuyCheckChangedListener, OnEditCheckChangedListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener, ErrorLayout.OnActiveClickListener {
+public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> implements OnBuyCheckChangedListener, OnEditCheckChangedListener, CompoundButton.OnCheckedChangeListener, View.OnClickListener, ErrorLayout.OnActiveClickListener, SwipeRefreshLayout.OnRefreshListener, AbsListView.OnScrollListener {
+    @Bind(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.txt_edit)
     TextView editTxt;
     @Bind(R.id.expandableListView)
@@ -117,7 +121,6 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     private boolean isRefresh = false;//true--刷新
     private int[] deleteIndex;//删除的商品的id集合
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
@@ -149,9 +152,9 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         //设置 属性 GroupIndicator 去掉默认向下的箭头
         listView.setGroupIndicator(null);
         listView.setOnGroupClickListener((parent, v, groupPosition1, id) -> true);
-        listView.setOnItemClickListener((parent, view1, position, id) -> LogUtils.d(TAG,"onItemClick"));
+        listView.setOnItemClickListener((parent, view1, position, id) -> LogUtils.d(TAG, "onItemClick"));
         listView.setOnChildClickListener((parent, v, groupPosition1, childPosition1, id) -> {
-            LogUtils.d(TAG,"setOnChildClickListener");
+            LogUtils.d(TAG, "setOnChildClickListener");
             Bundle bundle = new Bundle();
             bundle.putInt(getString(R.string.intent_commodityId), ((RCartCommodityBO) adapter.getChild(groupPosition1, childPosition1)).commodityId);
             bundle.putInt(getString(R.string.intent_commodityDetailId), ((RCartCommodityBO) adapter.getChild(groupPosition1, childPosition1)).commodityDetailId);
@@ -159,6 +162,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
             openActivity(CommodityInfoActivity.class, bundle);
             return true;
         });
+        listView.setOnScrollListener(this);
 //        adapter.setGroup(getList());
 //        expandListView();
 
@@ -173,11 +177,21 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
 
         mErrorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.getCartInfo(application.getUserId());
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.swipe_refresh_first, R.color.swipe_refresh_second,
+                R.color.swipe_refresh_third, R.color.swipe_refresh_four
+        );
+
+
     }
 
     public void getInfoSucceed(List<RCartShopBO> rCartShopBOs) {
         mErrorLayout.setState(ErrorLayout.HIDE, "");
         hideProgressBar();
+        swipeRefreshLayout.setEnabled(true);
+        swipeRefreshLayout.setRefreshing(false);
 
         if (!isRefresh)
             adapter.setGroup(rCartShopBOs);
@@ -199,6 +213,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     }
 
     public void getInfoFailed(String msg) {
+        swipeRefreshLayout.setEnabled(false);
         mErrorLayout.setState(ErrorLayout.HIDE, "");
         if (isNetWorkInvalid(msg))
             mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
@@ -545,6 +560,13 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         changeState();
     }
 
+    @Override
+    public void onRefresh() {
+        changeState();
+        isRefresh = true;
+        mPresenter.getCartInfo(application.getUserId());
+    }
+
     class EditPopUpWindow extends PopupWindow {
 
         public EditPopUpWindow(Context context) {
@@ -636,5 +658,16 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
             dialogPlusImg.setEnabled(true);
             dialogMinusImg.setEnabled(true);
         }
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem,
+                         int visibleItemCount, int totalItemCount) {
+        int topRowVerticalPosition = (view == null || view.getChildCount() == 0) ? 0 : view.getChildAt(0).getTop();
+        swipeRefreshLayout.setEnabled(topRowVerticalPosition >= 0);
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
     }
 }

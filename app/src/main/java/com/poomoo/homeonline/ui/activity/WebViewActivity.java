@@ -13,6 +13,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
@@ -32,10 +33,10 @@ import butterknife.ButterKnife;
 public class WebViewActivity extends BaseActivity {
     @Bind(R.id.web_pub)
     WebView pubWeb;
-//    @Bind(R.id.img_load)
+    //    @Bind(R.id.img_load)
 //    ImageView loadImg;
-//    @Bind(R.id.txt_progress)
-//    TextView progressTxt;
+    @Bind(R.id.txt_progress)
+    TextView progressTxt;
 
     private String url;
 
@@ -75,6 +76,7 @@ public class WebViewActivity extends BaseActivity {
         pubWeb.addJavascriptInterface(new JavaScript(this), "android");
 //        pubWeb.loadUrl("file:///android_asset/index.html");
         getProgressBar();
+        showProgressBar();
     }
 
     class webViewClient extends WebViewClient {
@@ -108,9 +110,9 @@ public class WebViewActivity extends BaseActivity {
 
         public void onProgressChanged(WebView view, int progress) {
             LogUtils.i(TAG, "onProgressChanged:" + progress);
-//            progressTxt.setText(progress + "%");
-            if (progress > 50) {
-//                progressTxt.setVisibility(View.GONE);
+            progressTxt.setText(progress + "%");
+            if (progress > 60) {
+                progressTxt.setVisibility(View.GONE);
 //                loadImg.setVisibility(View.GONE);
                 pubWeb.setVisibility(View.VISIBLE);
                 hideProgressBar();

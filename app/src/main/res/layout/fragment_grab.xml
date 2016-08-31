@@ -19,15 +19,25 @@
 
     </RelativeLayout>
 
-    <WebView
-        android:id="@+id/web_grab"
+    <com.poomoo.homeonline.ui.custom.MySwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
+        android:layout_height="match_parent">
 
-    <com.poomoo.homeonline.ui.custom.ErrorLayout
-        android:id="@+id/error_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <WebView
+                android:id="@+id/web_grab"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.poomoo.homeonline.ui.custom.ErrorLayout
+                android:id="@+id/error_frame"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </RelativeLayout>
+    </com.poomoo.homeonline.ui.custom.MySwipeRefreshLayout>
 </LinearLayout>

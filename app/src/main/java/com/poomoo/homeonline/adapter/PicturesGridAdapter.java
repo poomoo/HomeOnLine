@@ -37,7 +37,7 @@ public class PicturesGridAdapter extends MyBaseAdapter<RAdBO> {
         final ViewHolder viewHolder;
         viewHolder = new ViewHolder();
         item = itemList.get(position);
-        LogUtils.d(TAG, "getView" + position + " picUrl:" + item.advertisementPic);
+//        LogUtils.d(TAG, "getView" + position + " picUrl:" + item.advertisementPic);
         convertView = inflater.inflate(R.layout.item_pictures, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.image);
 //        viewHolder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(context) / 2 * 10 / 13));//设置广告栏的宽高比为13:10

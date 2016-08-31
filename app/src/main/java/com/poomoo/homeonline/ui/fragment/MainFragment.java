@@ -4,6 +4,7 @@
 package com.poomoo.homeonline.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -52,7 +53,6 @@ import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -66,7 +66,9 @@ import butterknife.OnClick;
  * 作者 李苜菲
  * 日期 2016/7/19 11:20
  */
-public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> implements AdapterView.OnItemClickListener, BaseListAdapter.OnItemClickListener, ScrollViewListener {
+public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> implements AdapterView.OnItemClickListener, BaseListAdapter.OnItemClickListener, ScrollViewListener, SwipeRefreshLayout.OnRefreshListener {
+    @Bind(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.scrollView_main)
     MyScrollView scrollView;
     @Bind(R.id.grid_menu)
@@ -79,18 +81,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     TextView secondTxt;
     @Bind(R.id.recycler_grab)
     RecyclerView grabRecycler;
-    @Bind(R.id.img_qhcs_title)
-    ImageView qhcsTitleImg;
-    @Bind(R.id.img_qhcs_content)
-    ImageView qhcsContentImg;
-    @Bind(R.id.grid_qhcs)
-    NoScrollGridView qhcsGrid;
-    @Bind(R.id.img_lsyz_title)
-    ImageView lsyzTitleImg;
-    @Bind(R.id.img_lsyz_content)
-    ImageView lsyzContentImg;
-    @Bind(R.id.grid_lsyz)
-    NoScrollGridView lsyzGrid;
     @Bind(R.id.flipper_ad)
     SlideShowView slideShowView;
     @Bind(R.id.img_top)
@@ -106,22 +96,12 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private MainGrabAdapter grabAdapter;
     private HotAdapter hotAdapter;
     private ListCommodityAdapter listCommodityAdapter;
-    //    private PicturesGridAdapter qhcsGridAdapter;
-//    private PicturesGridAdapter lsyzGridAdapter;
     private TimeCountDownUtilBy3View timeCountDownUtilBy3View;
 
-    private String[] ad = {"http://img.jiayou9.com/jyzx/upload/company/20160621/20160621235614_798.jpg", "http://img.jiayou9.com/jyzx//upload/company/20160617/20160617152510_21.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160617/20160617153952_548.jpg"};
-    private String[] qhcs = {"http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133639_805.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133706_479.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133619_901.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133559_450.jpg"};
-    private String[] lsyz = {"http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133432_159.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160622/20160622135718_235.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133453_903.jpg", "http://img.jiayou9.com/jyzx/upload/company/20160618/20160618133539_91.jpg"};
-    private List<RTypeBO> rTypeBOs = new ArrayList<>();
-    private List<String> qhcsList = new ArrayList<>();
-    private List<String> lsyzList = new ArrayList<>();
-    private RTypeBO rTypeBO;
-    private int len = 0;
+    private String[] ad;
     private RAdBO rAdBO;
     private RListCommodityBO rListCommodityBO;
     private RGrabBO rGrabBO;
-    private boolean isLoadAd = false;
     private final int GRAB = 1;
     private final int HOT = 2;
     private final int GUESS = 3;
@@ -169,15 +149,16 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 
         initGuess();
 
-//        initType();
-//
-//        initQhcs();
-//
-//        initLsyz();
-
         scrollView.setScrollViewListener(this);
 
         topImg.setOnClickListener(v -> scrollView.smoothScrollTo(0, 0));
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.swipe_refresh_first, R.color.swipe_refresh_second,
+                R.color.swipe_refresh_third, R.color.swipe_refresh_four
+        );
+
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
     }
 
     @OnClick({R.id.llayout_search, R.id.llayout_toGrab})
@@ -196,6 +177,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
      * 动态增加专题广告
      */
     private void addView(RSpecialAdBO rSpecialAdBO) {
+        specialAdLayout.removeAllViews();
         int len = rSpecialAdBO.advs.size();
         for (int i = 0; i < len; i++) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_special, null);
@@ -211,7 +193,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             picturesGridAdapter.setItems(rSpecialAdBO.advs.get(i).subList(1, rSpecialAdBO.advs.get(i).size()));
             gridView.setTag(i);
             gridView.setOnItemClickListener((parent, view1, position, id) -> {
-                rAdBO = rSpecialAdBO.advs.get((int) parent.getTag()).get(position);
+                rAdBO = rSpecialAdBO.advs.get((int) parent.getTag()).get(position + 1);
                 if (rAdBO.isCommodity) {//商品广告
                     bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
@@ -224,7 +206,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 }
             });
 
-            Glide.with(this).load(getString(R.string.base_url) + "/weixin/images/index-market-" + (i + 1) + ".png").into(titleImg);
+            Glide.with(this).load(rSpecialAdBO.picUrl + (i + 1) + ".png").into(titleImg);
 
             contentImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) * 5 / 12));//设置广告栏的宽高比为12:5
             Glide.with(this).load(NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic).placeholder(R.drawable.replace12b5).priority(Priority.HIGH).into(contentImg);
@@ -294,52 +276,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         listCommodityAdapter.setOnItemClickListener(this);
     }
 
-//    private void initCommodities() {
-//        RRecommendBO rRecommendBO = new RRecommendBO();
-//        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628100836_78.jpg";
-//        rRecommendBO.newPrice = "10.80";
-//        rRecommendBO.oldPrice = "10.80";
-//        rRecommendBOs.add(rRecommendBO);
-//
-//        rRecommendBO = new RRecommendBO();
-//        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101204_324.jpg";
-//        rRecommendBO.newPrice = "68";
-//        rRecommendBO.oldPrice = "68";
-//        rRecommendBOs.add(rRecommendBO);
-//
-//        rRecommendBO = new RRecommendBO();
-//        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101635_324.jpg";
-//        rRecommendBO.newPrice = "8.18";
-//        rRecommendBO.oldPrice = "8.18";
-//        rRecommendBOs.add(rRecommendBO);
-//
-//        rRecommendBO = new RRecommendBO();
-//        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628100543_124.jpg";
-//        rRecommendBO.newPrice = "15.20";
-//        rRecommendBO.oldPrice = "15.20";
-//        rRecommendBOs.add(rRecommendBO);
-//
-//        rRecommendBO = new RRecommendBO();
-//        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101204_324.jpg";
-//        rRecommendBO.newPrice = "68";
-//        rRecommendBO.oldPrice = "68";
-//        rRecommendBOs.add(rRecommendBO);
-//
-//        rRecommendBO = new RRecommendBO();
-//        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628101635_324.jpg";
-//        rRecommendBO.newPrice = "8.18";
-//        rRecommendBO.oldPrice = "8.18";
-//        rRecommendBOs.add(rRecommendBO);
-//
-//        rRecommendBO = new RRecommendBO();
-//        rRecommendBO.img = "http://img.jiayou9.com/jyzx//upload/company/20160628/20160628100543_124.jpg";
-//        rRecommendBO.newPrice = "15.20";
-//        rRecommendBO.oldPrice = "15.20";
-//        rRecommendBOs.add(rRecommendBO);
-//
-//        grabAdapter.addItems(rRecommendBOs);
-//    }
-
     private void initCountDownTime() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String tonight = sdf.format(new Date());
@@ -349,7 +285,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadSlideSucceed(List<RAdBO> rAdBOs) {
-        isLoadAd = true;
         int len = rAdBOs.size();
         ad = new String[len];
         for (int i = 0; i < len; i++) {
@@ -395,12 +330,12 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadSpecialAdSucceed(RSpecialAdBO rSpecialAdBO) {
-        for (List<RAdBO> rAdBOs : rSpecialAdBO.advs)
-            LogUtils.d(TAG, "loadSpecialAdSucceed rAdBOs:" + rAdBOs);
+        swipeRefreshLayout.setRefreshing(false);
         addView(rSpecialAdBO);
     }
 
     public void loadSpecialAdFailed(String msg) {
+        swipeRefreshLayout.setRefreshing(false);
         MyUtils.showToast(getActivity().getApplicationContext(), msg);
     }
 
@@ -494,5 +429,16 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             topImg.setVisibility(View.VISIBLE);
         else
             topImg.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setEnabled(scrollView.getScrollY() == 0);
+    }
+
+    @Override
+    public void onRefresh() {
+        mPresenter.getSlide();
+        mPresenter.getType();
+        mPresenter.getGrabList();
+        mPresenter.getSpecialAd();
+        mPresenter.getHot();
+        mPresenter.getGuess(application.getUserId());
     }
 }

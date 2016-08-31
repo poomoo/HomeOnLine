@@ -27,6 +27,7 @@
 package com.poomoo.homeonline.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,7 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.javascript.JavaScript;
 import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
+import com.poomoo.homeonline.ui.custom.MySwipeRefreshLayout;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -57,7 +59,9 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/8/19 16:12
  */
-public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveClickListener {
+public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveClickListener, SwipeRefreshLayout.OnRefreshListener {
+    @Bind(R.id.swipe_refresh)
+    MySwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.web_grab)
     WebView webView;
     @Bind(R.id.error_frame)
@@ -86,8 +90,16 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
         webView.addJavascriptInterface(new JavaScript(getActivity()), "android");
 
         webView.loadUrl(NetConfig.grabUrl);
+
         mErrorLayout.setState(ErrorLayout.LOADING, "");
         mErrorLayout.setOnActiveClickListener(this);
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(
+                R.color.swipe_refresh_first, R.color.swipe_refresh_second,
+                R.color.swipe_refresh_third, R.color.swipe_refresh_four
+        );
+        swipeRefreshLayout.setViewGroup(webView);
     }
 
     @Override
@@ -96,11 +108,18 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
         webView.loadUrl(NetConfig.grabUrl);
     }
 
+    @Override
+    public void onRefresh() {
+        webView.setVisibility(View.GONE);
+        webView.loadUrl(NetConfig.grabUrl);
+    }
+
     class MyWebChromeClient extends WebChromeClient {
 
         public void onProgressChanged(WebView view, int progress) {
             LogUtils.d(TAG, "onProgressChanged" + progress);
             if (progress == 100) {
+                swipeRefreshLayout.setRefreshing(false);
                 if (!isValid) {
                     webView.setVisibility(View.VISIBLE);
                     mErrorLayout.setState(ErrorLayout.HIDE, "");

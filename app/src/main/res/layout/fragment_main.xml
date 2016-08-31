@@ -5,15 +5,20 @@
     android:background="@color/ThemeBg"
     android:orientation="vertical">
 
-    <include layout="@layout/search_bar" />
-
-    <android.support.design.widget.CoordinatorLayout
+    <include
+        layout="@layout/search_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="visible">
 
             <com.poomoo.homeonline.ui.custom.MyScrollView
                 android:id="@+id/scrollView_main"
@@ -130,78 +135,10 @@
                             android:id="@+id/recycler_grab"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
+                            android:layout_marginTop="1dp"
                             android:background="@color/white"
                             android:clipToPadding="false" />
                     </LinearLayout>
-
-                    <!--黔货出山-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="8dp"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/img_qhcs_title"
-                            android:layout_width="180dp"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:paddingBottom="10dp"
-                            android:paddingTop="10dp"
-                            android:scaleType="fitXY" />
-
-                        <ImageView
-                            android:id="@+id/img_qhcs_content"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <com.poomoo.homeonline.ui.custom.NoScrollGridView
-                            android:id="@+id/grid_qhcs"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:numColumns="2" />
-                    </LinearLayout>
-                    <!--黔货出山-->
-
-                    <!--零食驿站-->
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginBottom="8dp"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="gone">
-
-                        <ImageView
-                            android:id="@+id/img_lsyz_title"
-                            android:layout_width="180dp"
-                            android:layout_height="wrap_content"
-                            android:adjustViewBounds="true"
-                            android:paddingBottom="10dp"
-                            android:paddingTop="10dp"
-                            android:scaleType="fitXY" />
-
-                        <ImageView
-                            android:id="@+id/img_lsyz_content"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content" />
-
-                        <com.poomoo.homeonline.ui.custom.NoScrollGridView
-                            android:id="@+id/grid_lsyz"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
-                            android:numColumns="2" />
-                    </LinearLayout>
-                    <!--零食驿站-->
 
                     <!--专题广告-->
                     <LinearLayout
@@ -264,5 +201,5 @@
                 android:src="@drawable/top"
                 android:visibility="invisible" />
         </FrameLayout>
-    </android.support.design.widget.CoordinatorLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 </LinearLayout>

@@ -1,6 +1,8 @@
 package com.poomoo.homeonline.application;
 
 
+import com.poomoo.homeonline.crashhandler.CrashHandler;
+
 import org.litepal.LitePalApplication;
 
 /**
@@ -19,28 +21,11 @@ public class MyApplication extends LitePalApplication {
     @Override
     public void onCreate() {
         super.onCreate();
-//
-//        initImageLoader();
-//        CrashHandler crashHandler = CrashHandler.getInstance();
-//        // 注册crashHandler
-//        crashHandler.init(getApplicationContext());
-    }
 
-//    private void initImageLoader() {
-//        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder() //
-//                .showImageForEmptyUri(R.mipmap.ic_launcher) //
-//                .showImageOnFail(R.mipmap.ic_launcher) //
-//                .cacheInMemory(true) //
-//                .cacheOnDisk(true) //
-//                .bitmapConfig(Bitmap.Config.RGB_565)// 设置最低配置
-//                .build();//
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration//
-//                .Builder(getApplicationContext())//
-//                .defaultDisplayImageOptions(defaultOptions)//
-//                .writeDebugLogs()//
-//                .build();//
-//        ImageLoader.getInstance().init(config);
-//    }
+        CrashHandler crashHandler = CrashHandler.getInstance();
+        // 注册crashHandler
+        crashHandler.init(getApplicationContext());
+    }
 
 
     public Integer getUserId() {
