@@ -27,6 +27,7 @@
 package com.poomoo.homeonline.ui.activity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -369,6 +370,16 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
      * @param view
      */
     public void payByZFB(View view) {
+        for (RCartCommodityBO cartCommodityBOs : rCartCommodityBOs)
+            if (cartCommodityBOs.commodityNum == 0) {
+                createDialog("购买的商品中存在没有库存的,请重新购买", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        finish();
+                    }
+                }).show();
+                return;
+            }
         mErrorLayout.setState(ErrorLayout.LOADING, "");
         if (isCreateOrder)
             mPresenter.sign(orderId, commodityName);
