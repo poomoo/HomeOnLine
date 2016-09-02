@@ -372,12 +372,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
     public void payByZFB(View view) {
         for (RCartCommodityBO cartCommodityBOs : rCartCommodityBOs)
             if (cartCommodityBOs.commodityNum == 0) {
-                createDialog("购买的商品中存在没有库存的,请重新购买", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finish();
-                    }
-                }).show();
+                createDialog("购买的商品中存在没有库存的,请重新购买", (dialog, which) -> finish()).show();
                 return;
             }
         mErrorLayout.setState(ErrorLayout.LOADING, "");
