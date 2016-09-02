@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
@@ -24,6 +25,7 @@ import com.poomoo.homeonline.ui.fragment.CartFragment;
 import com.poomoo.model.response.RCartShopBO;
 import com.poomoo.model.response.RCartCommodityBO;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +56,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     private boolean isFreePostage = true;//是否包邮
 
+    private BigDecimal bg;
     private DecimalFormat df = new DecimalFormat("0.00");
-
 
     public CartAdapter(Context context, OnBuyCheckChangedListener onBuyCheckChangedListener, OnEditCheckChangedListener onEditCheckChangedListener) {
         this.context = context;
@@ -195,7 +197,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
             holder.commodityChk.setChecked(rCartCommodityBO.isEditChecked);
         else
             holder.commodityChk.setChecked(rCartCommodityBO.isBuyChecked);
-        Glide.with(context).load(NetConfig.ImageUrl + rCartCommodityBO.listPic).placeholder(R.drawable.replace).into(holder.commodityImg);
+        Glide.with(context).load(NetConfig.ImageUrl + rCartCommodityBO.listPic).placeholder(R.drawable.replace).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.commodityImg);
         holder.commodityTxt.setText(rCartCommodityBO.commodityName);
         holder.priceTxt.setText(rCartCommodityBO.commodityPrice + "");
 
@@ -371,6 +373,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 rCartCommodityBO = group.get(i).carts.get(j);
                 if (rCartCommodityBO.isBuyChecked) {
                     totalPrice += rCartCommodityBO.commodityPrice * rCartCommodityBO.commodityNum;
+                    rCartCommodityBO.commodityDetailsId = rCartCommodityBO.commodityDetailId;
                     rCartCommodityBOs.add(rCartCommodityBO);
                     if (!rCartCommodityBO.isFreePostage)
                         isFreePostage = false;
@@ -378,11 +381,13 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 if (rCartCommodityBO.isEditChecked)
                     deleteIndex.add(rCartCommodityBO.id);
             }
+
         cartFragment.setTotalPrice(df.format(totalPrice));
     }
 
     public double getTotalPrice() {
-        return totalPrice;
+        bg = new BigDecimal(totalPrice);
+        return bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
     }
 
     public boolean isFreePostage() {

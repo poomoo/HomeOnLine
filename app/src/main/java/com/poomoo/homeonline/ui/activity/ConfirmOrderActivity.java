@@ -61,6 +61,7 @@ import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.RReceiptBO;
 import com.poomoo.model.response.RTransferPriceBO;
 
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -120,6 +121,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
     private double deliveryFee;
 
     private Bundle bundle;
+    private DecimalFormat df = new DecimalFormat("0.00");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,13 +166,12 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
         rCartCommodityBOs = (List<RCartCommodityBO>) getIntent().getSerializableExtra(getString(R.string.intent_commodityList));
         totalPrice = getIntent().getDoubleExtra(getString(R.string.intent_totalPrice), 0.00);
         isFreePostage = getIntent().getBooleanExtra(getString(R.string.intent_isFreePostage), false);
-
         recyclerView.setLayoutManager(new ScrollLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         confirmOrderAdapter = new ConfirmOrderAdapter(this, BaseListAdapter.NEITHER);
         recyclerView.setAdapter(confirmOrderAdapter);
         confirmOrderAdapter.addItems(rCartCommodityBOs);
 
-        commodityPriceTxt.setText("￥" + totalPrice);
+        commodityPriceTxt.setText("￥" + df.format(totalPrice));
 
         recyclerView.setFocusable(false);//不让scrollview自动滚动
 
@@ -200,12 +201,12 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
 
         if (isCreateOrder) {
             if (isFreePostage) {//包邮
-                totalPriceTxt.setText("￥" + totalPrice);
+                totalPriceTxt.setText("￥" + df.format(totalPrice));
                 transferPriceTxt.setText("包邮");
             } else {
-                transferPriceTxt.setText(deliveryFee + "");
+                transferPriceTxt.setText(df.format(totalPrice));
                 totalPrice += deliveryFee;
-                totalPriceTxt.setText("￥" + totalPrice);
+                totalPriceTxt.setText("￥" + df.format(totalPrice));
             }
         } else
             setAddressInfo();
@@ -227,7 +228,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
             infoLayout.setVisibility(View.VISIBLE);
             qOrderBO.order.deliveryId = receiptId;
             if (isFreePostage) {//包邮
-                totalPriceTxt.setText("￥" + totalPrice);
+                totalPriceTxt.setText("￥" + df.format(totalPrice));
                 transferPriceTxt.setText("包邮");
             } else {
                 mErrorLayout.setState(ErrorLayout.LOADING, "");
@@ -289,8 +290,8 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
 
     public void getTransferPriceSucceed(RTransferPriceBO rTransferPriceBO) {
         mErrorLayout.setState(ErrorLayout.HIDE, "");
-        transferPriceTxt.setText("￥" + rTransferPriceBO.conutFreight);
-        totalPriceTxt.setText("￥" + (totalPrice + rTransferPriceBO.conutFreight));
+        transferPriceTxt.setText("￥" + df.format(rTransferPriceBO.conutFreight));
+        totalPriceTxt.setText("￥" + df.format(totalPrice + rTransferPriceBO.conutFreight));
     }
 
     public void getTransferPriceFailed(String msg) {

@@ -309,7 +309,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadSlideFailed(String msg) {
-        MyUtils.showToast(getActivity().getApplicationContext(), msg);
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     public void loadTypeSucceed(RTypeBO rTypeBO) {
@@ -318,7 +318,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadTypeFailed(String msg) {
-        MyUtils.showToast(getActivity().getApplicationContext(), msg);
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     public void loadGrabListSucceed(List<RGrabBO> rGrabBOs) {
@@ -326,17 +326,16 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadGrabListFailed(String msg) {
-        MyUtils.showToast(getActivity().getApplicationContext(), msg);
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     public void loadSpecialAdSucceed(RSpecialAdBO rSpecialAdBO) {
-        swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
         addView(rSpecialAdBO);
     }
 
     public void loadSpecialAdFailed(String msg) {
-        swipeRefreshLayout.setRefreshing(false);
-        MyUtils.showToast(getActivity().getApplicationContext(), msg);
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     public void loadHotSucceed(List<RAdBO> rAdBOs) {
@@ -344,7 +343,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadHotFailed(String msg) {
-        MyUtils.showToast(getActivity().getApplicationContext(), msg);
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     public void loadGuessSucceed(List<RListCommodityBO> rListCommodityBOs) {
@@ -352,7 +351,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadGuessFailed(String msg) {
-        MyUtils.showToast(getActivity().getApplicationContext(), msg);
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
     }
 
     /**

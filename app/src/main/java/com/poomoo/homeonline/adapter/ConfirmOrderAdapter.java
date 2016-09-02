@@ -34,6 +34,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
@@ -68,8 +69,8 @@ public class ConfirmOrderAdapter extends BaseListAdapter<RCartCommodityBO> {
 
         holder.nameTxt.setText(item.commodityName);
         holder.priceTxt.setText(item.commodityPrice + "");
-        holder.countTxt.setText(item.commodityNum+"");
-        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).into(holder.commodityImg);
+        holder.countTxt.setText(item.commodityNum + "");
+        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).placeholder(R.drawable.replace).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.commodityImg);
     }
 
     public static final class BaseViewHolder extends RecyclerView.ViewHolder {

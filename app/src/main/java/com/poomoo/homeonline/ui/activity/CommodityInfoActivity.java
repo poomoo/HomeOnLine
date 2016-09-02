@@ -56,6 +56,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.dialogplus.DialogPlus;
 import com.orhanobut.dialogplus.Holder;
 import com.orhanobut.dialogplus.OnClickListener;
@@ -139,11 +140,14 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private DialogPlus contentDialog = null;
     private ImageView dialogBigImg;
     private ImageView dialogSmallImg;
+    private TextView dialog_product_name;
     private EditText dialog_product_sum;
     private TextView dialog_newPriceTxt;
     private TextView dialog_oldPriceTxt;
     private TextView dialog_inventoryTxt;
-    private TextView confirmTxt;
+    private Button confirmBtn;
+    private Button dialog_cartBtn;
+    private Button dialog_buyBtn;
     private LinearLayout dialog_specificationLayout;
     private LinearLayout bottomLayout;
     private RelativeLayout dialog_progressBarRlayout;
@@ -151,6 +155,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private List<TagFlowLayout> tagFlowLayouts = new ArrayList<>();
     private String select = "";
     private boolean isAllSelected = false;//是否选择了所有的属性
+    private boolean isBuy = true;//true-购买 false-添加购物车
     private View[] specialView;
     private LayoutInflater mInflater;
 
@@ -161,6 +166,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private int commodityId;//商品ID
     private int commodityDetailId;//商品规格ID
     private int commodityType;//商品类型
+    private String commodityName;//商品名称
     private int matchId;
     private RCommodityInfoBO rCommodityInfoBO;
     private List<Integer> specification = new ArrayList<>();
@@ -175,6 +181,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private boolean isCollect;//是否收藏
     private int[] ids = new int[1];//取消收藏
     public static CommodityInfoActivity inStance = null;
+    private int repertory;//库存
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -188,7 +195,6 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         commodityDetailId = getIntent().getIntExtra(getString(R.string.intent_commodityDetailId), -1);
         commodityType = getIntent().getIntExtra(getString(R.string.intent_commodityType), -1);
         matchId = getIntent().getIntExtra(getString(R.string.intent_matchId), -1);
-        LogUtils.d(TAG, "commodityType:" + commodityType);
         init();
     }
 
@@ -215,7 +221,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         titleBar.getBackground().mutate().setAlpha(0);
         backImg.setOnClickListener(this);
         collectImg.setOnClickListener(this);
-        if (application.getCartNum() == -1) {
+        if (application.getCartNum() == -1 && application.getUserId() != null) {
             mPresenter.getCartNum(application.getUserId());
         } else {
             if (application.getCartNum() == 0)
@@ -417,27 +423,18 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         }
         switch (v.getId()) {
             case R.id.btn_info_addToCart:
+                isBuy = false;
                 if (hasSpecification)
                     createDialog(false);
                 else
                     addToCart();
                 break;
             case R.id.btn_info_buy:
+                isBuy = true;
                 if (hasSpecification)
                     createDialog(false);
-                else {
-                    cartCommodityBO.commodityNum = count;
-                    cartCommodityBO.commodityDetailsId = commodityDetailId;
-                    totalPrice = count * cartCommodityBO.commodityPrice;
-                    rCartCommodityBOs = new ArrayList<>();
-                    rCartCommodityBOs.add(cartCommodityBO);
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(getString(R.string.intent_commodityList), rCartCommodityBOs);
-                    bundle.putDouble(getString(R.string.intent_totalPrice), totalPrice);
-                    bundle.putBoolean(getString(R.string.intent_isFreePostage), isFreePostage);
-                    bundle.putBoolean(getString(R.string.intent_value), false);
-                    openActivity(ConfirmOrderActivity.class, bundle);
-                }
+                else
+                    createOrder();
                 break;
         }
     }
@@ -451,8 +448,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         slideShowView.setPics(pics, position -> {
 
         });
-
-        nameTxt.setText(rCommodityInfoBO.commodity.commodityName);
+        commodityName = rCommodityInfoBO.commodity.commodityName;
+        nameTxt.setText(commodityName);
         priceTxt.setText("￥ " + rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice);
         oldPriceTxt.setText("￥ " + rCommodityInfoBO.commodity.lowestPriceDetail.commonPrice);
         inventoryTxt.setText("库存" + rCommodityInfoBO.commodity.lowestPriceDetail.repertory + "件");
@@ -515,6 +512,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         else {
             cartNumTxt.setVisibility(View.VISIBLE);
             cartNumTxt.setText(application.getCartNum() > 99 ? "99+" : application.getCartNum() + "");
+            MainNewActivity.INSTANCE.setInfoNum(3, application.getCartNum(), true);
         }
     }
 
@@ -525,7 +523,19 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         dialog_inventoryTxt.setText("库存" + rSpecificationBO.commodityDetail.repertory + "件");
         maxNum = rSpecificationBO.commodityDetail.repertory;
         commodityDetailId = rSpecificationBO.commodityDetail.id;
-//        Glide.with(this).load(NetConfig.ImageUrl + rSpecificationBO.picList.get(0).url).into(dialogSmallImg);
+        repertory = rSpecificationBO.commodityDetail.repertory;
+        if (isAllSelected && repertory > 0) {
+            confirmBtn.setEnabled(true);
+            dialog_cartBtn.setEnabled(true);
+            dialog_buyBtn.setEnabled(true);
+            confirmBtn.setText("确定");
+
+        } else {
+            confirmBtn.setEnabled(false);
+            dialog_cartBtn.setEnabled(false);
+            dialog_buyBtn.setEnabled(false);
+            confirmBtn.setText("库存不足");
+        }
     }
 
     public void getSpecificationFailed(String msg) {
@@ -550,6 +560,23 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     public void addToCartFailed(String msg) {
         hideProgressBar();
         MyUtils.showToast(getApplicationContext(), msg);
+    }
+
+    /**
+     * 到确认订单界面生成订单
+     */
+    public void createOrder() {
+        cartCommodityBO.commodityNum = count;
+        cartCommodityBO.commodityDetailsId = commodityDetailId;
+        totalPrice = count * cartCommodityBO.commodityPrice;
+        rCartCommodityBOs = new ArrayList<>();
+        rCartCommodityBOs.add(cartCommodityBO);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(getString(R.string.intent_commodityList), rCartCommodityBOs);
+        bundle.putDouble(getString(R.string.intent_totalPrice), totalPrice);
+        bundle.putBoolean(getString(R.string.intent_isFreePostage), isFreePostage);
+        bundle.putBoolean(getString(R.string.intent_value), false);
+        openActivity(ConfirmOrderActivity.class, bundle);
     }
 
     public void getCollectSucceed(RIsCollect rIsCollect) {
@@ -645,21 +672,25 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         if (contentDialog == null) {
             View view = LayoutInflater.from(this).inflate(R.layout.product_detail_dialog_content, null);
             view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenHeight(this) * 3 / 4));
+            dialog_product_name = (TextView) view.findViewById(R.id.dialog_product_name);
             dialog_newPriceTxt = (TextView) view.findViewById(R.id.txt_dialog_newPrice);
             dialog_oldPriceTxt = (TextView) view.findViewById(R.id.txt_dialog_oldPrice);
             dialog_specificationLayout = ((LinearLayout) view.findViewById(R.id.llayout_dialog_specification));
             dialog_progressBarRlayout = ((RelativeLayout) view.findViewById(R.id.rlayout_progressBar));
             dialog_product_sum = ((EditText) view.findViewById(R.id.edt_commodity_specification_count));
             dialog_inventoryTxt = (TextView) view.findViewById(R.id.txt_dialog_inventory);
-            confirmTxt = ((TextView) view.findViewById(R.id.txt_dialog_ok));
+            confirmBtn = ((Button) view.findViewById(R.id.btn_dialog_ok));
+            dialog_cartBtn = ((Button) view.findViewById(R.id.btn_dialog_cart));
+            dialog_buyBtn = ((Button) view.findViewById(R.id.btn_dialog_buy));
             bottomLayout = ((LinearLayout) view.findViewById(R.id.llayout_dialog_bottom));
             dialogSmallImg = (ImageView) view.findViewById(R.id.img_dialog_detail);
 
+            dialog_product_name.setText(commodityName);
             dialog_inventoryTxt.setText("库存" + rCommodityInfoBO.commodity.lowestPriceDetail.repertory + "件");
             dialog_newPriceTxt.setText("￥" + rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice);
             dialog_oldPriceTxt.setText("￥" + rCommodityInfoBO.commodity.lowestPriceDetail.commonPrice);
             dialog_oldPriceTxt.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            Glide.with(this).load(NetConfig.ImageUrl + rCommodityInfoBO.commodity.listPic).into(dialogSmallImg);
+            Glide.with(this).load(NetConfig.ImageUrl + rCommodityInfoBO.commodity.listPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(dialogSmallImg);
 
             for (View childView : specialView)
                 dialog_specificationLayout.addView(childView);
@@ -673,21 +704,26 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                     case R.id.dialog_close:
                         dialog.dismiss();
                         break;
-                    case R.id.txt_dialog_ok:
+                    case R.id.btn_dialog_ok:
+                        if (!isBuy)
+                            addToCart();
+                        else
+                            createOrder();
+                        break;
+                    case R.id.btn_dialog_cart:
+                        addToCart();
+//                    if (!isAllSelected) {
+//                        MyUtils.showToast(getApplicationContext(), "请选择商品属性");
+//                        return;
+//                    }
                         dialog.dismiss();
                         break;
-                    case R.id.txt_dialog_cart:
-                        if (!isAllSelected) {
-                            MyUtils.showToast(getApplicationContext(), "请选择商品属性");
-                            return;
-                        }
-                        dialog.dismiss();
-                        break;
-                    case R.id.txt_dialog_buy:
-                        if (!isAllSelected) {
-                            MyUtils.showToast(getApplicationContext(), "请选择商品属性");
-                            return;
-                        }
+                    case R.id.btn_dialog_buy:
+//                        if (!isAllSelected) {
+//                            MyUtils.showToast(getApplicationContext(), "请选择商品属性");
+//                            return;
+//                        }
+                        createOrder();
                         dialog.dismiss();
                         break;
                     case R.id.dialog_product_sum_add:
@@ -718,10 +754,10 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
      */
     private void showSpecificationDialog(boolean showBottom) {
         if (showBottom) {
-            confirmTxt.setVisibility(View.GONE);
+            confirmBtn.setVisibility(View.GONE);
             bottomLayout.setVisibility(View.VISIBLE);
         } else {
-            confirmTxt.setVisibility(View.VISIBLE);
+            confirmBtn.setVisibility(View.VISIBLE);
             bottomLayout.setVisibility(View.GONE);
         }
         contentDialog.show();
@@ -792,7 +828,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             selectedTxt.setText(select);
             isAllSelected = true;
             dialog_progressBarRlayout.setVisibility(View.VISIBLE);
-            mPresenter.getCommodityInfoBySpecification(commodityId, specification.toArray(new Integer[specification.size()]));
+            dialog_inventoryTxt.setVisibility(View.VISIBLE);
+            mPresenter.getCommodityInfoBySpecification(commodityId, commodityType, specification.toArray(new Integer[specification.size()]));
         }
     }
 
@@ -804,18 +841,13 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private void setSelectedInfo(List<Integer> integers) {
         select = "选择 ";
         if (integers == null || integers.size() == 0) {
-//            int len = temp.length;
             int len = rCommodityInfoBO.specialParamters.size();
-
             for (int i = 0; i < len; i++)
                 select += rCommodityInfoBO.specialParamters.get(i).parameterName + ",";
-
         } else {
             int len = integers.size();
             for (int i = 0; i < len; i++)
-//                select += temp[integers.get(i)] + " ";
                 select += rCommodityInfoBO.specialParamters.get(integers.get(i)).parameterName + ",";
-
         }
         select = select.substring(0, select.length() - 1);
         selectedTxt.setText(select);

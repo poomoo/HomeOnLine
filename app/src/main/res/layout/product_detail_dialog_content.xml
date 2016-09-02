@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/llayout_replace">
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/llayout_replace"
+        android:layout_alignParentTop="true">
 
         <RelativeLayout
             android:id="@+id/rlayout_title"
@@ -19,7 +19,7 @@
             <LinearLayout
                 android:id="@+id/llayout_info"
                 android:layout_width="match_parent"
-                android:layout_height="114dp"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:background="@color/white"
                 android:gravity="bottom"
@@ -42,7 +42,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:text="iphone 6s"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:text="iphone 6siphone 6siphone 6siphone 6siphone 6siphone 6siphone 6siphone 6siphone 6siphone 6s"
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp_18" />
 
@@ -111,14 +113,14 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/rlayout_title"
+            android:background="@color/white"
             android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/white"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -203,18 +205,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:background="@color/white"
         android:orientation="vertical"
         android:visibility="visible">
 
-        <TextView
-            android:id="@+id/txt_dialog_ok"
+        <Button
+            android:id="@+id/btn_dialog_ok"
+            style="@style/myButton_Red"
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:background="@color/ThemeRed"
+            android:enabled="false"
             android:gravity="center"
             android:text="确定"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_16" />
+            android:textSize="@dimen/sp_18" />
 
         <LinearLayout
             android:id="@+id/llayout_dialog_bottom"
@@ -223,23 +227,25 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/txt_dialog_cart"
+            <Button
+                android:id="@+id/btn_dialog_cart"
+                style="@style/myButton_Yellow"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/btn_cart"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="加入购物车"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_16" />
 
-            <TextView
-                android:id="@+id/txt_dialog_buy"
+            <Button
+                android:id="@+id/btn_dialog_buy"
+                style="@style/myButton_Red"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/ThemeRed"
+                android:enabled="false"
                 android:gravity="center"
                 android:text="立即购买"
                 android:textColor="@color/white"

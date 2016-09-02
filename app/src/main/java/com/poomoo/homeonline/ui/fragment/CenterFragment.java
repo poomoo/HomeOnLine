@@ -138,7 +138,13 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
             case R.id.rlayout_logOut:
                 createDialog("确定退出登录?", (dialog, which) -> {
                     SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_isLogin), false);
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptAddress), "");
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptTel), "");
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptId), -1);
                     ((MainNewActivity) getActivity()).jump(0);
+                    ((MainNewActivity) getActivity()).setInfoNum(3, 0, false);
+                    application.setCartNum(0);
+                    application.setUserId(null);
                 }).show();
                 break;
         }

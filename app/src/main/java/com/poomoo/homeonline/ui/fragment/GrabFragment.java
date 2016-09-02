@@ -104,8 +104,9 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
 
     @Override
     public void onLoadActiveClick() {
+        isValid = false;
         mErrorLayout.setState(ErrorLayout.LOADING, "");
-        webView.loadUrl(NetConfig.grabUrl);
+        webView.reload();
     }
 
     @Override
@@ -148,7 +149,6 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
             isValid = true;
             webView.setVisibility(View.GONE);
             mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-            MyUtils.showToast(getActivity().getApplicationContext(), "onReceivedError old");
         }
 
         @Override
@@ -157,7 +157,6 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
             isValid = true;
             webView.setVisibility(View.GONE);
             mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-            MyUtils.showToast(getActivity().getApplicationContext(), "onReceivedError new");
         }
 
         @Override
@@ -166,7 +165,6 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
             isValid = true;
             webView.setVisibility(View.GONE);
             mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-            MyUtils.showToast(getActivity().getApplicationContext(), "onReceivedHttpError");
         }
     }
 

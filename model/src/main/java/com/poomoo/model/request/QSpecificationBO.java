@@ -34,11 +34,13 @@ package com.poomoo.model.request;
  */
 public class QSpecificationBO extends BaseRequest {
     public int commodityId;//商品主键
+    public int commodityType;//商品类型
     public Integer[] paramterValueIds;//特殊参数值主键集合
 
-    public QSpecificationBO(String method, int commodityId, Integer[] paramterValueIds) {
+    public QSpecificationBO(String method, int commodityId, int commodityType, Integer[] paramterValueIds) {
         super(method);
         this.commodityId = commodityId;
+        this.commodityType = commodityType;
         this.paramterValueIds = paramterValueIds;
     }
 }

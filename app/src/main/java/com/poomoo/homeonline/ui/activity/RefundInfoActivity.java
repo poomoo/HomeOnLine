@@ -204,13 +204,14 @@ public class ReFundInfoActivity extends BaseDaggerActivity<RefundInfoPresenter> 
                 waitLayout.setVisibility(View.GONE);
                 successfulLayout.setVisibility(View.GONE);
                 failedLayout.setVisibility(View.VISIBLE);
-                failedReasonTxt.setText(rReFundInfoBO.returnNote.returnReason);
+                failedReasonTxt.setText(rReFundInfoBO.returnNote.checkResult);
                 failedDateTxt.setText(rReFundInfoBO.returnNote.checkTime);
                 break;
         }
         typeTxt.setText(rReFundInfoBO.returnNote.returnType == 1 ? "退货且退款" : "仅退款");
         amountTxt.setText(rReFundInfoBO.returnNote.returnMoney + "");
-        reasonTxt.setText(MyConfig.reason[rReFundInfoBO.returnNote.returnReason]);
+        if (rReFundInfoBO.returnNote.returnReason < 11)
+            reasonTxt.setText(MyConfig.reason[rReFundInfoBO.returnNote.returnReason]);
         desTxt.setText(rReFundInfoBO.returnNote.returnExplain);
         idTxt.setText(rReFundInfoBO.returnNote.id);
         applyDateTxt.setText(rReFundInfoBO.returnNote.submitTime);

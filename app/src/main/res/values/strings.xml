@@ -126,5 +126,6 @@
     <string name="toast_3_pics">最多选择3张图片</string>
     <string name="intent_returnProof">returnProof</string>
     <string name="intent_returnNoteId">returnNoteId</string>
+    <string name="empty" />
 
 </resources>
