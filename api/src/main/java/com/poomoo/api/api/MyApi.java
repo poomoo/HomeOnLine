@@ -35,6 +35,7 @@ import com.poomoo.model.request.QAddressBO;
 import com.poomoo.model.request.QCancelCollectionBO;
 import com.poomoo.model.request.QCancelOrderBO;
 import com.poomoo.model.request.QCategoryIdBO;
+import com.poomoo.model.request.QChangeReFundBO;
 import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QClassifyListBO;
 import com.poomoo.model.request.QCodeBO;
@@ -92,6 +93,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import rx.Observable;
+import rx.Subscription;
 
 /**
  * 类名 MyApi
@@ -252,10 +254,6 @@ public interface MyApi {
     @POST(NetConfig.suffix)
     Observable<ROrderBO> subOrder(@Body QOrderBO data);
 
-    //退款详情
-    @POST(NetConfig.suffix)
-    Observable<RReFundInfoBO> getReFundInfo(@Body QReFundInfoBO data);
-
     //确认收货
     @POST(NetConfig.suffix)
     Observable<ResponseBO> confirm(@Body QOrderId data);
@@ -268,6 +266,13 @@ public interface MyApi {
     @POST(NetConfig.suffix)
     Observable<RReFundBO> subReFund(@Body QReFundBO data);
 
+    //修改退款
+    @POST(NetConfig.suffix)
+    Observable<ResponseBO> changeReFund(@Body QChangeReFundBO data);
+
+    //退款详情
+    @POST(NetConfig.suffix)
+    Observable<RReFundInfoBO> getReFundInfo(@Body QReFundInfoBO data);
 
     //获取地址详情
     @POST(NetConfig.suffix)

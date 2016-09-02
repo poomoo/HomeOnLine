@@ -258,6 +258,7 @@ public class MyOrdersFragment extends BaseDaggerListFragment<ROrderListBO, Order
             bundle.putString(getString(R.string.intent_orderDetailId), orderDetails.id + "");
             bundle.putInt(getString(R.string.intent_count), orderDetails.commodityNum);
             bundle.putDouble(getString(R.string.intent_amount), orderDetails.unitPrice);
+            bundle.putBoolean(getString(R.string.intent_value), true);
             openActivity(ReFundActivity.class, bundle);
         }
     }

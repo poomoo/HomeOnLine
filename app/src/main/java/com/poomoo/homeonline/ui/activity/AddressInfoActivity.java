@@ -117,7 +117,6 @@ public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter
     private static final int NEW = 1;
     private static final int UPDATE = 2;
     private static final int DELETE = 3;
-    private static final int SELECT = 4;
     private RReceiptBO rReceiptBO = new RReceiptBO();
     private boolean isEdit;
 
@@ -368,10 +367,7 @@ public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter
 
     public void newSucceed() {
         hideProgressBar();
-        if (isEdit)
-            setResult(NEW);
-        else
-            setResult(SELECT);
+        setResult(NEW);
         finish();
     }
 
@@ -390,10 +386,7 @@ public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter
 
     public void updateSucceed() {
         mProgressBar.setVisibility(View.GONE);
-        if (isEdit)
-            setResult(UPDATE);
-        else
-            setResult(SELECT);
+        setResult(UPDATE);
         finish();
     }
 

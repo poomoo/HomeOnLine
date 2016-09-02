@@ -28,6 +28,8 @@
     <string name="title_classify_info">%1$s</string>
     <string name="title_refund">申请退款</string>
     <string name="title_evaluate">评价</string>
+    <string name="title_refundInfo">退款详情</string>
+    <string name="title_confirm_order">确认订单</string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -79,6 +81,12 @@
     <string name="intent_deliveryId">deliveryId</string>
     <string name="intent_deliveryFee">deliveryFee</string>
     <string name="intent_matchId">matchId</string>
+    <string name="intent_count">count</string>
+    <string name="intent_amount">amount</string>
+    <string name="intent_returnType">returnType</string>
+    <string name="intent_goodsState">goodsState</string>
+    <string name="intent_returnReason">returnReason</string>
+    <string name="intent_returnExplain">returnExplain</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>
@@ -116,9 +124,7 @@
     <!--dialog-->
 
     <string name="toast_3_pics">最多选择3张图片</string>
-    <string name="title_confirm_order">确认订单</string>
-    <string name="intent_count">count</string>
-    <string name="intent_amount">amount</string>
-    <string name="title_refundInfo">退款详情</string>
+    <string name="intent_returnProof">returnProof</string>
+    <string name="intent_returnNoteId">returnNoteId</string>
 
 </resources>

@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 
+import com.bumptech.glide.Glide;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.picUtils.Bimp;
 import com.poomoo.homeonline.picUtils.FileUtils;
@@ -30,7 +31,7 @@ public class PhotoActivity extends BaseActivity {
     private MyPageAdapter adapter;
     private int count;
 
-    public List<Bitmap> bmp = new ArrayList<>();
+    //    public List<Bitmap> bmp = new ArrayList<>();
     public List<String> drr = new ArrayList<>();
     public List<String> del = new ArrayList<>();
     public List<File> files = new ArrayList<>();
@@ -43,9 +44,9 @@ public class PhotoActivity extends BaseActivity {
         photoRlayout = (RelativeLayout) findViewById(R.id.rLayout_photo);
         photoRlayout.setBackgroundColor(0x70000000);
 
-        for (int i = 0; i < Bimp.bmp.size(); i++) {
-            bmp.add(Bimp.bmp.get(i));
-        }
+//        for (int i = 0; i < Bimp.bmp.size(); i++) {
+//            bmp.add(Bimp.bmp.get(i));
+//        }
         for (int i = 0; i < Bimp.drr.size(); i++) {
             drr.add(Bimp.drr.get(i));
         }
@@ -55,43 +56,44 @@ public class PhotoActivity extends BaseActivity {
         max = Bimp.max;
 
         Button photo_bt_del = (Button) findViewById(R.id.btn_del);
-        photo_bt_del.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (listViews.size() == 1) {
-                    Bimp.bmp.clear();
-                    Bimp.drr.clear();
-                    Bimp.files.clear();
-                    Bimp.max = 0;
-                    FileUtils.deleteDir();
-                    finish();
-                } else {
+        photo_bt_del.setOnClickListener(v -> {
+            if (listViews.size() == 1) {
+//                Bimp.bmp.clear();
+                Bimp.drr.clear();
+                Bimp.files.clear();
+                Bimp.max = 0;
+                FileUtils.deleteDir();
+                finish();
+            } else {
+                if (!drr.get(count).startsWith("http")) {
                     String newStr = drr.get(count).substring(
                             drr.get(count).lastIndexOf("/") + 1,
                             drr.get(count).lastIndexOf("."));
-                    bmp.remove(count);
-                    drr.remove(count);
-                    files.remove(count);
                     del.add(newStr);
-                    max--;
-                    pager.removeAllViews();
-                    listViews.remove(count);
-                    adapter.setListViews(listViews);
-                    adapter.notifyDataSetChanged();
-                    Bimp.bmp = bmp;
-                    Bimp.drr = drr;
-                    Bimp.max = max;
-                    Bimp.files = files;
-                    for (int i = 0; i < del.size(); i++) {
-                        FileUtils.delFile(del.get(i) + ".JPEG");
-                    }
+                }
+                drr.remove(count);
+                if (files.size() > 0)
+                    files.remove(count);
+//                bmp.remove(count);
+                max--;
+                pager.removeAllViews();
+                listViews.remove(count);
+                adapter.setListViews(listViews);
+                adapter.notifyDataSetChanged();
+//                Bimp.bmp = bmp;
+                Bimp.drr = drr;
+                Bimp.max = max;
+                Bimp.files = files;
+                for (int i = 0; i < del.size(); i++) {
+                    FileUtils.delFile(del.get(i) + ".JPEG");
                 }
             }
         });
 
         pager = (ViewPager) findViewById(R.id.viewpager);
         pager.addOnPageChangeListener(pageChangeListener);
-        for (int i = 0; i < bmp.size(); i++) {
-            initListViews(bmp.get(i));//
+        for (int i = 0; i < drr.size(); i++) {
+            initListViews(drr.get(i));//
         }
 
         adapter = new MyPageAdapter(listViews);// 构造adapter
@@ -111,13 +113,14 @@ public class PhotoActivity extends BaseActivity {
         return R.string.title_bucket;
     }
 
-    private void initListViews(Bitmap bm) {
+    private void initListViews(String bm) {
         if (listViews == null)
             listViews = new ArrayList<>();
         ImageView img = new ImageView(this);// 构造textView对象
         img.setBackgroundColor(0xff000000);
-        img.setImageBitmap(bm);
+//        img.setImageBitmap(bm);
         img.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+        Glide.with(this).load(bm).into(img);
         listViews.add(img);// 添加view
     }
 

@@ -59,5 +59,9 @@ public class RReFundInfoBO {
         public int returnType;//退货类型
         public int returnNum;//退货数量
         public int goodsState;//货物状态
+        public int commodityId;
+        public int commodityDetailId;
+        public String returnProof;
+        public int orderDetailId;
     }
 }

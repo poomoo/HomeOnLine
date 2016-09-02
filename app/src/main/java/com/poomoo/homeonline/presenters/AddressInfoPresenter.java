@@ -26,8 +26,6 @@
  */
 package com.poomoo.homeonline.presenters;
 
-import android.net.Network;
-
 import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;

@@ -80,16 +80,16 @@ public class TestActivity extends BaseActivity {
     }
 
     private void init() {
-        webView.setWebViewClient(new webViewClient());
-        webView.setWebChromeClient(new MyWebChromeClient());
-        webView.getSettings().setDefaultTextEncodingName("utf-8");
-        webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setLoadWithOverviewMode(true);// 缩放至屏幕的大小
-        webView.getSettings().setUseWideViewPort(true);
-        webView.loadUrl(NetConfig.grabUrl);
+//        webView.setWebViewClient(new webViewClient());
+//        webView.setWebChromeClient(new MyWebChromeClient());
+//        webView.getSettings().setDefaultTextEncodingName("utf-8");
+//        webView.getSettings().setJavaScriptEnabled(true);
+//        webView.getSettings().setLoadWithOverviewMode(true);// 缩放至屏幕的大小
+//        webView.getSettings().setUseWideViewPort(true);
+//        webView.loadUrl(NetConfig.grabUrl);
 
 //        imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(this) * 5 / 12));//设置广告栏的宽高比为2:1
-//        Glide.with(this).load(NetConfig.ImageUrl + "/upload/company/20160830/20160830100314_608.jpg").placeholder(R.drawable.replace12b5).into(imageView);
+        Glide.with(this).load(R.drawable.ic_add_image).into(imageView);
     }
 
     class MyWebChromeClient extends WebChromeClient {

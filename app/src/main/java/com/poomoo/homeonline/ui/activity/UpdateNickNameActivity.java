@@ -128,6 +128,7 @@ public class UpdateNickNameActivity extends BaseDaggerActivity<UpdateNickNamePre
     public void succeed() {
         hideProgressBar();
         MyUtils.showToast(getApplicationContext(), "修改昵称成功");
+        application.setNickName(name);
         SPUtils.put(getApplicationContext(), getString(R.string.sp_nickName), name);
         finish();
     }

@@ -3,6 +3,7 @@ package com.poomoo.homeonline.adapter;
 import android.content.Context;
 import android.media.Image;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -54,15 +55,17 @@ public class AddressListAdapter extends BaseListAdapter<RReceiptBO> {
 
         if (isEdit) {
             holder.editImg.setVisibility(View.GONE);
-            holder.editImg.setOnClickListener(new click(position));
             if (item.isDefault) {
-                SPUtils.put(mContext, mContext.getString(R.string.sp_receiptId), item.id);
-                SPUtils.put(mContext, mContext.getString(R.string.sp_receiptName), item.consigneeName);
-                SPUtils.put(mContext, mContext.getString(R.string.sp_receiptTel), item.consigneeTel);
-                SPUtils.put(mContext, mContext.getString(R.string.sp_receiptAddress), item.pca);
+                if (TextUtils.isEmpty((String) SPUtils.get(mContext, mContext.getString(R.string.sp_receiptName), ""))) {
+                    SPUtils.put(mContext, mContext.getString(R.string.sp_receiptId), item.id);
+                    SPUtils.put(mContext, mContext.getString(R.string.sp_receiptName), item.consigneeName);
+                    SPUtils.put(mContext, mContext.getString(R.string.sp_receiptTel), item.consigneeTel);
+                    SPUtils.put(mContext, mContext.getString(R.string.sp_receiptAddress), item.pca);
+                }
             }
         } else {
             holder.editImg.setVisibility(View.VISIBLE);
+            holder.editImg.setOnClickListener(new click(position));
         }
     }
 

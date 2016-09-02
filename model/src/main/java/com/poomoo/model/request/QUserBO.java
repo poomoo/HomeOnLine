@@ -33,24 +33,12 @@ package com.poomoo.model.request;
  * 日期 2016/8/29 16:33
  */
 public class QUserBO extends BaseRequest {
-    public User user;
+    public String phoneNum;
+    public String password;
 
-    public QUserBO(String method) {
+    public QUserBO(String method, String phoneNum, String password) {
         super(method);
-    }
-
-    public QUserBO(String method, User user) {
-        super(method);
-        this.user = user;
-    }
-
-    public class User {
-        public int id;
-        public String password;
-
-        public User(int id, String password) {
-            this.id = id;
-            this.password = password;
-        }
+        this.phoneNum = phoneNum;
+        this.password = password;
     }
 }

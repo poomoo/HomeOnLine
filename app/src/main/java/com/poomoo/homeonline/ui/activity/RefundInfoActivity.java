@@ -104,6 +104,8 @@ public class ReFundInfoActivity extends BaseDaggerActivity<RefundInfoPresenter> 
     TextView dealDateTxt;
 
     private String id;
+    private Bundle bundle;
+    private RReFundInfoBO rReFundInfoBO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,15 +139,30 @@ public class ReFundInfoActivity extends BaseDaggerActivity<RefundInfoPresenter> 
 
         errorLayout.setOnActiveClickListener(this);
 
-        errorLayout.setState(ErrorLayout.LOADING, "");
-        mPresenter.getReFundInfo(id);
+//        errorLayout.setState(ErrorLayout.LOADING, "");
+//        mPresenter.getReFundInfo(id);
     }
 
     /**
      * @param view
      */
     public void alterRefund(View view) {
+        bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_commodityId), rReFundInfoBO.returnNote.commodityId + "");
+        bundle.putString(getString(R.string.intent_commodityDetailId), rReFundInfoBO.returnNote.commodityDetailId + "");
+        bundle.putString(getString(R.string.intent_orderId), rReFundInfoBO.orderId);
+        bundle.putString(getString(R.string.intent_orderDetailId), rReFundInfoBO.returnNote.orderDetailId + "");
+        bundle.putInt(getString(R.string.intent_count), rReFundInfoBO.returnNote.returnNum);
+        bundle.putDouble(getString(R.string.intent_amount), rReFundInfoBO.unitPrice);
+        bundle.putBoolean(getString(R.string.intent_value), false);
 
+        bundle.putString(getString(R.string.intent_returnNoteId), rReFundInfoBO.returnNote.id);
+        bundle.putInt(getString(R.string.intent_returnType), rReFundInfoBO.returnNote.returnType);
+        bundle.putInt(getString(R.string.intent_goodsState), rReFundInfoBO.returnNote.goodsState);
+        bundle.putInt(getString(R.string.intent_returnReason), rReFundInfoBO.returnNote.returnReason);
+        bundle.putString(getString(R.string.intent_returnExplain), rReFundInfoBO.returnNote.returnExplain);
+        bundle.putString(getString(R.string.intent_returnProof), rReFundInfoBO.returnNote.returnProof);
+        openActivity(ReFundActivity.class, bundle);
     }
 
     /**
@@ -166,6 +183,7 @@ public class ReFundInfoActivity extends BaseDaggerActivity<RefundInfoPresenter> 
 
 
     public void successful(RReFundInfoBO rReFundInfoBO) {
+        this.rReFundInfoBO = rReFundInfoBO;
         errorLayout.setState(ErrorLayout.HIDE, "");
         switch (rReFundInfoBO.returnNote.returnStatus) {
             //处理中
@@ -212,12 +230,21 @@ public class ReFundInfoActivity extends BaseDaggerActivity<RefundInfoPresenter> 
 //        if (isNetWorkInvalid(msg))
 //            errorLayout.setState(ErrorLayout.NOT_NETWORK, "");
 //        else
+        infoLayout.setVisibility(View.GONE);
         errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 
 
     @Override
     public void onLoadActiveClick() {
+        errorLayout.setState(ErrorLayout.LOADING, "");
+        mPresenter.getReFundInfo(id);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        infoLayout.setVisibility(View.GONE);
         errorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.getReFundInfo(id);
     }

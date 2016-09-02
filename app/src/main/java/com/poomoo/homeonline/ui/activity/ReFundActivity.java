@@ -33,6 +33,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,6 +47,8 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.poomoo.api.NetConfig;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.AddPicsAdapter;
 import com.poomoo.homeonline.picUtils.Bimp;
@@ -61,6 +64,8 @@ import com.poomoo.model.response.RReFundBO;
 import com.poomoo.model.response.RUploadUrlBO;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -122,14 +127,19 @@ public class ReFundActivity extends BaseDaggerActivity<ReFundPresenter> implemen
     private ArrayAdapter<String> adapter_good;
     private ArrayAdapter<String> adapter_fund;
 
+    private String id;//退货ID
     private int returnReason = 0;//退货原因
     private int returnType = 2;//退货类型 1-退货且退款 2-仅退款
     private int goodsState = 2;//货物状态 1-收到 2-未收到
     private String returnExplain;//退货说明
-    private String returnProof;//退货凭证
+    private String returnProof = "";//退货凭证
     private int len = 0;//图片张数
     private int index;
     private final int num = 200;
+    private boolean isNew = true;//true-提交 false-修改
+    private String[] urls;
+    private List<String> drr;
+    private List<Integer> integers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,6 +177,7 @@ public class ReFundActivity extends BaseDaggerActivity<ReFundPresenter> implemen
         orderDetailId = getIntent().getStringExtra(getString(R.string.intent_orderDetailId));
         count = getIntent().getIntExtra(getString(R.string.intent_count), 0);
         amount = getIntent().getDoubleExtra(getString(R.string.intent_amount), 0.00);
+        isNew = getIntent().getBooleanExtra(getString(R.string.intent_value), true);
 
         countTxt.setText(count + "");
         countInfoTxt.setText(count + "");
@@ -177,18 +188,18 @@ public class ReFundActivity extends BaseDaggerActivity<ReFundPresenter> implemen
         drawable.setBounds(0, 0, drawable.getIntrinsicWidth(), (drawable.getMinimumHeight()));
         typeGroup.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
-                case R.id.rbtn_reGood:
-                    fundRbtn.setCompoundDrawables(null, null, null, null);
-                    goodRbtn.setCompoundDrawables(null, null, drawable, null);
-                    statusLayout.setVisibility(View.GONE);
-                    spinner.setAdapter(adapter_good);
-                    returnType = 2;
-                    break;
                 case R.id.rbtn_reFund:
                     fundRbtn.setCompoundDrawables(null, null, drawable, null);
                     goodRbtn.setCompoundDrawables(null, null, null, null);
-                    statusLayout.setVisibility(View.VISIBLE);
+                    statusLayout.setVisibility(View.GONE);
                     spinner.setAdapter(adapter_fund);
+                    returnType = 2;
+                    break;
+                case R.id.rbtn_reGood:
+                    fundRbtn.setCompoundDrawables(null, null, null, null);
+                    goodRbtn.setCompoundDrawables(null, null, drawable, null);
+                    statusLayout.setVisibility(View.VISIBLE);
+                    spinner.setAdapter(adapter_good);
                     returnType = 1;
                     break;
             }
@@ -196,19 +207,18 @@ public class ReFundActivity extends BaseDaggerActivity<ReFundPresenter> implemen
 
         statusGroup.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
-                case R.id.rbtn_yes:
-                    yesRbtn.setCompoundDrawables(null, null, drawable, null);
-                    noRbtn.setCompoundDrawables(null, null, null, null);
-                    goodsState = 2;
-                    break;
                 case R.id.rbtn_no:
                     yesRbtn.setCompoundDrawables(null, null, null, null);
                     noRbtn.setCompoundDrawables(null, null, drawable, null);
+                    goodsState = 2;
+                    break;
+                case R.id.rbtn_yes:
+                    yesRbtn.setCompoundDrawables(null, null, drawable, null);
+                    noRbtn.setCompoundDrawables(null, null, null, null);
                     goodsState = 1;
                     break;
             }
         });
-
 
         good_data = getResources().getStringArray(R.array.with_good_reason);
         adapter_good = new ArrayAdapter<>(this, R.layout.my_simple_spinner_self_item, good_data);
@@ -224,17 +234,71 @@ public class ReFundActivity extends BaseDaggerActivity<ReFundPresenter> implemen
                     subBtn.setEnabled(false);
                     return;
                 }
-                if (parent.equals(adapter_good))
-                    returnReason = position > 4 ? position + 5 : position;
-                else
-                    returnReason = position > 5 ? position + 5 : position + 4;
+                if (spinner.getAdapter().equals(adapter_fund))//仅退款
+                    returnReason = position + 4;
+                else//退货退款
+                    returnReason = position > 4 ? 10 : position;
                 subBtn.setEnabled(true);
+                LogUtils.d(TAG, "returnReason:" + returnReason + " parent:" + parent + " spinner:" + spinner.getAdapter());
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+        if (!isNew) {
+            id = getIntent().getStringExtra(getString(R.string.intent_returnNoteId));
+            returnType = getIntent().getIntExtra(getString(R.string.intent_returnType), 2);
+            goodsState = getIntent().getIntExtra(getString(R.string.intent_goodsState), 2);
+            returnReason = getIntent().getIntExtra(getString(R.string.intent_returnReason), 2);
+            returnExplain = getIntent().getStringExtra(getString(R.string.intent_returnExplain));
+            returnProof = getIntent().getStringExtra(getString(R.string.intent_returnProof));
+            LogUtils.d(TAG, "returnType:" + returnType);
+            LogUtils.d(TAG, "goodsState:" + goodsState);
+            LogUtils.d(TAG, "returnReason:" + returnReason);
+            LogUtils.d(TAG, "returnProof:" + returnProof);
+            explainEdt.setText(returnExplain);
+            Bimp.drr = new ArrayList<>();
+            if (!TextUtils.isEmpty(returnProof)) {
+                urls = returnProof.split("#");
+                for (String url : urls)
+                    Bimp.drr.add(NetConfig.ImageUrl + url);
+
+//                    try {
+//                        Bimp.bmp.add(Glide.with(this).load(NetConfig.ImageUrl + url).asBitmap().into(100, 100).get());
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    } catch (ExecutionException e) {
+//                        e.printStackTrace();
+//                    }
+//                    Glide.with(this).load(NetConfig.ImageUrl + url).asBitmap().into(new SimpleTarget<Bitmap>() {
+//                        @Override
+//                        public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
+//                            Bimp.bmp.add(resource);
+//                            addPicsAdapter.update();
+//                        }
+//
+//                    });
+            }
+
+            if (returnType == 2) {//仅退款
+                spinner.setAdapter(adapter_fund);
+                if (returnReason > 0)
+                    spinner.setSelection(returnReason > 9 ? 6 : returnReason - 4);
+            } else {//退货退款
+                goodRbtn.setChecked(true);
+                fundRbtn.setCompoundDrawables(null, null, null, null);
+                goodRbtn.setCompoundDrawables(null, null, drawable, null);
+                statusLayout.setVisibility(View.VISIBLE);
+                spinner.setAdapter(adapter_good);
+                if (returnReason > 0)
+                    spinner.setSelection(returnReason > 4 ? 5 : returnReason);
+                if (goodsState == 1) {
+                    yesRbtn.setCompoundDrawables(null, null, drawable, null);
+                    noRbtn.setCompoundDrawables(null, null, null, null);
+                }
+            }
+        }
 
         explainEdt.addTextChangedListener(new TextWatcher() {
 
@@ -278,19 +342,29 @@ public class ReFundActivity extends BaseDaggerActivity<ReFundPresenter> implemen
     public void submitReFund(View view) {
         returnExplain = explainEdt.getText().toString().trim();
         len = Bimp.files.size();
+        integers = new ArrayList<>();
+        for (String url : Bimp.drr) {
+            if (!url.startsWith("http"))
+                integers.add(index);
+            index++;
+        }
+        drr = new ArrayList<>();
+        drr.addAll(Bimp.drr);
+        Bimp.drr = new ArrayList<>();
+        index = 0;
+        LogUtils.d(TAG, "len:" + len);
         if (len > 0)
             mPresenter.uploadPic(Bimp.files.get(index++));
         else
-            mPresenter.subReFund(commodityId, commodityDetailId, orderId, orderDetailId, application.getUserId(), returnReason, returnExplain, returnProof, returnType, count, goodsState, count * amount);
+            submit();
         errorLayout.setState(ErrorLayout.LOADING, "");
     }
 
     Handler myHandler = new Handler() {
         public void handleMessage(Message msg) {
-
             if (msg.what == 1) {
                 if (index == len)
-                    mPresenter.subReFund(commodityId, commodityDetailId, orderId, orderDetailId, application.getUserId(), returnReason, returnExplain, returnProof, returnType, count, goodsState, count * amount);
+                    submit();
                 else
                     mPresenter.uploadPic(Bimp.files.get(index++));
             }
@@ -299,7 +373,7 @@ public class ReFundActivity extends BaseDaggerActivity<ReFundPresenter> implemen
     };
 
     public void upLoadSuccessful(RUploadUrlBO rUploadUrlBO) {
-        returnProof += rUploadUrlBO.picUrl + "#";
+        Bimp.drr.add(rUploadUrlBO.picUrl);
 
         Message message = new Message();
         message.what = 1;
@@ -309,11 +383,29 @@ public class ReFundActivity extends BaseDaggerActivity<ReFundPresenter> implemen
     @Override
     public void onLoadActiveClick() {
         scrollView.setVisibility(View.VISIBLE);
+        index = 0;
         if (len > 0)
             mPresenter.uploadPic(Bimp.files.get(index++));
         else
-            mPresenter.subReFund(commodityId, commodityDetailId, orderId, orderDetailId, application.getUserId(), returnReason, returnExplain, returnProof, returnType, count, goodsState, count * amount);
+            submit();
+
         errorLayout.setState(ErrorLayout.LOADING, "");
+    }
+
+    public void submit() {
+        returnProof = "";
+        LogUtils.d(TAG, "integers:" + integers.toString() + " Bimp.drr" + Bimp.drr);
+        for (int i = 0; i < integers.size(); i++)
+            drr.set(integers.get(i), Bimp.drr.get(i));
+        LogUtils.d(TAG, "drr:" + drr);
+
+        for (String url : drr)
+            returnProof += url.startsWith("http") ? url.substring(url.indexOf("/", 27), url.length()) + "#" : url + "#";
+
+        if (isNew)
+            mPresenter.subReFund(commodityId, commodityDetailId, orderId, orderDetailId, application.getUserId(), returnReason, returnExplain, returnProof, returnType, count, goodsState, count * amount);
+        else
+            mPresenter.changeReFund(id, returnReason, returnExplain, returnProof, returnType, count, goodsState, count * amount);
     }
 
     public void failed(String msg) {
@@ -328,9 +420,13 @@ public class ReFundActivity extends BaseDaggerActivity<ReFundPresenter> implemen
         finish();
     }
 
+    public void changeSuccessful() {
+        finish();
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (position == Bimp.bmp.size()) {
+        if (position == Bimp.drr.size()) {
             openActivity(PhotosActivity.class);
         } else {
             Bundle bundle = new Bundle();

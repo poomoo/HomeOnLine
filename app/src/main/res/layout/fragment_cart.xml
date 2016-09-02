@@ -39,7 +39,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ExpandableListView
                 android:id="@+id/expandableListView"
@@ -135,6 +136,7 @@
                     android:background="@color/white"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:clickable="true"
                     android:paddingBottom="8dp"
                     android:paddingLeft="10dp"
                     android:paddingTop="8dp">
@@ -167,6 +169,7 @@
                             android:paddingBottom="6dp"
                             android:paddingTop="6dp"
                             android:text="移入关注"
+                            android:visibility="gone"
                             android:textSize="@dimen/sp_14" />
 
                         <TextView

@@ -54,17 +54,11 @@ public class PhotosActivity extends BaseActivity {
         gridView.setAdapter(adapter);
         adapter.addItems(imageBucketList);
 
-        gridView.setOnItemClickListener(new OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Intent intent = new Intent(PhotosActivity.this, ImageGridActivity.class);
-                intent.putExtra(MyConfig.EXTRA_IMAGE_LIST, (Serializable) imageBucketList.get(position).imageList);
-                startActivity(intent);
-                finish();
-            }
-
+        gridView.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(PhotosActivity.this, ImageGridActivity.class);
+            intent.putExtra(MyConfig.EXTRA_IMAGE_LIST, (Serializable) imageBucketList.get(position).imageList);
+            startActivity(intent);
+            finish();
         });
     }
 

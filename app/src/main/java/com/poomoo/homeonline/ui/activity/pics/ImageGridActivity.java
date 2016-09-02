@@ -72,19 +72,9 @@ public class ImageGridActivity extends BaseActivity {
         dataList = (List<ImageItem>) getIntent().getSerializableExtra(MyConfig.EXTRA_IMAGE_LIST);
         adapter.setItems(dataList);
 
-        adapter.setTextCallback(new ImageGridAdapter.TextCallback() {
-            public void onListen(int count) {
-                btn.setText(getString(R.string.btn_complete) + "(" + count + ")");
-            }
-        });
+        adapter.setTextCallback(count -> btn.setText(getString(R.string.btn_complete) + "(" + count + ")"));
 
-        gridView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                adapter.notifyDataSetChanged();
-            }
-        });
+        gridView.setOnItemClickListener((parent, view, position, id) -> adapter.notifyDataSetChanged());
     }
 
     public void toCompleted(View view) {

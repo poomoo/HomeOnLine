@@ -7,19 +7,20 @@
 
     <ImageView
         android:id="@+id/img_special_content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone" />
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/ic_add_image"
+        android:visibility="visible" />
 
     <WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
     <com.poomoo.homeonline.ui.custom.ErrorLayout
         android:id="@+id/error_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible" />
+        android:visibility="gone" />
 </LinearLayout>

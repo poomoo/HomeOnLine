@@ -27,7 +27,6 @@
 package com.poomoo.homeonline.ui.activity;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,39 +42,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.alipay.sdk.app.PayTask;
-import com.google.gson.Gson;
-import com.poomoo.api.HttpCallbackListener;
-import com.poomoo.api.HttpUtil;
-import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.ConfirmOrderAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
-import com.poomoo.homeonline.pay.OrderInfoUtil2_0;
 import com.poomoo.homeonline.pay.PayResult;
-import com.poomoo.homeonline.pay.SignUtils;
 import com.poomoo.homeonline.presenters.ConfirmOrderPresenter;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
-import com.poomoo.model.PayBO;
-import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.QOrderBO;
 import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.RReceiptBO;
-import com.poomoo.model.response.RSignBO;
 import com.poomoo.model.response.RTransferPriceBO;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.security.PublicKey;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -283,13 +268,6 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
             MyUtils.showToast(getApplicationContext(), msg);
     }
 
-    public void getTransferPriceSucceed(RTransferPriceBO rTransferPriceBO) {
-        mErrorLayout.setState(ErrorLayout.HIDE, "");
-        transferPriceTxt.setText("￥" + rTransferPriceBO.conutFreight);
-        totalPrice += rTransferPriceBO.conutFreight;
-        totalPriceTxt.setText("￥" + totalPrice);
-    }
-
     public void getAddressFailed(String msg) {
         mErrorLayout.setState(ErrorLayout.HIDE, "");
         if (isNetWorkInvalid(msg)) {
@@ -307,6 +285,12 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
         receiptTelTxt.setText(rReceiptBO.consigneeTel);
         receiptAddressTxt.setText(rReceiptBO.pca);
         infoLayout.setVisibility(View.VISIBLE);
+    }
+
+    public void getTransferPriceSucceed(RTransferPriceBO rTransferPriceBO) {
+        mErrorLayout.setState(ErrorLayout.HIDE, "");
+        transferPriceTxt.setText("￥" + rTransferPriceBO.conutFreight);
+        totalPriceTxt.setText("￥" + (totalPrice + rTransferPriceBO.conutFreight));
     }
 
     public void getTransferPriceFailed(String msg) {

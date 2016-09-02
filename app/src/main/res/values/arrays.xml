@@ -1,5 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    //退货原因
+    /**
+    * 商品描述不符
+    */
+    public static final int GOODS_RETURN_NOTE_REASON_ONE = 1;
+    /**
+    * 卖家发错货
+    */
+    public static final int GOODS_RETURN_NOTE_REASON_TWO = 2;
+    /**
+    * 少件/漏发
+    */
+    public static final int GOODS_RETURN_NOTE_REASON_THREE = 3;
+    /**
+    * 7天无理由退换货
+    */
+    public static final int GOODS_RETURN_NOTE_REASON_FOUR = 4;
+    /**
+    * 买错，不需要
+    */
+    public static final int GOODS_RETURN_NOTE_REASON_FIVE = 5;
+    /**
+    * 快递无跟踪记录
+    */
+    public static final int GOODS_RETURN_NOTE_REASON_SIX = 6;
+    /**
+    * 快递一直未送到
+    */
+    public static final int GOODS_RETURN_NOTE_REASON_SEVEN = 7;
+    /**
+    * 空包裹，少货
+    */
+    public static final int GOODS_RETURN_NOTE_REASON_EIGHT = 8;
+    /**
+    * 未按规定时间发货
+    */
+    public static final int GOODS_RETURN_NOTE_REASON_NINE = 9;
+    /**
+    * 其他
+    */
+    public static final int GOODS_RETURN_NOTE_REASON_TEN = 10;
     <string-array name="no_good_reason">
         <item>请选择退款原因</item>
         <item>买错,不需要</item>

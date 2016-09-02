@@ -26,25 +26,31 @@
  */
 package com.poomoo.model.request;
 
-import android.text.TextUtils;
-
 /**
- * 类名 QUpdateInfoBO
- * 描述 更新个人信息
+ * 类名 QReFundBO
+ * 描述 修改退款
  * 作者 李苜菲
- * 日期 2016/8/15 17:14
+ * 日期 2016/8/26 10:19
  */
-public class QUpdateInfoBO extends BaseRequest {
-    public int id;
-    public String nickName;
-    public String phoneNum;
+public class QChangeReFundBO extends BaseRequest {
+    public String id;
+    public int returnReason;
+    public String returnExplain;
+    public String returnProof;
+    public int returnType;
+    public int returnNum;
+    public int goodsState;
+    public double returnMoney;
 
-    public QUpdateInfoBO(String method, int id, String nickName, String phoneNum) {
+    public QChangeReFundBO(String method, String id, int returnReason, String returnExplain, String returnProof, int returnType, int returnNum, int goodsState, double returnMoney) {
         super(method);
         this.id = id;
-        if (!TextUtils.isEmpty(nickName))
-            this.nickName = nickName;
-        if (!TextUtils.isEmpty(phoneNum))
-            this.phoneNum = phoneNum;
+        this.returnReason = returnReason;
+        this.returnExplain = returnExplain;
+        this.returnProof = returnProof;
+        this.returnType = returnType;
+        this.returnNum = returnNum;
+        this.goodsState = goodsState;
+        this.returnMoney = returnMoney;
     }
 }

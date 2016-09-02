@@ -61,4 +61,22 @@ public class QReFundBO extends BaseRequest {
         this.goodsState = goodsState;
         this.returnMoney = returnMoney;
     }
+
+    @Override
+    public String toString() {
+        return "QReFundBO{" +
+                "commodityId='" + commodityId + '\'' +
+                ", commodityDetailId='" + commodityDetailId + '\'' +
+                ", orderId='" + orderId + '\'' +
+                ", orderDetailId='" + orderDetailId + '\'' +
+                ", userId=" + userId +
+                ", returnReason=" + returnReason +
+                ", returnExplain='" + returnExplain + '\'' +
+                ", returnProof='" + returnProof + '\'' +
+                ", returnType=" + returnType +
+                ", returnNum=" + returnNum +
+                ", goodsState=" + goodsState +
+                ", returnMoney=" + returnMoney +
+                '}';
+    }
 }

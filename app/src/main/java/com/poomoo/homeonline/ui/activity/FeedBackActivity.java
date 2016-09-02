@@ -182,7 +182,7 @@ public class FeedBackActivity extends BaseDaggerActivity<FeedBackPresenter> impl
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (position == Bimp.bmp.size()) {
+        if (position == Bimp.drr.size()) {
             openActivity(PhotosActivity.class);
         } else {
             Bundle bundle = new Bundle();

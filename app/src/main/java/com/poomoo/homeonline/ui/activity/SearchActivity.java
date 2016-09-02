@@ -31,6 +31,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 import android.widget.EditText;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.ListCommodityAdapter;
@@ -91,13 +92,30 @@ public class SearchActivity extends BaseListDaggerActivity<RListCommodityBO, Sea
 
     @Override
     protected BaseListAdapter<RListCommodityBO> onSetupAdapter() {
-        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.ONLY_FOOTER,true);
+        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.ONLY_FOOTER, true);
         return listCommodityAdapter;
     }
 
     private void init() {
         mSwipeRefreshLayout.setEnabled(false);
-        mListView.setLayoutManager(new GridLayoutManager(this, 2));
+        //设置布局管理器
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                int spanSize;
+                switch (mAdapter.getItemViewType(position)) {
+                    case -2:
+                        spanSize = 2;
+                        break;
+                    default:
+                        spanSize = 1;
+                        break;
+                }
+                return spanSize;
+            }
+        });
+        mListView.setLayoutManager(gridLayoutManager);
         mListView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))

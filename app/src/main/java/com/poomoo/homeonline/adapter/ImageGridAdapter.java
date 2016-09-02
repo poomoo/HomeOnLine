@@ -73,10 +73,8 @@ public class ImageGridAdapter extends MyBaseAdapter<ImageItem> {
             holder = new Holder();
             convertView = inflater.inflate(R.layout.item_grid_image, null);
             holder.iv = (ImageView) convertView.findViewById(R.id.img_grid_image);
-            holder.selected = (ImageView) convertView
-                    .findViewById(R.id.img_grid_image_isselected);
-            holder.text = (TextView) convertView
-                    .findViewById(R.id.txt_grid_image);
+            holder.selected = (ImageView) convertView.findViewById(R.id.img_grid_image_isselected);
+            holder.text = (TextView) convertView.findViewById(R.id.txt_grid_image);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -84,8 +82,7 @@ public class ImageGridAdapter extends MyBaseAdapter<ImageItem> {
         final ImageItem item = itemList.get(position);
 
         holder.iv.setTag(item.imagePath);
-        cache.displayBmp(holder.iv, item.thumbnailPath, item.imagePath,
-                callback);
+        cache.displayBmp(holder.iv, item.thumbnailPath, item.imagePath, callback);
         if (item.isSelected) {
             holder.selected.setImageResource(R.drawable.ic_checkbox_checked);
             holder.text.setBackgroundResource(R.drawable.bg_relatly_line);
@@ -93,47 +90,43 @@ public class ImageGridAdapter extends MyBaseAdapter<ImageItem> {
             holder.selected.setImageResource(-1);
             holder.text.setBackgroundColor(0x00000000);
         }
-        holder.iv.setOnClickListener(new View.OnClickListener() {
+        holder.iv.setOnClickListener(v -> {
+            String path = itemList.get(position).imagePath;
 
-            @Override
-            public void onClick(View v) {
-                String path = itemList.get(position).imagePath;
-
-                if ((Bimp.drr.size() + selectTotal) < 3) {
+            if ((Bimp.drr.size() + selectTotal) < 3) {
+                item.isSelected = !item.isSelected;
+                if (item.isSelected) {
+                    holder.selected.setImageResource(R.drawable.ic_checkbox_checked);
+                    holder.text.setBackgroundResource(R.drawable.bg_relatly_line);
+                    selectTotal++;
+                    if (textcallback != null)
+                        textcallback.onListen(selectTotal);
+                    map.put(path, path);
+                    try {
+                        bitmap = Bimp.revitionImageSize(path);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else if (!item.isSelected) {
+                    holder.selected.setImageResource(-1);
+                    holder.text.setBackgroundColor(0x00000000);
+                    selectTotal--;
+                    if (textcallback != null)
+                        textcallback.onListen(selectTotal);
+                    map.remove(path);
+                    files.remove(path);
+                }
+            } else if ((Bimp.drr.size() + selectTotal) >= 3) {
+                if (item.isSelected == true) {
                     item.isSelected = !item.isSelected;
-                    if (item.isSelected) {
-                        holder.selected.setImageResource(R.drawable.ic_checkbox_checked);
-                        holder.text.setBackgroundResource(R.drawable.bg_relatly_line);
-                        selectTotal++;
-                        if (textcallback != null)
-                            textcallback.onListen(selectTotal);
-                        map.put(path, path);
-                        try {
-                            bitmap = Bimp.revitionImageSize(path);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } else if (!item.isSelected) {
-                        holder.selected.setImageResource(-1);
-                        holder.text.setBackgroundColor(0x00000000);
-                        selectTotal--;
-                        if (textcallback != null)
-                            textcallback.onListen(selectTotal);
-                        map.remove(path);
-                        files.remove(path);
-                    }
-                } else if ((Bimp.drr.size() + selectTotal) >= 3) {
-                    if (item.isSelected == true) {
-                        item.isSelected = !item.isSelected;
-                        holder.selected.setImageResource(-1);
-                        holder.text.setBackgroundColor(0x00000000);
-                        selectTotal--;
-                        map.remove(path);
-                        files.remove(path);
-                    } else {
-                        Message message = Message.obtain(mHandler, 0);
-                        message.sendToTarget();
-                    }
+                    holder.selected.setImageResource(-1);
+                    holder.text.setBackgroundColor(0x00000000);
+                    selectTotal--;
+                    map.remove(path);
+                    files.remove(path);
+                } else {
+                    Message message = Message.obtain(mHandler, 0);
+                    message.sendToTarget();
                 }
             }
         });

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
@@ -27,13 +28,16 @@ import java.io.IOException;
  * 日期 2016/7/19 11:29
  */
 public class AddPicsAdapter extends MyBaseAdapter {
+    private Context context;
+
     public AddPicsAdapter(Context context) {
         super(context);
+        this.context = context;
     }
 
     @Override
     public int getCount() {
-        int size = Bimp.bmp.size();
+        int size = Bimp.drr.size();
         if (size == 0)
             return 1;
         else if (size == 3)
@@ -53,13 +57,16 @@ public class AddPicsAdapter extends MyBaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        if (position == Bimp.bmp.size()) {
+//        LogUtils.d(TAG, "position:" + position + " drr" + Bimp.drr.get(position));
+        if (position == Bimp.drr.size()) {
             if (position == 3)
                 holder.image.setVisibility(View.GONE);
             else
-                holder.image.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_add_image));
+                Glide.with(context).load(R.drawable.ic_add_image).into(holder.image);
+//            holder.image.setImageBitmap(BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_add_image));
         } else {
-            holder.image.setImageBitmap(Bimp.bmp.get(position));
+            Glide.with(context).load(Bimp.drr.get(position)).into(holder.image);
+//            holder.image.setImageBitmap(Bimp.bmp.get(position));
         }
         return convertView;
     }
@@ -86,7 +93,7 @@ public class AddPicsAdapter extends MyBaseAdapter {
     public void loading() {
         new Thread(() -> {
             while (true) {
-                LogUtils.d("lmf", "Bimp.max:" + Bimp.max + " Bimp.drr:" + Bimp.drr.size());
+                LogUtils.d("lmf", "Bimp.max:" + Bimp.max + " Bimp.drr:" + Bimp.drr.toString());
                 if (Bimp.max == Bimp.drr.size()) {
                     Message message = new Message();
                     message.what = 1;
@@ -94,12 +101,15 @@ public class AddPicsAdapter extends MyBaseAdapter {
                     break;
                 } else {
                     try {
-                        String path = Bimp.drr.get(Bimp.max);
-                        Bitmap bm = Bimp.revitionImageSize(path);
-                        Bimp.bmp.add(bm);
-                        String newStr = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
-                        Bimp.files.add(FileUtils.saveBitmap(bm, "" + newStr));
-                        LogUtils.d("lmf", " Bimp.files:" +  Bimp.files.get(Bimp.max));
+                        if (Bimp.drr.size() > 0) {
+                            String path = Bimp.drr.get(Bimp.max);
+                            if (!path.startsWith("http")) {
+                                Bitmap bm = Bimp.revitionImageSize(path);
+//                                Bimp.bmp.add(bm);
+                                String newStr = path.substring(path.lastIndexOf("/") + 1, path.lastIndexOf("."));
+                                Bimp.files.add(FileUtils.saveBitmap(bm, "" + newStr));
+                            }
+                        }
                         Bimp.max += 1;
                         Message message = new Message();
                         message.what = 1;

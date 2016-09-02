@@ -21,7 +21,6 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -30,7 +29,6 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
@@ -92,16 +90,10 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     ErrorLayout mErrorLayout;
 
     private CartAdapter adapter;
-    private List<RCartShopBO> rCartShopBOs = new ArrayList<>();
-    private List<RCartCommodityBO> rCartCommodityBOs = new ArrayList<>();
-    private RCartShopBO rCartShopBO;
-    private RCartCommodityBO rCartCommodityBO;
 
     private boolean isClick = true;//是否是点击全选框 true-点击 false-适配器变化
     public static CartFragment inStance = null;
     private EditText dialogCountEdt;
-    //    private TextView dialogMinusTxt;
-//    private TextView dialogPlusTxt;
     private ImageView dialogMinusImg;
     private ImageView dialogPlusImg;
     private Button dialogCancelBtn;
@@ -116,10 +108,10 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     private int groupPosition;
     private int childPosition;
     private int commodityType;
-    //    private int minNum = 1;//商品数量下限
-//    private int maxNum = 200;//商品数量上限
     private boolean isRefresh = false;//true--刷新
     private int[] deleteIndex;//删除的商品的id集合
+    private Bundle bundle;
+    private RCartCommodityBO cartCommodityBO;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -154,17 +146,16 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         listView.setOnGroupClickListener((parent, v, groupPosition1, id) -> true);
         listView.setOnItemClickListener((parent, view1, position, id) -> LogUtils.d(TAG, "onItemClick"));
         listView.setOnChildClickListener((parent, v, groupPosition1, childPosition1, id) -> {
-            LogUtils.d(TAG, "setOnChildClickListener");
-            Bundle bundle = new Bundle();
-            bundle.putInt(getString(R.string.intent_commodityId), ((RCartCommodityBO) adapter.getChild(groupPosition1, childPosition1)).commodityId);
-            bundle.putInt(getString(R.string.intent_commodityDetailId), ((RCartCommodityBO) adapter.getChild(groupPosition1, childPosition1)).commodityDetailId);
-            bundle.putInt(getString(R.string.intent_commodityType), ((RCartCommodityBO) adapter.getChild(groupPosition1, childPosition1)).commodityType);
+            cartCommodityBO = (RCartCommodityBO) adapter.getChild(groupPosition1, childPosition1);
+            bundle = new Bundle();
+            bundle.putInt(getString(R.string.intent_commodityId), cartCommodityBO.commodityId);
+            bundle.putInt(getString(R.string.intent_commodityDetailId), cartCommodityBO.commodityDetailId);
+            bundle.putInt(getString(R.string.intent_commodityType), cartCommodityBO.commodityType);
+            bundle.putInt(getString(R.string.intent_matchId), cartCommodityBO.rushPurchaseId);
             openActivity(CommodityInfoActivity.class, bundle);
             return true;
         });
         listView.setOnScrollListener(this);
-//        adapter.setGroup(getList());
-//        expandListView();
 
         allBuyChk.setOnCheckedChangeListener(this);
         allEditChk.setOnCheckedChangeListener(this);
@@ -183,8 +174,6 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 R.color.swipe_refresh_first, R.color.swipe_refresh_second,
                 R.color.swipe_refresh_third, R.color.swipe_refresh_four
         );
-
-
     }
 
     public void getInfoSucceed(List<RCartShopBO> rCartShopBOs) {
@@ -274,67 +263,6 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         MyUtils.showToast(getActivity().getApplicationContext(), msg);
     }
 
-//    private List<RCartShopBO> getList() {
-//        rCartShopBOs = new ArrayList<>();
-//        for (int i = 0; i < 2; i++) {
-//            rCartShopBO = new RCartShopBO();
-////            rCartShopBO.shopId = i + 1;
-//            rCartShopBO.shopName = "测试店铺" + (i + 1);
-//            rCartShopBO.carts = getCommodities();
-//            rCartShopBOs.add(rCartShopBO);
-//        }
-//        return rCartShopBOs;
-//    }
-//
-//    private List<RCartShopBO> getList2() {
-//        rCartShopBOs = new ArrayList<>();
-//        for (int i = 0; i < 2; i++) {
-//            rCartShopBO = new RCartShopBO();
-////            rCartShopBO.shopId = i + 1;
-//            rCartShopBO.shopName = "测试店铺" + (i + 1);
-//            rCartShopBO.carts = getCommodities2();
-//            rCartShopBOs.add(rCartShopBO);
-//        }
-//        rCartShopBO = new RCartShopBO();
-////        rCartShopBO.shopId = 10;
-//        rCartShopBO.shopName = "测试店铺10";
-//        rCartShopBO.carts = getCommodities2();
-//        rCartShopBOs.add(rCartShopBO);
-//        return rCartShopBOs;
-//    }
-
-//    private List<RCartCommodityBO> getCommodities() {
-//        rCartCommodityBOs = new ArrayList<>();
-//        for (int i = 0; i < 5; i++) {
-//            rCartCommodityBO = new RCartCommodityBO();
-//            rCartCommodityBO.commodityNum = i + 1;
-//            rCartCommodityBO.commodityId = i + 1;
-//            rCartCommodityBO.commodityName = "测试商品" + (i + 1);
-//            rCartCommodityBO.commodityPrice = 378 + i + "";
-//            rCartCommodityBOs.add(rCartCommodityBO);
-//        }
-//        return rCartCommodityBOs;
-//    }
-//
-//    private List<RCartCommodityBO> getCommodities2() {
-//        rCartCommodityBOs = new ArrayList<>();
-//        for (int i = 0; i < 2; i++) {
-//            rCartCommodityBO = new RCartCommodityBO();
-//            rCartCommodityBO.commodityNum = i + 1;
-//            rCartCommodityBO.commodityId = i + 10;
-//            rCartCommodityBO.commodityName = "添加商品" + (i + 1);
-//            rCartCommodityBO.commodityPrice = 478 + i + "";
-//            rCartCommodityBOs.add(rCartCommodityBO);
-//        }
-//        rCartCommodityBO = new RCartCommodityBO();
-//        rCartCommodityBO.commodityNum = 4;
-//        rCartCommodityBO.commodityId = 1;
-//        rCartCommodityBO.commodityName = "测试商品10";
-//        rCartCommodityBO.commodityPrice = "480";
-//        rCartCommodityBOs.add(rCartCommodityBO);
-//        return rCartCommodityBOs;
-//    }
-
     @Override
     public void onLoadActiveClick() {
         mErrorLayout.setState(ErrorLayout.LOADING, "");
@@ -371,7 +299,6 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
      * @param totalPrice
      */
     public void setTotalPrice(String totalPrice) {
-        LogUtils.d(TAG, "totalPrice:" + totalPrice);
         totalPriceTxt.setText(totalPrice);
     }
 
@@ -502,6 +429,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        LogUtils.d(TAG, "onHiddenChanged");
         if (!hidden) {
             changeState();
             isRefresh = true;
@@ -514,6 +442,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
      * 切换编辑状态到购买状态
      */
     private void changeState() {
+        LogUtils.d(TAG, "changeState");
         if (adapter.getGroups().size() > 0) {
             adapter.isEdit = false;
             adapter.notifyDataSetChanged();
@@ -530,7 +459,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         Iterator<RCartShopBO> iterator = rCartShopBOs.iterator();
         final List<RCartShopBO> data = adapter.getGroups();
         while (iterator.hasNext()) {
-            LogUtils.d(TAG, "While");
+//            LogUtils.d(TAG, "While");
             RCartShopBO obj = iterator.next();
             if (data.contains(obj)) {
                 int i = data.indexOf(obj);
@@ -540,12 +469,12 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                     if (!data.get(i).carts.contains(obj.carts.get(j))) {//不存在则添加新商品
                         obj.carts.get(j).isBuyChecked = data.get(i).isBuyChecked;
                         data.get(i).carts.add(0, obj.carts.get(j));
-                        LogUtils.d(TAG, "店铺" + obj.shopName + "添加了商品" + obj.carts.get(j).commodityName);
+//                        LogUtils.d(TAG, "店铺" + obj.shopName + "添加了商品" + obj.carts.get(j).commodityName);
                     } else {//存在则更新
                         int position = data.get(i).carts.indexOf(obj.carts.get(j));
                         obj.carts.get(j).isBuyChecked = data.get(i).carts.get(data.get(i).carts.indexOf(obj.carts.get(j))).isBuyChecked;
                         data.get(i).carts.set(position, obj.carts.get(j));
-                        LogUtils.d(TAG, "店铺" + obj.shopName + "更新了商品" + obj.carts.get(j).commodityName);
+//                        LogUtils.d(TAG, "店铺" + obj.shopName + "更新了商品" + obj.carts.get(j).commodityName);
                     }
                 }
             } else {
@@ -562,6 +491,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
 
     @Override
     public void onRefresh() {
+        LogUtils.d(TAG, "onRefresh");
         changeState();
         isRefresh = true;
         mPresenter.getCartInfo(application.getUserId());
@@ -602,7 +532,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 @Override
                 public void afterTextChanged(Editable s) {
                     String temp = s.toString();
-                    LogUtils.d(TAG, "temp:" + temp);
+//                    LogUtils.d(TAG, "temp:" + temp);
                     if (temp.length() == 0)
                         return;
                     if (temp.length() == MyConfig.MINCOUNT && temp.equals("0")) {
@@ -612,7 +542,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                     count = Integer.parseInt(temp);
                     if (count > MyConfig.MAXCOUNT) {
                         count = MyConfig.MAXCOUNT;
-                        LogUtils.d(TAG, "s:" + s.toString() + " len" + s.length());
+//                        LogUtils.d(TAG, "s:" + s.toString() + " len" + s.length());
                         s.replace(0, s.length(), count + "");
                     }
                     setEnabled(count);

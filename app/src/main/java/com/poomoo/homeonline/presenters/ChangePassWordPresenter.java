@@ -105,10 +105,11 @@ public class ChangePassWordPresenter extends BasePresenter<ChangePassWordActivit
     /**
      * 修改密码
      *
-     * @param user
+     * @param tel
+     * @param passWord
      */
-    public void changePW(QUserBO.User user) {
-        QUserBO qUserBO = new QUserBO(NetConfig.CHANGEPASSWORD, user);
+    public void changePW(String tel, String passWord) {
+        QUserBO qUserBO = new QUserBO(NetConfig.CHANGEPASSWORD, tel, passWord);
         add(NetWork.getMyApi().changePW(qUserBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

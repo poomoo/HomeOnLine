@@ -30,8 +30,10 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.ui.activity.ReFundActivity;
 import com.poomoo.model.ResponseBO;
+import com.poomoo.model.request.QChangeReFundBO;
 import com.poomoo.model.request.QReFundBO;
 import com.poomoo.model.response.RReFundBO;
 import com.poomoo.model.response.RUploadUrlBO;
@@ -54,6 +56,8 @@ import rx.schedulers.Schedulers;
  * 日期 2016/8/22 15:39
  */
 public class ReFundPresenter extends BasePresenter<ReFundActivity> {
+    private final String TAG = getClass().getSimpleName();
+
     @Inject
     public ReFundPresenter() {
     }
@@ -74,6 +78,7 @@ public class ReFundPresenter extends BasePresenter<ReFundActivity> {
      */
     public void subReFund(String commodityId, String commodityDetailId, String orderId, String orderDetailId, int userId, int returnReason, String returnExplain, String returnProof, int returnType, int returnNum, int goodsState, double returnMoney) {
         QReFundBO qReFundBO = new QReFundBO(NetConfig.REFUND, commodityId, commodityDetailId, orderId, orderDetailId, userId, returnReason, returnExplain, returnProof, returnType, returnNum, goodsState, returnMoney);
+//        LogUtils.d(TAG, "subReFund:" + qReFundBO.toString());
         add(NetWork.getMyApi().subReFund(qReFundBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -117,5 +122,35 @@ public class ReFundPresenter extends BasePresenter<ReFundActivity> {
                     }
                 }));
 
+    }
+
+    /**
+     * 修改退款详情
+     *
+     * @param id
+     * @param returnReason
+     * @param returnExplain
+     * @param returnProof
+     * @param returnType
+     * @param returnNum
+     * @param goodsState
+     * @param returnMoney
+     */
+    public void changeReFund(String id, int returnReason, String returnExplain, String returnProof, int returnType, int returnNum, int goodsState, double returnMoney) {
+        QChangeReFundBO qChangeReFundBO = new QChangeReFundBO(NetConfig.CHANGEREFUND, id, returnReason, returnExplain, returnProof, returnType, returnNum, goodsState, returnMoney);
+        add(NetWork.getMyApi().changeReFund(qChangeReFundBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<ResponseBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.failed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBO responseBO) {
+                        mView.changeSuccessful();
+                    }
+                }));
     }
 }

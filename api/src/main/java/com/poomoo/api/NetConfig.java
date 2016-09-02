@@ -19,9 +19,6 @@ public class NetConfig {
 
     public static final String grabUrl = url + "jyzx/app/rush.html";
 
-    public final static boolean FALSE = false;//超时
-    public final static String TIME_OUT_EVENT_MSG = "连接服务器失败";
-
     public final static String LOGIN = "1001";//登录
     public final static String CODE = "1002";//获取验证码
     public final static String CHECK = "1003";//校验验证码
@@ -80,6 +77,7 @@ public class NetConfig {
     public static final String ISCOLLECT = "1013_04";//该商品是否收藏过
 
     public static final String REFUND = "1014_01";//申请退款
+    public static final String CHANGEREFUND = "1014_02";//修改退款
     public static final String REFUNDINFO = "1014_03";//退款详情
 
 

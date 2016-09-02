@@ -80,50 +80,14 @@
                         android:text="我要退货"
                         android:textColor="@color/selector_rbtn_text" />
                 </RadioGroup>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="我要退货"
-                        android:textSize="@dimen/sp_14" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_right" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="我要退货"
-                        android:textSize="@dimen/sp_14" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_right" />
-                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/llayout_good_status"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -164,7 +128,7 @@
                         android:orientation="vertical">
 
                         <RadioButton
-                            android:id="@+id/rbtn_yes"
+                            android:id="@+id/rbtn_no"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:button="@null"
@@ -174,7 +138,7 @@
                             android:textColor="@color/selector_rbtn_text" />
 
                         <RadioButton
-                            android:id="@+id/rbtn_no"
+                            android:id="@+id/rbtn_yes"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_10"

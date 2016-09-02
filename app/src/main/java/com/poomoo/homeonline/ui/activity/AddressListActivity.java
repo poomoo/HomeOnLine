@@ -74,7 +74,6 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
     private static final int NEW = 1;
     private static final int UPDATE = 2;
     private static final int DELETE = 3;
-    private static final int SELECT = 4;
 
     private static final int ADDRESS = 2;
 
@@ -85,7 +84,7 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        isEdit = getIntent().getBooleanExtra(getString(R.string.intent_isEdit), false);
+        isEdit = getIntent().getBooleanExtra(getString(R.string.intent_isEdit), true);
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         init();
@@ -164,8 +163,8 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.intent_value), "old");
         bundle.putSerializable(getString(R.string.intent_receiptBO), rReceiptBOs.get(position));
-        bundle.putBoolean(getString(R.string.intent_isEdit), isEdit);
-        openActivityForResult(AddressInfoActivity.class, bundle, SELECT);
+        bundle.putBoolean(getString(R.string.intent_isEdit), true);
+        openActivityForResult(AddressInfoActivity.class, bundle, UPDATE);
     }
 
     @Override
@@ -187,9 +186,16 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
         }
     }
 
+    public void addAddress(View view) {
+        Bundle bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_value), "new");
+        bundle.putBoolean(getString(R.string.intent_isEdit), true);
+        openActivityForResult(AddressInfoActivity.class, bundle, NEW);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == NEW) {
+        if (requestCode == NEW && resultCode == NEW) {
             mAdapter.clear();
             mErrorLayout.setState(ErrorLayout.LOADING, "");
             mPresenter.getAddressList(application.getUserId());
@@ -204,17 +210,5 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
         if (requestCode == UPDATE && resultCode == DELETE) {
             adapter.removeItem(deletePosition);
         }
-
-        if (requestCode == SELECT && resultCode == SELECT) {
-            mAdapter.clear();
-            mErrorLayout.setState(ErrorLayout.LOADING, "");
-            mPresenter.getAddressList(application.getUserId());
-        }
-    }
-
-    public void addAddress(View view) {
-        Bundle bundle = new Bundle();
-        bundle.putString(getString(R.string.intent_value), "new");
-        openActivityForResult(AddressInfoActivity.class, bundle, NEW);
     }
 }
