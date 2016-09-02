@@ -16,7 +16,7 @@ public class MyApplication extends LitePalApplication {
     private Integer userId;
     private String tel = "";//用户手机号码
     private String nickName = "";//用户昵称
-    private int cartNum = -1;
+    private int cartNum;
 
     @Override
     public void onCreate() {

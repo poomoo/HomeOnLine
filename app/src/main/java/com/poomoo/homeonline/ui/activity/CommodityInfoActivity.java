@@ -232,7 +232,6 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             }
         }
 
-
         addView();
         viewPagerAdapter = new ViewPagerAdapter(viewList);
         viewPager.setAdapter(viewPagerAdapter);
@@ -453,6 +452,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         priceTxt.setText("￥ " + rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice);
         oldPriceTxt.setText("￥ " + rCommodityInfoBO.commodity.lowestPriceDetail.commonPrice);
         inventoryTxt.setText("库存" + rCommodityInfoBO.commodity.lowestPriceDetail.repertory + "件");
+        repertory = rCommodityInfoBO.commodity.lowestPriceDetail.repertory;
         maxNum = rCommodityInfoBO.commodity.lowestPriceDetail.repertory;
         commodityDetailId = rCommodityInfoBO.commodity.lowestPriceDetail.id;
 
@@ -460,10 +460,11 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         isStar = rCommodityInfoBO.isStar;
         LogUtils.d(TAG, "isStar:" + rCommodityInfoBO.isStar);
 
-        if (commodityType == 2 && !isStar) {
+        if ((commodityType == 2 && !isStar) || (repertory == 0)) {
             cartBtn.setEnabled(false);
             buyBtn.setEnabled(false);
         }
+
         cartCommodityBO.commodityId = rCommodityInfoBO.commodity.id;
         cartCommodityBO.listPic = rCommodityInfoBO.commodity.listPic;
         cartCommodityBO.commodityName = rCommodityInfoBO.commodity.commodityName;
@@ -881,7 +882,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                     return;
                 }
                 if (!isCollect)
-                    mPresenter.collect(application.getUserId(), commodityId, commodityDetailId, commodityType);
+                    mPresenter.collect(application.getUserId(), commodityId, commodityDetailId, commodityType, matchId);
                 else {
                     ids[0] = commodityId;
                     mPresenter.cancelCollection(ids);

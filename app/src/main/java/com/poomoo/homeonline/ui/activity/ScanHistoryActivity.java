@@ -108,7 +108,7 @@ public class ScanHistoryActivity extends BaseListDaggerActivity<RListCommodityBO
     @Override
     public void onLoadActiveClick() {
         super.onLoadActiveClick();
-        mCurrentPage=1;
+        mCurrentPage = 1;
         mPresenter.getHistory(application.getUserId(), mCurrentPage);
     }
 
@@ -120,6 +120,7 @@ public class ScanHistoryActivity extends BaseListDaggerActivity<RListCommodityBO
 
     public void getListSucceed(List<RListCommodityBO> rListCommodityBOs) {
         this.rListCommodityBOs = rListCommodityBOs;
+        setEmptyMsg("您还没有浏览任何商品");
         onLoadResultData(rListCommodityBOs);
     }
 
@@ -134,8 +135,8 @@ public class ScanHistoryActivity extends BaseListDaggerActivity<RListCommodityBO
         MyUtils.showToast(getApplicationContext(), "删除成功!");
         mCurrentPage = 1;
         adapter.clear();
-        mErrorLayout.setState(ErrorLayout.LOADING,"");
-        mPresenter.getHistory(286, mCurrentPage);
+        mErrorLayout.setState(ErrorLayout.LOADING, "");
+        mPresenter.getHistory(application.getUserId(), mCurrentPage);
     }
 
     public void deleteFailed(String msg) {

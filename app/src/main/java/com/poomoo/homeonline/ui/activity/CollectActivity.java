@@ -184,6 +184,7 @@ public class CollectActivity extends BaseListDaggerActivity<RCollectBO, CollectP
         bundle.putInt(getString(R.string.intent_commodityId), rCollectBOs.get(position).commodityId);
         bundle.putInt(getString(R.string.intent_commodityDetailId), rCollectBOs.get(position).commodityDetailId);
         bundle.putInt(getString(R.string.intent_commodityType), rCollectBOs.get(position).commodityType);
+        bundle.putInt(getString(R.string.intent_matchId),  rCollectBOs.get(position).rushPurchaseId);
         openActivity(CommodityInfoActivity.class, bundle);
     }
 }

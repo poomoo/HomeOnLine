@@ -202,8 +202,7 @@ public abstract class BaseActivity extends FragmentActivity {
      * activity切换-> 向右出(抽出)
      */
     protected void getActivityOutToRight() {
-        overridePendingTransition(R.anim.activity_center,
-                R.anim.activity_out_to_right);
+        overridePendingTransition(R.anim.activity_center, R.anim.activity_out_to_right);
     }
 
     protected Dialog createDialog(String msg, DialogInterface.OnClickListener onClickListener) {

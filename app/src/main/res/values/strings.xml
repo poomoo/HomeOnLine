@@ -98,6 +98,12 @@
     <string name="sp_receiptName">receiptName</string>
     <string name="sp_receiptTel">receiptTel</string>
     <string name="sp_receiptAddress">receiptAddress</string>
+    <string name="sp_slide">slide</string>
+    <string name="sp_type">type</string>
+    <string name="sp_grab">grab</string>
+    <string name="sp_special">special</string>
+    <string name="sp_hot">hot</string>
+    <string name="sp_guess">guess</string>
 
     <string name="dialog">请稍后...</string>
 

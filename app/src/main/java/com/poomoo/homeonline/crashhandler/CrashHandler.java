@@ -196,8 +196,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
             }
             cmd = "chmod 777 " + Environment.getExternalStorageDirectory().getAbsolutePath() + "/homeonline/";
             Runtime.getRuntime().exec(cmd);
-            FileOutputStream fos = new FileOutputStream(
-                    Environment.getExternalStorageDirectory().getAbsolutePath() + "/homeonline/" + fileName);
+            FileOutputStream fos = new FileOutputStream(Environment.getExternalStorageDirectory().getAbsolutePath() + "/homeonline/" + fileName);
             fos.write(sb.toString().getBytes());
             fos.close();
             return fileName;

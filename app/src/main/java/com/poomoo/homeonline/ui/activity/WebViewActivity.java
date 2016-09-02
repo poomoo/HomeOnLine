@@ -74,7 +74,7 @@ public class WebViewActivity extends BaseActivity implements ErrorLayout.OnActiv
         pubWeb.getSettings().setAppCachePath(getApplicationContext().getCacheDir().getAbsolutePath());
         pubWeb.getSettings().setDefaultTextEncodingName("utf-8");
 
-        pubWeb.addJavascriptInterface(new JavaScript(this), "android");
+        pubWeb.addJavascriptInterface(new JavaScript(this,pubWeb), "android");
         pubWeb.loadUrl(url);
 
         errorLayout.setState(ErrorLayout.LOADING, "");
@@ -139,20 +139,6 @@ public class WebViewActivity extends BaseActivity implements ErrorLayout.OnActiv
         @Override
         public void onReceivedTitle(WebView view, String title) {
         }
-    }
-
-    public void back(View view) {
-        if (pubWeb.canGoBack())
-            pubWeb.goBack();
-        else {
-            finish();
-            getActivityOutToRight();
-        }
-    }
-
-    public void toDo(View view) {
-        finish();
-        getActivityOutToRight();
     }
 
 

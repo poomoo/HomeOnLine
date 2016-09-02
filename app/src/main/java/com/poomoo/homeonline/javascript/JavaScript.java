@@ -6,11 +6,13 @@ package com.poomoo.homeonline.javascript;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.webkit.WebView;
 import android.widget.Toast;
 
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
+import com.poomoo.homeonline.ui.base.BaseActivity;
 
 /**
  * 类名 JavaScript
@@ -21,10 +23,12 @@ import com.poomoo.homeonline.ui.activity.MainNewActivity;
 public class JavaScript {
     private Activity mContext;
     private Intent intent;
+    private WebView webView;
 
     @SuppressLint("JavascriptInterface")
-    public JavaScript(Activity mContext) {
+    public JavaScript(Activity mContext, WebView webView) {
         this.mContext = mContext;
+        this.webView = webView;
     }
 
     @android.webkit.JavascriptInterface
@@ -46,6 +50,18 @@ public class JavaScript {
             intent.putExtra(mContext.getString(R.string.intent_commodityType), commodityType);
             intent.putExtra(mContext.getString(R.string.intent_matchId), rushId);
             mContext.startActivity(intent);
+        });
+    }
+
+    @android.webkit.JavascriptInterface
+    public void back() {
+        mContext.runOnUiThread(() -> {
+            if (webView.canGoBack())
+                webView.goBack();
+            else {
+                mContext.finish();
+                mContext.overridePendingTransition(R.anim.activity_center, R.anim.activity_out_to_right);
+            }
         });
     }
 }

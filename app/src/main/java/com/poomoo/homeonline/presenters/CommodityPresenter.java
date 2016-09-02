@@ -161,8 +161,8 @@ public class CommodityPresenter extends BasePresenter<CommodityInfoActivity> {
      * @param commodityDetailId
      * @param commodityType
      */
-    public void collect(int userId, int commodityId, int commodityDetailId, int commodityType) {
-        QCollectBO qCollectBO = new QCollectBO(NetConfig.COLLECT, userId, commodityId, commodityDetailId, commodityType);
+    public void collect(int userId, int commodityId, int commodityDetailId, int commodityType,int rushPurchaseId) {
+        QCollectBO qCollectBO = new QCollectBO(NetConfig.COLLECT, userId, commodityId, commodityDetailId, commodityType,rushPurchaseId);
         add(NetWork.getMyApi().collect(qCollectBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

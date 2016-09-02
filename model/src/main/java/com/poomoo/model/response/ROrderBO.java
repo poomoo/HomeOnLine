@@ -36,7 +36,7 @@ public class ROrderBO {
     public static final int ORDER_ALL = 0;
     public static final int ORDER_PAY = 1;//代付款
     public static final int ORDER_DELIVER = 2;//待发货
-    public static final int ORDER_RECEIPT = 4;//待收货
+    public static final int ORDER_RECEIPT = 3;//待收货
     public static final int ORDER_EVALUATE = 5;//待评价
     public static final int ORDER_FINISH = 6;//已完成
     public static final int ORDER_USERCANCEL = 7;

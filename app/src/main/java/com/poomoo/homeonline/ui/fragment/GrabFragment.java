@@ -87,7 +87,7 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
         webView.setWebChromeClient(new MyWebChromeClient());
         webView.getSettings().setDefaultTextEncodingName("utf-8");
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new JavaScript(getActivity()), "android");
+        webView.addJavascriptInterface(new JavaScript(getActivity(),webView), "android");
 
         webView.loadUrl(NetConfig.grabUrl);
 

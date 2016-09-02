@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,12 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.TimeCountDownUtilBy3View;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.HotAdapter;
@@ -45,6 +49,7 @@ import com.poomoo.homeonline.ui.custom.NoScrollGridView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCateBO;
+import com.poomoo.model.response.RClassifyBO;
 import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.RSpecialAdBO;
@@ -52,6 +57,7 @@ import com.poomoo.model.response.RTypeBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -106,6 +112,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private final int HOT = 2;
     private final int GUESS = 3;
     private Bundle bundle;
+    private Gson gson = new Gson();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -194,10 +201,11 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             gridView.setTag(i);
             gridView.setOnItemClickListener((parent, view1, position, id) -> {
                 rAdBO = rSpecialAdBO.advs.get((int) parent.getTag()).get(position + 1);
+                LogUtils.d(TAG, "rAdBO:" + rAdBO);
                 if (rAdBO.isCommodity) {//商品广告
                     bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
-                    bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                    bundle.putInt(getString(R.string.intent_commodityType), 1);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
                     bundle = new Bundle();
@@ -217,7 +225,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 if (rAdBO.isCommodity) {//商品广告
                     bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
-                    bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                    bundle.putInt(getString(R.string.intent_commodityType), 1);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
                     bundle = new Bundle();
@@ -306,52 +314,133 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 openActivity(WebViewActivity.class, bundle);
             }
         });
+        SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_slide), gson.toJson(rAdBOs));
     }
 
     public void loadSlideFailed(String msg) {
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+        String json = (String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_slide), "");
+        if (!TextUtils.isEmpty(json)) {
+            Type type = new TypeToken<List<RAdBO>>() {
+            }.getType();
+            List<RAdBO> rAdBOs;
+            rAdBOs = new Gson().fromJson(json, type);
+
+            int len = rAdBOs.size();
+            ad = new String[len];
+            for (int i = 0; i < len; i++) {
+                rAdBO = new RAdBO();
+                rAdBO = rAdBOs.get(i);
+                ad[i] = NetConfig.ImageUrl + rAdBO.advertisementPic;
+            }
+            slideShowView.setPics(ad, position -> {
+                rAdBO = rAdBOs.get(position);
+                if (rAdBO.isCommodity) {
+                    bundle = new Bundle();
+                    bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
+                    bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
+                    bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                    openActivity(CommodityInfoActivity.class, bundle);
+                } else {
+                    bundle = new Bundle();
+                    bundle.putString(getString(R.string.intent_value), rAdBO.connect);
+                    openActivity(WebViewActivity.class, bundle);
+                }
+            });
+        }
     }
 
     public void loadTypeSucceed(RTypeBO rTypeBO) {
         gridAdapter.setUrl(rTypeBO.picUrl);
         gridAdapter.setItems(rTypeBO.categotys);
+        SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_type), gson.toJson(rTypeBO));
     }
 
     public void loadTypeFailed(String msg) {
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+        String json = (String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_type), "");
+
+        if (!TextUtils.isEmpty(json)) {
+            Type type = new TypeToken<RTypeBO>() {
+            }.getType();
+            RTypeBO rTypeBO;
+            rTypeBO = new Gson().fromJson(json, type);
+            gridAdapter.setUrl(rTypeBO.picUrl);
+            gridAdapter.setItems(rTypeBO.categotys);
+        }
     }
 
     public void loadGrabListSucceed(List<RGrabBO> rGrabBOs) {
         grabAdapter.addItems(rGrabBOs);
+        SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_grab), gson.toJson(rGrabBOs));
     }
 
     public void loadGrabListFailed(String msg) {
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+        String json = (String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_grab), "");
+
+        if (!TextUtils.isEmpty(json)) {
+            Type type = new TypeToken<List<RGrabBO>>() {
+            }.getType();
+            List<RGrabBO> rGrabBOs;
+            rGrabBOs = new Gson().fromJson(json, type);
+            grabAdapter.addItems(rGrabBOs);
+        }
     }
 
     public void loadSpecialAdSucceed(RSpecialAdBO rSpecialAdBO) {
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
         addView(rSpecialAdBO);
+        SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_special), gson.toJson(rSpecialAdBO));
     }
 
     public void loadSpecialAdFailed(String msg) {
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+        String json = (String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_special), "");
+
+        if (!TextUtils.isEmpty(json)) {
+            Type type = new TypeToken<RSpecialAdBO>() {
+            }.getType();
+            RSpecialAdBO rSpecialAdBO;
+            rSpecialAdBO = new Gson().fromJson(json, type);
+            addView(rSpecialAdBO);
+        }
     }
 
     public void loadHotSucceed(List<RAdBO> rAdBOs) {
         hotAdapter.setItems(rAdBOs);
+        SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_hot), gson.toJson(rAdBOs));
     }
 
     public void loadHotFailed(String msg) {
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+        String json = (String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_hot), "");
+
+        if (!TextUtils.isEmpty(json)) {
+            Type type = new TypeToken<List<RAdBO>>() {
+            }.getType();
+            List<RAdBO> rAdBOs;
+            rAdBOs = new Gson().fromJson(json, type);
+            hotAdapter.setItems(rAdBOs);
+        }
     }
 
     public void loadGuessSucceed(List<RListCommodityBO> rListCommodityBOs) {
         listCommodityAdapter.setItems(rListCommodityBOs);
+        SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_guess), gson.toJson(rListCommodityBOs));
     }
 
     public void loadGuessFailed(String msg) {
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
+        String json = (String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_guess), "");
+
+        if (!TextUtils.isEmpty(json)) {
+            Type type = new TypeToken<List<RListCommodityBO>>() {
+            }.getType();
+            List<RListCommodityBO> rListCommodityBOs;
+            rListCommodityBOs = new Gson().fromJson(json, type);
+            listCommodityAdapter.setItems(rListCommodityBOs);
+        }
     }
 
     /**

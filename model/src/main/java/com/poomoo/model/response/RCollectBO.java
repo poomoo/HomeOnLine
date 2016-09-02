@@ -42,6 +42,7 @@ public class RCollectBO {
     public int commodityId;//商品主键
 
     public boolean isChecked;
+    public int rushPurchaseId;
 
     public void toggleChecked() {
         this.isChecked = !this.isChecked;
