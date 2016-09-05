@@ -397,16 +397,4 @@ public class MyUtils {
     public static boolean isLogin(Context context) {
         return (boolean) SPUtils.get(context, "isLogin", false);
     }
-//
-//    /**
-//     * 打开软键盘
-//     *
-//     * @param context
-//     * @param view
-//     */
-//    public static void showKeyBoard(Context context, View view) {
-//        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
-//        imm.showSoftInputFromInputMethod(view.getWindowToken(), 0);
-//    }
-
 }

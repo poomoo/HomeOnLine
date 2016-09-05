@@ -133,5 +133,6 @@
     <string name="intent_returnProof">returnProof</string>
     <string name="intent_returnNoteId">returnNoteId</string>
     <string name="empty" />
+    <string name="sp_hasCache">hasCache</string>
 
 </resources>

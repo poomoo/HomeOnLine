@@ -42,21 +42,19 @@ import android.webkit.WebViewClient;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.javascript.JavaScript;
 import com.poomoo.homeonline.ui.base.BaseFragment;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.MySwipeRefreshLayout;
 
-import java.net.HttpURLConnection;
-import java.net.URL;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
  * 类名 GrabFragment
- * 描述 ${TODO}
+ * 描述 家有抢购
  * 作者 李苜菲
  * 日期 2016/8/19 16:12
  */
@@ -67,8 +65,7 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
     WebView webView;
     @Bind(R.id.error_frame)
     ErrorLayout mErrorLayout;
-    private String url;
-    private boolean isValid = false;
+    private boolean enabled = true;//是否加载了网页
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,13 +85,18 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
         webView.setWebChromeClient(new MyWebChromeClient());
         webView.getSettings().setDefaultTextEncodingName("utf-8");
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);//设置缓存模式
+        if (MyUtils.hasInternet(getActivity()))
+            webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);//设置缓存模式
+        else
+            webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);//设置缓存模式
         webView.getSettings().setDomStorageEnabled(true);//启用H5 DOM API （默认false）
         webView.getSettings().setAppCacheEnabled(true);//启用应用缓存（默认false）可结合 setAppCachePath 设置缓存路径
-        webView.getSettings().setAppCachePath(getActivity().getApplicationContext().getCacheDir().getAbsolutePath());
+        String appCacheDir = getActivity().getApplicationContext().getCacheDir().getAbsolutePath();
+        webView.getSettings().setAppCachePath(appCacheDir);
+        webView.getSettings().setAllowFileAccess(true);
         webView.addJavascriptInterface(new JavaScript(getActivity(), webView), "android");
-
         webView.loadUrl(NetConfig.grabUrl);
+        LogUtils.d(TAG, "grabUrl:" + NetConfig.grabUrl);
 
         mErrorLayout.setState(ErrorLayout.LOADING, "");
         mErrorLayout.setOnActiveClickListener(this);
@@ -105,19 +107,23 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
                 R.color.swipe_refresh_third, R.color.swipe_refresh_four
         );
         swipeRefreshLayout.setViewGroup(webView);
+        swipeRefreshLayout.setEnabled(false);
     }
 
     @Override
     public void onLoadActiveClick() {
-        isValid = false;
         mErrorLayout.setState(ErrorLayout.LOADING, "");
         webView.reload();
+        enabled = true;
     }
 
     @Override
     public void onRefresh() {
-        webView.setVisibility(View.GONE);
-        webView.loadUrl(NetConfig.grabUrl);
+        if (MyUtils.hasInternet(getActivity())) {
+            webView.setVisibility(View.GONE);
+            webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);//设置缓存模式
+            webView.reload();
+        } else swipeRefreshLayout.setRefreshing(false);
     }
 
     class MyWebChromeClient extends WebChromeClient {
@@ -126,19 +132,18 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
             LogUtils.d(TAG, "onProgressChanged" + progress);
             if (progress == 100) {
                 swipeRefreshLayout.setRefreshing(false);
-                if (!isValid) {
-                    webView.setVisibility(View.VISIBLE);
+                if (enabled) {
                     mErrorLayout.setState(ErrorLayout.HIDE, "");
-                }
-                if (validStatusCode(url)) {
-                    webView.setVisibility(View.GONE);
-                    mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
+                    webView.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setEnabled(true);
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_hasCache), true);
                 }
             }
         }
     }
 
     class webViewClient extends WebViewClient {
+
         //重写shouldOverrideUrlLoading方法，使点击链接后不使用其他的浏览器打开。
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -151,41 +156,23 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
         @Override
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             LogUtils.d(TAG, "error code:" + errorCode);
-            isValid = true;
-//            webView.setVisibility(View.GONE);
-//            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
+            swipeRefreshLayout.setEnabled(false);
+            if ((boolean) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_hasCache), false)) {
+                webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);//设置缓存模式
+                webView.reload();
+                webView.setVisibility(View.GONE);
+                enabled = true;
+            } else {
+                webView.setVisibility(View.GONE);
+                mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
+                enabled = false;
+            }
         }
 
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             LogUtils.d(TAG, "onReceivedError" + error);
-            isValid = true;
-//            webView.setVisibility(View.GONE);
-//            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-        }
-
-        @Override
-        public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-            LogUtils.d(TAG, "onReceivedHttpError" + errorResponse);
-            isValid = true;
-            webView.setVisibility(View.GONE);
-            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-        }
-    }
-
-    private boolean validStatusCode(String url) {
-        try {
-            HttpURLConnection.setFollowRedirects(false);
-            URL validatedURL = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) validatedURL.openConnection();
-            con.setRequestMethod("HEAD");
-            int responseCode = con.getResponseCode();
-            if (responseCode == 404 || responseCode == 405 || responseCode == 504) {
-                return false;
-            }
-            return true;
-        } catch (Exception e) {
-            return false;
+            swipeRefreshLayout.setEnabled(false);
         }
     }
 }
