@@ -152,7 +152,6 @@ public class SearchActivity extends BaseListDaggerActivity<RListCommodityBO, Sea
     }
 
     public void succeed(List<RListCommodityBO> rListCommodityBOs) {
-        rListCommodityBOs.addAll(rListCommodityBOs);
         setEmptyMsg("没有找到该类商品");
         onLoadResultData(rListCommodityBOs);
     }

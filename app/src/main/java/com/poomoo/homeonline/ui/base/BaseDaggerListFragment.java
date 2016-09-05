@@ -198,7 +198,7 @@ public abstract class BaseDaggerListFragment<T, P extends BasePresenter> extends
             case LOAD_MODE_DEFAULT:
                 mErrorLayout.setState(ErrorLayout.HIDE, "");
                 mSwipeRefreshLayout.setRefreshing(false);
-                mSwipeRefreshLayout.setEnabled(true);
+//                mSwipeRefreshLayout.setEnabled(true);
                 mState = STATE_NONE;
                 break;
             case LOAD_MODE_UP_DRAG:
@@ -216,7 +216,7 @@ public abstract class BaseDaggerListFragment<T, P extends BasePresenter> extends
     public void onLoadErrorState(int mode) {
         switch (mode) {
             case LOAD_MODE_DEFAULT:
-                mSwipeRefreshLayout.setEnabled(true);
+//                mSwipeRefreshLayout.setEnabled(true);
                 if (mAdapter.getDataSize() > 0) {
                     mSwipeRefreshLayout.setRefreshing(false);
                     mState = STATE_NONE;
@@ -309,7 +309,7 @@ public abstract class BaseDaggerListFragment<T, P extends BasePresenter> extends
     public void dismissRefreshing() {
         if (mState == STATE_REFRESHING) {
             mSwipeRefreshLayout.setRefreshing(false);
-            mSwipeRefreshLayout.setEnabled(true);
+//            mSwipeRefreshLayout.setEnabled(true);
         }
     }
 

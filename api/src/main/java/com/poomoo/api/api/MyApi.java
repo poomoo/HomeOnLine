@@ -40,6 +40,7 @@ import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QClassifyListBO;
 import com.poomoo.model.request.QCodeBO;
 import com.poomoo.model.request.QCollectBO;
+import com.poomoo.model.request.QEvaluateBO;
 import com.poomoo.model.request.QFeedBackBO;
 import com.poomoo.model.request.QIdBO;
 import com.poomoo.model.request.QIsCollectBO;
@@ -281,4 +282,8 @@ public interface MyApi {
     //修改密码
     @POST(NetConfig.suffix)
     Observable<ResponseBO> changePW(@Body QUserBO data);
+
+    //评价
+    @POST(NetConfig.suffix)
+    Observable<ResponseBO> Evaluate(@Body QEvaluateBO data);
 }

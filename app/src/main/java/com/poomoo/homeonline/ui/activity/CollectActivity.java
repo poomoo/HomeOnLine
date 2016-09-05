@@ -128,7 +128,7 @@ public class CollectActivity extends BaseListDaggerActivity<RCollectBO, CollectP
      * @param view
      */
     public void cancelCollect(View view) {
-        indexes = adapter.getIndexs();
+        indexes = adapter.getIndexes();
         count = indexes.length;
         if (count == 0) {
             MyUtils.showToast(getApplicationContext(), "没有选中收藏的商品");
@@ -139,7 +139,7 @@ public class CollectActivity extends BaseListDaggerActivity<RCollectBO, CollectP
 
     private void showDialog(String msg) {
         createDialog(msg, (dialog, which) -> {
-            mPresenter.cancelCollections(((CollectionListAdapter) mAdapter).getIndexs());
+            mPresenter.cancelCollections(((CollectionListAdapter) mAdapter).getIndexes());
         }).show();
     }
 
@@ -157,16 +157,18 @@ public class CollectActivity extends BaseListDaggerActivity<RCollectBO, CollectP
             onLoadErrorState(LOAD_MODE_DEFAULT);
     }
 
-
     public void cancelSucceed() {
         MyUtils.showToast(getApplicationContext(), "删除成功!");
-        adapter.removeItems();
+        isClick = false;
+        checkBox.setChecked(false);
+        adapter.clearIndexes();
+        mCurrentPage = 1;
+        mPresenter.getCollectionList(application.getUserId(), mCurrentPage);
     }
 
     public void cancelFailed(String msg) {
         MyUtils.showToast(getApplicationContext(), msg);
     }
-
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -181,10 +183,10 @@ public class CollectActivity extends BaseListDaggerActivity<RCollectBO, CollectP
     @Override
     public void onItemClick(int position, long id, View view) {
         Bundle bundle = new Bundle();
-        bundle.putInt(getString(R.string.intent_commodityId), rCollectBOs.get(position).commodityId);
-        bundle.putInt(getString(R.string.intent_commodityDetailId), rCollectBOs.get(position).commodityDetailId);
-        bundle.putInt(getString(R.string.intent_commodityType), rCollectBOs.get(position).commodityType);
-        bundle.putInt(getString(R.string.intent_matchId),  rCollectBOs.get(position).rushPurchaseId);
+        bundle.putInt(getString(R.string.intent_commodityId), mAdapter.getItem(position).commodityId);
+        bundle.putInt(getString(R.string.intent_commodityDetailId), mAdapter.getItem(position).commodityDetailId);
+        bundle.putInt(getString(R.string.intent_commodityType), mAdapter.getItem(position).commodityType);
+        bundle.putInt(getString(R.string.intent_matchId), mAdapter.getItem(position).rushPurchaseId);
         openActivity(CommodityInfoActivity.class, bundle);
     }
 }

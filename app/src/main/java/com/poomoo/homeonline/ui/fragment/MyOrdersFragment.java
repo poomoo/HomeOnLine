@@ -79,14 +79,6 @@ public class MyOrdersFragment extends BaseDaggerListFragment<ROrderListBO, Order
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-//        if (mCatalog == ROrderBO.ORDER_EVALUATE) {
-//            onLoadFinishState(action);
-//            onLoadResultData(getList());
-//        } else if (mCatalog == ROrderBO.ORDER_RECEIPT || mCatalog == ROrderBO.ORDER_FINISH) {
-//            onLoadFinishState(action);
-//            onLoadResultData(getList());
-//        } else {
-//        }
         mSwipeRefreshLayout.setEnabled(false);
         successful();
     }

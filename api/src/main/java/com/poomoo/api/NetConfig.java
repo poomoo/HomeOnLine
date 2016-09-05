@@ -56,6 +56,7 @@ public class NetConfig {
     public static final String CANCELORDER = "1010_03";//取消订单
     public static final String DELETEORDER = "1010_04";//删除订单
     public static final String CONFIRM = "1010_05";//确认收货
+    public static final String EVALUATE = "1010_07";//评价
     public final static String TRANSFERPRICE = "1010_08";//计算运费
     public static final String SIGN = "1010_09";//支付宝签名
 

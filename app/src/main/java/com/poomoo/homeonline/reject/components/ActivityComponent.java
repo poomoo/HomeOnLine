@@ -37,6 +37,7 @@ import com.poomoo.homeonline.ui.activity.ReFundActivity;
 import com.poomoo.homeonline.ui.activity.ReFundInfoActivity;
 import com.poomoo.homeonline.ui.activity.ScanHistoryActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
+import com.poomoo.homeonline.ui.activity.TicketActivity;
 import com.poomoo.homeonline.ui.activity.UpdateNickNameActivity;
 
 import dagger.Component;
@@ -81,4 +82,5 @@ public interface ActivityComponent {
 
     void inject(ReFundInfoActivity activity);
 
+    void inject(TicketActivity activity);
 }

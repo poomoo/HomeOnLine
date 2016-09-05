@@ -3,6 +3,9 @@
  */
 package com.poomoo.homeonline.ui.fragment;
 
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -166,6 +169,11 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         );
 
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
+
+        createDialog("检测到新版本,是否更新?", (dialog, which) -> {
+            Uri uri = Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=com.poomoo.homeonline");
+            startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        }).show();
     }
 
     @OnClick({R.id.llayout_search, R.id.llayout_toGrab})

@@ -32,6 +32,7 @@ import com.poomoo.homeonline.ui.activity.MyInfoActivity;
 import com.poomoo.homeonline.ui.activity.MyOrdersActivity;
 import com.poomoo.homeonline.ui.activity.SafeActivity;
 import com.poomoo.homeonline.ui.activity.ScanHistoryActivity;
+import com.poomoo.homeonline.ui.activity.TicketActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.RZoneBO;
@@ -107,7 +108,7 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         openActivity(MyOrdersActivity.class, bundle);
     }
 
-    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale, R.id.rlayout_logOut})
+    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info,R.id.rlayout_ticket, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale, R.id.rlayout_logOut})
     void other(View view) {
         switch (view.getId()) {
             case R.id.txt_collection:
@@ -120,6 +121,9 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
                 break;
             case R.id.rlayout_my_info:
                 openActivity(MyInfoActivity.class);
+                break;
+            case R.id.rlayout_ticket:
+                openActivity(TicketActivity.class);
                 break;
             case R.id.rlayout_my_address:
                 bundle = new Bundle();

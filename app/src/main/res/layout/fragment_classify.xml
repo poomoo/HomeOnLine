@@ -15,8 +15,8 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/title"
         android:layout_marginTop="2dp"
-        android:visibility="invisible"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="invisible">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_classify"
@@ -31,8 +31,8 @@
             android:layout_marginLeft="4dp" />
     </LinearLayout>
 
-    <include
-        layout="@layout/my_progress_bar"
+    <com.poomoo.homeonline.ui.custom.ErrorLayout
+        android:id="@+id/error_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

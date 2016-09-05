@@ -146,9 +146,10 @@ public class ScanHistoryActivity extends BaseListDaggerActivity<RListCommodityBO
     @Override
     public void onItemClick(int position, long id, View view) {
         Bundle bundle = new Bundle();
-        bundle.putInt(getString(R.string.intent_commodityId), rListCommodityBOs.get(position).commodityId);
-        bundle.putInt(getString(R.string.intent_commodityDetailId), rListCommodityBOs.get(position).commodityDetailId);
-        bundle.putInt(getString(R.string.intent_commodityType), rListCommodityBOs.get(position).commodityType);
+        bundle.putInt(getString(R.string.intent_commodityId), mAdapter.getItem(position).commodityId);
+        bundle.putInt(getString(R.string.intent_commodityDetailId), mAdapter.getItem(position).commodityDetailId);
+        bundle.putInt(getString(R.string.intent_commodityType), mAdapter.getItem(position).commodityType);
+        bundle.putInt(getString(R.string.intent_matchId),  mAdapter.getItem(position).rushPurchaseId);
         openActivity(CommodityInfoActivity.class, bundle);
     }
 }

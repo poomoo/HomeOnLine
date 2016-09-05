@@ -66,6 +66,7 @@ public class EvaluateListActivity extends BaseActivity implements EvaluateClickL
     private String orderId;
     private String date;
     private List<ROrderListBO.OrderDetails> orderDetails;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +110,10 @@ public class EvaluateListActivity extends BaseActivity implements EvaluateClickL
 
     @Override
     public void evaluate(int position) {
-        openActivity(EvaluateActivity.class);
+        bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_orderId), orderId);
+        bundle.putInt(getString(R.string.intent_commodityId), evaluateListAdapter.getItem(position).commodityId);
+        bundle.putInt(getString(R.string.intent_orderDetailId), evaluateListAdapter.getItem(position).id);
+        openActivity(EvaluateActivity.class, bundle);
     }
 }

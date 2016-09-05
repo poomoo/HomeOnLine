@@ -275,7 +275,6 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             mPresenter.addHistory(application.getUserId(), commodityId, commodityType);
             mPresenter.isCollect(application.getUserId(), commodityId, commodityDetailId);
         }
-
     }
 
     private void addView() {
@@ -455,6 +454,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         repertory = rCommodityInfoBO.commodity.lowestPriceDetail.repertory;
         maxNum = rCommodityInfoBO.commodity.lowestPriceDetail.repertory;
         commodityDetailId = rCommodityInfoBO.commodity.lowestPriceDetail.id;
+        if (application.getUserId() != null)
+            mPresenter.isCollect(application.getUserId(), commodityId, commodityDetailId);
 
         isFreePostage = rCommodityInfoBO.commodity.isFreePostage;
         isStar = rCommodityInfoBO.isStar;

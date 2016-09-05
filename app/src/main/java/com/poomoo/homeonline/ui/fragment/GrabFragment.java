@@ -35,6 +35,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebResourceResponse;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -87,7 +88,11 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
         webView.setWebChromeClient(new MyWebChromeClient());
         webView.getSettings().setDefaultTextEncodingName("utf-8");
         webView.getSettings().setJavaScriptEnabled(true);
-        webView.addJavascriptInterface(new JavaScript(getActivity(),webView), "android");
+        webView.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);//设置缓存模式
+        webView.getSettings().setDomStorageEnabled(true);//启用H5 DOM API （默认false）
+        webView.getSettings().setAppCacheEnabled(true);//启用应用缓存（默认false）可结合 setAppCachePath 设置缓存路径
+        webView.getSettings().setAppCachePath(getActivity().getApplicationContext().getCacheDir().getAbsolutePath());
+        webView.addJavascriptInterface(new JavaScript(getActivity(), webView), "android");
 
         webView.loadUrl(NetConfig.grabUrl);
 
@@ -147,16 +152,16 @@ public class GrabFragment extends BaseFragment implements ErrorLayout.OnActiveCl
         public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
             LogUtils.d(TAG, "error code:" + errorCode);
             isValid = true;
-            webView.setVisibility(View.GONE);
-            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
+//            webView.setVisibility(View.GONE);
+//            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
         }
 
         @Override
         public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
             LogUtils.d(TAG, "onReceivedError" + error);
             isValid = true;
-            webView.setVisibility(View.GONE);
-            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
+//            webView.setVisibility(View.GONE);
+//            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
         }
 
         @Override

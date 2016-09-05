@@ -27,8 +27,11 @@ import com.poomoo.homeonline.presenters.ClassifyFragmentPresenter;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.ClassifyListActivity;
+import com.poomoo.homeonline.ui.activity.MainNewActivity;
+import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.activity.WebViewActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
+import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.model.response.RClassifyBO;
 import com.poomoo.model.response.RSubClassifyBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -39,6 +42,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * 类名 ClassifyFragment
@@ -46,13 +50,15 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:20
  */
-public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresenter> implements BaseListAdapter.OnItemClickListener, ClassifyOnItemClickListener {
+public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresenter> implements BaseListAdapter.OnItemClickListener, ClassifyOnItemClickListener, ErrorLayout.OnActiveClickListener {
     @Bind(R.id.recycler_classify)
     RecyclerView classifyRecycler;
     @Bind(R.id.recycler_content)
     RecyclerView contentRecycler;
     @Bind(R.id.llayout_content)
     LinearLayout layout;
+    @Bind(R.id.error_frame)
+    ErrorLayout errorLayout;
 
     private ClassifyListAdapter classifyListAdapter;
     private SubClassifyListAdapter subClassifyListAdapter;
@@ -60,6 +66,7 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     private List<RClassifyBO> rClassifyBOs = new ArrayList<>();
 
     public static int SELECTPOSITION = 0;
+    private String json;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -83,15 +90,11 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     }
 
     private void init() {
-        getProgressBar();
-
-        mPresenter.getClassify();
-
         initClassify();
         initSubClassify();
 
         //取缓存
-        String json = (String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_classify), "");
+        json = (String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_classify), "");
 
         if (!TextUtils.isEmpty(json)) {
             layout.setVisibility(View.VISIBLE);
@@ -102,8 +105,9 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
             rSubClassifyBOs = rClassifyBOs.get(0).childrenList;
             subClassifyListAdapter.setItems(rSubClassifyBOs);
         } else
-            showProgressBar();
-
+            errorLayout.setState(ErrorLayout.LOADING, "");
+        mPresenter.getClassify();
+        errorLayout.setOnActiveClickListener(this);
     }
 
     private void initClassify() {
@@ -126,7 +130,7 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     }
 
     public void loadClassifySucceed(List<RClassifyBO> rClassifyBOs) {
-        hideProgressBar();
+        errorLayout.setState(ErrorLayout.HIDE, "");
         layout.setVisibility(View.VISIBLE);
         LogUtils.d(TAG, "loadClassifySucceed:" + rClassifyBOs);
         classifyListAdapter.setItems(rClassifyBOs);
@@ -138,8 +142,8 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     }
 
     public void loadClassifyFailed(String msg) {
-        hideProgressBar();
-        MyUtils.showToast(getActivity().getApplicationContext(), msg);
+        if (TextUtils.isEmpty(json))
+            errorLayout.setState(ErrorLayout.NOT_NETWORK, "");
     }
 
     @Override
@@ -153,10 +157,22 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     @Override
     public void onClick(String categoryId) {
         Bundle bundle = new Bundle();
-//        bundle.putString(getString(R.string.intent_value), "http://www.jiayou9.com/phone/commodity/three_list.html?categoryId=1777");
-//        bundle.putString(getString(R.string.intent_value), NetConfig.LocalUrl + "/app/rush.html");
-//        openActivity(WebViewActivity.class, bundle);
         bundle.putString(getString(R.string.intent_categoryId), categoryId);
         openActivity(ClassifyListActivity.class, bundle);
+    }
+
+    @OnClick({R.id.llayout_search})
+    void search(View view) {
+        switch (view.getId()) {
+            case R.id.llayout_search:
+                openActivity(SearchActivity.class);
+                break;
+        }
+    }
+
+    @Override
+    public void onLoadActiveClick() {
+        errorLayout.setState(ErrorLayout.LOADING, "");
+        mPresenter.getClassify();
     }
 }

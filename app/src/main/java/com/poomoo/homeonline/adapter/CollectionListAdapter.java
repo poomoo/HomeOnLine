@@ -81,13 +81,18 @@ public class CollectionListAdapter extends BaseListAdapter<RCollectBO> {
         return indexList;
     }
 
-    public int[] getIndexs() {
+    public int[] getIndexes() {
         int[] ids = new int[indexList.size()];
         int i = 0;
         for (RCollectBO rCollectBO : indexList)
             ids[i++] = rCollectBO.id;
         return ids;
     }
+
+    public void clearIndexes() {
+        indexList.clear();
+    }
+
 
     public boolean isAllSelected() {
         if (indexList.size() == getItemCount() - 1)
@@ -96,14 +101,19 @@ public class CollectionListAdapter extends BaseListAdapter<RCollectBO> {
     }
 
     public void selectAll() {
-        for (RCollectBO rCollectBO : items)
+        for (RCollectBO rCollectBO : items) {
             rCollectBO.isChecked = true;
+            indexList.add(rCollectBO);
+        }
+
         notifyDataSetChanged();
     }
 
     public void cancelAll() {
-        for (RCollectBO rCollectBO : items)
+        for (RCollectBO rCollectBO : items) {
             rCollectBO.isChecked = false;
+            indexList.remove(rCollectBO);
+        }
         notifyDataSetChanged();
     }
 

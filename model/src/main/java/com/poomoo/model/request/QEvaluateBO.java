@@ -24,24 +24,33 @@
  * #                                                   #
  * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.model.response;
+package com.poomoo.model.request;
 
 /**
- * 类名 RListCommodityBO
- * 描述 列表里的商品
+ * 类名 QEvaluateBO
+ * 描述 评价
  * 作者 李苜菲
- * 日期 2016/8/12 10:11
+ * 日期 2016/9/5 14:48
  */
-public class RListCommodityBO {
-    public int id; //主键
-    public double commodityPrice;//商品价格
-    public double platformPrice; //平台价格
-    public int commodityDetailId; //明细主键
-    public String commodityName;//商品名称
-    public double commonPrice;//市场价格
-    public String listPic;//商品显示图片
-    public int commodityId;//商品主键
-    public int commodityType;//1.普通商品，2抢购商品，3.新年活动商品，4活动商品，5.特价商品
-    public int rushPurchaseId;
+public class QEvaluateBO extends BaseRequest {
+    public String orderId;
+    public int commodityId;
+    public String content;
+    public int descriptFit;
+    public int qualitySatisfy;
+    public int priceRational;
+    public int orderDetailId;
+    public boolean isPublic;
 
+    public QEvaluateBO(String method, String orderId, int commodityId, String content, int descriptFit, int qualitySatisfy, int priceRational, int orderDetailId, boolean isPublic) {
+        super(method);
+        this.orderId = orderId;
+        this.commodityId = commodityId;
+        this.content = content;
+        this.descriptFit = descriptFit;
+        this.qualitySatisfy = qualitySatisfy;
+        this.priceRational = priceRational;
+        this.orderDetailId = orderDetailId;
+        this.isPublic = isPublic;
+    }
 }

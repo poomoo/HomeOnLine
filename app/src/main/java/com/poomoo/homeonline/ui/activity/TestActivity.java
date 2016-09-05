@@ -27,6 +27,7 @@
 package com.poomoo.homeonline.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -54,7 +55,9 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/8/8 14:58
  */
-public class TestActivity extends BaseActivity {
+public class TestActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+    @Bind(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.img_special_content)
     ImageView imageView;
     @Bind(R.id.webview)
@@ -90,6 +93,13 @@ public class TestActivity extends BaseActivity {
 
 //        imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(this) * 5 / 12));//设置广告栏的宽高比为2:1
         Glide.with(this).load(R.drawable.ic_add_image).into(imageView);
+        swipeRefreshLayout.setOnRefreshListener(this);
+//        swipeRefreshLayout.setEnabled(false);
+    }
+
+    @Override
+    public void onRefresh() {
+
     }
 
     class MyWebChromeClient extends WebChromeClient {

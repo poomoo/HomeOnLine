@@ -37,7 +37,7 @@ public class QCollectBO extends BaseRequest {
     public int commodityId;
     public int commodityDetailId;
     public int commodityType;
-    public int rushPurchaseId;
+    public Integer rushPurchaseId;
 
     public QCollectBO(String method, int userId, int commodityId, int commodityDetailId, int commodityType, int rushPurchaseId) {
         super(method);
@@ -45,6 +45,7 @@ public class QCollectBO extends BaseRequest {
         this.commodityId = commodityId;
         this.commodityDetailId = commodityDetailId;
         this.commodityType = commodityType;
-        this.rushPurchaseId = rushPurchaseId;
+        if (rushPurchaseId != -1)
+            this.rushPurchaseId = rushPurchaseId;
     }
 }

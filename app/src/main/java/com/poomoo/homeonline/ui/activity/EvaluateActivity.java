@@ -30,13 +30,16 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.jakewharton.rxbinding.widget.RxRatingBar;
 import com.jakewharton.rxbinding.widget.RxTextView;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.presenters.EvaluatePresenter;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
@@ -65,6 +68,8 @@ public class EvaluateActivity extends BaseDaggerActivity<EvaluatePresenter> {
     EditText evaluateEdt;
     @Bind(R.id.txt_input_num)
     TextView numTxt;
+    @Bind(R.id.chk_anonymity)
+    CheckBox checkBox;
     @Bind(R.id.btn_evaluate)
     Button btn;
 
@@ -73,6 +78,11 @@ public class EvaluateActivity extends BaseDaggerActivity<EvaluatePresenter> {
     private float quality;
     private float price;
     private String content;
+    private boolean isAnonymity = false;//是否匿名
+
+    private String orderId;
+    private int commodityId;
+    private int orderDetailId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +113,11 @@ public class EvaluateActivity extends BaseDaggerActivity<EvaluatePresenter> {
     private void init() {
         setBack();
         bindViewByRxBinding();
+        getProgressBar();
+
+        orderId = getIntent().getStringExtra(getString(R.string.intent_orderId));
+        commodityId = getIntent().getIntExtra(getString(R.string.intent_commodityId), -1);
+        orderDetailId = getIntent().getIntExtra(getString(R.string.intent_orderDetailId), -1);
 
         evaluateEdt.addTextChangedListener(new TextWatcher() {
 
@@ -179,6 +194,23 @@ public class EvaluateActivity extends BaseDaggerActivity<EvaluatePresenter> {
         content = evaluateEdt.getText().toString().trim();
         if (TextUtils.isEmpty(content))
             return false;
+        isAnonymity = checkBox.isChecked();
         return true;
     }
+
+    public void evaluate(View view) {
+        showProgressBar();
+        mPresenter.evaluate(orderId, commodityId, content, (int) des, (int) quality, (int) price, orderDetailId, isAnonymity);
+    }
+
+    public void successful() {
+        hideProgressBar();
+        finish();
+    }
+
+    public void failed(String msg) {
+        hideProgressBar();
+        MyUtils.showToast(getApplicationContext(), msg);
+    }
+
 }
