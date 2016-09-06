@@ -61,8 +61,7 @@ public abstract class TabFragment extends BaseTabFragment {
 
             @Override
             public void onPageSelected(int position) {
-                POSITION = position;
-                fresh();
+                fresh(POSITION);
             }
 
             @Override
@@ -72,7 +71,7 @@ public abstract class TabFragment extends BaseTabFragment {
         });
     }
 
-    public void fresh() {
+    public void fresh(int POSITION) {
         setPOSITION(POSITION);
         mAdapter.notifyDataSetChanged();
     }

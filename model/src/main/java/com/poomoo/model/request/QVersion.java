@@ -27,32 +27,16 @@
 package com.poomoo.model.request;
 
 /**
- * 类名 QEvaluateBO
- * 描述 评价
+ * 类名 QVersion
+ * 描述 检查升级
  * 作者 李苜菲
- * 日期 2016/9/5 14:48
+ * 日期 2016/9/6 9:18
  */
-public class QEvaluateBO extends BaseRequest {
-    public int userId;
-    public String orderId;
-    public int commodityId;
-    public String content;
-    public int descriptFit;
-    public int qualitySatisfy;
-    public int priceRational;
-    public int orderDetailId;
-    public boolean isPublic;
+public class QVersion extends BaseRequest{
+    public int type;//1-安卓
 
-    public QEvaluateBO(String method, int userId, String orderId, int commodityId, String content, int descriptFit, int qualitySatisfy, int priceRational, int orderDetailId, boolean isPublic) {
+    public QVersion(String method, int type) {
         super(method);
-        this.userId = userId;
-        this.orderId = orderId;
-        this.commodityId = commodityId;
-        this.content = content;
-        this.descriptFit = descriptFit;
-        this.qualitySatisfy = qualitySatisfy;
-        this.priceRational = priceRational;
-        this.orderDetailId = orderDetailId;
-        this.isPublic = isPublic;
+        this.type = type;
     }
 }

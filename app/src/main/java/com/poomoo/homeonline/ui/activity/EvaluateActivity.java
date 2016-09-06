@@ -53,7 +53,7 @@ import rx.Subscriber;
 
 /**
  * 类名 EvaluateActivity
- * 描述 ${TODO}
+ * 描述 评价
  * 作者 李苜菲
  * 日期 2016/8/24 11:08
  */
@@ -194,13 +194,13 @@ public class EvaluateActivity extends BaseDaggerActivity<EvaluatePresenter> {
         content = evaluateEdt.getText().toString().trim();
         if (TextUtils.isEmpty(content))
             return false;
-        isAnonymity = checkBox.isChecked();
         return true;
     }
 
     public void evaluate(View view) {
+        isAnonymity = checkBox.isChecked();
         showProgressBar();
-        mPresenter.evaluate(orderId, commodityId, content, (int) des, (int) quality, (int) price, orderDetailId, isAnonymity);
+        mPresenter.evaluate(application.getUserId(), orderId, commodityId, content, (int) des, (int) quality, (int) price, orderDetailId, isAnonymity);
     }
 
     public void successful() {

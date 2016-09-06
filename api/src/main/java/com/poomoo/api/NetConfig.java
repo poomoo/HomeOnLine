@@ -81,5 +81,7 @@ public class NetConfig {
     public static final String CHANGEREFUND = "1014_02";//修改退款
     public static final String REFUNDINFO = "1014_03";//退款详情
 
+    public static final String UPDATE="1015_01";//检查版本
+
 
 }

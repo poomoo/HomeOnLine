@@ -66,6 +66,6 @@ public class MyOrdersActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        mTab.fresh();
+        mTab.fresh(mTab.getCurrentItem());
     }
 }

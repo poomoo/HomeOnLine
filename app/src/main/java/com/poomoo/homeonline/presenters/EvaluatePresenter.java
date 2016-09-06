@@ -51,8 +51,8 @@ public class EvaluatePresenter extends BasePresenter<EvaluateActivity> {
     public EvaluatePresenter() {
     }
 
-    public void evaluate(String orderId, int commodityId, String content, int descriptFit, int qualitySatisfy, int priceRational, int orderDetailId,boolean isAnonymity) {
-        QEvaluateBO qEvaluateBO = new QEvaluateBO(NetConfig.EVALUATE, orderId, commodityId, content, descriptFit, qualitySatisfy, priceRational, orderDetailId,isAnonymity);
+    public void evaluate(Integer userId, String orderId, int commodityId, String content, int descriptFit, int qualitySatisfy, int priceRational, int orderDetailId, boolean isAnonymity) {
+        QEvaluateBO qEvaluateBO = new QEvaluateBO(NetConfig.EVALUATE, userId, orderId, commodityId, content, descriptFit, qualitySatisfy, priceRational, orderDetailId, isAnonymity);
         add(NetWork.getMyApi().Evaluate(qEvaluateBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

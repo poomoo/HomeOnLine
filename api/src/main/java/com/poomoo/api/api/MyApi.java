@@ -63,6 +63,7 @@ import com.poomoo.model.request.QTransferPriceBO;
 import com.poomoo.model.request.QUpdateInfoBO;
 import com.poomoo.model.request.QUserBO;
 import com.poomoo.model.request.QUserIdBO;
+import com.poomoo.model.request.QVersion;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCartNumBO;
 import com.poomoo.model.response.RCartShopBO;
@@ -84,6 +85,7 @@ import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RSpecificationBO;
 import com.poomoo.model.response.RTransferPriceBO;
 import com.poomoo.model.response.RTypeBO;
+import com.poomoo.model.response.RVersionBO;
 import com.poomoo.model.response.RZoneBO;
 
 
@@ -286,4 +288,8 @@ public interface MyApi {
     //评价
     @POST(NetConfig.suffix)
     Observable<ResponseBO> Evaluate(@Body QEvaluateBO data);
+
+    //检查更新
+    @POST(NetConfig.suffix)
+    Observable<RVersionBO> CheckUpdate(@Body QVersion data);
 }

@@ -3,7 +3,6 @@
  */
 package com.poomoo.homeonline.ui.fragment;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,16 +46,17 @@ import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.activity.WebViewActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
+import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCateBO;
-import com.poomoo.model.response.RClassifyBO;
 import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RTypeBO;
+import com.poomoo.model.response.RVersionBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 
@@ -75,7 +75,7 @@ import butterknife.OnClick;
  * 作者 李苜菲
  * 日期 2016/7/19 11:20
  */
-public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> implements AdapterView.OnItemClickListener, BaseListAdapter.OnItemClickListener, ScrollViewListener, SwipeRefreshLayout.OnRefreshListener {
+public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> implements AdapterView.OnItemClickListener, BaseListAdapter.OnItemClickListener, ScrollViewListener, SwipeRefreshLayout.OnRefreshListener, ErrorLayout.OnActiveClickListener {
     @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
     @Bind(R.id.scrollView_main)
@@ -100,6 +100,8 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     RecyclerView hotRecycler;
     @Bind(R.id.recycler_guess)
     RecyclerView guessRecycler;
+    @Bind(R.id.error_frame)
+    ErrorLayout errorLayout;
 
     private MainGridAdapter gridAdapter;
     private MainGrabAdapter grabAdapter;
@@ -151,6 +153,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         mPresenter.getHot();
         mPresenter.getGuess(application.getUserId());
 
+
         initCountDownTime();
 
         initGrab();
@@ -158,6 +161,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         initHot();
 
         initGuess();
+        mPresenter.checkUpdate();
 
         scrollView.setScrollViewListener(this);
 
@@ -170,10 +174,12 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 
         swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(true));
 
-        createDialog("检测到新版本,是否更新?", (dialog, which) -> {
-            Uri uri = Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=com.poomoo.homeonline");
-            startActivity(new Intent(Intent.ACTION_VIEW, uri));
-        }).show();
+        if (!MyUtils.hasInternet(getActivity()) && TextUtils.isEmpty((String) SPUtils.get(getActivity().getApplicationContext(), getString(R.string.sp_slide), ""))) {
+            swipeRefreshLayout.setVisibility(View.GONE);
+            errorLayout.setOnActiveClickListener(this);
+            errorLayout.setState(ErrorLayout.NOT_NETWORK, "");
+        }
+
     }
 
     @OnClick({R.id.llayout_search, R.id.llayout_toGrab})
@@ -301,6 +307,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadSlideSucceed(List<RAdBO> rAdBOs) {
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
         int len = rAdBOs.size();
         ad = new String[len];
         for (int i = 0; i < len; i++) {
@@ -379,7 +386,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadGrabListSucceed(List<RGrabBO> rGrabBOs) {
-        grabAdapter.addItems(rGrabBOs);
+        grabAdapter.setItems(rGrabBOs);
         SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_grab), gson.toJson(rGrabBOs));
     }
 
@@ -536,5 +543,26 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         mPresenter.getSpecialAd();
         mPresenter.getHot();
         mPresenter.getGuess(application.getUserId());
+        mPresenter.checkUpdate();
+    }
+
+    @Override
+    public void onLoadActiveClick() {
+        if (MyUtils.hasInternet(getActivity())) {
+            errorLayout.setState(ErrorLayout.HIDE, "");
+            onRefresh();
+        }
+    }
+
+    public void checkUpdateFailed() {
+
+    }
+
+    public void checkUpdateSuccessful(RVersionBO rVersionBO) {
+        if (rVersionBO.version > MyUtils.getVersion(getActivity()))
+            createDialog("检测到新版本,是否更新?", (dialog, which) -> {
+                Uri uri = Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=com.poomoo.homeonline");
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }).show();
     }
 }

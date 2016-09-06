@@ -24,35 +24,14 @@
  * #                                                   #
  * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.model.request;
+package com.poomoo.model.response;
 
 /**
- * 类名 QEvaluateBO
- * 描述 评价
+ * 类名 RVersionBO
+ * 描述 版本升级
  * 作者 李苜菲
- * 日期 2016/9/5 14:48
+ * 日期 2016/9/6 9:17
  */
-public class QEvaluateBO extends BaseRequest {
-    public int userId;
-    public String orderId;
-    public int commodityId;
-    public String content;
-    public int descriptFit;
-    public int qualitySatisfy;
-    public int priceRational;
-    public int orderDetailId;
-    public boolean isPublic;
-
-    public QEvaluateBO(String method, int userId, String orderId, int commodityId, String content, int descriptFit, int qualitySatisfy, int priceRational, int orderDetailId, boolean isPublic) {
-        super(method);
-        this.userId = userId;
-        this.orderId = orderId;
-        this.commodityId = commodityId;
-        this.content = content;
-        this.descriptFit = descriptFit;
-        this.qualitySatisfy = qualitySatisfy;
-        this.priceRational = priceRational;
-        this.orderDetailId = orderDetailId;
-        this.isPublic = isPublic;
-    }
+public class RVersionBO {
+    public int version;
 }

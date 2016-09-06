@@ -5,6 +5,8 @@ package com.poomoo.commlib;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.os.Environment;
@@ -396,5 +398,23 @@ public class MyUtils {
      */
     public static boolean isLogin(Context context) {
         return (boolean) SPUtils.get(context, "isLogin", false);
+    }
+
+    /**
+     * 获取当前的版本号
+     *
+     * @param context
+     * @return
+     */
+    public static int getVersion(Context context) {
+        int versionCode = 3;
+        try {
+            // ---get the package info---
+            PackageManager pm = context.getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(context.getPackageName(), 0);
+            versionCode = pi.versionCode;
+        } catch (Exception e) {
+        }
+        return versionCode;
     }
 }

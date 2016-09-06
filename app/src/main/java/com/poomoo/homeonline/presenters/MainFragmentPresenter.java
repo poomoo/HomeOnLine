@@ -30,14 +30,17 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
+import com.poomoo.homeonline.ui.activity.AddressListActivity;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
 import com.poomoo.model.request.BaseRequest;
 import com.poomoo.model.request.QUserIdBO;
+import com.poomoo.model.request.QVersion;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RTypeBO;
+import com.poomoo.model.response.RVersionBO;
 
 import java.util.List;
 
@@ -184,4 +187,26 @@ public class MainFragmentPresenter extends BasePresenter<MainFragment> {
                     }
                 }));
     }
+
+    /**
+     * 检查更新
+     */
+    public void checkUpdate() {
+        QVersion qVersion = new QVersion(NetConfig.UPDATE, 1);
+        add(NetWork.getMyApi().CheckUpdate(qVersion)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<RVersionBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.checkUpdateFailed();
+                    }
+
+                    @Override
+                    public void onNext(RVersionBO rVersionBO) {
+                        mView.checkUpdateSuccessful(rVersionBO);
+                    }
+                }));
+    }
+
 }

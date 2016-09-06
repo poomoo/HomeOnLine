@@ -47,7 +47,7 @@ import butterknife.ButterKnife;
 
 /**
  * 类名 EvaluateListActivity
- * 描述 ${TODO}
+ * 描述 评价列表
  * 作者 李苜菲
  * 日期 2016/8/23 17:45
  */
