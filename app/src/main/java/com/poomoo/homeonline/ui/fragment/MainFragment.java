@@ -153,7 +153,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         mPresenter.getHot();
         mPresenter.getGuess(application.getUserId());
 
-
         initCountDownTime();
 
         initGrab();

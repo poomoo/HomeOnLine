@@ -39,6 +39,7 @@ import com.poomoo.homeonline.ui.activity.ScanHistoryActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.activity.TicketActivity;
 import com.poomoo.homeonline.ui.activity.UpdateNickNameActivity;
+import com.poomoo.homeonline.ui.activity.WebViewDataActivity;
 
 import dagger.Component;
 
@@ -83,4 +84,6 @@ public interface ActivityComponent {
     void inject(ReFundInfoActivity activity);
 
     void inject(TicketActivity activity);
+
+    void inject(WebViewDataActivity activity);
 }

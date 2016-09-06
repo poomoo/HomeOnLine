@@ -129,6 +129,10 @@
             android:name=".ui.activity.TicketActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.activity.WebViewDataActivity"
+            android:exported="false" />
+
         <!--图片相关-->
         <activity
             android:name=".ui.activity.pics.ImageGridActivity"

@@ -38,8 +38,8 @@ public class SplashActivity extends BaseActivity {
 //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //不显示日志
-//        LogUtils.isDebug = false;
-//        NetWork.level = HttpLoggingInterceptor.Level.NONE;
+        LogUtils.isDebug = false;
+        NetWork.level = HttpLoggingInterceptor.Level.NONE;
 
         importDB();
         isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);

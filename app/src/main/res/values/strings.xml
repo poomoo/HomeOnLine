@@ -30,6 +30,8 @@
     <string name="title_evaluate">评价</string>
     <string name="title_refundInfo">退款详情</string>
     <string name="title_confirm_order">确认订单</string>
+    <string name="title_ticket">优惠券</string>
+    <string name="title_ticket_statement">用券须知</string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -87,6 +89,8 @@
     <string name="intent_goodsState">goodsState</string>
     <string name="intent_returnReason">returnReason</string>
     <string name="intent_returnExplain">returnExplain</string>
+    <string name="intent_returnProof">returnProof</string>
+    <string name="intent_returnNoteId">returnNoteId</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>
@@ -104,6 +108,7 @@
     <string name="sp_special">special</string>
     <string name="sp_hot">hot</string>
     <string name="sp_guess">guess</string>
+    <string name="sp_hasCache">hasCache</string>
 
     <string name="dialog">请稍后...</string>
 
@@ -130,9 +135,6 @@
     <!--dialog-->
 
     <string name="toast_3_pics">最多选择3张图片</string>
-    <string name="intent_returnProof">returnProof</string>
-    <string name="intent_returnNoteId">returnNoteId</string>
     <string name="empty" />
-    <string name="sp_hasCache">hasCache</string>
 
 </resources>

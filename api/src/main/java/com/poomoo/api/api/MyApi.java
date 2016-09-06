@@ -57,13 +57,14 @@ import com.poomoo.model.request.QReFundBO;
 import com.poomoo.model.request.QReFundInfoBO;
 import com.poomoo.model.request.QRegisterBO;
 import com.poomoo.model.request.QSearchBO;
-import com.poomoo.model.request.QSignBO;
 import com.poomoo.model.request.QSpecificationBO;
 import com.poomoo.model.request.QTransferPriceBO;
 import com.poomoo.model.request.QUpdateInfoBO;
 import com.poomoo.model.request.QUserBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.request.QVersion;
+import com.poomoo.model.response.RDataBO;
+import com.poomoo.model.response.RTicketBO;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCartNumBO;
 import com.poomoo.model.response.RCartShopBO;
@@ -80,7 +81,6 @@ import com.poomoo.model.response.ROrderListBO;
 import com.poomoo.model.response.RReFundBO;
 import com.poomoo.model.response.RReFundInfoBO;
 import com.poomoo.model.response.RReceiptBO;
-import com.poomoo.model.response.RSignBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RSpecificationBO;
 import com.poomoo.model.response.RTransferPriceBO;
@@ -92,8 +92,6 @@ import com.poomoo.model.response.RZoneBO;
 import java.util.List;
 
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import rx.Observable;
 import rx.Subscription;
@@ -292,4 +290,12 @@ public interface MyApi {
     //检查更新
     @POST(NetConfig.suffix)
     Observable<RVersionBO> CheckUpdate(@Body QVersion data);
+
+    //检查更新
+    @POST(NetConfig.suffix)
+    Observable<RTicketBO> getTickets(@Body QUserIdBO data);
+
+    //用券须知
+    @POST(NetConfig.suffix)
+    Observable<RDataBO> getData(@Body BaseRequest data);
 }

@@ -24,53 +24,28 @@
  * #                                                   #
  * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.homeonline.presenters;
+package com.poomoo.model.response;
 
-import com.poomoo.api.AbsAPICallback;
-import com.poomoo.api.ApiException;
-import com.poomoo.api.NetConfig;
-import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.TicketActivity;
-import com.poomoo.model.request.QUserIdBO;
-import com.poomoo.model.response.RTicketBO;
-
-import javax.inject.Inject;
-
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+import java.util.List;
 
 /**
- * 类名 TicketPresenter
- * 描述 卡券
+ * 类名 RTicketBO
+ * 描述 优惠券
  * 作者 李苜菲
- * 日期 2016/9/5 15:40
+ * 日期 2016/9/6 13:55
  */
-public class TicketPresenter extends BasePresenter<TicketActivity> {
-    @Inject
-    public TicketPresenter() {
-    }
+public class RTicketBO {
+    public List<Ticket> voucheredlist;//已使用的抵用卷
+    public List<Ticket> voucherlist;//未使用的抵用卷
+    public List<Ticket> expiredCouponslist;//已使用的抵用卷
 
-    /**
-     * 获取优惠券
-     *
-     * @param userId
-     */
-    public void getTickets(int userId) {
-        QUserIdBO qUserIdBO = new QUserIdBO(NetConfig.TICKETS, userId);
-        add(NetWork.getMyApi().getTickets(qUserIdBO)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<RTicketBO>() {
-                    @Override
-                    protected void onError(ApiException e) {
-                        mView.failed(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(RTicketBO rTicketBO) {
-                        mView.successful(rTicketBO);
-                    }
-                }));
-
+    public class Ticket {
+        public int id;
+        public String voucherPic;//未使用显示
+        public String voucheredPic;//已使用显示
+        public String expiredCouponsPic;//已失效显示
+        public String updateTime;
+        public String periodValidity;
+        public String status;//
     }
 }

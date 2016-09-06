@@ -83,5 +83,7 @@ public class NetConfig {
 
     public static final String UPDATE="1015_01";//检查版本
 
+    public static final String TICKETS = "1016_01";//优惠券
+    public static final String TICKETSTATEMENT = "1016_02";//用券须知
 
 }

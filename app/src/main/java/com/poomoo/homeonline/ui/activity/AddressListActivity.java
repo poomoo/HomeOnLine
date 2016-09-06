@@ -209,8 +209,13 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
 
         if (requestCode == UPDATE && resultCode == DELETE) {
             adapter.removeItem(deletePosition);
-            if (adapter.getItemCount() == 0)
+            if (adapter.getItemCount() == 0){
                 mErrorLayout.setState(ErrorLayout.EMPTY_DATA, getEmptyMsg());
+                SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptId), -1);
+                SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptName), "");
+                SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptTel), "");
+                SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptAddress), "");
+            }
         }
     }
 }

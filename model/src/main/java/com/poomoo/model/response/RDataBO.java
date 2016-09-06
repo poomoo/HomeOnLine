@@ -24,53 +24,14 @@
  * #                                                   #
  * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.homeonline.presenters;
-
-import com.poomoo.api.AbsAPICallback;
-import com.poomoo.api.ApiException;
-import com.poomoo.api.NetConfig;
-import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.TicketActivity;
-import com.poomoo.model.request.QUserIdBO;
-import com.poomoo.model.response.RTicketBO;
-
-import javax.inject.Inject;
-
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
+package com.poomoo.model.response;
 
 /**
- * 类名 TicketPresenter
- * 描述 卡券
+ * 类名 RDataBO
+ * 描述 用券须知
  * 作者 李苜菲
- * 日期 2016/9/5 15:40
+ * 日期 2016/9/6 14:34
  */
-public class TicketPresenter extends BasePresenter<TicketActivity> {
-    @Inject
-    public TicketPresenter() {
-    }
-
-    /**
-     * 获取优惠券
-     *
-     * @param userId
-     */
-    public void getTickets(int userId) {
-        QUserIdBO qUserIdBO = new QUserIdBO(NetConfig.TICKETS, userId);
-        add(NetWork.getMyApi().getTickets(qUserIdBO)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<RTicketBO>() {
-                    @Override
-                    protected void onError(ApiException e) {
-                        mView.failed(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(RTicketBO rTicketBO) {
-                        mView.successful(rTicketBO);
-                    }
-                }));
-
-    }
+public class RDataBO {
+    public String remark;
 }
