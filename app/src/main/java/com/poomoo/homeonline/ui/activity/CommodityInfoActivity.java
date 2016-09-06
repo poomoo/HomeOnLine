@@ -125,6 +125,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private TextView inventoryTxt;
     private TextView selectedTxt;
     private EditText countEdt;
+    private ImageView plusImg;
+    private ImageView minusImg;
     private LinearLayout countLayout;
     private LinearLayout specificationLayout;
 
@@ -287,6 +289,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         selectedTxt = (TextView) view1.findViewById(R.id.txt_commodity_selected);
         countLayout = (LinearLayout) view1.findViewById(R.id.llayout_commodity_count);
         countEdt = (EditText) view1.findViewById(R.id.edt_info_count);
+        plusImg = (ImageView) view1.findViewById(R.id.img_info_add);
+        minusImg = (ImageView) view1.findViewById(R.id.img_info_minus);
         specificationLayout = (LinearLayout) view1.findViewById(R.id.layout_commodity_specification);
         specificationLayout.setOnClickListener(this);
 
@@ -465,6 +469,12 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             cartBtn.setEnabled(false);
             buyBtn.setEnabled(false);
         }
+        if (commodityType == 2) {//抢购商品不能加入购物车
+            cartBtn.setEnabled(false);
+            countEdt.setClickable(false);
+            plusImg.setClickable(false);
+            minusImg.setClickable(false);
+        }
 
         cartCommodityBO.commodityId = rCommodityInfoBO.commodity.id;
         cartCommodityBO.listPic = rCommodityInfoBO.commodity.listPic;
@@ -571,6 +581,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         cartCommodityBO.commodityNum = count;
         cartCommodityBO.commodityDetailsId = commodityDetailId;
         totalPrice = count * cartCommodityBO.commodityPrice;
+        cartCommodityBO.rushPurchaseId = matchId;
         rCartCommodityBOs = new ArrayList<>();
         rCartCommodityBOs.add(cartCommodityBO);
         Bundle bundle = new Bundle();

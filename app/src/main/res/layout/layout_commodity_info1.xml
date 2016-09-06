@@ -85,6 +85,7 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/img_info_minus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="minus"
@@ -101,6 +102,7 @@
                         android:textSize="@dimen/sp_14" />
 
                     <ImageView
+                        android:id="@+id/img_info_add"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="add"

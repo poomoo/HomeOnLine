@@ -3,10 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include
+        android:id="@+id/title"
+        layout="@layout/pub_layout_title_bar" />
+
     <WebView
         android:id="@+id/web_pub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@+id/title"
         android:background="@color/ThemeBg" />
 
 

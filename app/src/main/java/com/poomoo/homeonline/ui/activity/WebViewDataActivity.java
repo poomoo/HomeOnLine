@@ -39,7 +39,7 @@ public class WebViewDataActivity extends BaseDaggerActivity<WebViewPresenter> im
 
     @Override
     protected int onBindLayout() {
-        return R.layout.activity_webview;
+        return R.layout.activity_webview_data;
     }
 
     @Override

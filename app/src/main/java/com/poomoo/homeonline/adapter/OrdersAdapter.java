@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.listeners.CancelClickListener;
@@ -83,7 +84,7 @@ public class OrdersAdapter extends BaseListAdapter<ROrderListBO> {
 
         holder.allPriceTxt.setText("￥" + df.format(item.order.sumMoney));
         holder.freightPriceTxt.setText("￥" + df.format(item.order.deliveryFee));
-
+        LogUtils.d(TAG, "item:" + item);
         switch (item.order.state) {
             case ROrderBO.ORDER_PAY:
                 holder.btn1.setText("付款");
@@ -96,6 +97,7 @@ public class OrdersAdapter extends BaseListAdapter<ROrderListBO> {
                 holder.orderStatusTxt.setText("待付款");
                 break;
             case ROrderBO.ORDER_DELIVER:
+            case ROrderBO.ORDER_PICKING:
                 holder.btn1.setText("催单");
                 holder.btn1.setOnClickListener(new urgeOnclick(position));
                 holder.btn2.setVisibility(View.GONE);
