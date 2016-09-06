@@ -209,6 +209,8 @@ public class AddressListActivity extends BaseListDaggerActivity<RReceiptBO, Addr
 
         if (requestCode == UPDATE && resultCode == DELETE) {
             adapter.removeItem(deletePosition);
+            if (adapter.getItemCount() == 0)
+                mErrorLayout.setState(ErrorLayout.EMPTY_DATA, getEmptyMsg());
         }
     }
 }

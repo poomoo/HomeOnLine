@@ -45,7 +45,7 @@ public class HotAdapter extends BaseListAdapter<RAdBO> {
         holder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(mContext) / 2));//设置广告栏的宽高比为2:1
 
         item = items.get(position);
-        Glide.with(mContext).load(NetConfig.ImageUrl + item.advertisementPic).placeholder(R.drawable.replace2).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.image);
+        Glide.with(mContext).load(NetConfig.ImageUrl + item.advertisementPic).placeholder(R.drawable.replace2).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().into(holder.image);
     }
 
     public static final class BaseViewHolder extends RecyclerView.ViewHolder {

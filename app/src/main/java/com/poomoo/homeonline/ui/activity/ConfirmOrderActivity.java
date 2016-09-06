@@ -250,8 +250,10 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
     }
 
     public void getDefaultAddressSucceed(RReceiptBO rReceiptBO) {
-        contentLayout.setVisibility(View.VISIBLE);
         mErrorLayout.setState(ErrorLayout.HIDE, "");
+        if (rReceiptBO == null)
+            return;
+        contentLayout.setVisibility(View.VISIBLE);
         qOrderBO.order.deliveryId = rReceiptBO.id;
         SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptId), rReceiptBO.id);
         SPUtils.put(getApplicationContext(), getString(R.string.sp_receiptName), rReceiptBO.consigneeName);

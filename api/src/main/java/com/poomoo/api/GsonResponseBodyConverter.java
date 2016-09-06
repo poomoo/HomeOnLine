@@ -38,6 +38,8 @@ class GsonResponseBodyConverter<T> implements Converter<ResponseBody, T> {
             //result true表示成功返回，继续用本来的Model类解析
             JSONObject jsonObject = null;
             String jsonData = "";
+            if (responseBO.content == null)
+                return null;
             try {
                 jsonObject = new JSONObject(response.toString());
                 jsonData = jsonObject.getString("content");

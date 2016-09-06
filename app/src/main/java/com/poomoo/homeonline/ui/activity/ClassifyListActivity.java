@@ -94,7 +94,24 @@ public class ClassifyListActivity extends BaseListDaggerActivity<RListCommodityB
         categoryId = getIntent().getStringExtra(getString(R.string.intent_categoryId));
 
         mSwipeRefreshLayout.setEnabled(false);
-        mListView.setLayoutManager(new GridLayoutManager(this, 2));
+        //设置布局管理器
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+            @Override
+            public int getSpanSize(int position) {
+                int spanSize;
+                switch (mAdapter.getItemViewType(position)) {
+                    case -2:
+                        spanSize = 2;
+                        break;
+                    default:
+                        spanSize = 1;
+                        break;
+                }
+                return spanSize;
+            }
+        });
+        mListView.setLayoutManager(gridLayoutManager);
         mListView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
                 .color(getResources().getColor(R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
@@ -104,9 +121,9 @@ public class ClassifyListActivity extends BaseListDaggerActivity<RListCommodityB
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
         mListView.setPadding((int) getResources().getDimension(R.dimen.recycler_divider), 0, 0, 0);
-        mErrorLayout.setState(ErrorLayout.HIDE, "");
         listCommodityAdapter.setOnItemClickListener(this);
 
+        mErrorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.getCommodity(categoryId, mCurrentPage);
     }
 

@@ -156,7 +156,7 @@ public abstract class BaseListDaggerActivity<T, P extends BasePresenter> extends
         this.mEmptyMsg = mEmptyMsg;
     }
 
-    private String getEmptyMsg() {
+    protected String getEmptyMsg() {
         return mEmptyMsg;
     }
 
