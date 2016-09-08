@@ -464,9 +464,9 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             cartBtn.setEnabled(false);
             buyBtn.setEnabled(false);
         }
-        if (commodityType == 2) {//抢购商品不能加入购物车
+        if (commodityType == 2) {//抢购商品不能加入购物车 且每人只能购买一件
             cartBtn.setEnabled(false);
-            countEdt.setClickable(false);
+            countEdt.setEnabled(false);
             plusImg.setClickable(false);
             minusImg.setClickable(false);
         }
@@ -717,20 +717,13 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                             addToCart();
                         else
                             createOrder();
+                        dialog.dismiss();
                         break;
                     case R.id.btn_dialog_cart:
                         addToCart();
-//                    if (!isAllSelected) {
-//                        MyUtils.showToast(getApplicationContext(), "请选择商品属性");
-//                        return;
-//                    }
                         dialog.dismiss();
                         break;
                     case R.id.btn_dialog_buy:
-//                        if (!isAllSelected) {
-//                            MyUtils.showToast(getApplicationContext(), "请选择商品属性");
-//                            return;
-//                        }
                         createOrder();
                         dialog.dismiss();
                         break;

@@ -498,7 +498,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
-                    bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                    bundle.putInt(getString(R.string.intent_commodityType), 1);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {
                     bundle = new Bundle();
