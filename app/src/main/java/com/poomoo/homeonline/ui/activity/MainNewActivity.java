@@ -62,8 +62,7 @@ public class MainNewActivity extends BaseActivity {
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        flag = intent.getIntExtra(getString(R.string.intent_value), -1);
-        LogUtils.d(TAG, "onNewIntent:" + flag);
+        flag = intent.getIntExtra(getString(R.string.intent_value), 0);
         jump(flag);
     }
 
