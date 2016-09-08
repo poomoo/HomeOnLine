@@ -223,15 +223,12 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         titleBar.getBackground().mutate().setAlpha(0);
         backImg.setOnClickListener(this);
         collectImg.setOnClickListener(this);
-        if (application.getCartNum() == -1 && application.getUserId() != null) {
+        if (application.getCartNum() == 0 && application.getUserId() != null) {
+            cartNumTxt.setVisibility(View.INVISIBLE);
             mPresenter.getCartNum(application.getUserId());
         } else {
-            if (application.getCartNum() == 0)
-                cartNumTxt.setVisibility(View.INVISIBLE);
-            else {
-                cartNumTxt.setVisibility(View.VISIBLE);
-                cartNumTxt.setText(application.getCartNum() > 99 ? "99+" : application.getCartNum() + "");
-            }
+            cartNumTxt.setVisibility(View.VISIBLE);
+            cartNumTxt.setText(application.getCartNum() > 99 ? "99+" : application.getCartNum() + "");
         }
 
         addView();
@@ -273,10 +270,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         getProgressBar();
         showProgressBar();
         mPresenter.getCommodity(commodityId, commodityDetailId, commodityType, matchId);
-        if (application.getUserId() != null) {
+        if (application.getUserId() != null)
             mPresenter.addHistory(application.getUserId(), commodityId, commodityType);
-            mPresenter.isCollect(application.getUserId(), commodityId, commodityDetailId);
-        }
     }
 
     private void addView() {

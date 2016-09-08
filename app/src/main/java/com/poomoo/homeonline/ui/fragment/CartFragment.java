@@ -255,6 +255,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
 
             allBuyChk.setChecked(false);
             adapter.isEdit = false;
+            application.setCartNum(0);
         }
     }
 
@@ -532,17 +533,16 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
                 @Override
                 public void afterTextChanged(Editable s) {
                     String temp = s.toString();
-//                    LogUtils.d(TAG, "temp:" + temp);
                     if (temp.length() == 0)
                         return;
-                    if (temp.length() == MyConfig.MINCOUNT && temp.equals("0")) {
+                    count = Integer.parseInt(temp);
+                    LogUtils.d(TAG, "afterTextChanged:" + temp + " " + count);
+                    if (count == 0) {
                         s.replace(0, 1, "1");
                         count = MyConfig.MINCOUNT;
                     }
-                    count = Integer.parseInt(temp);
                     if (count > MyConfig.MAXCOUNT) {
                         count = MyConfig.MAXCOUNT;
-//                        LogUtils.d(TAG, "s:" + s.toString() + " len" + s.length());
                         s.replace(0, s.length(), count + "");
                     }
                     setEnabled(count);
@@ -578,6 +578,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
      * @param count
      */
     private void setEnabled(int count) {
+        LogUtils.d(TAG, "setEnabled:" + count);
         if (count == MyConfig.MINCOUNT) {
             dialogMinusImg.setEnabled(false);
             dialogPlusImg.setEnabled(true);

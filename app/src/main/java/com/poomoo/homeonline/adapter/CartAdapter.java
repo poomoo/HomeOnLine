@@ -6,14 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.orhanobut.dialogplus.DialogPlus;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
@@ -22,8 +20,8 @@ import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.custom.AddAndMinusView;
 import com.poomoo.homeonline.ui.fragment.CartFragment;
-import com.poomoo.model.response.RCartShopBO;
 import com.poomoo.model.response.RCartCommodityBO;
+import com.poomoo.model.response.RCartShopBO;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;

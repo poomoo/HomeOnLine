@@ -372,11 +372,17 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
      * @param view
      */
     public void payByZFB(View view) {
-        for (RCartCommodityBO cartCommodityBOs : rCartCommodityBOs)
+        for (RCartCommodityBO cartCommodityBOs : rCartCommodityBOs) {
             if (cartCommodityBOs.commodityNum == 0) {
                 createDialog("购买的商品中存在没有库存的,请重新购买", (dialog, which) -> finish()).show();
                 return;
             }
+            if (cartCommodityBOs.commodityPrice == 0) {
+                createDialog("购买的商品中存在价格异常的,请重新购买", (dialog, which) -> finish()).show();
+                return;
+            }
+        }
+
         mErrorLayout.setState(ErrorLayout.LOADING, "");
         if (isCreateOrder)
             mPresenter.sign(orderId, commodityName);
