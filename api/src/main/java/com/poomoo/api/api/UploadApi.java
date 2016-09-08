@@ -19,6 +19,6 @@ import rx.Observable;
  */
 public interface UploadApi {
     @Multipart
-    @POST("jyzx/app/upfile/picture.json")
+    @POST("app/upfile/picture.json")
     Observable<RUploadUrlBO> uploadPic(@PartMap Map<String, RequestBody> params);
 }

@@ -23,6 +23,6 @@ public interface PayApi {
 
     //验签
     @FormUrlEncoded
-    @POST("jyzx/app/pay/alipay_return.html")
+    @POST("app/pay/alipay_return.html")
     Observable<ResponseBO> checkSign(@Field("resultStatus") String resultStatus, @Field("result") String result, @Field("memo") String memo);
 }

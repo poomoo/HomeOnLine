@@ -8,7 +8,8 @@ package com.poomoo.api;
  * 日期: 2015/11/27 11:22.
  */
 public class NetConfig {
-    public static String RemoteUrl = "http://115.28.95.198/";
+//    public static String RemoteUrl = "http://115.28.95.198/";
+    public static String RemoteUrl = "http://www.jiayou9.com/";
     public static String LocalUrl = "http://192.168.1.107:8080/";
     public static String ImageUrl = "http://img.jiayou9.com/jyzx";
     public final static String suffixRemote = "jyzx/app/call.json";
