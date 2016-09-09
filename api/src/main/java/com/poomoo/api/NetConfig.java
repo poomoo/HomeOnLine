@@ -12,13 +12,15 @@ public class NetConfig {
     public static String RemoteUrl = "http://www.jiayou9.com/";
     public static String LocalUrl = "http://192.168.1.107:8080/";
     public static String ImageUrl = "http://img.jiayou9.com/jyzx";
-    public final static String suffixRemote = "jyzx/app/call.json";
+//    public final static String suffixRemote = "jyzx/app/call.json";
+    public final static String suffixRemote = "app/call.json";
     public final static String suffixLocal = "app/call.json";
 
     public final static String suffix = suffixRemote;
     public static String url = RemoteUrl;
 
-    public static final String grabUrl = url + "jyzx/app/rush.html";
+    public static final String grabUrl = url + "app/rush.html";
+//    public static final String grabUrl = url + "jyzx/app/rush.html";
 
     public final static String LOGIN = "1001";//登录
     public final static String CODE = "1002";//获取验证码
