@@ -30,14 +30,12 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
-import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.model.response.RListCommodityBO;
@@ -68,7 +66,7 @@ public class HistoryAdapter extends BaseListAdapter<RListCommodityBO> {
         BaseViewHolder holder = (BaseViewHolder) h;
         item = items.get(position);
 
-        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).placeholder(R.drawable.replace).into(holder.commodityImg);
+        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.replace).into(holder.commodityImg);
         holder.commodityTxt.setText(item.commodityName);
         holder.priceTxt.setText(item.commodityPrice + "");
     }

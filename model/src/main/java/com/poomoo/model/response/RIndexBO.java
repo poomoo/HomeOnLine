@@ -27,20 +27,11 @@
 package com.poomoo.model.response;
 
 /**
- * 类名 RGrabBO
- * 描述 抢购
+ * 类名 RIndexBO
+ * 描述 引导页
  * 作者 李苜菲
- * 日期 2016/8/3 16:50
+ * 日期 2016/9/13 11:12
  */
-public class RGrabBO {
-    public int id;
-    public String startTime; //抢购开始时间
-    public String endTime; //抢购结束时间
-    public String platformPrice;//平台价格
-    public String commonPrice;//市场价格
-    public String rushPurchasePrice;//抢购价格
-    public String listPic;//商品列表图片
-    public int commodityId;
-    public int commodityDetailId;
-    public String wxMainPic;//商品列表图片
+public class RIndexBO {
+    public String url;
 }

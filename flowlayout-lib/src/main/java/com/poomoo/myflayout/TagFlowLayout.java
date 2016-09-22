@@ -118,19 +118,22 @@ public class TagFlowLayout extends FlowLayout implements TagAdapter.OnDataChange
             if (preCheckedList.contains(i)) {
                 tagViewContainer.setChecked(true);
             }
+
             if (mTagAdapter.setSelected(i, adapter.getItem(i))) {
                 mSelectedView.add(i);
                 tagViewContainer.setChecked(true);
-            }
-            if (mTagAdapter.setEnabled(i, adapter.getItem(i))) {
-                mSelectedView.remove(i);
-                tagViewContainer.setEnabled(true);
-            }
-
-            if (len == 1)
+            } else if (len == 1)
                 tagViewContainer.setChecked(true);
             else
                 tagViewContainer.setChecked(false);
+
+            if (mTagAdapter.setEnabled(i, adapter.getItem(i))) {
+                mSelectedView.remove(i);
+                tagViewContainer.setClickable(false);
+                tagViewContainer.setEnabled(false);
+            }
+
+
         }
         mSelectedView.addAll(preCheckedList);
     }

@@ -149,7 +149,8 @@ public class ScanHistoryActivity extends BaseListDaggerActivity<RListCommodityBO
         bundle.putInt(getString(R.string.intent_commodityId), mAdapter.getItem(position).commodityId);
         bundle.putInt(getString(R.string.intent_commodityDetailId), mAdapter.getItem(position).commodityDetailId);
         bundle.putInt(getString(R.string.intent_commodityType), mAdapter.getItem(position).commodityType);
-        bundle.putInt(getString(R.string.intent_matchId),  mAdapter.getItem(position).rushPurchaseId);
+        if (mAdapter.getItem(position).rushPurchaseId != null)
+            bundle.putInt(getString(R.string.intent_matchId), mAdapter.getItem(position).rushPurchaseId);
         openActivity(CommodityInfoActivity.class, bundle);
     }
 }

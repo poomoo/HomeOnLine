@@ -39,7 +39,6 @@ import com.poomoo.model.response.RZoneBO;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.prefs.AbstractPreferences;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -108,7 +107,7 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         openActivity(MyOrdersActivity.class, bundle);
     }
 
-    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info,R.id.rlayout_ticket, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale, R.id.rlayout_logOut})
+    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_ticket, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale, R.id.rlayout_logOut})
     void other(View view) {
         switch (view.getId()) {
             case R.id.txt_collection:
@@ -145,6 +144,9 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
                     SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptAddress), "");
                     SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptTel), "");
                     SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptId), -1);
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_userId), -1);
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_phoneNum), "");
+                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_nickName), "");
                     ((MainNewActivity) getActivity()).jump(0);
                     ((MainNewActivity) getActivity()).setInfoNum(3, 0, false);
                     application.setCartNum(0);

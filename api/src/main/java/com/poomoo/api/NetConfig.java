@@ -8,19 +8,28 @@ package com.poomoo.api;
  * 日期: 2015/11/27 11:22.
  */
 public class NetConfig {
-//    public static String RemoteUrl = "http://115.28.95.198/";
-    public static String RemoteUrl = "http://www.jiayou9.com/";
-    public static String LocalUrl = "http://192.168.1.107:8080/";
-    public static String ImageUrl = "http://img.jiayou9.com/jyzx";
-//    public final static String suffixRemote = "jyzx/app/call.json";
-    public final static String suffixRemote = "app/call.json";
-    public final static String suffixLocal = "app/call.json";
+    //本地服务器
+//    public final static String url = "http://192.168.1.107:8080/";
+//    public final static String suffix = "app/call.json";
+//    public final static String grabUrl = url + "app/rush.html";
 
-    public final static String suffix = suffixRemote;
-    public static String url = RemoteUrl;
+    //测试服务器
+//    public final static String url = "http://115.28.95.198/";
+//    public final static String suffix = "jyzx/app/call.json";
+//    public final static String grabUrl = url + "jyzx/app/rush.html";
+//    public final static String check="jyzx/app/pay/alipay_return.html";
+//    public final static String NOTIFY_URL = "http://www.jiayou9.com/jyzx/app/pay/alipay_notify.html";    //支付宝回调地址
 
-    public static final String grabUrl = url + "app/rush.html";
-//    public static final String grabUrl = url + "jyzx/app/rush.html";
+    //正式服务器
+    public final static String url = "http://www.jiayou9.com/";
+    public final static String suffix = "app/call.json";
+    public final static String grabUrl = url + "app/rush.html";
+    public final static String check = "app/pay/alipay_return.html";
+    public final static String NOTIFY_URL = "http://www.jiayou9.com/app/pay/alipay_notify.html";    //支付宝回调地址
+
+    //图片地址
+    public final static String ImageUrl = "http://img.jiayou9.com/jyzx";
+
 
     public final static String LOGIN = "1001";//登录
     public final static String CODE = "1002";//获取验证码
@@ -84,9 +93,11 @@ public class NetConfig {
     public static final String CHANGEREFUND = "1014_02";//修改退款
     public static final String REFUNDINFO = "1014_03";//退款详情
 
-    public static final String UPDATE="1015_01";//检查版本
+    public static final String UPDATE = "1015_01";//检查版本
 
     public static final String TICKETS = "1016_01";//优惠券
     public static final String TICKETSTATEMENT = "1016_02";//用券须知
+
+    public static final String INDEX = "2002_01";//引导页
 
 }

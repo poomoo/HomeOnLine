@@ -1,5 +1,6 @@
 package com.poomoo.api.api;
 
+import com.poomoo.api.NetConfig;
 import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.QSignBO;
 import com.poomoo.model.response.RSignBO;
@@ -18,11 +19,11 @@ import rx.Observable;
  */
 public interface PayApi {
     //签名
-    @POST("/app/call.json")
+    @POST(NetConfig.suffix)
     Observable<RSignBO> sign(@Body QSignBO data);
 
     //验签
     @FormUrlEncoded
-    @POST("app/pay/alipay_return.html")
+    @POST(NetConfig.check)
     Observable<ResponseBO> checkSign(@Field("resultStatus") String resultStatus, @Field("result") String result, @Field("memo") String memo);
 }

@@ -41,7 +41,7 @@ public class MainGrabAdapter extends BaseListAdapter<RGrabBO> {
     protected void onBindDefaultViewHolder(RecyclerView.ViewHolder h, int position) {
         BaseViewHolder holder = (BaseViewHolder) h;
         item = items.get(position);
-        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).placeholder(R.drawable.replace).priority(Priority.HIGH).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.commodityImg);
+        Glide.with(mContext).load(NetConfig.ImageUrl + item.wxMainPic).placeholder(R.drawable.replace).priority(Priority.HIGH).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.commodityImg);
         holder.newPriceTxt.setText("￥" + item.rushPurchasePrice);
         holder.oldPriceTxt.setText("￥" + item.platformPrice);
         holder.oldPriceTxt.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);

@@ -1,6 +1,8 @@
 package com.poomoo.homeonline.application;
 
 
+import android.graphics.Bitmap;
+
 import com.poomoo.homeonline.crashhandler.CrashHandler;
 
 import org.litepal.LitePalApplication;
@@ -17,6 +19,8 @@ public class MyApplication extends LitePalApplication {
     private String tel = "";//用户手机号码
     private String nickName = "";//用户昵称
     private int cartNum;
+    private int version;
+    private Bitmap[] index;
 
     @Override
     public void onCreate() {
@@ -58,5 +62,21 @@ public class MyApplication extends LitePalApplication {
 
     public void setCartNum(int cartNum) {
         this.cartNum = cartNum;
+    }
+
+    public int getVersion() {
+        return version;
+    }
+
+    public void setVersion(int version) {
+        this.version = version;
+    }
+
+    public Bitmap[] getIndex() {
+        return index;
+    }
+
+    public void setIndex(Bitmap[] index) {
+        this.index = index;
     }
 }

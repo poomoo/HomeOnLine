@@ -101,7 +101,7 @@ import butterknife.OnClick;
  * 作者 李苜菲
  * 日期 2016/7/19 11:22
  */
-public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter> implements View.OnClickListener {
+public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter> implements View.OnClickListener, TextWatcher {
     @Bind(R.id.rlayout_info_title)
     RelativeLayout titleBar;
     @Bind(R.id.img_info_back)
@@ -147,6 +147,9 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private TextView dialog_newPriceTxt;
     private TextView dialog_oldPriceTxt;
     private TextView dialog_inventoryTxt;
+    private EditText dialog_countEdt;
+    private ImageView dialog_plusImg;
+    private ImageView dialog_minusImg;
     private Button confirmBtn;
     private Button dialog_cartBtn;
     private Button dialog_buyBtn;
@@ -291,39 +294,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
 
         slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, screenWidth));
         oldPriceTxt.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-        countEdt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                String temp = s.toString();
-                if (temp.length() == 0)
-                    return;
-                if (temp.length() == 1 && temp.equals("0")) {
-                    s.replace(0, 1, "1");
-                    count = 1;
-                }
-                count = Integer.parseInt(temp);
-                if (count < 1) {
-                    count = 1;
-                    s.replace(0, s.length(), count + "");
-                }
-
-                if (count > maxNum) {
-                    count = maxNum;
-                    s.replace(0, s.length(), count + "");
-                }
-            }
-        });
-
+        countEdt.addTextChangedListener(this);
         viewList.add(view1);
 
         View view2 = LayoutInflater.from(this).inflate(R.layout.layout_commodity_info2, null);
@@ -437,6 +408,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     }
 
     public void getCommodityInfoSucceed(RCommodityInfoBO rCommodityInfoBO) {
+        LogUtils.d(TAG, rCommodityInfoBO.specialParamters + "\n" + rCommodityInfoBO.commodity.lowestPriceDetail);
         int len = rCommodityInfoBO.commodityPictures.size();
         pics = new String[len];
         int i = 0;
@@ -460,11 +432,26 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         isStar = rCommodityInfoBO.isStar;
         LogUtils.d(TAG, "isStar:" + rCommodityInfoBO.isStar);
 
-        if ((commodityType == 2 && !isStar) || (repertory == 0)) {
-            cartBtn.setEnabled(false);
-            buyBtn.setEnabled(false);
+        len = rCommodityInfoBO.specialParamters.size();
+        if (len > 0) {
+            hasSpecification = true;
+            countLayout.setVisibility(View.GONE);
+            specificationLayout.setVisibility(View.VISIBLE);
+        } else {
+            hasSpecification = false;
+            countLayout.setVisibility(View.VISIBLE);
+            specificationLayout.setVisibility(View.GONE);
         }
+
         if (commodityType == 2) {//抢购商品不能加入购物车 且每人只能购买一件
+            cartBtn.setEnabled(false);
+            countEdt.setEnabled(false);
+            plusImg.setClickable(false);
+            minusImg.setClickable(false);
+            if (!isStar) buyBtn.setEnabled(false);
+        }
+        if (repertory == 0 && !hasSpecification) {//库存为0且没有商品规格
+            buyBtn.setEnabled(false);
             cartBtn.setEnabled(false);
             countEdt.setEnabled(false);
             plusImg.setClickable(false);
@@ -478,19 +465,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         cartCommodityBO.orderType = rCommodityInfoBO.orderType;
         cartCommodityBO.commodityType = commodityType;
 
-        len = rCommodityInfoBO.specialParamters.size();
-        if (len > 0) {
-            hasSpecification = true;
-            countLayout.setVisibility(View.GONE);
-            specificationLayout.setVisibility(View.VISIBLE);
-        } else {
-            hasSpecification = false;
-            countLayout.setVisibility(View.VISIBLE);
-            specificationLayout.setVisibility(View.GONE);
-        }
-
         List<Integer> integers = new ArrayList<>();
-
         for (i = 0; i < len; i++)
             if (rCommodityInfoBO.specialParamters.get(i).parametersValues.size() > 0)//该规格有多个属性
                 integers.add(i);
@@ -524,6 +499,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     }
 
     public void getSpecificationSucceed(RSpecificationBO rSpecificationBO) {
+        LogUtils.d(TAG, "getSpecificationSucceed START");
         dialog_progressBarRlayout.setVisibility(View.GONE);
         dialog_newPriceTxt.setText("￥" + rSpecificationBO.commodityDetail.platformPrice);
         dialog_oldPriceTxt.setText("￥" + rSpecificationBO.commodityDetail.commonPrice);
@@ -531,18 +507,29 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         maxNum = rSpecificationBO.commodityDetail.repertory;
         commodityDetailId = rSpecificationBO.commodityDetail.id;
         repertory = rSpecificationBO.commodityDetail.repertory;
+
         if (isAllSelected && repertory > 0) {
             confirmBtn.setEnabled(true);
             dialog_cartBtn.setEnabled(true);
             dialog_buyBtn.setEnabled(true);
             confirmBtn.setText("确定");
-
+            dialog_countEdt.setEnabled(true);
+            dialog_plusImg.setClickable(true);
+            dialog_minusImg.setClickable(true);
         } else {
             confirmBtn.setEnabled(false);
             dialog_cartBtn.setEnabled(false);
             dialog_buyBtn.setEnabled(false);
             confirmBtn.setText("库存不足");
+            dialog_countEdt.setEnabled(false);
+            LogUtils.d(TAG, "getSpecificationSucceed START2");
+            dialog_countEdt.setText("1");
+            LogUtils.d(TAG, "getSpecificationSucceed START3");
+            dialog_plusImg.setClickable(false);
+            dialog_minusImg.setClickable(false);
         }
+        priceTxt.setText("￥ " + rSpecificationBO.commodityDetail.platformPrice);
+        oldPriceTxt.setText("￥ " + rSpecificationBO.commodityDetail.commonPrice);
     }
 
     public void getSpecificationFailed(String msg) {
@@ -687,12 +674,23 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             dialog_progressBarRlayout = ((RelativeLayout) view.findViewById(R.id.rlayout_progressBar));
             dialog_product_sum = ((EditText) view.findViewById(R.id.edt_commodity_specification_count));
             dialog_inventoryTxt = (TextView) view.findViewById(R.id.txt_dialog_inventory);
+            dialog_countEdt = (EditText) view.findViewById(R.id.edt_commodity_specification_count);
+            dialog_minusImg = (ImageView) view.findViewById(R.id.dialog_product_sum_sub);
+            dialog_plusImg = (ImageView) view.findViewById(R.id.dialog_product_sum_add);
             confirmBtn = ((Button) view.findViewById(R.id.btn_dialog_ok));
             dialog_cartBtn = ((Button) view.findViewById(R.id.btn_dialog_cart));
             dialog_buyBtn = ((Button) view.findViewById(R.id.btn_dialog_buy));
             bottomLayout = ((LinearLayout) view.findViewById(R.id.llayout_dialog_bottom));
             dialogSmallImg = (ImageView) view.findViewById(R.id.img_dialog_detail);
 
+            if (repertory > 0) {//库存>0
+                confirmBtn.setEnabled(true);
+                dialog_cartBtn.setEnabled(true);
+                dialog_buyBtn.setEnabled(true);
+                dialog_inventoryTxt.setVisibility(View.VISIBLE);
+            }
+
+            dialog_countEdt.addTextChangedListener(this);
             dialog_product_name.setText(commodityName);
             dialog_inventoryTxt.setText("库存" + rCommodityInfoBO.commodity.lowestPriceDetail.repertory + "件");
             dialog_newPriceTxt.setText("￥" + rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice);
@@ -780,18 +778,23 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                 @Override
                 public View getView(FlowLayout parent, int position, RCommodityInfoBO.SpecialParamter.ParametersValues s) {
                     TextView tv;
-                    if (position != 0 && position % 3 == 0)
-                        tv = (TextView) mInflater.inflate(R.layout.tv_enable, tagFlowLayout, false);
-                    else
-                        tv = (TextView) mInflater.inflate(R.layout.tv, tagFlowLayout, false);
+//                    if (position != 0 && position % 3 == 0)
+//                        tv = (TextView) mInflater.inflate(R.layout.tv_enable, tagFlowLayout, false);
+//                    else
+                    tv = (TextView) mInflater.inflate(R.layout.tv, tagFlowLayout, false);
                     tv.setText(s.parameterValue);
+
                     return tv;
                 }
 
                 @Override
-                public boolean setEnabled(int position, RCommodityInfoBO.SpecialParamter.ParametersValues s) {
-                    return false;
+                public boolean setSelected(int position, RCommodityInfoBO.SpecialParamter.ParametersValues parametersValues) {
+                    LogUtils.d(TAG, "setSelected:" + position + " " + parametersValues);
+                    if (parametersValues.isCheck)
+                        return true;
+                    return super.setSelected(position, parametersValues);
                 }
+
             };
             tagFlowLayouts.add(tagFlowLayout);
             tagFlowLayout.setAdapter(adapterType);
@@ -832,6 +835,9 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             dialog_inventoryTxt.setVisibility(View.VISIBLE);
             mPresenter.getCommodityInfoBySpecification(commodityId, commodityType, specification.toArray(new Integer[specification.size()]));
         }
+        confirmBtn.setEnabled(isAllSelected);
+        dialog_cartBtn.setEnabled(isAllSelected);
+        dialog_buyBtn.setEnabled(isAllSelected);
     }
 
     /**
@@ -892,6 +898,37 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             case R.id.layout_commodity_specification:
                 createDialog(true);
                 break;
+        }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        String temp = s.toString();
+        if (temp.length() == 0)
+            return;
+        if (temp.length() == 1 && temp.equals("0")) {
+            s.replace(0, 1, "1");
+            count = 1;
+        }
+        count = Integer.parseInt(temp);
+        if (count < 1) {
+            count = 1;
+            s.replace(0, s.length(), count + "");
+        }
+
+        if (count > maxNum && maxNum > 0) {
+            count = maxNum;
+            s.replace(0, s.length(), count + "");
         }
     }
 

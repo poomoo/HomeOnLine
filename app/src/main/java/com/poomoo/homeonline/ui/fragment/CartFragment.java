@@ -151,7 +151,6 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
             bundle.putInt(getString(R.string.intent_commodityId), cartCommodityBO.commodityId);
             bundle.putInt(getString(R.string.intent_commodityDetailId), cartCommodityBO.commodityDetailId);
             bundle.putInt(getString(R.string.intent_commodityType), cartCommodityBO.commodityType);
-            bundle.putInt(getString(R.string.intent_matchId), cartCommodityBO.rushPurchaseId);
             openActivity(CommodityInfoActivity.class, bundle);
             return true;
         });

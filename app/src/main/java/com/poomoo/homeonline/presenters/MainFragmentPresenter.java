@@ -187,26 +187,4 @@ public class MainFragmentPresenter extends BasePresenter<MainFragment> {
                     }
                 }));
     }
-
-    /**
-     * 检查更新
-     */
-    public void checkUpdate() {
-        QVersion qVersion = new QVersion(NetConfig.UPDATE, 1);
-        add(NetWork.getMyApi().CheckUpdate(qVersion)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<RVersionBO>() {
-                    @Override
-                    protected void onError(ApiException e) {
-                        mView.checkUpdateFailed();
-                    }
-
-                    @Override
-                    public void onNext(RVersionBO rVersionBO) {
-                        mView.checkUpdateSuccessful(rVersionBO);
-                    }
-                }));
-    }
-
 }

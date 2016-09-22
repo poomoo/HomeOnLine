@@ -152,7 +152,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         mPresenter.getSpecialAd();
         mPresenter.getHot();
         mPresenter.getGuess(application.getUserId());
-
+        checkUpdate(application.getVersion());
         initCountDownTime();
 
         initGrab();
@@ -160,7 +160,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         initHot();
 
         initGuess();
-        mPresenter.checkUpdate();
 
         scrollView.setScrollViewListener(this);
 
@@ -542,7 +541,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         mPresenter.getSpecialAd();
         mPresenter.getHot();
         mPresenter.getGuess(application.getUserId());
-        mPresenter.checkUpdate();
     }
 
     @Override
@@ -553,12 +551,8 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         }
     }
 
-    public void checkUpdateFailed() {
-
-    }
-
-    public void checkUpdateSuccessful(RVersionBO rVersionBO) {
-        if (rVersionBO.version > MyUtils.getVersion(getActivity()))
+    public void checkUpdate(int version) {
+        if (version > MyUtils.getVersion(getActivity()))
             createDialog("检测到新版本,是否更新?", (dialog, which) -> {
                 Uri uri = Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=com.poomoo.homeonline");
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));

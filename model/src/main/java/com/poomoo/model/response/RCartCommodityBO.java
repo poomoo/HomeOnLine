@@ -26,7 +26,7 @@ public class RCartCommodityBO implements Serializable{
 
     public boolean isBuyChecked;
     public boolean isEditChecked;
-    public int rushPurchaseId;
+    public Integer rushPurchaseId;
 
     public void toggleBuy() {
         this.isBuyChecked = !this.isBuyChecked;

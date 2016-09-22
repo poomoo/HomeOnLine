@@ -89,7 +89,7 @@ public class ChangePassWordActivity extends BaseDaggerActivity<ChangePassWordPre
         if (PARENT.equals(getString(R.string.intent_register)))
             mPresenter.register(phoneNum, passWord1);
         else
-            mPresenter.changePW(application.getTel(), passWord1);
+            mPresenter.changePW(phoneNum, passWord1);
     }
 
     private void bindViewByRxBinding() {

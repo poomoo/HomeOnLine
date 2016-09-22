@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
@@ -48,7 +49,7 @@ public class CollectionListAdapter extends BaseListAdapter<RCollectBO> {
         BaseViewHolder holder = (BaseViewHolder) h;
         item = items.get(position);
 
-        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).placeholder(R.drawable.replace).into(holder.commodityImg);
+        Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.replace).into(holder.commodityImg);
         holder.commodityTxt.setText(item.commodityName);
         holder.priceTxt.setText(item.commodityPrice + "");
         holder.commodityChk.setChecked(item.isChecked);

@@ -91,6 +91,7 @@
     <string name="intent_returnExplain">returnExplain</string>
     <string name="intent_returnProof">returnProof</string>
     <string name="intent_returnNoteId">returnNoteId</string>
+    <string name="intent_index_url">index_url</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>

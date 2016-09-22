@@ -37,6 +37,7 @@ import com.poomoo.homeonline.ui.activity.ReFundActivity;
 import com.poomoo.homeonline.ui.activity.ReFundInfoActivity;
 import com.poomoo.homeonline.ui.activity.ScanHistoryActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
+import com.poomoo.homeonline.ui.activity.SplashActivity;
 import com.poomoo.homeonline.ui.activity.TicketActivity;
 import com.poomoo.homeonline.ui.activity.UpdateNickNameActivity;
 import com.poomoo.homeonline.ui.activity.WebViewDataActivity;
@@ -86,4 +87,6 @@ public interface ActivityComponent {
     void inject(TicketActivity activity);
 
     void inject(WebViewDataActivity activity);
+
+    void inject(SplashActivity activity);
 }

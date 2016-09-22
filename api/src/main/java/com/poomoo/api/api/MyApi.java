@@ -40,19 +40,19 @@ import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QClassifyListBO;
 import com.poomoo.model.request.QCodeBO;
 import com.poomoo.model.request.QCollectBO;
+import com.poomoo.model.request.QCommodityInfoBO;
+import com.poomoo.model.request.QCountBO;
+import com.poomoo.model.request.QDeleteBO;
 import com.poomoo.model.request.QEvaluateBO;
 import com.poomoo.model.request.QFeedBackBO;
+import com.poomoo.model.request.QHistory;
 import com.poomoo.model.request.QIdBO;
 import com.poomoo.model.request.QIsCollectBO;
+import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QOrderBO;
 import com.poomoo.model.request.QOrderId;
 import com.poomoo.model.request.QOrderListBO;
 import com.poomoo.model.request.QPageBO;
-import com.poomoo.model.request.QCommodityInfoBO;
-import com.poomoo.model.request.QCountBO;
-import com.poomoo.model.request.QDeleteBO;
-import com.poomoo.model.request.QHistory;
-import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QReFundBO;
 import com.poomoo.model.request.QReFundInfoBO;
 import com.poomoo.model.request.QRegisterBO;
@@ -63,8 +63,6 @@ import com.poomoo.model.request.QUpdateInfoBO;
 import com.poomoo.model.request.QUserBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.request.QVersion;
-import com.poomoo.model.response.RDataBO;
-import com.poomoo.model.response.RTicketBO;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCartNumBO;
 import com.poomoo.model.response.RCartShopBO;
@@ -73,7 +71,9 @@ import com.poomoo.model.response.RClassifyInfoBO;
 import com.poomoo.model.response.RCollectBO;
 import com.poomoo.model.response.RCommodityCount;
 import com.poomoo.model.response.RCommodityInfoBO;
+import com.poomoo.model.response.RDataBO;
 import com.poomoo.model.response.RGrabBO;
+import com.poomoo.model.response.RIndexBO;
 import com.poomoo.model.response.RIsCollect;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.ROrderBO;
@@ -83,18 +83,17 @@ import com.poomoo.model.response.RReFundInfoBO;
 import com.poomoo.model.response.RReceiptBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RSpecificationBO;
+import com.poomoo.model.response.RTicketBO;
 import com.poomoo.model.response.RTransferPriceBO;
 import com.poomoo.model.response.RTypeBO;
 import com.poomoo.model.response.RVersionBO;
 import com.poomoo.model.response.RZoneBO;
-
 
 import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
-import rx.Subscription;
 
 /**
  * 类名 MyApi
@@ -298,4 +297,8 @@ public interface MyApi {
     //用券须知
     @POST(NetConfig.suffix)
     Observable<RDataBO> getData(@Body BaseRequest data);
+
+    //引导页
+    @POST(NetConfig.suffix)
+    Observable<List<RIndexBO>> getIndex(@Body BaseRequest data);
 }
