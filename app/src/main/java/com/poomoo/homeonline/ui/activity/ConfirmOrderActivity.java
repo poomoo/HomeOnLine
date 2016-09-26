@@ -100,6 +100,8 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
     ErrorLayout mErrorLayout;
     @Bind(R.id.llayout_content)
     LinearLayout contentLayout;
+    @Bind(R.id.txt_ticket)
+    TextView ticketTxt;
 
     private QOrderBO qOrderBO = new QOrderBO("");
     private ConfirmOrderAdapter confirmOrderAdapter;
@@ -113,6 +115,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
     private static final int DEFAULT = 3;//获取默认地址失败
     private static final int TRANSFER = 4;//获取运费失败
     private static final int SUBMIT = 5;//提交订单失败
+    private static final int TICKET = 6;//优惠券
 
     private int failed = TRANSFER;
     private String orderId;
@@ -120,9 +123,17 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
     private boolean isCreateOrder = false;//是否已生成订单
     private int deliveryId;
     private double deliveryFee;
+    private int[] commodityIds;
+    private int[] commodityDetailIds;
+    private int vouchersId = 0;//优惠券ID
+    private double vouchersMoney = 0.00;//优惠金额
 
     private Bundle bundle;
     private DecimalFormat df = new DecimalFormat("0.00");
+    private int index = 0;
+
+    private boolean repertoryIllegal = false;//库存是否为0
+    private boolean priceIllegal = false;//价格是否为0
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,12 +216,23 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
                 totalPriceTxt.setText("￥" + df.format(totalPrice));
                 transferPriceTxt.setText("包邮");
             } else {
-                transferPriceTxt.setText(df.format(totalPrice));
-                totalPrice += deliveryFee;
-                totalPriceTxt.setText("￥" + df.format(totalPrice));
+                transferPriceTxt.setText(df.format(deliveryFee));
+                totalPriceTxt.setText("￥" + df.format(totalPrice + deliveryFee));
             }
         } else
             setAddressInfo();
+
+        commodityIds = new int[rCartCommodityBOs.size()];
+        commodityDetailIds = new int[rCartCommodityBOs.size()];
+        for (RCartCommodityBO cartCommodityBOs : rCartCommodityBOs) {
+            commodityIds[index] = cartCommodityBOs.commodityId;
+            commodityDetailIds[index] = cartCommodityBOs.commodityDetailId;
+            index++;
+            if (cartCommodityBOs.commodityNum == 0)
+                repertoryIllegal = true;
+            if (cartCommodityBOs.commodityPrice == 0)
+                priceIllegal = true;
+        }
     }
 
     private void setAddressInfo() {
@@ -364,6 +386,12 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == ADDRESS && resultCode == ADDRESS)
             setAddressInfo();
+        if (requestCode == TICKET && resultCode == TICKET) {
+            vouchersMoney = data.getDoubleExtra(getString(R.string.intent_vouchersMoney), 0.00);
+            vouchersId = data.getIntExtra(getString(R.string.intent_vouchersId), 0);
+            totalPriceTxt.setText("￥" + df.format(totalPrice - vouchersMoney));
+            ticketTxt.setText("优惠" + df.format(vouchersMoney) + "元");
+        }
     }
 
     /**
@@ -372,15 +400,23 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
      * @param view
      */
     public void payByZFB(View view) {
-        for (RCartCommodityBO cartCommodityBOs : rCartCommodityBOs) {
-            if (cartCommodityBOs.commodityNum == 0) {
-                createDialog("购买的商品中存在没有库存的,请重新购买", (dialog, which) -> finish()).show();
-                return;
-            }
-            if (cartCommodityBOs.commodityPrice == 0) {
-                createDialog("购买的商品中存在价格异常的,请重新购买", (dialog, which) -> finish()).show();
-                return;
-            }
+//        for (RCartCommodityBO cartCommodityBOs : rCartCommodityBOs) {
+//            if (cartCommodityBOs.commodityNum == 0) {
+//                createDialog("购买的商品中存在没有库存的,请重新购买", (dialog, which) -> finish()).show();
+//                return;
+//            }
+//            if (cartCommodityBOs.commodityPrice == 0) {
+//                createDialog("购买的商品中存在价格异常的,请重新购买", (dialog, which) -> finish()).show();
+//                return;
+//            }
+//        }
+        if (repertoryIllegal) {
+            createDialog("购买的商品中存在没有库存的,请重新购买", (dialog, which) -> finish()).show();
+            return;
+        }
+        if (priceIllegal) {
+            createDialog("购买的商品中存在价格异常的,请重新购买", (dialog, which) -> finish()).show();
+            return;
         }
 
         mErrorLayout.setState(ErrorLayout.LOADING, "");
@@ -431,4 +467,18 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
                 break;
         }
     }
+
+    /**
+     * 选择优惠券
+     *
+     * @param view
+     */
+    public void selectTicket(View view) {
+        bundle = new Bundle();
+        bundle.putString(getString(R.string.intent_totalPrice), df.format(totalPrice));
+        bundle.putIntArray(getString(R.string.intent_commodityIds), commodityIds);
+        bundle.putIntArray(getString(R.string.intent_commodityDetailIds), commodityDetailIds);
+        openActivityForResult(MyTicketActivity.class, bundle, TICKET);
+    }
+
 }

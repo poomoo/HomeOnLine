@@ -218,6 +218,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_8"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal">
 
                         <TextView
@@ -226,10 +227,18 @@
                             android:text="选择抵用券:" />
 
                         <TextView
+                            android:id="@+id/txt_ticket"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dp_10"
+                            android:background="@color/transParentBlack"
+                            android:clickable="true"
+                            android:onClick="selectTicket"
                             android:text="不使用抵用券" />
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_arrow_down"/>
                     </LinearLayout>
 
                     <LinearLayout

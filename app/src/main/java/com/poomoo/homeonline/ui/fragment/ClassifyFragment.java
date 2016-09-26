@@ -14,7 +14,6 @@ import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
@@ -27,9 +26,7 @@ import com.poomoo.homeonline.presenters.ClassifyFragmentPresenter;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.ClassifyListActivity;
-import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
-import com.poomoo.homeonline.ui.activity.WebViewActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.model.response.RClassifyBO;
@@ -61,8 +58,10 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     ErrorLayout errorLayout;
 
     private ClassifyListAdapter classifyListAdapter;
+    //    private SubClassifyListAdapter subClassifyListAdapter;
     private SubClassifyListAdapter subClassifyListAdapter;
     private List<RSubClassifyBO> rSubClassifyBOs = new ArrayList<>();
+    private List<RSubClassifyBO> rSubClassifyBOs2 = new ArrayList<>();
     private List<RClassifyBO> rClassifyBOs = new ArrayList<>();
 
     public static int SELECTPOSITION = 0;
@@ -103,7 +102,11 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
             rClassifyBOs = new Gson().fromJson(json, type);
             classifyListAdapter.setItems(rClassifyBOs);
             rSubClassifyBOs = rClassifyBOs.get(0).childrenList;
-            subClassifyListAdapter.setItems(rSubClassifyBOs);
+            for (RSubClassifyBO rSubClassifyBO : rSubClassifyBOs) {
+                rSubClassifyBOs2.add(rSubClassifyBO);
+                rSubClassifyBOs2.add(rSubClassifyBO);
+            }
+            subClassifyListAdapter.setItems(rSubClassifyBOs2);
         } else
             errorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.getClassify();
@@ -111,7 +114,7 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     }
 
     private void initClassify() {
-        classifyRecycler.setLayoutParams(new LinearLayout.LayoutParams(MyUtils.getScreenWidth(getActivity()) / 3, LinearLayout.LayoutParams.MATCH_PARENT));
+        classifyRecycler.setLayoutParams(new LinearLayout.LayoutParams(MyUtils.getScreenWidth(getActivity()) * 1 / 4, LinearLayout.LayoutParams.MATCH_PARENT));
         classifyRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         classifyRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(getResources().getColor(R.color.ThemeBg))
@@ -127,16 +130,22 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
         contentRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         subClassifyListAdapter = new SubClassifyListAdapter(getActivity(), BaseListAdapter.NEITHER, this);
         contentRecycler.setAdapter(subClassifyListAdapter);
+        LogUtils.d(TAG, "contentRecycler width:" + contentRecycler.getWidth() + " " + contentRecycler.getMeasuredWidth());
     }
 
     public void loadClassifySucceed(List<RClassifyBO> rClassifyBOs) {
+        LogUtils.d(TAG,"rClassifyBOs"+rClassifyBOs.get(0).childrenList.get(0).categoryPic);
         errorLayout.setState(ErrorLayout.HIDE, "");
         layout.setVisibility(View.VISIBLE);
-        LogUtils.d(TAG, "loadClassifySucceed:" + rClassifyBOs);
         classifyListAdapter.setItems(rClassifyBOs);
         this.rClassifyBOs = rClassifyBOs;
-        this.rSubClassifyBOs = rClassifyBOs.get(0).childrenList;
-        subClassifyListAdapter.setItems(this.rSubClassifyBOs);
+        this.rSubClassifyBOs = rClassifyBOs.get(SELECTPOSITION).childrenList;
+        rSubClassifyBOs2 = new ArrayList<>();
+        for (RSubClassifyBO rSubClassifyBO : rSubClassifyBOs) {
+            rSubClassifyBOs2.add(rSubClassifyBO);
+            rSubClassifyBOs2.add(rSubClassifyBO);
+        }
+        subClassifyListAdapter.setItems(this.rSubClassifyBOs2);
 
         SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_classify), new Gson().toJson(rClassifyBOs));
     }
@@ -151,7 +160,12 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
         rSubClassifyBOs = rClassifyBOs.get(position).childrenList;
         SELECTPOSITION = position;
         classifyListAdapter.notifyDataSetChanged();
-        subClassifyListAdapter.setItems(rSubClassifyBOs);
+        rSubClassifyBOs2 = new ArrayList<>();
+        for (RSubClassifyBO rSubClassifyBO : rSubClassifyBOs) {
+            rSubClassifyBOs2.add(rSubClassifyBO);
+            rSubClassifyBOs2.add(rSubClassifyBO);
+        }
+        subClassifyListAdapter.setItems(rSubClassifyBOs2);
     }
 
     @Override

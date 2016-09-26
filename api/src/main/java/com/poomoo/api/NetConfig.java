@@ -17,15 +17,13 @@ public class NetConfig {
 //    public final static String url = "http://115.28.95.198/";
 //    public final static String suffix = "jyzx/app/call.json";
 //    public final static String grabUrl = url + "jyzx/app/rush.html";
-//    public final static String check="jyzx/app/pay/alipay_return.html";
-//    public final static String NOTIFY_URL = "http://www.jiayou9.com/jyzx/app/pay/alipay_notify.html";    //支付宝回调地址
+//    public final static String check = "jyzx/app/pay/alipay_return.html";
 
     //正式服务器
     public final static String url = "http://www.jiayou9.com/";
     public final static String suffix = "app/call.json";
     public final static String grabUrl = url + "app/rush.html";
     public final static String check = "app/pay/alipay_return.html";
-    public final static String NOTIFY_URL = "http://www.jiayou9.com/app/pay/alipay_notify.html";    //支付宝回调地址
 
     //图片地址
     public final static String ImageUrl = "http://img.jiayou9.com/jyzx";
@@ -71,6 +69,7 @@ public class NetConfig {
     public static final String EVALUATE = "1010_07";//评价
     public final static String TRANSFERPRICE = "1010_08";//计算运费
     public static final String SIGN = "1010_09";//支付宝签名
+    public static final String MYTICKETS = "1010_10";
 
     public final static String NEWADDRESS = "1011_01";//收货地址列表
     public final static String GETADDRESSLIST = "1011_02";//收货地址列表

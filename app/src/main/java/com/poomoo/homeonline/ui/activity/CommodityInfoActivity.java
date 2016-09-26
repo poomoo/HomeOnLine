@@ -789,9 +789,9 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
 
                 @Override
                 public boolean setSelected(int position, RCommodityInfoBO.SpecialParamter.ParametersValues parametersValues) {
-                    LogUtils.d(TAG, "setSelected:" + position + " " + parametersValues);
-                    if (parametersValues.isCheck)
-                        return true;
+//                    LogUtils.d(TAG, "setSelected:" + position + " " + parametersValues);
+//                    if (parametersValues.isCheck)
+//                        return true;
                     return super.setSelected(position, parametersValues);
                 }
 

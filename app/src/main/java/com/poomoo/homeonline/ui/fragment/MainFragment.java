@@ -196,7 +196,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
      * 动态增加专题广告
      */
     private void addView(RSpecialAdBO rSpecialAdBO) {
-        specialAdLayout.removeAllViews();
+
         int len = rSpecialAdBO.advs.size();
         for (int i = 0; i < len; i++) {
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_special, null);

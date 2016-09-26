@@ -24,18 +24,25 @@
  * #                                                   #
  * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.model.response;
-
-import java.util.List;
+package com.poomoo.model.request;
 
 /**
- * 类名 RTicketBO
- * 描述 优惠券
+ * 类名 QMyTicketBO
+ * 描述 我的优惠券
  * 作者 李苜菲
- * 日期 2016/9/6 13:55
+ * 日期 2016/9/23 15:02
  */
-public class RTicketBO {
-    public List<TicketBO> voucheredlist;//已使用的抵用卷
-    public List<TicketBO> voucherlist;//未使用的抵用卷
-    public List<TicketBO> expiredCouponslist;//已使用的抵用卷
+public class QMyTicketBO extends BaseRequest {
+    public int userId;
+    public String totalPrice;
+    public int[] commodityIds;
+    public int[] commodityDetailIds;
+
+    public QMyTicketBO(String method, int userId, String totalPrice, int[] commodityIds, int[] commodityDetailIds) {
+        super(method);
+        this.userId = userId;
+        this.totalPrice = totalPrice;
+        this.commodityIds = commodityIds;
+        this.commodityDetailIds = commodityDetailIds;
+    }
 }

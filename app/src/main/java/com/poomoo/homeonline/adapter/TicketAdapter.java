@@ -37,8 +37,7 @@ import com.bumptech.glide.Glide;
 import com.poomoo.api.NetConfig;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
-import com.poomoo.model.response.RListCommodityBO;
-import com.poomoo.model.response.RTicketBO;
+import com.poomoo.model.response.TicketBO;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,8 +48,8 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/8/12 10:22
  */
-public class TicketAdapter extends BaseListAdapter<RTicketBO.Ticket> {
-    private RTicketBO.Ticket item;
+public class TicketAdapter extends BaseListAdapter<TicketBO> {
+    private TicketBO item;
 
     public TicketAdapter(Context context, int mode) {
         super(context, mode);

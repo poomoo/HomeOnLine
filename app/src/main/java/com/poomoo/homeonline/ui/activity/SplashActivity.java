@@ -1,22 +1,32 @@
 package com.poomoo.homeonline.ui.activity;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.WindowManager;
+import android.view.KeyEvent;
 
 import com.poomoo.api.HttpLoggingInterceptor;
+import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
+import com.poomoo.homeonline.DownLoadImageService;
 import com.poomoo.homeonline.R;
-import com.poomoo.homeonline.ui.base.BaseActivity;
-
-import junit.framework.Test;
+import com.poomoo.homeonline.listeners.ImageDownLoadCallBack;
+import com.poomoo.homeonline.presenters.SplashPresenter;
+import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
+import com.poomoo.homeonline.reject.modules.ActivityModule;
+import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
+import com.poomoo.model.response.RIndexBO;
+import com.poomoo.model.response.RVersionBO;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * 类名 SplashActivity
@@ -24,43 +34,42 @@ import java.io.InputStream;
  * 作者 李苜菲
  * 日期 2016/7/19 11:22
  */
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
 
     private final int SPLASH_DISPLAY_LENGTH = 3000;
     private boolean isIndex = false;//是否需要引导
     private static String DB_PATH = "/data/data/com.poomoo.homeonline/databases/";
     private static String DB_NAME = "homeOnLine.db";
+    private int index = 0;
+    private boolean isFirst = true;
+    private Bitmap[] bitmaps;
+    private int length = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //去掉Activity上面的状态栏
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         //不显示日志
-        LogUtils.isDebug = false;
-        NetWork.level = HttpLoggingInterceptor.Level.NONE;
+//        LogUtils.isDebug = false;
+//        NetWork.level = HttpLoggingInterceptor.Level.NONE;
 
         importDB();
         isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);
-        new Handler().postDelayed(() -> {
-            if (isIndex) {
-                SPUtils.put(getApplicationContext(), getString(R.string.sp_isIndex), false);
-                openActivity(IndexViewPagerActivity.class);
-                finish();
-            } else {
-                LogUtils.d(TAG, "sp_userId:" + SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), -1));
-                if (MyUtils.isLogin(this)) {
-                    application.setUserId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), -1));
-                    application.setNickName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_nickName), ""));
-                    application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
-                }
-                LogUtils.d(TAG, "userId:" + application.getUserId());
-                LogUtils.d(TAG, "tel:" + application.getTel());
-                openActivity(MainNewActivity.class);
-                finish();
-            }
+        if (isIndex)
+            mPresenter.getIndex();
+        else
+            mPresenter.checkUpdate();
+    }
 
+    public void toMain() {
+        new Handler().postDelayed(() -> {
+            if (MyUtils.isLogin(this)) {
+                application.setUserId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), -1));
+                application.setNickName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_nickName), ""));
+                application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
+            }
+            openActivity(MainNewActivity.class);
+            finish();
         }, SPLASH_DISPLAY_LENGTH);
     }
 
@@ -72,6 +81,39 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected int onSetTitle() {
         return 0;
+    }
+
+    @Override
+    protected void setupActivityComponent(ActivityModule activityModule) {
+        DaggerActivityComponent.builder()
+                .activityModule(activityModule)
+                .build()
+                .inject(this);
+    }
+
+    public void failed(String msg) {
+        toMain();
+    }
+
+    public void successful(List<RIndexBO> rIndexBOs) {
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_isIndex), false);
+        length = rIndexBOs.size();
+        bitmaps = new Bitmap[length];
+        for (RIndexBO rIndexBO : rIndexBOs)
+            onDownLoad(NetConfig.ImageUrl + rIndexBO.url);
+    }
+
+    public void checkUpdateFailed() {
+        toMain();
+    }
+
+    public void checkUpdateSuccessful(RVersionBO rVersionBO) {
+        application.setVersion(rVersionBO.version);
+//        if (rVersionBO.version > MyUtils.getVersion(this)) {
+//            SPUtils.put(getApplicationContext(), getString(R.string.sp_isIndex), true);
+//            mPresenter.getIndex();
+//        } else
+        toMain();
     }
 
     private void importDB() {
@@ -104,5 +146,64 @@ public class SplashActivity extends BaseActivity {
         } catch (Exception e) {
             LogUtils.d(TAG, "EXCEPTION:" + e.getMessage());
         }
+    }
+
+    /**
+     * 单线程列队执行
+     */
+    private static ExecutorService singleExecutor = null;
+
+
+    /**
+     * 执行单线程列队执行
+     */
+    public void runOnQueue(Runnable runnable) {
+        if (singleExecutor == null) {
+            singleExecutor = Executors.newSingleThreadExecutor();
+        }
+        singleExecutor.submit(runnable);
+    }
+
+    /**
+     * 启动图片下载线程
+     */
+    private void onDownLoad(String url) {
+        DownLoadImageService service = new DownLoadImageService(this, url, new ImageDownLoadCallBack() {
+            @Override
+            public void onDownLoadSuccess(Bitmap bitmap) {
+                // 在这里执行图片保存方法
+                bitmaps[index++] = bitmap;
+                LogUtils.d(TAG, "下载引导页图片成功:" + index + " :" + bitmap);
+                if (index == length) {
+                    runOnUiThread(() -> {
+                        application.setIndex(bitmaps);
+                        openActivity(IndexViewPagerActivity.class);
+                        finish();
+                    });
+
+                }
+            }
+
+            @Override
+            public void onDownLoadFailed() {
+                LogUtils.d(TAG, "下载引导页图片失败");
+                if (isFirst) {
+                    isFirst = false;
+                    runOnUiThread(() ->
+                            toMain()
+                    );
+
+                }
+            }
+        });
+        //启动图片下载线程
+        runOnQueue(service);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+            return true;
+        return super.onKeyDown(keyCode, event);
     }
 }

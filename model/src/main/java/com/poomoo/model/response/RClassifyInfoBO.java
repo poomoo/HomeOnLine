@@ -35,13 +35,13 @@ import java.util.List;
  * 日期 2016/8/16 16:35
  */
 public class RClassifyInfoBO {
-    public List<AdvertisementList> advertisementList;
+    public List<RAdBO> advertisementList;
     public List<ThreeCategoryList> threeCategoryList;
     public List<RListCommodityBO> commoditys;
 
-    public class AdvertisementList {
-        public String advertisementPic;
-    }
+//    public class AdvertisementList {
+//        public String advertisementPic;
+//    }
 
     public class ThreeCategoryList {
         public int id;

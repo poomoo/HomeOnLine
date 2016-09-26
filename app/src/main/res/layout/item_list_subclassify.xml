@@ -8,14 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:gravity="center"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/left" />
+            android:id="@+id/img_subTitle"
+            android:layout_width="4dp"
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/txt_subTitle"
@@ -25,17 +24,14 @@
             android:text="食尚黔味"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_14" />
-
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/right" />
     </LinearLayout>
 
     <com.poomoo.homeonline.ui.custom.NoScrollGridView
         android:id="@+id/grid_subClassify"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:numColumns="2" />
+        android:layout_marginTop="@dimen/dp_10"
+        android:horizontalSpacing="@dimen/dp_10"
+        android:numColumns="3"
+        android:verticalSpacing="@dimen/dp_10" />
 </LinearLayout>

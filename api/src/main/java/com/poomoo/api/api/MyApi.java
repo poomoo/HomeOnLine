@@ -49,6 +49,7 @@ import com.poomoo.model.request.QHistory;
 import com.poomoo.model.request.QIdBO;
 import com.poomoo.model.request.QIsCollectBO;
 import com.poomoo.model.request.QLoginBO;
+import com.poomoo.model.request.QMyTicketBO;
 import com.poomoo.model.request.QOrderBO;
 import com.poomoo.model.request.QOrderId;
 import com.poomoo.model.request.QOrderListBO;
@@ -88,12 +89,14 @@ import com.poomoo.model.response.RTransferPriceBO;
 import com.poomoo.model.response.RTypeBO;
 import com.poomoo.model.response.RVersionBO;
 import com.poomoo.model.response.RZoneBO;
+import com.poomoo.model.response.TicketBO;
 
 import java.util.List;
 
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 import rx.Observable;
+import rx.Subscription;
 
 /**
  * 类名 MyApi
@@ -301,4 +304,8 @@ public interface MyApi {
     //引导页
     @POST(NetConfig.suffix)
     Observable<List<RIndexBO>> getIndex(@Body BaseRequest data);
+
+    //我的优惠券
+    @POST(NetConfig.suffix)
+    Observable<List<TicketBO>> getMyTickets(@Body QMyTicketBO qMyTicketBO);
 }

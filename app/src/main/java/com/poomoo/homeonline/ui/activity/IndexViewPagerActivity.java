@@ -3,6 +3,7 @@ package com.poomoo.homeonline.ui.activity;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -32,7 +33,7 @@ public class IndexViewPagerActivity extends BaseActivity implements OnClickListe
 
     // 引导图片资源
     private static final int[] pics = {R.drawable.index1, R.drawable.index2, R.drawable.index3};
-    private static final int lenth = pics.length;
+    private int length = 0;
 
     // 底部小店图片
     private ImageView[] dots;
@@ -41,9 +42,6 @@ public class IndexViewPagerActivity extends BaseActivity implements OnClickListe
     private int currentIndex;
     private LinearLayout ll;
 
-    /**
-     * Called when the activity is first created.
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,14 +50,15 @@ public class IndexViewPagerActivity extends BaseActivity implements OnClickListe
 
         LinearLayout.LayoutParams mParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
 
+        length = application.getIndex().length;
         // 初始化引导图片列表
-        for (int i = 0; i < pics.length; i++) {
+        for (int i = 0; i < length; i++) {
             ImageView iv = new ImageView(this);
             iv.setLayoutParams(mParams);
             iv.setAdjustViewBounds(true);
             // 防止图片不能填满屏幕
             iv.setScaleType(ScaleType.CENTER_CROP);
-            iv.setImageResource(pics[i]);
+            iv.setImageBitmap(application.getIndex()[i]);
             views.add(iv);
         }
         vp = (ViewPager) findViewById(R.id.viewpager_viewpager);
@@ -67,9 +66,8 @@ public class IndexViewPagerActivity extends BaseActivity implements OnClickListe
         vpAdapter = new ViewPagerAdapter(views);
         vp.setAdapter(vpAdapter);
         // 绑定回调
-        vp.setOnPageChangeListener(this);
-
-//        views.get(pics.length - 1).setOnClickListener(this);
+        vp.addOnPageChangeListener(this);
+        vp.setOffscreenPageLimit(length);
         // 初始化底部小点
         initDots();
 
@@ -88,14 +86,17 @@ public class IndexViewPagerActivity extends BaseActivity implements OnClickListe
 
     private void initDots() {
         ll = (LinearLayout) findViewById(R.id.viewpager_ll);
-        dots = new ImageView[lenth];
+        dots = new ImageView[length];
 
-        // 循环取得小点图片
-        for (int i = 0; i < lenth; i++) {
-            dots[i] = (ImageView) ll.getChildAt(i);
+        // 循环生成小点图片
+        for (int i = 0; i < length; i++) {
+//            dots[i] = (ImageView) ll.getChildAt(i);
+            dots[i] = new ImageView(this);
+            dots[i].setImageResource(R.drawable.dot);
             dots[i].setEnabled(false);// 都设为灰色
-            dots[i].setOnClickListener(this);
             dots[i].setTag(i);// 设置位置tag，方便取出与当前位置对应
+            dots[i].setPadding(8, 8, 8, 8);
+            ll.addView(dots[i]);
         }
 
         currentIndex = 0;
@@ -106,7 +107,7 @@ public class IndexViewPagerActivity extends BaseActivity implements OnClickListe
      * 设置当前的引导页
      */
     private void setCurView(int position) {
-        if (position < 0 || position >= lenth) {
+        if (position < 0 || position >= length) {
             return;
         }
         vp.setCurrentItem(position);
@@ -116,10 +117,10 @@ public class IndexViewPagerActivity extends BaseActivity implements OnClickListe
      * 当前引导小点的选中
      */
     private void setCurDot(int position) {
-        if (position < 0 || position > lenth - 1 || currentIndex == position) {
+        if (position < 0 || position > length - 1 || currentIndex == position) {
             return;
         }
-        if (position == lenth - 1)
+        if (position == length - 1)
             ll.setVisibility(View.INVISIBLE);
         else
             ll.setVisibility(View.VISIBLE);
@@ -147,7 +148,7 @@ public class IndexViewPagerActivity extends BaseActivity implements OnClickListe
     public void onPageSelected(int arg0) {
         // 设置底部小点选中状态
         setCurDot(arg0);
-        if (arg0 == pics.length - 1)
+        if (arg0 == length - 1)
             clickInTxt.setVisibility(View.VISIBLE);
         else
             clickInTxt.setVisibility(View.INVISIBLE);
@@ -157,5 +158,12 @@ public class IndexViewPagerActivity extends BaseActivity implements OnClickListe
     public void onClick(View v) {
         openActivity(MainNewActivity.class);
         finish();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+            return true;
+        return super.onKeyDown(keyCode, event);
     }
 }

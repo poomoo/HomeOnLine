@@ -33,6 +33,7 @@ import com.poomoo.homeonline.ui.activity.EvaluateActivity;
 import com.poomoo.homeonline.ui.activity.FeedBackActivity;
 import com.poomoo.homeonline.ui.activity.GetCodeActivity;
 import com.poomoo.homeonline.ui.activity.LogInActivity;
+import com.poomoo.homeonline.ui.activity.MyTicketActivity;
 import com.poomoo.homeonline.ui.activity.ReFundActivity;
 import com.poomoo.homeonline.ui.activity.ReFundInfoActivity;
 import com.poomoo.homeonline.ui.activity.ScanHistoryActivity;
@@ -89,4 +90,6 @@ public interface ActivityComponent {
     void inject(WebViewDataActivity activity);
 
     void inject(SplashActivity activity);
+
+    void inject(MyTicketActivity activity);
 }

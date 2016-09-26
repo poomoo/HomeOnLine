@@ -14,6 +14,8 @@ import java.util.List;
 public class RClassifyBO {
     public int id;
     public String categoryName;
+    public String pcPic;
+    public String pcReplacePic;
     public List<RSubClassifyBO> childrenList;
 
     @Override
@@ -21,6 +23,8 @@ public class RClassifyBO {
         return "RClassifyBO{" +
                 "id=" + id +
                 ", categoryName='" + categoryName + '\'' +
+                ", pcPic='" + pcPic + '\'' +
+                ", pcReplacePic='" + pcReplacePic + '\'' +
                 ", childrenList=" + childrenList +
                 '}';
     }

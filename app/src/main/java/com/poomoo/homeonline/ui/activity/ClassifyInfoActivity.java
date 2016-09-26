@@ -51,6 +51,9 @@ import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
+import com.poomoo.homeonline.ui.custom.NoScrollRecyclerView;
+import com.poomoo.homeonline.ui.custom.SlideShowView;
+import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RClassifyInfoBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -70,12 +73,12 @@ import butterknife.ButterKnife;
 public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresenter> implements BaseListAdapter.OnItemClickListener, ErrorLayout.OnActiveClickListener {
     @Bind(R.id.scrollView_classify_info)
     ScrollView scrollView;
-    @Bind(R.id.img_classify_info)
-    ImageView titleImg;
+    @Bind(R.id.flipper_ad)
+    SlideShowView slideShowView;
     @Bind(R.id.recycler_classify_info)
     RecyclerView classifyRecycler;
     @Bind(R.id.recycler_commodity)
-    RecyclerView commodityRecycler;
+    NoScrollRecyclerView commodityRecycler;
     @Bind(R.id.txt_classify_info)
     TextView classifyTxt;
     @Bind(R.id.error_frame)
@@ -90,6 +93,9 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
     public final String mEmptyMsg = "暂无商品";
     private RListCommodityBO rListCommodityBO;
     private boolean isList = false;//true-加载list
+    private String[] ad;
+    private RAdBO rAdBO;
+    private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,9 +127,9 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
     private void init() {
         HeaderViewHolder headerViewHolder = getHeaderView();
         headerViewHolder.titleTxt.setText(title);
-        scrollView.setVisibility(View.GONE);
-
-        titleImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(this) / 2));//设置广告栏的宽高比为2:1
+//        scrollView.setVisibility(View.GONE);
+        slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(this) / 2));//设置广告栏的宽高比为2:1
+//        titleImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(this) / 2));//设置广告栏的宽高比为2:1
 
         classifyRecycler.setLayoutManager(new GridLayoutManager(this, 3));
         classifyRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
@@ -155,7 +161,7 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
                 .color(getResources().getColor(R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
-        commodityRecycler.setPadding((int) getResources().getDimension(R.dimen.dp_20), (int) getResources().getDimension(R.dimen.dp_10), (int) getResources().getDimension(R.dimen.dp_20), 0);
+//        commodityRecycler.setPadding((int) getResources().getDimension(R.dimen.dp_20), (int) getResources().getDimension(R.dimen.dp_10), (int) getResources().getDimension(R.dimen.dp_20), 0);
         listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.NEITHER, false);
         commodityRecycler.setAdapter(listCommodityAdapter);
         listCommodityAdapter.setOnItemClickListener(this);
@@ -177,10 +183,34 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
     }
 
     public void loadClassifySucceed(RClassifyInfoBO rClassifyInfoBO) {
+        LogUtils.d(TAG, "advertisementList" + rClassifyInfoBO.advertisementList);
+        LogUtils.d(TAG, "threeCategoryList" + rClassifyInfoBO.threeCategoryList);
+        LogUtils.d(TAG, "commoditys" + rClassifyInfoBO.commoditys);
+
         scrollView.setVisibility(View.VISIBLE);
-        Glide.with(this).load(NetConfig.ImageUrl + rClassifyInfoBO.advertisementList.get(0).advertisementPic).placeholder(R.drawable.replace2).priority(Priority.IMMEDIATE).into(titleImg);
+        int len = rClassifyInfoBO.advertisementList.size();
+        ad = new String[len];
+        for (int i = 0; i < len; i++) {
+            rAdBO = new RAdBO();
+            rAdBO = rClassifyInfoBO.advertisementList.get(i);
+            ad[i] = NetConfig.ImageUrl + rAdBO.advertisementPic;
+        }
+        slideShowView.setPics(ad, position -> {
+//            rAdBO = rClassifyInfoBO.advertisementList.get(position);
+//            if (rAdBO.isCommodity) {
+//                bundle = new Bundle();
+//                bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
+//                bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
+//                bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+//                openActivity(CommodityInfoActivity.class, bundle);
+//            } else {
+//                bundle = new Bundle();
+//                bundle.putString(getString(R.string.intent_value), rAdBO.connect);
+//                openActivity(WebViewActivity.class, bundle);
+//            }
+        });
+//        Glide.with(this).load(NetConfig.ImageUrl + rClassifyInfoBO.advertisementList.get(0).advertisementPic).placeholder(R.drawable.replace2).priority(Priority.IMMEDIATE).into(titleImg);
         this.rListCommodityBOs = rClassifyInfoBO.commoditys;
-        LogUtils.d(TAG, "rListCommodityBOs" + rListCommodityBOs);
         classifyTxt.setText(rClassifyInfoBO.threeCategoryList.get(0).categoryName);
         onLoadResultData(rListCommodityBOs);
         classifyInfoAdapter.setItems(rClassifyInfoBO.threeCategoryList);

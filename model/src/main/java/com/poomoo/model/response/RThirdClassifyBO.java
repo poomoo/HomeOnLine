@@ -12,12 +12,14 @@ package com.poomoo.model.response;
 public class RThirdClassifyBO {
     public int id;
     public String categoryName;
+    public String categoryPic;
 
     @Override
     public String toString() {
         return "RThirdClassifyBO{" +
                 "id=" + id +
                 ", categoryName='" + categoryName + '\'' +
+                ", categoryPic='" + categoryPic + '\'' +
                 '}';
     }
 }
