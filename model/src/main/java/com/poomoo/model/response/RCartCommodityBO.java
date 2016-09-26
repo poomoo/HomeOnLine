@@ -17,7 +17,7 @@ public class RCartCommodityBO implements Serializable{
     public String commodityName;
     public int commodityId;
     public int commodityDetailId;
-    public int commodityDetailsId;
+    public int commodityDetailsId;//生成订单时使用
     public double commodityPrice;
     public int commodityNum;
     public int orderType; //0.普通商品，2.抢购商品，1.特价商品，4.活动商品，3新年活动商品
