@@ -54,12 +54,16 @@ public class RCartCommodityBO implements Serializable{
                 ", listPic='" + listPic + '\'' +
                 ", commodityName='" + commodityName + '\'' +
                 ", commodityId=" + commodityId +
+                ", commodityDetailId=" + commodityDetailId +
+                ", commodityDetailsId=" + commodityDetailsId +
                 ", commodityPrice=" + commodityPrice +
                 ", commodityNum=" + commodityNum +
                 ", orderType=" + orderType +
                 ", commodityType=" + commodityType +
+                ", isFreePostage=" + isFreePostage +
                 ", isBuyChecked=" + isBuyChecked +
                 ", isEditChecked=" + isEditChecked +
+                ", rushPurchaseId=" + rushPurchaseId +
                 '}';
     }
 }

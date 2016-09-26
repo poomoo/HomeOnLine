@@ -176,6 +176,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
         }
 
         rCartCommodityBOs = (List<RCartCommodityBO>) getIntent().getSerializableExtra(getString(R.string.intent_commodityList));
+        LogUtils.d(TAG, "rCartCommodityBOs:" + rCartCommodityBOs);
         totalPrice = getIntent().getDoubleExtra(getString(R.string.intent_totalPrice), 0.00);
         isFreePostage = getIntent().getBooleanExtra(getString(R.string.intent_isFreePostage), false);
         recyclerView.setLayoutManager(new ScrollLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -226,7 +227,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
         commodityDetailIds = new int[rCartCommodityBOs.size()];
         for (RCartCommodityBO cartCommodityBOs : rCartCommodityBOs) {
             commodityIds[index] = cartCommodityBOs.commodityId;
-            commodityDetailIds[index] = cartCommodityBOs.commodityDetailId;
+            commodityDetailIds[index] = cartCommodityBOs.commodityDetailsId;
             index++;
             if (cartCommodityBOs.commodityNum == 0)
                 repertoryIllegal = true;

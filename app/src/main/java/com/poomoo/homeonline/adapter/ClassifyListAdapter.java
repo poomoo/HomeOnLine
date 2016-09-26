@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
@@ -48,11 +49,11 @@ public class ClassifyListAdapter extends BaseListAdapter<RClassifyBO> {
         BaseViewHolder holder = (BaseViewHolder) h;
         holder.classifyTxt.setText(item.categoryName);
         if (position == ClassifyFragment.SELECTPOSITION) {
-            Glide.with(mContext).load(NetConfig.ImageUrl + item.pcReplacePic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.classifyImg);
+            Glide.with(mContext).load(NetConfig.ImageUrl + item.pcReplacePic).priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.classifyImg);
             holder.classifyTxt.setTextColor(ContextCompat.getColor(mContext, R.color.ThemeRed));
             holder.classifyLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.ThemeBg));
         } else {
-            Glide.with(mContext).load(NetConfig.ImageUrl + item.pcPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.classifyImg);
+            Glide.with(mContext).load(NetConfig.ImageUrl + item.pcPic).priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.classifyImg);
             holder.classifyTxt.setTextColor(ContextCompat.getColor(mContext, R.color.black));
             holder.classifyLayout.setBackgroundColor(ContextCompat.getColor(mContext, R.color.white));
         }

@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
@@ -92,7 +93,7 @@ public class SubClassifyListAdapter extends BaseListAdapter<RSubClassifyBO> {
                     LinearLayout.LayoutParams imgLP = new LinearLayout.LayoutParams(width - margin * 2, width - margin * 2);
                     img.setLayoutParams(imgLP);
 
-                    Glide.with(mContext).load(NetConfig.ImageUrl + item.childrenList.get(i).categoryPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.ic_ticket).into(img);
+                    Glide.with(mContext).load(NetConfig.ImageUrl + item.childrenList.get(i).categoryPic).priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.replace_small).into(img);
                     nameTxt.setText(item.childrenList.get(i).categoryName);
                     view.setOnClickListener(new OnItemClick(item.childrenList.get(i).id + ""));
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, width);
