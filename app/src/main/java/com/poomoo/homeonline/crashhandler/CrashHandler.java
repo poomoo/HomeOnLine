@@ -10,8 +10,10 @@ import android.os.Looper;
 import android.os.Process;
 import android.util.Log;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -185,6 +187,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
         printWriter.close();
         String result = writer.toString();
         sb.append(result);
+        reportError(mContext, sb.toString());
         try {
             long timestamp = System.currentTimeMillis();
             String time = formatter.format(new Date());
@@ -204,6 +207,11 @@ public class CrashHandler implements UncaughtExceptionHandler {
             Log.e(TAG, "an error occured while writing file...", e);
         }
         return null;
+    }
+
+    public static void reportError(Context context, String error) {
+        MobclickAgent.reportError(context, error);
+        LogUtils.d(TAG, "reportError:" + error);
     }
 
 }

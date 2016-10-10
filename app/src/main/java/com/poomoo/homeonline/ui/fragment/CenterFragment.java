@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.database.AreaInfo;
@@ -27,6 +29,7 @@ import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.AddressListActivity;
 import com.poomoo.homeonline.ui.activity.CollectActivity;
 import com.poomoo.homeonline.ui.activity.FeedBackActivity;
+import com.poomoo.homeonline.ui.activity.LogInActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.activity.MyInfoActivity;
 import com.poomoo.homeonline.ui.activity.MyOrdersActivity;
@@ -53,6 +56,8 @@ import butterknife.OnClick;
 public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> {
     @Bind(R.id.txt_center_nickName)
     TextView nameTxt;
+    @Bind(R.id.llayout_logout)
+    LinearLayout logoutLayout;
 
     private Bundle bundle;
 
@@ -78,17 +83,34 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
     }
 
     private void init() {
-        nameTxt.setText(application.getNickName());
 //        mPresenter.getZoneInfo();
+        if (!MyUtils.isLogin(getActivity()))
+            logoutLayout.setVisibility(View.GONE);
+        else {
+            logoutLayout.setVisibility(View.VISIBLE);
+            nameTxt.setText(application.getNickName());
+        }
     }
 
     @OnClick(R.id.rlayout_myOrder)
     void toMyOrder() {
+        if (!MyUtils.isLogin(getActivity())) {
+            Intent login = new Intent(getActivity(), LogInActivity.class);
+            getActivity().startActivity(login);
+            MyUtils.showToast(getActivity(), "请先登录");
+            return;
+        }
         openActivity(MyOrdersActivity.class);
     }
 
     @OnClick({R.id.llayout_pay, R.id.llayout_deliver, R.id.llayout_recepit, R.id.llayout_evaluate})
     void toMyOrder(View view) {
+        if (!MyUtils.isLogin(getActivity())) {
+            Intent login = new Intent(getActivity(), LogInActivity.class);
+            getActivity().startActivity(login);
+            MyUtils.showToast(getActivity(), "请先登录");
+            return;
+        }
         Bundle bundle = new Bundle();
         switch (view.getId()) {
             case R.id.llayout_pay:
@@ -107,8 +129,14 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         openActivity(MyOrdersActivity.class, bundle);
     }
 
-    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_ticket, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale, R.id.rlayout_logOut})
+    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_ticket, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale})
     void other(View view) {
+        if (!MyUtils.isLogin(getActivity())) {
+            Intent login = new Intent(getActivity(), LogInActivity.class);
+            getActivity().startActivity(login);
+            MyUtils.showToast(getActivity(), "请先登录");
+            return;
+        }
         switch (view.getId()) {
             case R.id.txt_collection:
                 openActivity(CollectActivity.class);
@@ -138,23 +166,34 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
             case R.id.rlayout_safe_center:
                 openActivity(SafeActivity.class);
                 break;
-            case R.id.rlayout_logOut:
-                createDialog("确定退出登录?", (dialog, which) -> {
-                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_isLogin), false);
-                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptAddress), "");
-                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptTel), "");
-                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptId), -1);
-                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_userId), -1);
-                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_phoneNum), "");
-                    SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_nickName), "");
-                    ((MainNewActivity) getActivity()).jump(0);
-                    ((MainNewActivity) getActivity()).setInfoNum(3, 0, false);
-                    application.setCartNum(0);
-                    application.setUserId(null);
-                }).show();
-                break;
         }
     }
+
+    @OnClick(R.id.txt_center_nickName)
+    void logIn() {
+        Intent login = new Intent(getActivity(), LogInActivity.class);
+        getActivity().startActivity(login);
+    }
+
+    @OnClick(R.id.rlayout_logOut)
+    void logOut() {
+        createDialog("确定退出登录?", (dialog, which) -> {
+            SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_isLogin), false);
+            SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptAddress), "");
+            SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptTel), "");
+            SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_receiptId), -1);
+            SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_userId), -1);
+            SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_phoneNum), "");
+            SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_nickName), "");
+            ((MainNewActivity) getActivity()).jump(0);
+            ((MainNewActivity) getActivity()).setInfoNum(3, 0, false);
+            application.setCartNum(0);
+            application.setUserId(null);
+            nameTxt.setText("登录/注册");
+            logoutLayout.setVisibility(View.GONE);
+        }).show();
+    }
+
 
     /**
      * 打电话
@@ -200,10 +239,22 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         LogUtils.d(TAG, "插表完成");
     }
 
+//    @Override
+//    public void onHiddenChanged(boolean hidden) {
+//        super.onHiddenChanged(hidden);
+//        if (!hidden)
+//            nameTxt.setText(application.getNickName());
+//    }
+
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden)
+    public void onResume() {
+        super.onResume();
+        if (MyUtils.isLogin(getActivity())) {
             nameTxt.setText(application.getNickName());
+            logoutLayout.setVisibility(View.VISIBLE);
+        }else{
+            nameTxt.setText("登录/注册");
+            logoutLayout.setVisibility(View.GONE);
+        }
     }
 }

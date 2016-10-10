@@ -165,6 +165,12 @@
             android:screenOrientation="behind"></activity>
         <!--支付宝相关-->
 
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="57f99de867e58ef7c4003982" />
     </application>
 
 </manifest>

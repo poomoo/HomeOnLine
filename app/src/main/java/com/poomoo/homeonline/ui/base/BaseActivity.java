@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.application.MyApplication;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * @author 李苜菲
@@ -231,8 +232,16 @@ public abstract class BaseActivity extends FragmentActivity {
         return true;
     }
 
+
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }

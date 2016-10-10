@@ -136,12 +136,13 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
 
             @Override
             public void afterTextChanged(Editable s) {
+                if (!getCodeBtn.isClickable())
+                    return;
                 String temp = s.toString();
                 if (temp.length() == 11)
                     getCodeBtn.setEnabled(true);
                 else
                     getCodeBtn.setEnabled(false);
-                LogUtils.d(TAG, "getCodeBtn:" + getCodeBtn.isEnabled());
             }
         });
 
@@ -173,12 +174,11 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
     private boolean checkInput() {
         phoneNum = phoneEdt.getText().toString().trim();
         code = codeEdt.getText().toString().trim();
-        if (TextUtils.isEmpty(phoneNum) || phoneNum.length() != 11) {
+        if (TextUtils.isEmpty(phoneNum) || phoneNum.length() != 11)
             return false;
-        }
-        if (TextUtils.isEmpty(code)) {
+
+        if (TextUtils.isEmpty(code))
             return false;
-        }
 
         return true;
     }

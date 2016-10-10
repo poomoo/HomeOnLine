@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.widget.TextView;
 
 import com.poomoo.api.HttpLoggingInterceptor;
 import com.poomoo.api.NetConfig;
@@ -20,6 +21,7 @@ import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.model.response.RIndexBO;
 import com.poomoo.model.response.RVersionBO;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,6 +30,9 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+
 /**
  * 类名 SplashActivity
  * 描述 启动页
@@ -35,6 +40,8 @@ import java.util.concurrent.Executors;
  * 日期 2016/7/19 11:22
  */
 public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
+    @Bind(R.id.txt_version)
+    TextView versionTxt;
 
     private final int SPLASH_DISPLAY_LENGTH = 3000;
     private boolean isIndex = false;//是否需要引导
@@ -49,9 +56,16 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ButterKnife.bind(this);
+        versionTxt.setText(MyUtils.getVersionName(this));
+
         //不显示日志
 //        LogUtils.isDebug = false;
 //        NetWork.level = HttpLoggingInterceptor.Level.NONE;
+
+        //统计错误日志到友盟平台
+        MobclickAgent.setDebugMode(true);
+        MobclickAgent.setCatchUncaughtExceptions(true);
 
         importDB();
         isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);

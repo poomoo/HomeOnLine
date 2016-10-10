@@ -5,6 +5,7 @@ package com.poomoo.commlib;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -416,5 +417,74 @@ public class MyUtils {
         } catch (Exception e) {
         }
         return versionCode;
+    }
+
+    /**
+     * 获取当前的版本号
+     *
+     * @param context
+     * @return
+     */
+    public static String getVersionName(Context context) {
+        String appVersion = "";
+        PackageManager manager = context.getPackageManager();
+        try {
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            appVersion = info.versionName;   //版本名
+        } catch (PackageManager.NameNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return appVersion;
+    }
+
+    /**
+     * 获取包名
+     *
+     * @param context
+     * @return
+     */
+    public static String getPackageName(Context context) {
+        String packageName = "";
+        PackageManager manager = context.getPackageManager();
+        try {
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            packageName = info.packageName;   //包名
+        } catch (PackageManager.NameNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        return packageName;
+    }
+
+    /**
+     * 获取渠道名
+     *
+     * @param context 此处习惯性的设置为activity，实际上context就可以
+     * @return 如果没有获取成功，那么返回值为空
+     */
+    public static String getChannelName(Context context) {
+        if (context == null) {
+            return null;
+        }
+        String channelName = null;
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            if (packageManager != null) {
+                //注意此处为ApplicationInfo 而不是 ActivityInfo,因为友盟设置的meta-data是在application标签中，而不是某activity标签中，所以用ApplicationInfo
+                ApplicationInfo applicationInfo = packageManager.
+                        getApplicationInfo(context.getPackageName(), PackageManager.GET_META_DATA);
+                if (applicationInfo != null) {
+                    if (applicationInfo.metaData != null) {
+                        channelName = String.valueOf(applicationInfo.metaData.get("UMENG_CHANNEL"));
+                    }
+                }
+            }
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        return channelName;
     }
 }

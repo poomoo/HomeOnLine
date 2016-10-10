@@ -109,12 +109,12 @@ public class BottomBar extends LinearLayout implements OnClickListener {
                 cancelLinearBackground(3);
                 break;
             case R.id.rlayout_center:
-                if (!MyUtils.isLogin(context)) {
-                    Intent login = new Intent(context, LogInActivity.class);
-                    context.startActivity(login);
-                    MyUtils.showToast(context, "请先登录");
-                    return;
-                }
+//                if (!MyUtils.isLogin(context)) {
+//                    Intent login = new Intent(context, LogInActivity.class);
+//                    context.startActivity(login);
+//                    MyUtils.showToast(context, "请先登录");
+//                    return;
+//                }
                 onItemChangedListener.onItemChanged(4);
                 cancelLinearBackground(4);
                 break;

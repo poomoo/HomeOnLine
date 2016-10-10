@@ -3,6 +3,8 @@
  */
 package com.poomoo.homeonline.ui.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,6 +26,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MarketUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.TimeCountDownUtilBy3View;
@@ -56,12 +59,12 @@ import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RTypeBO;
-import com.poomoo.model.response.RVersionBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 
 import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -152,6 +155,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         mPresenter.getSpecialAd();
         mPresenter.getHot();
         mPresenter.getGuess(application.getUserId());
+//        application.setVersion(7);
         checkUpdate(application.getVersion());
         initCountDownTime();
 
@@ -177,7 +181,8 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             errorLayout.setOnActiveClickListener(this);
             errorLayout.setState(ErrorLayout.NOT_NETWORK, "");
         }
-
+//        if (ad.length == 1)
+//            ;
     }
 
     @OnClick({R.id.llayout_search, R.id.llayout_toGrab})
@@ -365,7 +370,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 
     public void loadTypeSucceed(RTypeBO rTypeBO) {
         gridAdapter.setUrl(rTypeBO.picUrl);
-        gridAdapter.setItems(rTypeBO.categotys);
+        gridAdapter.setItems(rTypeBO.categotys.subList(0, rTypeBO.categotys.size() - 1));
         SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_type), gson.toJson(rTypeBO));
     }
 
@@ -552,10 +557,58 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void checkUpdate(int version) {
-        if (version > MyUtils.getVersion(getActivity()))
-            createDialog("检测到新版本,是否更新?", (dialog, which) -> {
-                Uri uri = Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=com.poomoo.homeonline");
-                startActivity(new Intent(Intent.ACTION_VIEW, uri));
-            }).show();
+        if (version > MyUtils.getVersion(getActivity())) {
+            ArrayList<String> marketList = MarketUtils.filterInstalledPkgs(getActivity());
+            Uri uri = Uri.parse("http://a.app.qq.com/o/simple.jsp?pkgname=com.poomoo.homeonline");
+            LogUtils.d(TAG, "渠道:" + MyUtils.getChannelName(getActivity()));
+            LogUtils.d(TAG, "市场:" + marketList);
+            String pckName = MyUtils.getPackageName(getActivity());
+            Dialog dialog = new AlertDialog
+                    .Builder(getActivity())
+                    .setMessage("检测到新版本,是否更新?")
+                    .setPositiveButton("确定", (dialog1, which) -> {
+                        switch (MyUtils.getChannelName(getActivity())) {
+                            case "yingyongbao":
+                                if (marketList.contains(MarketUtils.TENCENT))
+                                    MarketUtils.launchAppDetail(getActivity(), pckName, MarketUtils.TENCENT);
+                                else
+                                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                                break;
+
+                            case "c360":
+                                if (marketList.contains(MarketUtils.QIHU360))
+                                    MarketUtils.launchAppDetail(getActivity(), pckName, MarketUtils.QIHU360);
+                                else
+                                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                                break;
+
+                            case "wandoujia":
+                                if (marketList.contains(MarketUtils.WANDOUJIA))
+                                    MarketUtils.launchAppDetail(getActivity(), pckName, MarketUtils.WANDOUJIA);
+                                else
+                                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                                break;
+
+                            case "huawei":
+                                if (marketList.contains(MarketUtils.HUAWEI))
+                                    MarketUtils.launchAppDetail(getActivity(), pckName, MarketUtils.HUAWEI);
+                                else
+                                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                                break;
+
+                            case "xiaomi":
+                                if (marketList.contains(MarketUtils.XIAOMI))
+                                    MarketUtils.launchAppDetail(getActivity(), pckName, MarketUtils.XIAOMI);
+                                else
+                                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                                break;
+                        }
+                        getActivity().finish();
+                    })
+                    .create();
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+        }
     }
 }

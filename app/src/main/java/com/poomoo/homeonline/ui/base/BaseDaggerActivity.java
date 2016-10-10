@@ -21,6 +21,7 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.application.MyApplication;
 import com.poomoo.homeonline.presenters.BasePresenter;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
+import com.umeng.analytics.MobclickAgent;
 
 import javax.inject.Inject;
 
@@ -253,5 +254,17 @@ public abstract class BaseDaggerActivity<P extends BasePresenter> extends Fragme
     protected void onDestroy() {
         super.onDestroy();
         mPresenter.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 }
