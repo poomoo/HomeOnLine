@@ -60,8 +60,8 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
         versionTxt.setText(MyUtils.getVersionName(this));
 
         //不显示日志
-//        LogUtils.isDebug = false;
-//        NetWork.level = HttpLoggingInterceptor.Level.NONE;
+        LogUtils.isDebug = false;
+        NetWork.level = HttpLoggingInterceptor.Level.NONE;
 
         //统计错误日志到友盟平台
         MobclickAgent.setDebugMode(true);
@@ -123,10 +123,6 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
 
     public void checkUpdateSuccessful(RVersionBO rVersionBO) {
         application.setVersion(rVersionBO.version);
-//        if (rVersionBO.version > MyUtils.getVersion(this)) {
-//            SPUtils.put(getApplicationContext(), getString(R.string.sp_isIndex), true);
-//            mPresenter.getIndex();
-//        } else
         toMain();
     }
 

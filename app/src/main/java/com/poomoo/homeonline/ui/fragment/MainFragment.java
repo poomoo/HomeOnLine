@@ -181,8 +181,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             errorLayout.setOnActiveClickListener(this);
             errorLayout.setState(ErrorLayout.NOT_NETWORK, "");
         }
-//        if (ad.length == 1)
-//            ;
     }
 
     @OnClick({R.id.llayout_search, R.id.llayout_toGrab})
@@ -602,6 +600,12 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                                 else
                                     startActivity(new Intent(Intent.ACTION_VIEW, uri));
                                 break;
+//                            case "meizu":
+//                                if (marketList.contains(MarketUtils.MEIZU))
+//                                    MarketUtils.launchAppDetail(getActivity(), pckName, MarketUtils.MEIZU);
+//                                else
+//                                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+//                                break;
                         }
                         getActivity().finish();
                     })

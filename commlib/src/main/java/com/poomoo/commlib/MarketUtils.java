@@ -18,7 +18,8 @@ public class MarketUtils {
     public static final String WANDOUJIA = "com.wandoujia.phoenix2";
     public static final String HUAWEI = "com.huawei.appmarket";
     public static final String XIAOMI = "com.xiaomi.market";
-    private static String[] pkgs = {TENCENT, QIHU360, WANDOUJIA, HUAWEI, XIAOMI};//待过滤包名集合
+    public static final String MEIZU = "com.meizu.mstore";
+    private static String[] pkgs = {TENCENT, QIHU360, WANDOUJIA, HUAWEI, XIAOMI, MEIZU};//待过滤包名集合
 
     /**
      * 获取已安装应用商店的包名列表
