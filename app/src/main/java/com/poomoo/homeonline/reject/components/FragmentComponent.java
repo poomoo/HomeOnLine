@@ -27,8 +27,10 @@ import com.poomoo.homeonline.ui.activity.LogInActivity;
 import com.poomoo.homeonline.ui.fragment.CartFragment;
 import com.poomoo.homeonline.ui.fragment.CenterFragment;
 import com.poomoo.homeonline.ui.fragment.ClassifyFragment;
+import com.poomoo.homeonline.ui.fragment.InviteListFragment;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
 import com.poomoo.homeonline.ui.fragment.MyOrdersFragment;
+import com.poomoo.homeonline.ui.fragment.RepayListFragment;
 
 import dagger.Component;
 
@@ -47,5 +49,9 @@ public interface FragmentComponent {
     void inject(CenterFragment fragment);
 
     void inject(MyOrdersFragment fragment);
+
+    void inject(InviteListFragment fragment);
+
+    void inject(RepayListFragment fragment);
 
 }

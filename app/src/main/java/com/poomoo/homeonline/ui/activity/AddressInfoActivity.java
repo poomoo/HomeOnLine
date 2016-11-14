@@ -30,7 +30,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -56,7 +55,6 @@ import com.poomoo.homeonline.database.DataBaseHelper;
 import com.poomoo.homeonline.presenters.AddressInfoPresenter;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
-import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.model.response.RReceiptBO;
 
@@ -129,7 +127,7 @@ public class AddressInfoActivity extends BaseDaggerActivity<AddressInfoPresenter
 
     @Override
     protected int onBindLayout() {
-        return R.layout.acitvity_address;
+        return R.layout.acitivity_address;
     }
 
     @Override

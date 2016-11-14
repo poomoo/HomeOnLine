@@ -137,16 +137,39 @@
             android:name=".ui.activity.MyTicketActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.activity.InviteActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.RewardInfoActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.OnSaleActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.PresentActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.AbroadActivity"
+            android:exported="false" />
+
         <!--图片相关-->
         <activity
             android:name=".ui.activity.pics.ImageGridActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.activity.pics.PhotosActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.activity.pics.PhotoActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.activity.pics.PicViewActivity"
             android:exported="false" />

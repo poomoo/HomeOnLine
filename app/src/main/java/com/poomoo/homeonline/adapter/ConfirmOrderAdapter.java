@@ -28,14 +28,18 @@ package com.poomoo.homeonline.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
+import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.model.response.RCartCommodityBO;
@@ -52,6 +56,7 @@ import butterknife.ButterKnife;
 public class ConfirmOrderAdapter extends BaseListAdapter<RCartCommodityBO> {
 
     private RCartCommodityBO item;
+    private int presentCount = 0;
 
     public ConfirmOrderAdapter(Context context, int mode) {
         super(context, mode);
@@ -70,6 +75,19 @@ public class ConfirmOrderAdapter extends BaseListAdapter<RCartCommodityBO> {
         holder.nameTxt.setText(item.commodityName);
         holder.priceTxt.setText(item.commodityPrice + "");
         holder.countTxt.setText(item.commodityNum + "");
+        LogUtils.d(TAG, "commodityType:" + item.commodityType);
+        if (item.commodityType == 4) {//买赠
+            if (!TextUtils.isEmpty(item.present)) {
+                holder.linearLayout.setVisibility(View.VISIBLE);
+                holder.presentCountTxt.setText(item.present);
+            } else {
+                presentCount = MyUtils.CalculatePresentCount(item.activityRule, item.commodityNum);
+                if (presentCount > 0) {
+                    holder.linearLayout.setVisibility(View.VISIBLE);
+                    holder.presentCountTxt.setText(item.commodityName + " X" + presentCount);
+                }
+            }
+        }
         Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).placeholder(R.drawable.replace).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.commodityImg);
     }
 
@@ -82,6 +100,10 @@ public class ConfirmOrderAdapter extends BaseListAdapter<RCartCommodityBO> {
         TextView priceTxt;
         @Bind(R.id.txt_order_commodity_count)
         TextView countTxt;
+        @Bind(R.id.llayout_order_present)
+        LinearLayout linearLayout;
+        @Bind(R.id.txt_order_present_count)
+        TextView presentCountTxt;
 
         public BaseViewHolder(View view) {
             super(view);

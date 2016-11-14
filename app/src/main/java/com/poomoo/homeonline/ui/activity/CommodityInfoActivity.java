@@ -53,6 +53,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -122,13 +123,17 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private TextView nameTxt;
     private TextView priceTxt;
     private TextView oldPriceTxt;
+    private TextView purchaseTxt;
     private TextView inventoryTxt;
     private TextView selectedTxt;
+    private TextView presentTxt;
     private EditText countEdt;
     private ImageView plusImg;
     private ImageView minusImg;
+    private LinearLayout presentLayout;
     private LinearLayout countLayout;
     private LinearLayout specificationLayout;
+    private ScrollView scrollView;
 
     //view2
     private TabLayout mTabLayout;
@@ -155,6 +160,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private Button dialog_buyBtn;
     private LinearLayout dialog_specificationLayout;
     private LinearLayout bottomLayout;
+    private LinearLayout noPurchaseLayout;
+    private LinearLayout purchaseLayout;
     private RelativeLayout dialog_progressBarRlayout;
     private BigPicPopUpWindow popUpWindow;
     private List<TagFlowLayout> tagFlowLayouts = new ArrayList<>();
@@ -171,6 +178,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private int commodityId;//商品ID
     private int commodityDetailId;//商品规格ID
     private int commodityType;//商品类型
+    private int activityRule;//买赠规则
     private String commodityName;//商品名称
     private int matchId;
     private RCommodityInfoBO rCommodityInfoBO;
@@ -187,6 +195,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private int[] ids = new int[1];//取消收藏
     public static CommodityInfoActivity inStance = null;
     private int repertory;//库存
+    private int newActivityId = -1;//买赠商品需要传值
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -283,13 +292,19 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         nameTxt = (TextView) view1.findViewById(R.id.txt_info_name);
         priceTxt = (TextView) view1.findViewById(R.id.txt_info_price);
         oldPriceTxt = (TextView) view1.findViewById(R.id.txt_info_old_price);
+        purchaseTxt = (TextView) view1.findViewById(R.id.txt_purchase);
         inventoryTxt = (TextView) view1.findViewById(R.id.txt_inventory);
         selectedTxt = (TextView) view1.findViewById(R.id.txt_commodity_selected);
+        presentTxt = (TextView) view1.findViewById(R.id.txt_present_info);
+        presentLayout = (LinearLayout) view1.findViewById(R.id.llayout_present_info);
         countLayout = (LinearLayout) view1.findViewById(R.id.llayout_commodity_count);
         countEdt = (EditText) view1.findViewById(R.id.edt_info_count);
         plusImg = (ImageView) view1.findViewById(R.id.img_info_add);
         minusImg = (ImageView) view1.findViewById(R.id.img_info_minus);
         specificationLayout = (LinearLayout) view1.findViewById(R.id.layout_commodity_specification);
+        scrollView = (ScrollView) view1.findViewById(R.id.scroll_commodity_info);
+
+        purchaseTxt.setOnClickListener(this);
         specificationLayout.setOnClickListener(this);
 
         slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, screenWidth));
@@ -325,6 +340,11 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         });
         viewList.add(view2);
     }
+
+    public void nextPage(View view) {
+        viewPager.setCurrentItem(1);
+    }
+
 
     public void toMain(View view) {
         Bundle bundle = new Bundle();
@@ -393,14 +413,14 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             case R.id.btn_info_addToCart:
                 isBuy = false;
                 if (hasSpecification)
-                    createDialog(false);
+                    createDialog(false, false);
                 else
                     addToCart();
                 break;
             case R.id.btn_info_buy:
                 isBuy = true;
                 if (hasSpecification)
-                    createDialog(false);
+                    createDialog(false, false);
                 else
                     createOrder();
                 break;
@@ -450,6 +470,13 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             minusImg.setClickable(false);
             if (!isStar) buyBtn.setEnabled(false);
         }
+
+        if (commodityType == 4) {//买赠
+            activityRule = rCommodityInfoBO.activityRule;
+            presentLayout.setVisibility(View.VISIBLE);
+            presentTxt.setText(getResources().getStringArray(R.array.activityRule)[rCommodityInfoBO.activityRule]);
+        }
+
         if (repertory == 0 && !hasSpecification) {//库存为0且没有商品规格
             buyBtn.setEnabled(false);
             cartBtn.setEnabled(false);
@@ -522,9 +549,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             dialog_buyBtn.setEnabled(false);
             confirmBtn.setText("库存不足");
             dialog_countEdt.setEnabled(false);
-            LogUtils.d(TAG, "getSpecificationSucceed START2");
             dialog_countEdt.setText("1");
-            LogUtils.d(TAG, "getSpecificationSucceed START3");
             dialog_plusImg.setClickable(false);
             dialog_minusImg.setClickable(false);
         }
@@ -539,16 +564,17 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
 
     private void addToCart() {
         showProgressBar();
-        mPresenter.addToCart(application.getUserId(), commodityId, rCommodityInfoBO.commodity.commodityName, commodityType, count, rCommodityInfoBO.commodity.listPic, commodityDetailId, matchId);
+        if (commodityType == 4) {
+            newActivityId = matchId;//买赠的matchId即为newActivityId
+            matchId = -1;
+        }
+        mPresenter.addToCart(application.getUserId(), newActivityId, commodityId, rCommodityInfoBO.commodity.commodityName, commodityType, count, rCommodityInfoBO.commodity.listPic, commodityDetailId, matchId);
     }
 
     public void addToCartSucceed(String msg) {
         hideProgressBar();
         MyUtils.showToast(getApplicationContext(), "添加购物车成功");
         mPresenter.getCartNum(application.getUserId());
-//        application.setCartNum(application.getCartNum() + count);
-//        cartNumTxt.setText(application.getCartNum() > 99 ? "99+" : application.getCartNum() + "");
-//        cartNumTxt.setVisibility(View.VISIBLE);
     }
 
     public void addToCartFailed(String msg) {
@@ -563,7 +589,11 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         cartCommodityBO.commodityNum = count;
         cartCommodityBO.commodityDetailsId = commodityDetailId;
         totalPrice = count * cartCommodityBO.commodityPrice;
-        cartCommodityBO.rushPurchaseId = matchId;
+        if (commodityType == 4) {//买赠
+            cartCommodityBO.newActivityId = matchId;
+            cartCommodityBO.activityRule = activityRule;
+        } else
+            cartCommodityBO.rushPurchaseId = matchId;
         rCartCommodityBOs = new ArrayList<>();
         rCartCommodityBOs.add(cartCommodityBO);
         Bundle bundle = new Bundle();
@@ -663,15 +693,17 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
      *
      * @param showBottom
      */
-    private void createDialog(boolean showBottom) {
+    private void createDialog(boolean showBottom, boolean isPurchase) {
         if (contentDialog == null) {
             View view = LayoutInflater.from(this).inflate(R.layout.product_detail_dialog_content, null);
             view.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenHeight(this) * 3 / 4));
             dialog_product_name = (TextView) view.findViewById(R.id.dialog_product_name);
             dialog_newPriceTxt = (TextView) view.findViewById(R.id.txt_dialog_newPrice);
             dialog_oldPriceTxt = (TextView) view.findViewById(R.id.txt_dialog_oldPrice);
-            dialog_specificationLayout = ((LinearLayout) view.findViewById(R.id.llayout_dialog_specification));
-            dialog_progressBarRlayout = ((RelativeLayout) view.findViewById(R.id.rlayout_progressBar));
+            dialog_specificationLayout = (LinearLayout) view.findViewById(R.id.llayout_dialog_specification);
+            noPurchaseLayout = (LinearLayout) view.findViewById(R.id.llayout_no_purchase);
+            purchaseLayout = (LinearLayout) view.findViewById(R.id.llayout_purchase);
+            dialog_progressBarRlayout = (RelativeLayout) view.findViewById(R.id.rlayout_progressBar);
             dialog_product_sum = ((EditText) view.findViewById(R.id.edt_commodity_specification_count));
             dialog_inventoryTxt = (TextView) view.findViewById(R.id.txt_dialog_inventory);
             dialog_countEdt = (EditText) view.findViewById(R.id.edt_commodity_specification_count);
@@ -711,6 +743,11 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                         dialog.dismiss();
                         break;
                     case R.id.btn_dialog_ok:
+                        if (!MyUtils.isLogin(this)) {
+                            openActivity(LogInActivity.class);
+                            MyUtils.showToast(context, "请先登录");
+                            return;
+                        }
                         if (!isBuy)
                             addToCart();
                         else
@@ -718,10 +755,20 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                         dialog.dismiss();
                         break;
                     case R.id.btn_dialog_cart:
+                        if (!MyUtils.isLogin(this)) {
+                            openActivity(LogInActivity.class);
+                            MyUtils.showToast(context, "请先登录");
+                            return;
+                        }
                         addToCart();
                         dialog.dismiss();
                         break;
                     case R.id.btn_dialog_buy:
+                        if (!MyUtils.isLogin(this)) {
+                            openActivity(LogInActivity.class);
+                            MyUtils.showToast(context, "请先登录");
+                            return;
+                        }
                         createOrder();
                         dialog.dismiss();
                         break;
@@ -743,7 +790,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                     .setContentBackgroundResource(R.color.transParent)
                     .create();
         }
-        showSpecificationDialog(showBottom);
+        showSpecificationDialog(showBottom, isPurchase);
     }
 
     /**
@@ -751,10 +798,17 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
      *
      * @param showBottom
      */
-    private void showSpecificationDialog(boolean showBottom) {
+    private void showSpecificationDialog(boolean showBottom, boolean isPurchase) {
         if (showBottom) {
             confirmBtn.setVisibility(View.GONE);
             bottomLayout.setVisibility(View.VISIBLE);
+            if (isPurchase) {//集采
+                noPurchaseLayout.setVisibility(View.GONE);
+                purchaseLayout.setVisibility(View.VISIBLE);
+            } else {
+                noPurchaseLayout.setVisibility(View.VISIBLE);
+                purchaseLayout.setVisibility(View.GONE);
+            }
         } else {
             confirmBtn.setVisibility(View.VISIBLE);
             bottomLayout.setVisibility(View.GONE);
@@ -789,9 +843,6 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
 
                 @Override
                 public boolean setSelected(int position, RCommodityInfoBO.SpecialParamter.ParametersValues parametersValues) {
-//                    LogUtils.d(TAG, "setSelected:" + position + " " + parametersValues);
-//                    if (parametersValues.isCheck)
-//                        return true;
                     return super.setSelected(position, parametersValues);
                 }
 
@@ -895,8 +946,11 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                 }
                 showProgressBar();
                 break;
+            case R.id.txt_purchase:
+                createDialog(true, true);
+                break;
             case R.id.layout_commodity_specification:
-                createDialog(true);
+                createDialog(true, false);
                 break;
         }
     }

@@ -135,8 +135,8 @@ public class CommodityPresenter extends BasePresenter<CommodityInfoActivity> {
      * @param listPic
      * @param commodityDetailId
      */
-    public void addToCart(int userId, int commodityId, String commodityName, int commodityType, int commodityNum, String listPic, int commodityDetailId, Integer rushPurchaseId) {
-        QAddCartBO qAddCartBO = new QAddCartBO(NetConfig.ADDCART, userId, -1, -1, commodityDetailId, listPic, commodityNum, rushPurchaseId, commodityType, commodityId, commodityName);
+    public void addToCart(int userId, int newActivityId, int commodityId, String commodityName, int commodityType, int commodityNum, String listPic, int commodityDetailId, Integer rushPurchaseId) {
+        QAddCartBO qAddCartBO = new QAddCartBO(NetConfig.ADDCART, userId, -1, newActivityId, commodityDetailId, listPic, commodityNum, rushPurchaseId, commodityType, commodityId, commodityName);
         add(NetWork.getMyApi().AddToCart(qAddCartBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -161,8 +161,8 @@ public class CommodityPresenter extends BasePresenter<CommodityInfoActivity> {
      * @param commodityDetailId
      * @param commodityType
      */
-    public void collect(int userId, int commodityId, int commodityDetailId, int commodityType,int rushPurchaseId) {
-        QCollectBO qCollectBO = new QCollectBO(NetConfig.COLLECT, userId, commodityId, commodityDetailId, commodityType,rushPurchaseId);
+    public void collect(int userId, int commodityId, int commodityDetailId, int commodityType, int rushPurchaseId) {
+        QCollectBO qCollectBO = new QCollectBO(NetConfig.COLLECT, userId, commodityId, commodityDetailId, commodityType, rushPurchaseId);
         add(NetWork.getMyApi().collect(qCollectBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

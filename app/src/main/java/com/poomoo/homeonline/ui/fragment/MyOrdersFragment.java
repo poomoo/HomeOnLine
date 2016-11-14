@@ -203,6 +203,10 @@ public class MyOrdersFragment extends BaseDaggerListFragment<ROrderListBO, Order
             cartCommodityBO.commodityPrice = orderDetails.unitPrice;
             cartCommodityBO.commodityNum = orderDetails.commodityNum;
             cartCommodityBO.commodityDetailsId = orderDetails.commodityDetailsId;
+            if (orderDetails.orderType == 4) {
+                cartCommodityBO.commodityType = orderDetails.orderType;
+                cartCommodityBO.present = orderDetails.present;
+            }
             rCartCommodityBOs.add(cartCommodityBO);
         }
         bundle = new Bundle();
@@ -261,7 +265,7 @@ public class MyOrdersFragment extends BaseDaggerListFragment<ROrderListBO, Order
         bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_commodityId), rOrderListBO.orderDetails.get(childPos).commodityId);
         bundle.putInt(getString(R.string.intent_commodityDetailId), rOrderListBO.orderDetails.get(childPos).commodityDetailsId);
-        bundle.putInt(getString(R.string.intent_commodityType), 1);
+        bundle.putInt(getString(R.string.intent_commodityType), 0);
         openActivity(CommodityInfoActivity.class, bundle);
     }
 }

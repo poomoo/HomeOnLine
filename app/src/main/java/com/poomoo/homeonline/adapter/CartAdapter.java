@@ -372,6 +372,10 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 if (rCartCommodityBO.isBuyChecked) {
                     totalPrice += rCartCommodityBO.commodityPrice * rCartCommodityBO.commodityNum;
                     rCartCommodityBO.commodityDetailsId = rCartCommodityBO.commodityDetailId;
+//                    if(rCartCommodityBO.commodityType==4){
+//                        rCartCommodityBO.newActivityId = matchId;
+//                        rCartCommodityBO.activityRule = activityRule;
+//                    }
                     rCartCommodityBOs.add(rCartCommodityBO);
                     if (!rCartCommodityBO.isFreePostage)
                         isFreePostage = false;

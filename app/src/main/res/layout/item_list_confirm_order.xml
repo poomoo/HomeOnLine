@@ -88,6 +88,39 @@
                 </LinearLayout>
             </RelativeLayout>
         </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llayout_order_present"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_8"
+        android:gravity="center_vertical|top"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/ThemeDarkRed"
+            android:padding="2dp"
+            android:text="赠品"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/txt_order_present_count"
+            android:layout_width="wrap_content"
+            android:background="@color/white"
+            android:layout_marginLeft="@dimen/dp_8"
+            android:padding="2dp"
+            android:layout_height="wrap_content"
+            android:text="商品名字商品名字商品名字商品名字商品名字X2"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_12" />
     </LinearLayout>
 
     <View

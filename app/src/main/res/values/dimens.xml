@@ -8,7 +8,9 @@
     <dimen name="divider_height2">1dp</dimen>
     <dimen name="recycler_divider">6dp</dimen>
 
-    <dimen name="dp_8">8dp</dimen>
+    <dimen name="dp_4">2dp</dimen>
+    <dimen name="dp_6">3dp</dimen>
+    <dimen name="dp_8">4dp</dimen>
     <dimen name="dp_10">5dp</dimen>
     <dimen name="dp_20">10dp</dimen>
 
@@ -17,5 +19,6 @@
     <dimen name="sp_14">7sp</dimen>
     <dimen name="sp_16">8sp</dimen>
     <dimen name="sp_18">9sp</dimen>
+    <dimen name="sp_20">10sp</dimen>
 
 </resources>

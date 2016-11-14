@@ -43,9 +43,12 @@ import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
+import com.poomoo.homeonline.ui.activity.AbroadActivity;
 import com.poomoo.homeonline.ui.activity.ClassifyInfoActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
+import com.poomoo.homeonline.ui.activity.OnSaleActivity;
+import com.poomoo.homeonline.ui.activity.PresentActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.activity.WebViewActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
@@ -150,7 +153,8 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         menuGrid.setAdapter(gridAdapter);
         menuGrid.setOnItemClickListener(this);
         mPresenter.getSlide();
-        mPresenter.getType();
+        initType();
+//        mPresenter.getType();
         mPresenter.getGrabList();
         mPresenter.getSpecialAd();
         mPresenter.getHot();
@@ -220,7 +224,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 if (rAdBO.isCommodity) {//商品广告
                     bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
-                    bundle.putInt(getString(R.string.intent_commodityType), 1);
+                    bundle.putInt(getString(R.string.intent_commodityType),0);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
                     bundle = new Bundle();
@@ -240,7 +244,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 if (rAdBO.isCommodity) {//商品广告
                     bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
-                    bundle.putInt(getString(R.string.intent_commodityType), 1);
+                    bundle.putInt(getString(R.string.intent_commodityType),0);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
                     bundle = new Bundle();
@@ -366,6 +370,14 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         }
     }
 
+    public void initType() {
+        String[] type = getActivity().getResources().getStringArray(R.array.main_menu);
+        List<RCateBO> rCateBOs = new ArrayList<>();
+        for (String temp : type)
+            rCateBOs.add((new RCateBO(temp)));
+        gridAdapter.setItems(rCateBOs);
+    }
+
     public void loadTypeSucceed(RTypeBO rTypeBO) {
         gridAdapter.setUrl(rTypeBO.picUrl);
         gridAdapter.setItems(rTypeBO.categotys.subList(0, rTypeBO.categotys.size() - 1));
@@ -469,10 +481,24 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
      */
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        bundle = new Bundle();
-        bundle.putString(getString(R.string.intent_value), ((RCateBO) gridAdapter.getItem(position)).categoryName);
-        bundle.putString(getString(R.string.intent_categoryId), ((RCateBO) gridAdapter.getItem(position)).id + "");
-        openActivity(ClassifyInfoActivity.class, bundle);
+//        bundle = new Bundle();
+//        bundle.putString(getString(R.string.intent_value), ((RCateBO) gridAdapter.getItem(position)).categoryName);
+//        bundle.putString(getString(R.string.intent_categoryId), ((RCateBO) gridAdapter.getItem(position)).id + "");
+//        openActivity(ClassifyInfoActivity.class, bundle);
+        switch (position) {
+            case 0:
+                ((MainNewActivity) getActivity()).jump(2);
+                break;
+            case 1:
+                openActivity(PresentActivity.class);
+                break;
+            case 2:
+                openActivity(OnSaleActivity.class);
+                break;
+            case 3:
+                openActivity(AbroadActivity.class);
+                break;
+        }
     }
 
     /**
@@ -500,7 +526,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle = new Bundle();
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
-                    bundle.putInt(getString(R.string.intent_commodityType), 1);
+                    bundle.putInt(getString(R.string.intent_commodityType), 0);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {
                     bundle = new Bundle();

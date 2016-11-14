@@ -8,7 +8,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ScrollView;
 
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 
 public class VerticalViewPager extends ViewPager {
@@ -36,7 +38,6 @@ public class VerticalViewPager extends ViewPager {
 
         @Override
         public void transformPage(View view, float position) {
-
             if (position < -1) { // [-Infinity,-1)
                 // This page is way off-screen to the left.
                 view.setAlpha(0);
@@ -75,13 +76,13 @@ public class VerticalViewPager extends ViewPager {
 
     @Override
     protected boolean canScroll(View v, boolean checkV, int dx, int x, int y) {
+        ScrollView scrollView = (ScrollView) v.findViewById(R.id.scroll_commodity_info);
         WebView webView = (WebView) v.findViewById(R.id.web_commodity_info);
         RecyclerView recyclerView1 = (RecyclerView) v.findViewById(R.id.recycler_commodity_details);
         RecyclerView recyclerView2 = (RecyclerView) v.findViewById(R.id.recycler_commodity_recommend);
         if (dx == 0)
             return false;
         if (webView != null && webView.getVisibility() == View.VISIBLE) {
-            Log.d(TAG, "webView dx" + dx + ":" + webView.canScrollVertically(-dx));
             return webView.canScrollVertically(-dx);
         } else if (recyclerView1 != null && recyclerView1.getVisibility() == View.VISIBLE) {
             return recyclerView1.canScrollVertically(-dx);
@@ -90,7 +91,6 @@ public class VerticalViewPager extends ViewPager {
         } else {
             return super.canScroll(v, checkV, dx, x, y);
         }
-//        return super.canScroll(v, false, dx, x, y);
     }
 
 

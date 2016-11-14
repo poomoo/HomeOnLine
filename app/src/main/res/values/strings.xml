@@ -31,8 +31,13 @@
     <string name="title_refundInfo">退款详情</string>
     <string name="title_confirm_order">确认订单</string>
     <string name="title_ticket">优惠券</string>
+    <string name="title_ticket_zone">优惠券专区</string>
     <string name="title_my_ticket">我的优惠券</string>
     <string name="title_ticket_statement">用券须知</string>
+    <string name="title_invite">邀请奖励</string>
+    <string name="title_rewardInfo">奖励详情</string>
+    <string name="title_present_zone">买赠专区</string>
+    <string name="title_abroad">跨境直邮</string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -40,6 +45,9 @@
     <string name="label_forgetPassWord">忘记密码?</string>
     <string name="label_passWord">"密码　　"</string>
     <string name="label_confirmPassWord">确认密码</string>
+    <string name="label_invite_info">奖励详情</string>
+    <string name="label_invite_code">我的邀请码</string>
+    <string name="label_rule">"凡是今日起,在本商城领取优惠券,购买满90减5元"\n"满199元减10元,满250减15元,满300减20元"</string>
 
     <string name="hint_inputUserName">请输入用户名</string>
     <string name="hint_inputUserPassWord">请输入密码</string>
@@ -51,6 +59,9 @@
     <string name="btn_login">登录</string>
     <string name="btn_next">下一步</string>
     <string name="btn_complete">完成</string>
+    <string name="btn_close">关闭</string>
+    <string name="btn_confirm">确定</string>
+    <string name="btn_present">立即秒杀</string>
 
     <string name="intent_value">value</string>
     <string name="intent_parent">parent</string>
@@ -97,6 +108,7 @@
     <string name="intent_commodityDetailIds">commodityDetailIds</string>
     <string name="intent_vouchersId">vouchersId</string>
     <string name="intent_vouchersMoney">vouchersMoney</string>
+    <string name="intent_activityRule">activityRule</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>
@@ -129,6 +141,8 @@
     <string name="tab_order_receipt">待收货</string>
     <string name="tab_order_evaluate">待评价</string>
     <string name="tab_order_after_sale">退款/售后</string>
+    <string name="tab_invite">我的邀请</string>
+    <string name="tab_repay">返利订单</string>
     <!--tab-->
 
     <!--dialog-->
@@ -143,5 +157,9 @@
 
     <string name="toast_3_pics">最多选择3张图片</string>
     <string name="empty" />
+    <string name="label_copy">一键复制</string>
+    <string name="btn_invite">立即邀请</string>
+
+    <string name="umeng_sharebutton_copy">复制链接</string>
 
 </resources>

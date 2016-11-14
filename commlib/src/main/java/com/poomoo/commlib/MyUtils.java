@@ -487,4 +487,14 @@ public class MyUtils {
         }
         return channelName;
     }
+
+    /**
+     * 计算赠送商品的数量
+     *
+     * @param activityRule
+     * @param commodityNum
+     */
+    public static int CalculatePresentCount(int activityRule, int commodityNum) {
+        return commodityNum / --activityRule;
+    }
 }

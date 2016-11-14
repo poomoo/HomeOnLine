@@ -44,7 +44,22 @@ public class MainGridAdapter extends MyBaseAdapter<RCateBO> {
         convertView = inflater.inflate(R.layout.item_grid_main, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.img_main);
         viewHolder.txt = (TextView) convertView.findViewById(R.id.txt_main);
-        Glide.with(context).load(url + item.id + ".png").placeholder(R.drawable.replace).priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(viewHolder.image);
+
+//        Glide.with(context).load(url + item.id + ".png").placeholder(R.drawable.replace).priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(viewHolder.image);
+        switch (position) {
+            case 0:
+                viewHolder.image.setImageResource(R.drawable.ic_grab);
+                break;
+            case 1:
+                viewHolder.image.setImageResource(R.drawable.ic_present);
+                break;
+            case 2:
+                viewHolder.image.setImageResource(R.drawable.ic_tickets);
+                break;
+            case 3:
+                viewHolder.image.setImageResource(R.drawable.ic_abroad);
+                break;
+        }
         viewHolder.txt.setText(item.categoryName);
         return convertView;
     }

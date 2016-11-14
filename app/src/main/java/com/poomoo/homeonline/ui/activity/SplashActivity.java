@@ -60,8 +60,8 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
         versionTxt.setText(MyUtils.getVersionName(this));
 
         //不显示日志
-        LogUtils.isDebug = false;
-        NetWork.level = HttpLoggingInterceptor.Level.NONE;
+//        LogUtils.isDebug = false;
+//        NetWork.level = HttpLoggingInterceptor.Level.NONE;
 
         //统计错误日志到友盟平台
         MobclickAgent.setDebugMode(true);
@@ -83,6 +83,7 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
                 application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
             }
             openActivity(MainNewActivity.class);
+//            openActivity(OnSaleActivity.class);
             finish();
         }, SPLASH_DISPLAY_LENGTH);
     }

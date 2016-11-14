@@ -3,9 +3,11 @@
  */
 package com.poomoo.homeonline.ui.fragment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -34,8 +36,16 @@ import retrofit2.http.POST;
 public abstract class TabFragment extends BaseTabFragment {
     @Bind(R.id.tab_nav)
     TabLayout mTabLayout;
+
     private int currItem;
-    public int POSITION;
+    private int color;
+
+    public TabFragment() {
+    }
+
+    public TabFragment(int color) {
+        this.color = color;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,6 +57,10 @@ public abstract class TabFragment extends BaseTabFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
+        if (color != 0) {
+            mTabLayout.setSelectedTabIndicatorColor(color);
+            mTabLayout.setTabTextColors(Color.BLACK, color);
+        }
         ViewCompat.setElevation(mTabLayout, 7);
         if (mAdapter != null) {
             mTabLayout.setupWithViewPager(mViewPager);

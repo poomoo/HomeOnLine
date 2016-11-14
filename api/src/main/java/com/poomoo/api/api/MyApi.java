@@ -45,6 +45,7 @@ import com.poomoo.model.request.QCountBO;
 import com.poomoo.model.request.QDeleteBO;
 import com.poomoo.model.request.QEvaluateBO;
 import com.poomoo.model.request.QFeedBackBO;
+import com.poomoo.model.request.QGetTicketBO;
 import com.poomoo.model.request.QHistory;
 import com.poomoo.model.request.QIdBO;
 import com.poomoo.model.request.QIsCollectBO;
@@ -64,6 +65,8 @@ import com.poomoo.model.request.QUpdateInfoBO;
 import com.poomoo.model.request.QUserBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.request.QVersion;
+import com.poomoo.model.response.RAbroadBO;
+import com.poomoo.model.response.RAbroadCommodityBO;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCartNumBO;
 import com.poomoo.model.response.RCartShopBO;
@@ -77,8 +80,10 @@ import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RIndexBO;
 import com.poomoo.model.response.RIsCollect;
 import com.poomoo.model.response.RListCommodityBO;
+import com.poomoo.model.response.ROnSaleBO;
 import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.ROrderListBO;
+import com.poomoo.model.response.RPresentBO;
 import com.poomoo.model.response.RReFundBO;
 import com.poomoo.model.response.RReFundInfoBO;
 import com.poomoo.model.response.RReceiptBO;
@@ -308,4 +313,24 @@ public interface MyApi {
     //我的优惠券
     @POST(NetConfig.suffix)
     Observable<List<TicketBO>> getMyTickets(@Body QMyTicketBO qMyTicketBO);
+
+    //优惠券专区
+    @POST(NetConfig.suffix)
+    Observable<ROnSaleBO> GetOnSaleInfo(@Body BaseRequest baseRequest);
+
+    //领取优惠券
+    @POST(NetConfig.suffix)
+    Observable<ResponseBO> getTicket(@Body QGetTicketBO qGetTicketBO);
+
+    //领取优惠券
+    @POST(NetConfig.suffix)
+    Observable<List<RPresentBO>> getPresentInfo(@Body BaseRequest baseRequest);
+
+    //跨境
+    @POST(NetConfig.suffix)
+    Observable<RAbroadBO> getAbroad(@Body BaseRequest baseRequest);
+
+    //跨境分类商品
+    @POST(NetConfig.suffix)
+    Observable<List<RAbroadCommodityBO>> getSubCommodity(@Body QIdBO qIdBO);
 }

@@ -6,7 +6,6 @@ package com.poomoo.homeonline.ui.activity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 
-import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.homeonline.ui.fragment.MyOrdersFragment;
@@ -38,7 +37,7 @@ public class MyOrdersActivity extends BaseActivity {
 
     @Override
     protected int onBindLayout() {
-        return R.layout.activity_my_orders;
+        return R.layout.activity_pub_tab;
     }
 
     /**

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:padding="@dimen/dp_10">
+
+    <ImageView
+        android:id="@+id/img_present_commodity"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:src="@drawable/replace_small" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/img_present_commodity"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_toRightOf="@+id/img_present_commodity"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txt_present_commodity_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="商品名称商品名称商品名称商品名称商品名称商品名称"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="手机专享.超值秒杀"
+            android:textColor="@color/refund_text"
+            android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/txt_present_commodity_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="￥ 12.00"
+            android:textColor="@color/refund_text"
+            android:textSize="@dimen/sp_12" />
+    </LinearLayout>
+
+    <Button
+        style="@style/myButton_Present"
+        android:layout_width="wrap_content"
+        android:layout_alignBottom="@+id/img_present_commodity"
+        android:layout_alignParentRight="true"
+        android:clickable="false"
+        android:text="@string/btn_present"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_14" />
+</RelativeLayout>

@@ -150,6 +150,10 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
             bundle = new Bundle();
             bundle.putInt(getString(R.string.intent_commodityId), cartCommodityBO.commodityId);
             bundle.putInt(getString(R.string.intent_commodityDetailId), cartCommodityBO.commodityDetailId);
+            if (cartCommodityBO.commodityType == 5) {//买赠
+                cartCommodityBO.commodityType = 4;
+                bundle.putInt(getString(R.string.intent_matchId), cartCommodityBO.newActivityId);//match_id传newActivityId
+            }
             bundle.putInt(getString(R.string.intent_commodityType), cartCommodityBO.commodityType);
             openActivity(CommodityInfoActivity.class, bundle);
             return true;

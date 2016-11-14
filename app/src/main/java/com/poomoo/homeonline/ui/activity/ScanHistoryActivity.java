@@ -92,6 +92,8 @@ public class ScanHistoryActivity extends BaseListDaggerActivity<RListCommodityBO
     }
 
     public void toDo(View view) {
+        if (rListCommodityBOs == null)
+            return;
         createDialog("确定删除当前页面的记录?", (dialog, which) ->
                 mPresenter.deleteHistory(getIndexes())
         ).show();
@@ -149,8 +151,13 @@ public class ScanHistoryActivity extends BaseListDaggerActivity<RListCommodityBO
         bundle.putInt(getString(R.string.intent_commodityId), mAdapter.getItem(position).commodityId);
         bundle.putInt(getString(R.string.intent_commodityDetailId), mAdapter.getItem(position).commodityDetailId);
         bundle.putInt(getString(R.string.intent_commodityType), mAdapter.getItem(position).commodityType);
-        if (mAdapter.getItem(position).rushPurchaseId != null)
-            bundle.putInt(getString(R.string.intent_matchId), mAdapter.getItem(position).rushPurchaseId);
+        if (mAdapter.getItem(position).commodityType == 4) //买赠
+            bundle.putInt(getString(R.string.intent_matchId), mAdapter.getItem(position).activityId);//match_id传activityId
+        else {
+            if (mAdapter.getItem(position).rushPurchaseId != null)
+                bundle.putInt(getString(R.string.intent_matchId), mAdapter.getItem(position).rushPurchaseId);
+        }
+
         openActivity(CommodityInfoActivity.class, bundle);
     }
 }

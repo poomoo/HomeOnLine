@@ -72,7 +72,7 @@ import butterknife.ButterKnife;
 
 /**
  * 类名 ReFundActivity
- * 描述 申请f退款
+ * 描述 申请退款
  * 作者 李苜菲
  * 日期 2016/8/22 15:38
  */

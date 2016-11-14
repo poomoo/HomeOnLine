@@ -29,6 +29,7 @@ import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.AddressListActivity;
 import com.poomoo.homeonline.ui.activity.CollectActivity;
 import com.poomoo.homeonline.ui.activity.FeedBackActivity;
+import com.poomoo.homeonline.ui.activity.InviteActivity;
 import com.poomoo.homeonline.ui.activity.LogInActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.activity.MyInfoActivity;
@@ -129,7 +130,7 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         openActivity(MyOrdersActivity.class, bundle);
     }
 
-    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_ticket, R.id.rlayout_my_address, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale})
+    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_ticket, R.id.rlayout_my_address,R.id.rlayout_purchasing,R.id.rlayout_invite, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale})
     void other(View view) {
         if (!MyUtils.isLogin(getActivity())) {
             Intent login = new Intent(getActivity(), LogInActivity.class);
@@ -156,6 +157,12 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
                 bundle = new Bundle();
                 bundle.putBoolean(getString(R.string.intent_isEdit), true);
                 openActivity(AddressListActivity.class, bundle);
+                break;
+            case R.id.rlayout_purchasing:
+//                openActivity(AddressListActivity.class, bundle);
+                break;
+            case R.id.rlayout_invite:
+                openActivity(InviteActivity.class);
                 break;
             case R.id.rlayout_tel:
                 dial();

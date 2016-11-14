@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ThemeBg"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/title"
+        layout="@layout/pub_layout_title_bar" />
+
+    <ScrollView
+        android:id="@+id/scroll_abroad"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.poomoo.homeonline.ui.custom.SlideShowView
+                android:id="@+id/flipper_ad"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginTop="4dp"
+                android:background="@color/white"
+                android:focusable="true"
+                android:focusableInTouchMode="true" />
+
+            <LinearLayout
+                android:id="@+id/llayout_abroad_commodity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <LinearLayout
+                android:id="@+id/llayout_abroad_advertisement"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_8"
+                android:background="@drawable/shape_rectangle_gold"
+                android:gravity="center"
+                android:text="热门标签"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_16" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_classify"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_commodity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:background="@color/white" />
+        </LinearLayout>
+    </ScrollView>
+
+    <com.poomoo.homeonline.ui.custom.ErrorLayout
+        android:id="@+id/error_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</RelativeLayout>

@@ -56,6 +56,10 @@ public class ROrderListBO implements Serializable {
         public int state;
         public boolean isReturnGood;//是否有退货
         public String returnGoodId;//退货主键
+        /*买赠*/
+        public int activityRule;//买赠规则
+        public String present;//买赠信息
+        public int presentNum;//赠品数量
 
         @Override
         public String toString() {

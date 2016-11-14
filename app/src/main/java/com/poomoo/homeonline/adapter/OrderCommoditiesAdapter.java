@@ -32,6 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -90,6 +91,14 @@ public class OrderCommoditiesAdapter extends BaseListAdapter<ROrderListBO.OrderD
             holder.reFundTxt.setVisibility(View.GONE);
         holder.reFundTxt.setOnClickListener(new reFundOnclick(position));
         Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.replace).into(holder.orderImg);
+
+        /*买赠*/
+        if (item.present != null) {
+            holder.linearLayout.setVisibility(View.VISIBLE);
+            holder.presentCountTxt.setText(item.present);
+        } else {
+            holder.linearLayout.setVisibility(View.GONE);
+        }
     }
 
     public static final class BaseViewHolder extends RecyclerView.ViewHolder {
@@ -103,6 +112,10 @@ public class OrderCommoditiesAdapter extends BaseListAdapter<ROrderListBO.OrderD
         TextView countTxt;
         @Bind(R.id.txt_commodity_total_price)
         TextView totalPriceTxt;
+        @Bind(R.id.llayout_orderList_present)
+        LinearLayout linearLayout;
+        @Bind(R.id.txt_orderList_present_count)
+        TextView presentCountTxt;
         @Bind(R.id.txt_reFund)
         TextView reFundTxt;
 

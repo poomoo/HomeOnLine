@@ -40,9 +40,10 @@ public class RCollectBO {
     public int commodityType;//商品类型
     public String commodityName;//商品名称
     public int commodityId;//商品主键
+    public int activityId;
 
     public boolean isChecked;
-    public int rushPurchaseId;
+    public Integer rushPurchaseId;
 
     public void toggleChecked() {
         this.isChecked = !this.isChecked;

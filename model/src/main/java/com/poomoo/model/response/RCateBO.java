@@ -38,6 +38,10 @@ public class RCateBO {
     public String picUrl;
 
 
+    public RCateBO(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
     @Override
     public String toString() {
         return "RCateBO{" +

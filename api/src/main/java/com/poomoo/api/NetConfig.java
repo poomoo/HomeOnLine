@@ -9,21 +9,22 @@ package com.poomoo.api;
  */
 public class NetConfig {
     //本地服务器
-//    public final static String url = "http://192.168.1.107:8080/";
+//    public final static String url = "http://192.168.1.106:8080/";
 //    public final static String suffix = "app/call.json";
 //    public final static String grabUrl = url + "app/rush.html";
-
-    //测试服务器
-//    public final static String url = "http://115.28.95.198/";
-//    public final static String suffix = "jyzx/app/call.json";
-//    public final static String grabUrl = url + "jyzx/app/rush.html";
 //    public final static String check = "jyzx/app/pay/alipay_return.html";
 
+    //测试服务器
+    public final static String url = "http://115.28.95.198/";
+    public final static String suffix = "jyzx/app/call.json";
+    public final static String grabUrl = url + "jyzx/app/rush.html";
+    public final static String check = "jyzx/app/pay/alipay_return.html";
+
     //正式服务器
-    public final static String url = "http://www.jiayou9.com/";
-    public final static String suffix = "app/call.json";
-    public final static String grabUrl = url + "app/rush.html";
-    public final static String check = "app/pay/alipay_return.html";
+//    public final static String url = "http://www.jiayou9.com/";
+//    public final static String suffix = "app/call.json";
+//    public final static String grabUrl = url + "app/rush.html";
+//    public final static String check = "app/pay/alipay_return.html";
 
     //图片地址
     public final static String ImageUrl = "http://img.jiayou9.com/jyzx";
@@ -98,5 +99,9 @@ public class NetConfig {
     public static final String TICKETSTATEMENT = "1016_02";//用券须知
 
     public static final String INDEX = "2002_01";//引导页
-
+    public static final String ONSALE = "2002_02";//优惠券专区
+    public static final String GETTICKET = "2002_03";//领取优惠券
+    public static final String PRESENT = "2002_04";//买赠专区
+    public static final String ABROAD = "2002_05";//跨境
+    public static final String ABROADSUBCOMMODITY = "2002_06";//跨境分类商品
 }

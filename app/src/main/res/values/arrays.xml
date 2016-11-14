@@ -60,4 +60,46 @@
         <item>其他</item>
     </string-array>
 
+    <string-array name="on_sale_type">
+        <item>五元专区</item>
+        <item>十元专区</item>
+        <item>十五元专区</item>
+        <item>二十元专区</item>
+    </string-array>
+
+    <string-array name="main_menu">
+        <item>限时抢购</item>
+        <item>买赠专区</item>
+        <item>优惠专区</item>
+        <item>跨境直邮</item>
+    </string-array>
+
+    <string-array name="abroad_menu">
+        <item>本周更新</item>
+        <item>人气商品</item>
+        <item>母婴用品</item>
+        <item>美妆个护</item>
+        <item>食品饮料</item>
+        <item>营养保健</item>
+    </string-array>
+
+    <string-array name="abroad_content">
+        <item>本周不定期更新</item>
+        <item>跨境直邮.引领精致生活方式</item>
+        <item>只为每个宝宝提供贴心的选择</item>
+        <item>生活必需.有模有样</item>
+        <item>生活必需.有滋有味</item>
+        <item>健康才是硬道理</item>
+    </string-array>
+    <string-array name="activityRule">
+        <item>无</item>
+        <item>折扣率</item>
+        <item>买一赠一</item>
+        <item>买二赠一</item>
+        <item>买三赠一</item>
+        <item>买四赠一</item>
+        <item>买五赠一</item>
+        <item>买六赠一</item>
+        <item>赠礼品</item>
+    </string-array>
 </resources>
