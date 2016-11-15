@@ -167,8 +167,11 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
             }
         });
         addView();
+        LogUtils.d(TAG, "断点0");
         classifyListAdapter.setItems(rAbroadClassifyBOs);
+        LogUtils.d(TAG, "断点1");
         subClassifyListAdapter.setItems(commodityListBOs);
+        LogUtils.d(TAG, "断点2");
         errorLayout.setState(ErrorLayout.HIDE, "");
         scrollView.setVisibility(View.VISIBLE);
     }
@@ -194,7 +197,7 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
     private void addView() {
         menu = getResources().getStringArray(R.array.abroad_menu);
         content = getResources().getStringArray(R.array.abroad_content);
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < rListCommodityBOs.size(); i++) {
             if (rListCommodityBOs.get(i).size() == 0)
                 continue;
 
@@ -251,8 +254,7 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
             }
             commodityLayout.addView(view);
         }
-
-        for (int i = 2; i < 6; i++) {
+        for (int i = 2; i < rAdBOs.size() + 2; i++) {
             if (rAdBOs.get(i - 2).size() == 0)
                 continue;
             View view = LayoutInflater.from(this).inflate(R.layout.layout_abroad_advertisement, null);
@@ -314,9 +316,9 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
             img3.setTag(R.id.tag_second, 2);
             img4.setTag(R.id.tag_second, 3);
             img5.setTag(R.id.tag_second, 4);
-
             advertisementLayout.addView(view);
         }
+        LogUtils.d(TAG, "断点");
     }
 
     private void initClassify() {

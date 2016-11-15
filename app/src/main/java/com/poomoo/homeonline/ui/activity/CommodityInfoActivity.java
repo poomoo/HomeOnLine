@@ -475,6 +475,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             activityRule = rCommodityInfoBO.activityRule;
             presentLayout.setVisibility(View.VISIBLE);
             presentTxt.setText(getResources().getStringArray(R.array.activityRule)[rCommodityInfoBO.activityRule]);
+            collectImg.setVisibility(View.GONE);
         }
 
         if (repertory == 0 && !hasSpecification) {//库存为0且没有商品规格

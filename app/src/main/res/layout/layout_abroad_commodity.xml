@@ -50,7 +50,7 @@
         <LinearLayout
             android:id="@+id/llayout_abroad_commodity1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
             android:orientation="vertical">
@@ -68,8 +68,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_8"
                 android:ellipsize="end"
+                android:minLines="2"
                 android:maxLines="2"
-                android:text="韩国进口韩国进口韩国进口韩国进口韩国进口韩国进口韩国进口韩国进口"
+                android:text="韩国进口"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12" />
 
@@ -92,7 +93,7 @@
         <LinearLayout
             android:id="@+id/llayout_abroad_commodity2"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
             android:orientation="vertical">
@@ -109,9 +110,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_8"
-                android:ellipsize="end"
+                android:ellipsize="end"           android:minLines="2"
                 android:maxLines="2"
-                android:text="韩国进口韩国进口韩国进口韩国进口韩国进口"
+                android:text="韩国进口"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12" />
 
@@ -134,7 +135,7 @@
         <LinearLayout
             android:id="@+id/llayout_abroad_commodity3"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:background="@color/white"
             android:orientation="vertical">
@@ -152,8 +153,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/dp_8"
                 android:ellipsize="end"
-                android:maxLines="2"
-                android:text="韩国进口韩国进口韩国进口韩国进口韩国进口"
+                android:maxLines="2"           android:minLines="2"
+                android:text="韩国进口"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12" />
 
