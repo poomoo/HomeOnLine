@@ -15,10 +15,11 @@ public class NetConfig {
 //    public final static String check = "jyzx/app/pay/alipay_return.html";
 
     //测试服务器
-    public final static String url = "http://115.28.95.198/";
-    public final static String suffix = "jyzx/app/call.json";
-    public final static String grabUrl = url + "jyzx/app/rush.html";
-    public final static String check = "jyzx/app/pay/alipay_return.html";
+//    public final static String url = "http://115.28.95.198/";
+    public final static String url = "http://news.jiayou9.com/";
+    public final static String suffix = "app/call.json";
+    public final static String grabUrl = url + "app/rush.html";
+    public final static String check = "app/pay/alipay_return.html";
 
     //正式服务器
 //    public final static String url = "http://www.jiayou9.com/";
