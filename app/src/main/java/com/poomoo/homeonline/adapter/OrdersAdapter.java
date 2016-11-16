@@ -83,7 +83,7 @@ public class OrdersAdapter extends BaseListAdapter<ROrderListBO> {
         orderCommoditiesAdapter.setOnItemClickListener(new click(position));
 
         holder.allPriceTxt.setText("￥" + df.format(item.order.sumMoney));
-        holder.freightPriceTxt.setText("￥" + df.format(item.order.deliveryFee));
+        holder.freightPriceTxt.setText("￥" + df.format(item.order.deliveryFee) + (item.order.vouchersId > 0 ? ",使用了" + item.order.vouchersMoney + "元优惠券" : ""));
         LogUtils.d(TAG, "item:" + item);
         switch (item.order.state) {
             case ROrderBO.ORDER_PAY:

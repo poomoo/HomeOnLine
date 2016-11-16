@@ -31,6 +31,7 @@ import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.ROrderListBO;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -211,13 +212,19 @@ public class MyOrdersFragment extends BaseDaggerListFragment<ROrderListBO, Order
         }
         bundle = new Bundle();
         bundle.putSerializable(getString(R.string.intent_commodityList), rCartCommodityBOs);
-        bundle.putDouble(getString(R.string.intent_totalPrice), mAdapter.getItem(position).order.sumMoney);
         bundle.putBoolean(getString(R.string.intent_isFreePostage), mAdapter.getItem(position).order.deliveryFee == 0.0 ? true : false);
         bundle.putBoolean(getString(R.string.intent_value), true);
         bundle.putInt(getString(R.string.intent_deliveryId), mAdapter.getItem(position).order.deliveryId);
         bundle.putDouble(getString(R.string.intent_deliveryFee), mAdapter.getItem(position).order.deliveryFee);
         bundle.putString(getString(R.string.intent_orderId), mAdapter.getItem(position).order.orderId);
         bundle.putString(getString(R.string.intent_commodityName), mAdapter.getItem(position).orderDetails.get(0).commodityName);
+        if (mAdapter.getItem(position).order.vouchersId > 0) {
+            bundle.putDouble(getString(R.string.intent_totalPrice), mAdapter.getItem(position).order.sumMoney + mAdapter.getItem(position).order.vouchersMoney - mAdapter.getItem(position).order.deliveryFee);
+            bundle.putInt(getString(R.string.intent_vouchersId), mAdapter.getItem(position).order.vouchersId);
+            bundle.putDouble(getString(R.string.intent_vouchersMoney), mAdapter.getItem(position).order.vouchersMoney);
+        } else
+            bundle.putDouble(getString(R.string.intent_totalPrice), mAdapter.getItem(position).order.sumMoney);
+
         openActivity(ConfirmOrderActivity.class, bundle);
     }
 

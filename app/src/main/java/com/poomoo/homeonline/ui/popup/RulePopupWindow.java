@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.poomoo.homeonline.R;
 
@@ -22,6 +23,7 @@ import com.poomoo.homeonline.R;
  */
 public class RulePopupWindow extends PopupWindow {
     private View mMenuView;
+    private TextView ruleTxt;
     private Button closeBtn;
 
     public RulePopupWindow(Activity context, OnClickListener itemsOnClick) {
@@ -29,6 +31,7 @@ public class RulePopupWindow extends PopupWindow {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         mMenuView = inflater.inflate(R.layout.popup_rule, null);
         closeBtn = (Button) mMenuView.findViewById(R.id.btn_close);
+        ruleTxt = (TextView) mMenuView.findViewById(R.id.txt_rule);
 
         closeBtn.setOnClickListener(itemsOnClick);
         this.setContentView(mMenuView);
@@ -51,5 +54,8 @@ public class RulePopupWindow extends PopupWindow {
         });
     }
 
+    public void setRule(String rule) {
+        ruleTxt.setText(rule);
+    }
 
 }

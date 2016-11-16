@@ -85,6 +85,7 @@ public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implemen
     private int flag = 0;//0-获取专区信息 1-领券
     private String money = "";//优惠券面额
     private int POSITION = 0;
+    private String rule;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -212,6 +213,8 @@ public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implemen
             });
             zoneLayout.addView(view);
         }
+
+        rule = rOnSaleBO.activityExplain;
     }
 
     @Override
@@ -233,8 +236,10 @@ public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implemen
      * @param view
      */
     public void catRule(View view) {
-        if (rulePopupWindow == null)
+        if (rulePopupWindow == null) {
             rulePopupWindow = new RulePopupWindow(this, itemsOnClick);
+            rulePopupWindow.setRule(rule);
+        }
         // 显示窗口
         rulePopupWindow.showAtLocation(this.findViewById(R.id.rlayout_on_sale), Gravity.CENTER, 0, 0); // 设置layout在PopupWindow中显示的位置
     }
@@ -254,6 +259,11 @@ public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implemen
      * @param view
      */
     public void get5(View view) {
+        if (!MyUtils.isLogin(this)) {
+            openActivity(LogInActivity.class);
+            MyUtils.showToast(context, "请先登录");
+            return;
+        }
         money = "5";
         errorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.getTicket(application.getUserId(), money);
@@ -265,6 +275,11 @@ public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implemen
      * @param view
      */
     public void get10(View view) {
+        if (!MyUtils.isLogin(this)) {
+            openActivity(LogInActivity.class);
+            MyUtils.showToast(context, "请先登录");
+            return;
+        }
         money = "10";
         errorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.getTicket(application.getUserId(), money);
@@ -276,6 +291,11 @@ public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implemen
      * @param view
      */
     public void get15(View view) {
+        if (!MyUtils.isLogin(this)) {
+            openActivity(LogInActivity.class);
+            MyUtils.showToast(context, "请先登录");
+            return;
+        }
         money = "15";
         errorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.getTicket(application.getUserId(), money);
@@ -287,6 +307,11 @@ public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implemen
      * @param view
      */
     public void get20(View view) {
+        if (!MyUtils.isLogin(this)) {
+            openActivity(LogInActivity.class);
+            MyUtils.showToast(context, "请先登录");
+            return;
+        }
         money = "20";
         errorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.getTicket(application.getUserId(), money);

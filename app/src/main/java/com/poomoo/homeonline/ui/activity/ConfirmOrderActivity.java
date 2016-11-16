@@ -163,20 +163,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
 
     private void init() {
         setBack();
-
-        isCreateOrder = getIntent().getBooleanExtra(getString(R.string.intent_value), false);
-        if (isCreateOrder) {
-            orderId = getIntent().getStringExtra(getString(R.string.intent_orderId));
-            commodityName = getIntent().getStringExtra(getString(R.string.intent_commodityName));
-            deliveryId = getIntent().getIntExtra(getString(R.string.intent_deliveryId), -1);
-            deliveryFee = getIntent().getDoubleExtra(getString(R.string.intent_deliveryFee), 0.00);
-            mErrorLayout.setState(ErrorLayout.LOADING, "");
-            mPresenter.getAddressById(deliveryId);
-            selectAddressLayout.setVisibility(View.GONE);//已生成订单不能修改收货地址
-        }
-
         rCartCommodityBOs = (List<RCartCommodityBO>) getIntent().getSerializableExtra(getString(R.string.intent_commodityList));
-        LogUtils.d(TAG, "rCartCommodityBOs:" + rCartCommodityBOs);
         totalPrice = getIntent().getDoubleExtra(getString(R.string.intent_totalPrice), 0.00);
         isFreePostage = getIntent().getBooleanExtra(getString(R.string.intent_isFreePostage), false);
         recyclerView.setLayoutManager(new ScrollLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
@@ -185,6 +172,26 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
         confirmOrderAdapter.addItems(rCartCommodityBOs);
 
         commodityPriceTxt.setText("￥" + df.format(totalPrice));
+
+        /*已经生成订单*/
+        isCreateOrder = getIntent().getBooleanExtra(getString(R.string.intent_value), false);
+        if (isCreateOrder) {
+            orderId = getIntent().getStringExtra(getString(R.string.intent_orderId));
+            commodityName = getIntent().getStringExtra(getString(R.string.intent_commodityName));
+            deliveryId = getIntent().getIntExtra(getString(R.string.intent_deliveryId), -1);
+            deliveryFee = getIntent().getDoubleExtra(getString(R.string.intent_deliveryFee), 0.00);
+            vouchersId = getIntent().getIntExtra(getString(R.string.intent_vouchersId), 0);
+            if (vouchersId > 0) {//使用过优惠券
+                vouchersMoney = getIntent().getDoubleExtra(getString(R.string.intent_vouchersMoney), 0.00);
+                ticketTxt.setText("优惠" + df.format(vouchersMoney) + "元");
+                ticketTxt.setClickable(false);
+            }
+
+            mErrorLayout.setState(ErrorLayout.LOADING, "");
+            mPresenter.getAddressById(deliveryId);
+            selectAddressLayout.setVisibility(View.GONE);//已生成订单不能修改收货地址
+        }
+        LogUtils.d(TAG, "totalPrice:" + totalPrice + " vouchersMoney:" + vouchersMoney + " deliveryFee:" + deliveryFee);
 
         recyclerView.setFocusable(false);//不让scrollview自动滚动
 
@@ -214,11 +221,11 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
 
         if (isCreateOrder) {
             if (isFreePostage) {//包邮
-                totalPriceTxt.setText("￥" + df.format(totalPrice));
+                totalPriceTxt.setText("￥" + df.format(totalPrice - vouchersMoney));
                 transferPriceTxt.setText("包邮");
             } else {
                 transferPriceTxt.setText(df.format(deliveryFee));
-                totalPriceTxt.setText("￥" + df.format(totalPrice + deliveryFee));
+                totalPriceTxt.setText("￥" + df.format(totalPrice + deliveryFee - vouchersMoney));
             }
         } else
             setAddressInfo();
@@ -316,8 +323,10 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
 
     public void getTransferPriceSucceed(RTransferPriceBO rTransferPriceBO) {
         mErrorLayout.setState(ErrorLayout.HIDE, "");
-        transferPriceTxt.setText("￥" + df.format(rTransferPriceBO.conutFreight));
-        totalPriceTxt.setText("￥" + df.format(totalPrice + rTransferPriceBO.conutFreight));
+        contentLayout.setVisibility(View.VISIBLE);
+        deliveryFee = rTransferPriceBO.conutFreight;
+        transferPriceTxt.setText("￥" + df.format(deliveryFee));
+        totalPriceTxt.setText("￥" + df.format(totalPrice + deliveryFee));
     }
 
     public void getTransferPriceFailed(String msg) {
@@ -325,6 +334,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
         transferPriceTxt.setText("获取运费失败");
         if (isNetWorkInvalid(msg)) {
             failed = TRANSFER;
+            contentLayout.setVisibility(View.GONE);
             mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
         } else
             MyUtils.showToast(getApplicationContext(), msg);
@@ -335,6 +345,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
     }
 
     public void subSucceed(String sign) {
+        contentLayout.setVisibility(View.VISIBLE);
         Runnable payRunnable = () -> {
             PayTask alipay = new PayTask(ConfirmOrderActivity.this);
             Map<String, String> result = alipay.payV2(sign, false);
@@ -353,6 +364,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
         mErrorLayout.setState(ErrorLayout.HIDE, "");
         if (isNetWorkInvalid(msg)) {
             failed = SUBMIT;
+            contentLayout.setVisibility(View.GONE);
             mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
         } else
             MyUtils.showToast(getApplicationContext(), msg);
@@ -390,8 +402,10 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
         if (requestCode == TICKET && resultCode == TICKET) {
             vouchersMoney = data.getDoubleExtra(getString(R.string.intent_vouchersMoney), 0.00);
             vouchersId = data.getIntExtra(getString(R.string.intent_vouchersId), 0);
-            totalPriceTxt.setText("￥" + df.format(totalPrice - vouchersMoney));
+            LogUtils.d(TAG, "totalPrice:" + totalPrice + " deliveryFee:" + deliveryFee + " vouchersMoney:" + vouchersMoney);
+            totalPriceTxt.setText("￥" + df.format(totalPrice + deliveryFee - vouchersMoney));
             ticketTxt.setText("优惠" + df.format(vouchersMoney) + "元");
+            qOrderBO.order.vouchersId = vouchersId;
         }
     }
 

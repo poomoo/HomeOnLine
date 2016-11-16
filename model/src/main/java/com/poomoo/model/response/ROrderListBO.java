@@ -60,25 +60,6 @@ public class ROrderListBO implements Serializable {
         public int activityRule;//买赠规则
         public String present;//买赠信息
         public int presentNum;//赠品数量
-
-        @Override
-        public String toString() {
-            return "OrderDetails{" +
-                    "id=" + id +
-                    ", orderId='" + orderId + '\'' +
-                    ", commodityDetailsId=" + commodityDetailsId +
-                    ", commodityId=" + commodityId +
-                    ", commodityName='" + commodityName + '\'' +
-                    ", commodityNum=" + commodityNum +
-                    ", unitPrice=" + unitPrice +
-                    ", orderType=" + orderType +
-                    ", rushPurchaseId=" + rushPurchaseId +
-                    ", activityId=" + activityId +
-                    ", newActivityId=" + newActivityId +
-                    ", listPic='" + listPic + '\'' +
-                    ", state=" + state +
-                    '}';
-        }
     }
 
     public class Order implements Serializable {
@@ -91,28 +72,9 @@ public class ROrderListBO implements Serializable {
         public int payWay;//1.在线支付 2.货到付款
         public String createTime;
         public String deliveryAddress;
-
-        @Override
-        public String toString() {
-            return "Order{" +
-                    "orderId='" + orderId + '\'' +
-                    ", totalPrise=" + totalPrise +
-                    ", deliveryId=" + deliveryId +
-                    ", deliveryFee=" + deliveryFee +
-                    ", sumMoney=" + sumMoney +
-                    ", state=" + state +
-                    ", payWay=" + payWay +
-                    ", createTime='" + createTime + '\'' +
-                    ", deliveryAddress='" + deliveryAddress + '\'' +
-                    '}';
-        }
+        /*优惠券信息*/
+        public double vouchersMoney;
+        public int vouchersId;
     }
 
-    @Override
-    public String toString() {
-        return "ROrderListBO{" +
-                "orderDetails=" + orderDetails +
-                ", order=" + order +
-                '}';
-    }
 }

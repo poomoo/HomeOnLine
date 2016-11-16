@@ -36,8 +36,9 @@ import java.util.List;
  */
 public class ROnSaleBO {
     public List<List<RListCommodityBO>> commoditys;
-//    public List<RListCommodityBO> tenList;
+    //    public List<RListCommodityBO> tenList;
 //    public List<RListCommodityBO> fifteenList;
 //    public List<RListCommodityBO> twentyList;
     public List<RAdBO> advlist;
+    public String activityExplain;
 }

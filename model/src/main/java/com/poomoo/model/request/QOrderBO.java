@@ -55,6 +55,7 @@ public class QOrderBO extends BaseRequest {
         public int deliveryId;
         public int payWay;//1.在线支付 2.货到付款
         public int orderFrom;//2 APP
+        public Integer vouchersId;//优惠券ID
 
         public Order(int userId) {
             this.userId = userId;

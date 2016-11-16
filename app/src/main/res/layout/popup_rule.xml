@@ -29,6 +29,7 @@
             android:background="@color/white">
 
             <TextView
+                android:id="@+id/txt_rule"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:padding="@dimen/dp_8"
