@@ -41,4 +41,18 @@ public class ROnSaleBO {
 //    public List<RListCommodityBO> twentyList;
     public List<RAdBO> advlist;
     public String activityExplain;
+    public List<Pic> yhqs;
+
+    public class Pic {
+        public int awardAmt;
+        public String voucherPic;
+
+        @Override
+        public String toString() {
+            return "Pic{" +
+                    "awardAmt=" + awardAmt +
+                    ", voucherPic='" + voucherPic + '\'' +
+                    '}';
+        }
+    }
 }

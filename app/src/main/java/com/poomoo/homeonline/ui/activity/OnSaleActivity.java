@@ -30,11 +30,14 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.poomoo.api.NetConfig;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.OnSaleGridAdapter;
@@ -68,6 +71,14 @@ public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implemen
     ScrollView scrollView;
     @Bind(R.id.flipper_ad)
     SlideShowView slideShowView;
+    @Bind(R.id.img_1)
+    ImageView img1;
+    @Bind(R.id.img_2)
+    ImageView img2;
+    @Bind(R.id.img_3)
+    ImageView img3;
+    @Bind(R.id.img_4)
+    ImageView img4;
     @Bind(R.id.llayout_on_sale_zone)
     LinearLayout zoneLayout;
     @Bind(R.id.error_frame)
@@ -123,8 +134,24 @@ public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implemen
     public void successful(ROnSaleBO rOnSaleBO) {
         loadAd(rOnSaleBO.advlist);
         addView(rOnSaleBO);
+        setImage(rOnSaleBO.yhqs);
+        LogUtils.d(TAG, "优惠券图片:" + rOnSaleBO.yhqs);
         errorLayout.setState(ErrorLayout.HIDE, "");
         scrollView.setVisibility(View.VISIBLE);
+    }
+
+    private void setImage(List<ROnSaleBO.Pic> pics) {
+        int width = MyUtils.getScreenWidth(this) - 3 * (int) getResources().getDimension(R.dimen.dp_30);
+        width /= 2;
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(width, width / 2);
+        img1.setLayoutParams(lp);
+        img2.setLayoutParams(lp);
+        img3.setLayoutParams(lp);
+        img4.setLayoutParams(lp);
+        Glide.with(this).load(NetConfig.ImageUrl + pics.get(0).voucherPic).placeholder(R.drawable.replace2).into(img1);
+        Glide.with(this).load(NetConfig.ImageUrl + pics.get(1).voucherPic).placeholder(R.drawable.replace2).into(img2);
+        Glide.with(this).load(NetConfig.ImageUrl + pics.get(2).voucherPic).placeholder(R.drawable.replace2).into(img3);
+        Glide.with(this).load(NetConfig.ImageUrl + pics.get(3).voucherPic).placeholder(R.drawable.replace2).into(img4);
     }
 
     public void failed(String msg) {

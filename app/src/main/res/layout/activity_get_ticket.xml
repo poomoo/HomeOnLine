@@ -27,9 +27,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:layout_marginTop="4dp"
+                android:background="@color/white"
                 android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:background="@color/white" />
+                android:focusableInTouchMode="true" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -73,73 +73,68 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="match_parent" />
 
                     <ImageView
+                        android:id="@+id/img_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="get5"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/t5" />
+                        android:scaleType="centerCrop" />
 
                     <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="match_parent" />
 
                     <ImageView
+                        android:id="@+id/img_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="get10"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/t10" />
+                        android:scaleType="centerCrop" />
 
                     <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="match_parent" />
 
                     <ImageView
+                        android:id="@+id/img_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="get15"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/t15" />
+                        android:scaleType="centerCrop" />
 
                     <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="match_parent" />
 
                     <ImageView
+                        android:id="@+id/img_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:onClick="get20"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/t20" />
+                        android:scaleType="centerCrop" />
 
                     <View
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="match_parent" />
                 </LinearLayout>
             </LinearLayout>
 
