@@ -233,11 +233,10 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 }
             });
 
-            Glide.with(this).load(rSpecialAdBO.picUrl + (i + 1) + ".png").into(titleImg);
+            Glide.with(this).load(rSpecialAdBO.picUrl + (i + 1) + ".png").priority(Priority.IMMEDIATE).into(titleImg);
 
             contentImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) * 5 / 12));//设置广告栏的宽高比为12:5
             Glide.with(this).load(NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic).placeholder(R.drawable.replace12b5).priority(Priority.HIGH).into(contentImg);
-            LogUtils.d(TAG, "专题广告图片:" + NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic);
             contentImg.setTag(i);
             contentImg.setOnClickListener(v -> {
                 rAdBO = rSpecialAdBO.advs.get((int) contentImg.getTag()).get(0);
