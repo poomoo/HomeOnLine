@@ -83,6 +83,22 @@
         <item>营养保健</item>
     </string-array>
 
+    <string-array name="abroad_title">
+        <item>海优母婴</item>
+        <item>海优个护</item>
+        <item>海优美妆</item>
+        <item>海优生活</item>
+        <item>海优食品</item>
+    </string-array>
+
+    <string-array name="abroad_subTitle">
+        <item>MATERNAL AND INFANT</item>
+        <item>SEA SUPERIOR PROTECTION</item>
+        <item>SEA BEAUTY</item>
+        <item>SEA LIFE</item>
+        <item>THE OPTIMAL FOOD</item>
+    </string-array>
+
     <string-array name="abroad_content">
         <item>本周不定期更新</item>
         <item>跨境直邮.引领精致生活方式</item>

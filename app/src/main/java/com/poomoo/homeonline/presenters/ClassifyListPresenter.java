@@ -59,7 +59,7 @@ public class ClassifyListPresenter extends BasePresenter<ClassifyListActivity> {
      * @param index
      */
     public void getCommodity(String categoryId, int index) {
-        QClassifyListBO qClassifyListBO = new QClassifyListBO(NetConfig.CLASSCOMMODITYLIST, categoryId, index);
+        QClassifyListBO qClassifyListBO = new QClassifyListBO(NetConfig.NEWGETCOMMODITY, categoryId, index);
         add(NetWork.getMyApi().getClassifyCommodityList(qClassifyListBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

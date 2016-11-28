@@ -26,30 +26,14 @@
  */
 package com.poomoo.model.response;
 
-import java.util.List;
-
 /**
- * 类名 RAbroadBO
- * 描述 跨境
+ * 类名 RCountryBO
+ * 描述 国家馆
  * 作者 李苜菲
- * 日期 2016/11/8 14:18
+ * 日期 2016/11/25 16:08
  */
-public class RAbroadBO {
-//    public List<RAbroadClassifyBO> categorys;
-//    public List<List<RAbroadCommodityBO>> commodityList;
-//    public List<List<RAdBO>> advList;
-//    public List<RAdBO> topAdvList;
-
-    public List<RAdBO> topAdvList;
-    public List<RClassifyBO> categorys;
-    public List<RAdBO> earthAdv;
-    public List<RCountryBO> countrys;
-    public List<adv> advList;
-
-    public class adv {
-        public List<RAdBO> advs;
-        public String categoryName;
-        public String categoryId;
-        public String pcPic;
-    }
+public class RCountryBO {
+    public int id;
+    public String chName;
+    public String countrySign;
 }

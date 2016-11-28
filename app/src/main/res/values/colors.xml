@@ -28,8 +28,9 @@
     <color name="refund_text">#FF5503</color>
     <color name="invite_bg">#0A77D9</color>
     <color name="purchase">#FE5706</color>
-    <color name="bg_present">#EF1D64</color>
+    <color name="pink">#EF1D64</color>
     <color name="gold">#957A41</color>
+    <color name="bg_country">#D2AD82</color>
 
     <!-- swipe refresh color -->
     <color name="swipe_refresh_first">#ff00ddff</color>

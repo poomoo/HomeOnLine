@@ -52,7 +52,6 @@ import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
-import com.poomoo.model.response.RAbroadBO;
 import com.poomoo.model.response.RAbroadClassifyBO;
 import com.poomoo.model.response.RAbroadCommodityBO;
 import com.poomoo.model.response.RAdBO;
@@ -139,48 +138,45 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
         mPresenter.getAbroad();
     }
 
-    public void successful(RAbroadBO rAbroadBO) {
-        rAbroadClassifyBOs = rAbroadBO.categorys;
-        commodityListBOs = rAbroadClassifyBOs.get(SELECT_POSITION).commodityList;
-        rListCommodityBOs = rAbroadBO.commodityList;
-        rAdBOs = rAbroadBO.advList;
-
-        int len = rAbroadBO.topAdvList.size();
-        ad = new String[len];
-        for (int i = 0; i < len; i++) {
-            rAdBO = new RAdBO();
-            rAdBO = rAbroadBO.topAdvList.get(i);
-            ad[i] = NetConfig.ImageUrl + rAdBO.advertisementPic;
-        }
-        slideShowView.setPics(ad, position -> {
-            rAdBO = rAbroadBO.topAdvList.get(position);
-            if (rAdBO.isCommodity) {
-                bundle = new Bundle();
-                bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
-                bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
-                bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                openActivity(CommodityInfoActivity.class, bundle);
-            } else {
-                bundle = new Bundle();
-                bundle.putString(getString(R.string.intent_value), rAdBO.connect);
-                openActivity(WebViewActivity.class, bundle);
-            }
-        });
-        addView();
-        LogUtils.d(TAG, "断点0");
-        classifyListAdapter.setItems(rAbroadClassifyBOs);
-        LogUtils.d(TAG, "断点1");
-        subClassifyListAdapter.setItems(commodityListBOs);
-        LogUtils.d(TAG, "断点2");
-        errorLayout.setState(ErrorLayout.HIDE, "");
-        scrollView.setVisibility(View.VISIBLE);
-    }
+//    public void successful(RAbroadBO rAbroadBO) {
+//        rAbroadClassifyBOs = rAbroadBO.categorys;
+//        commodityListBOs = rAbroadClassifyBOs.get(SELECT_POSITION).commodityList;
+//        rListCommodityBOs = rAbroadBO.commodityList;
+//        rAdBOs = rAbroadBO.advList;
+//
+//        int len = rAbroadBO.topAdvList.size();
+//        ad = new String[len];
+//        for (int i = 0; i < len; i++) {
+//            rAdBO = new RAdBO();
+//            rAdBO = rAbroadBO.topAdvList.get(i);
+//            ad[i] = NetConfig.ImageUrl + rAdBO.advertisementPic;
+//        }
+//        slideShowView.setPics(ad, position -> {
+//            rAdBO = rAbroadBO.topAdvList.get(position);
+//            if (rAdBO.isCommodity) {
+//                bundle = new Bundle();
+//                bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
+//                bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
+//                bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+//                openActivity(CommodityInfoActivity.class, bundle);
+//            } else {
+//                bundle = new Bundle();
+//                bundle.putString(getString(R.string.intent_value), rAdBO.connect);
+//                openActivity(WebViewActivity.class, bundle);
+//            }
+//        });
+//        addView();
+//        LogUtils.d(TAG, "断点0");
+//        classifyListAdapter.setItems(rAbroadClassifyBOs);
+//        LogUtils.d(TAG, "断点1");
+//        subClassifyListAdapter.setItems(commodityListBOs);
+//        LogUtils.d(TAG, "断点2");
+//        errorLayout.setState(ErrorLayout.HIDE, "");
+//        scrollView.setVisibility(View.VISIBLE);
+//    }
 
     public void failed(String msg) {
-        if (isNetWorkInvalid(msg))
-            errorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-        else
-            errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+        errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 
     public void getSubCommodity(List<RAbroadCommodityBO> rAbroadCommodityBOs) {
@@ -344,10 +340,10 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
     @Override
     public void onLoadActiveClick() {
         errorLayout.setState(ErrorLayout.LOADING, "");
-        if (flag == 0)
-            mPresenter.getAbroad();
-        else
-            mPresenter.getSubCommodity(rAbroadClassifyBOs.get(SELECT_POSITION).id);
+//        if (flag == 0)
+//            mPresenter.getAbroad();
+//        else
+//            mPresenter.getSubCommodity(rAbroadClassifyBOs.get(SELECT_POSITION).id);
     }
 
     @Override
@@ -357,7 +353,7 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
                 SELECT_POSITION = POSITION;
                 POSITION = position;
                 errorLayout.setState(ErrorLayout.LOADING, "");
-                mPresenter.getSubCommodity(rAbroadClassifyBOs.get(position).id);
+//                mPresenter.getSubCommodity(rAbroadClassifyBOs.get(position).id);
                 break;
             case R.id.recycler_commodity:
                 bundle = new Bundle();

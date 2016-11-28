@@ -207,10 +207,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     public void getInfoFailed(String msg) {
         swipeRefreshLayout.setEnabled(false);
         mErrorLayout.setState(ErrorLayout.HIDE, "");
-        if (isNetWorkInvalid(msg))
-            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-        else
-            mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+        mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
 
         listView.setVisibility(View.GONE);
         cartBuyLayout.setVisibility(View.GONE);

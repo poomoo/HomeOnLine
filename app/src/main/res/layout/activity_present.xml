@@ -30,7 +30,7 @@
                 android:id="@+id/llayout_present_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/bg_present"
+                android:background="@color/pink"
                 android:orientation="vertical" />
         </LinearLayout>
     </ScrollView>

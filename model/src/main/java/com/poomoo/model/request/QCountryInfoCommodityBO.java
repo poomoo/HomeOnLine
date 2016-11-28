@@ -24,32 +24,21 @@
  * #                                                   #
  * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.model.response;
-
-import java.util.List;
+package com.poomoo.model.request;
 
 /**
- * 类名 RAbroadBO
- * 描述 跨境
+ * 类名 QCountryInfoCommodityBO
+ * 描述 国家馆商品
  * 作者 李苜菲
- * 日期 2016/11/8 14:18
+ * 日期 2016/11/28 14:46
  */
-public class RAbroadBO {
-//    public List<RAbroadClassifyBO> categorys;
-//    public List<List<RAbroadCommodityBO>> commodityList;
-//    public List<List<RAdBO>> advList;
-//    public List<RAdBO> topAdvList;
+public class QCountryInfoCommodityBO extends BaseRequest{
+    public int countryId;
+    public int index;
 
-    public List<RAdBO> topAdvList;
-    public List<RClassifyBO> categorys;
-    public List<RAdBO> earthAdv;
-    public List<RCountryBO> countrys;
-    public List<adv> advList;
-
-    public class adv {
-        public List<RAdBO> advs;
-        public String categoryName;
-        public String categoryId;
-        public String pcPic;
+    public QCountryInfoCommodityBO(String method, int countryId, int index) {
+        super(method);
+        this.countryId = countryId;
+        this.index = index;
     }
 }

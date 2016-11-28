@@ -219,9 +219,6 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
     public void loadClassifyFailed(String msg) {
         isList = false;
         scrollView.setVisibility(View.GONE);
-        if (isNetWorkInvalid(msg))
-            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-        else
             mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 
@@ -235,9 +232,6 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
     public void loadInfoFailed(String msg) {
         isList = true;
         scrollView.setVisibility(View.GONE);
-        if (isNetWorkInvalid(msg))
-            mErrorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-        else
             mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 

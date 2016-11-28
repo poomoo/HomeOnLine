@@ -27,6 +27,7 @@
 package com.poomoo.homeonline.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.View;
 
@@ -113,11 +114,11 @@ public class ClassifyListActivity extends BaseListDaggerActivity<RListCommodityB
         });
         mListView.setLayoutManager(gridLayoutManager);
         mListView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .color(getResources().getColor(R.color.transParent))
+                .color(ContextCompat.getColor(this,R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
         mListView.addItemDecoration(new VerticalDividerItemDecoration.Builder(this)
-                .color(getResources().getColor(R.color.transParent))
+                .color(ContextCompat.getColor(this,R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
         mListView.setPadding((int) getResources().getDimension(R.dimen.recycler_divider), 0, 0, 0);

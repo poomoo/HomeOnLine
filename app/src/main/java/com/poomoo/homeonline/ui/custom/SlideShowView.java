@@ -125,7 +125,6 @@ public class SlideShowView extends FrameLayout {
         LinearLayout dotLayout = (LinearLayout) findViewById(R.id.dotLayout);
         dotLayout.removeAllViews();
 
-        // 热点个数与图片特殊相等
         dotViewsList = new ArrayList<>();
         for (int i = 0; i < imageUrls.length; i++) {
             ImageView view = new ImageView(context);
@@ -227,6 +226,14 @@ public class SlideShowView extends FrameLayout {
         @Override
         public void onPageSelected(int pos) {
             // TODO Auto-generated method stub
+            currentItem = pos;
+            for (int i = 0; i < dotViewsList.size(); i++) {
+                if (i == pos)
+                    dotViewsList.get(pos).setBackgroundResource(R.drawable.ic_dot_selected);
+                else
+                    dotViewsList.get(i).setBackgroundResource(R.drawable.ic_dot_normal);
+
+            }
         }
     }
 

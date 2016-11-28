@@ -156,9 +156,6 @@ public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implemen
 
     public void failed(String msg) {
         flag = 0;
-        if (isNetWorkInvalid(msg))
-            errorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-        else
             errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 

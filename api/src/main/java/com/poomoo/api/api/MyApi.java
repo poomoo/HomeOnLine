@@ -42,6 +42,7 @@ import com.poomoo.model.request.QCodeBO;
 import com.poomoo.model.request.QCollectBO;
 import com.poomoo.model.request.QCommodityInfoBO;
 import com.poomoo.model.request.QCountBO;
+import com.poomoo.model.request.QCountryInfoCommodityBO;
 import com.poomoo.model.request.QDeleteBO;
 import com.poomoo.model.request.QEvaluateBO;
 import com.poomoo.model.request.QFeedBackBO;
@@ -65,6 +66,7 @@ import com.poomoo.model.request.QUpdateInfoBO;
 import com.poomoo.model.request.QUserBO;
 import com.poomoo.model.request.QUserIdBO;
 import com.poomoo.model.request.QVersion;
+import com.poomoo.model.request.QCountryInfoBO;
 import com.poomoo.model.response.RAbroadBO;
 import com.poomoo.model.response.RAbroadCommodityBO;
 import com.poomoo.model.response.RAdBO;
@@ -75,7 +77,10 @@ import com.poomoo.model.response.RClassifyInfoBO;
 import com.poomoo.model.response.RCollectBO;
 import com.poomoo.model.response.RCommodityCount;
 import com.poomoo.model.response.RCommodityInfoBO;
+import com.poomoo.model.response.RCountryInfoBO;
+import com.poomoo.model.response.RCountryListBO;
 import com.poomoo.model.response.RDataBO;
+import com.poomoo.model.response.RGlobalBO;
 import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RIndexBO;
 import com.poomoo.model.response.RIsCollect;
@@ -333,4 +338,20 @@ public interface MyApi {
     //跨境分类商品
     @POST(NetConfig.suffix)
     Observable<List<RAbroadCommodityBO>> getSubCommodity(@Body QIdBO qIdBO);
+
+    //全球精品
+    @POST(NetConfig.suffix)
+    Observable<RGlobalBO> getGlobal(@Body BaseRequest baseRequest);
+
+    //国家地区馆
+    @POST(NetConfig.suffix)
+    Observable<RCountryListBO> getCountryList(@Body BaseRequest baseRequest);
+
+    //国家馆详情
+    @POST(NetConfig.suffix)
+    Observable<RCountryInfoBO> getCountryInfo(@Body QCountryInfoBO rCountryInfoBO);
+
+    //国家馆商品
+    @POST(NetConfig.suffix)
+    Observable<List<RListCommodityBO>> getCountryInfoCommodity(@Body QCountryInfoCommodityBO qCountryInfoCommodityBO);
 }

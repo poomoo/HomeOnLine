@@ -128,9 +128,6 @@ public class PresentActivity extends BaseDaggerActivity<PresentPresenter> implem
     }
 
     public void failed(String msg) {
-        if (isNetWorkInvalid(msg))
-            errorLayout.setState(ErrorLayout.NOT_NETWORK, "");
-        else
             errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 

@@ -14,6 +14,7 @@ import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.DownLoadImageService;
 import com.poomoo.homeonline.R;
+import com.poomoo.homeonline.adapter.CountryCommodityListAdapter;
 import com.poomoo.homeonline.listeners.ImageDownLoadCallBack;
 import com.poomoo.homeonline.presenters.SplashPresenter;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
@@ -83,6 +84,7 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
                 application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
             }
             openActivity(MainNewActivity.class);
+//            openActivity(CountryInfoActivity.class);
             finish();
         }, SPLASH_DISPLAY_LENGTH);
     }

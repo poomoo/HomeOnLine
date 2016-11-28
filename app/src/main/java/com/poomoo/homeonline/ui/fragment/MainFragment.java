@@ -47,6 +47,7 @@ import com.poomoo.homeonline.ui.activity.AbroadActivity;
 import com.poomoo.homeonline.ui.activity.ClassifyInfoActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
+import com.poomoo.homeonline.ui.activity.NewAbroadActivity;
 import com.poomoo.homeonline.ui.activity.OnSaleActivity;
 import com.poomoo.homeonline.ui.activity.PresentActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
@@ -495,7 +496,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 openActivity(OnSaleActivity.class);
                 break;
             case 3:
-                openActivity(AbroadActivity.class);
+                openActivity(NewAbroadActivity.class);
                 break;
         }
     }
@@ -564,7 +565,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     @Override
     public void onRefresh() {
         mPresenter.getSlide();
-        mPresenter.getType();
+//        mPresenter.getType();
         mPresenter.getGrabList();
         mPresenter.getSpecialAd();
         mPresenter.getHot();

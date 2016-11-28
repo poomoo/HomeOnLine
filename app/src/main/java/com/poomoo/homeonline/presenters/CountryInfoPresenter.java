@@ -30,12 +30,11 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.AbroadActivity;
-import com.poomoo.homeonline.ui.activity.NewAbroadActivity;
-import com.poomoo.model.request.BaseRequest;
-import com.poomoo.model.request.QIdBO;
-import com.poomoo.model.response.RAbroadBO;
-import com.poomoo.model.response.RAbroadCommodityBO;
+import com.poomoo.homeonline.ui.activity.AbroadCountryInfoActivity;
+import com.poomoo.model.request.QCountryInfoBO;
+import com.poomoo.model.request.QCountryInfoCommodityBO;
+import com.poomoo.model.response.RCountryInfoBO;
+import com.poomoo.model.response.RListCommodityBO;
 
 import java.util.List;
 
@@ -45,49 +44,50 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * 类名 AbroadPresenter
- * 描述 跨境
+ * 类名 CountryInfoPresenter
+ * 描述 国家馆
  * 作者 李苜菲
- * 日期 2016/11/7 16:19
+ * 日期 2016/11/28 14:26
  */
-public class AbroadPresenter extends BasePresenter<NewAbroadActivity> {
+public class CountryInfoPresenter extends BasePresenter<AbroadCountryInfoActivity> {
     @Inject
-    public AbroadPresenter() {
+    public CountryInfoPresenter() {
     }
 
-    public void getAbroad() {
-        BaseRequest baseRequest = new BaseRequest(NetConfig.ABROAD);
-        NetWork.getMyApi().getAbroad(baseRequest)
+    public void getCountryInfo(int countryId) {
+        QCountryInfoBO qCountryInfoBO = new QCountryInfoBO(NetConfig.COUNTRYINFO, countryId);
+        add(NetWork.getMyApi().getCountryInfo(qCountryInfoBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<RAbroadBO>() {
+                .subscribe(new AbsAPICallback<RCountryInfoBO>() {
                     @Override
                     protected void onError(ApiException e) {
-                        mView.failed(e.getMessage());
+                        mView.failed();
                     }
 
                     @Override
-                    public void onNext(RAbroadBO rAbroadBO) {
-                        mView.successful(rAbroadBO);
+                    public void onNext(RCountryInfoBO rCountryInfoBO) {
+                        mView.successful(rCountryInfoBO);
                     }
-                });
+                }));
+
     }
 
-//    public void getSubCommodity(int id) {
-//        QIdBO qIdBO = new QIdBO(NetConfig.ABROADSUBCOMMODITY, id);
-//        add(NetWork.getMyApi().getSubCommodity(qIdBO)
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .subscribe(new AbsAPICallback<List<RAbroadCommodityBO>>() {
-//                    @Override
-//                    protected void onError(ApiException e) {
-//                        mView.failed(e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onNext(List<RAbroadCommodityBO> rAbroadCommodityBOs) {
-//                        mView.getSubCommodity(rAbroadCommodityBOs);
-//                    }
-//                }));
-//    }
+    public void getCountryInfoCommoditys(int countryId, int index) {
+        QCountryInfoCommodityBO qCountryInfoCommodityBO = new QCountryInfoCommodityBO(NetConfig.COUNTRYINFOCOMMODITY, countryId, index);
+        add(NetWork.getMyApi().getCountryInfoCommodity(qCountryInfoCommodityBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<List<RListCommodityBO>>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.getCommodityFailed();
+                    }
+
+                    @Override
+                    public void onNext(List<RListCommodityBO> rListCommodityBOs) {
+                        mView.getCommoditySuccessful(rListCommodityBOs);
+                    }
+                }));
+    }
 }

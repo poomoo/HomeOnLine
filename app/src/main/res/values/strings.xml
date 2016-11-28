@@ -38,6 +38,8 @@
     <string name="title_rewardInfo">奖励详情</string>
     <string name="title_present_zone">买赠专区</string>
     <string name="title_abroad">跨境直邮</string>
+    <string name="title_global">全球精选</string>
+    <string name="title_country">国家地区馆</string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -109,6 +111,7 @@
     <string name="intent_vouchersId">vouchersId</string>
     <string name="intent_vouchersMoney">vouchersMoney</string>
     <string name="intent_activityRule">activityRule</string>
+    <string name="intent_countryId">countryId</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>
@@ -161,5 +164,6 @@
     <string name="btn_invite">立即邀请</string>
 
     <string name="umeng_sharebutton_copy">复制链接</string>
+    <string name="intent_countryName">countryName</string>
 
 </resources>

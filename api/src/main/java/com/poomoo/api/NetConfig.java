@@ -104,5 +104,10 @@ public class NetConfig {
     public static final String GETTICKET = "2002_03";//领取优惠券
     public static final String PRESENT = "2002_04";//买赠专区
     public static final String ABROAD = "2002_05";//跨境
+    public static final String COUNTRYLIST = "2002_06";//国家地区馆
     public static final String ABROADSUBCOMMODITY = "2002_06";//跨境分类商品
+    public static final String COUNTRYINFO = "2002_07";//国家馆详情
+    public static final String COUNTRYINFOCOMMODITY = "2002_08";//国家馆商品
+    public static final String GLOBAL = "2002_09";//全球精品
+    public static final String NEWGETCOMMODITY = "2002_10";//加载分类下的商品 1 、2、 3级分类均可以加载
 }

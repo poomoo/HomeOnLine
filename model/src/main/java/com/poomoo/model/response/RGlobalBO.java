@@ -29,27 +29,14 @@ package com.poomoo.model.response;
 import java.util.List;
 
 /**
- * 类名 RAbroadBO
- * 描述 跨境
+ * 类名 RGlobalBO
+ * 描述 全球精品
  * 作者 李苜菲
- * 日期 2016/11/8 14:18
+ * 日期 2016/11/28 10:26
  */
-public class RAbroadBO {
-//    public List<RAbroadClassifyBO> categorys;
-//    public List<List<RAbroadCommodityBO>> commodityList;
-//    public List<List<RAdBO>> advList;
-//    public List<RAdBO> topAdvList;
-
-    public List<RAdBO> topAdvList;
-    public List<RClassifyBO> categorys;
-    public List<RAdBO> earthAdv;
-    public List<RCountryBO> countrys;
-    public List<adv> advList;
-
-    public class adv {
-        public List<RAdBO> advs;
-        public String categoryName;
-        public String categoryId;
-        public String pcPic;
-    }
+public class RGlobalBO {
+    public List<RAdBO> topAdv;
+    public List<RAdBO> goodAdvs;
+    public List<RAdBO> pinpaiAdvs;
+    public List<RAdBO> temaiAdvs;
 }

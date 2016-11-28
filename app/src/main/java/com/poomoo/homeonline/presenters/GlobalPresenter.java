@@ -24,32 +24,47 @@
  * #                                                   #
  * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.model.response;
+package com.poomoo.homeonline.presenters;
 
-import java.util.List;
+import com.poomoo.api.AbsAPICallback;
+import com.poomoo.api.ApiException;
+import com.poomoo.api.NetConfig;
+import com.poomoo.api.NetWork;
+import com.poomoo.homeonline.ui.activity.AbroadGlobalActivity;
+import com.poomoo.model.request.BaseRequest;
+import com.poomoo.model.response.RGlobalBO;
+
+import javax.inject.Inject;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
- * 类名 RAbroadBO
- * 描述 跨境
+ * 类名 GlobalPresenter
+ * 描述 ${TODO}
  * 作者 李苜菲
- * 日期 2016/11/8 14:18
+ * 日期 2016/11/28 10:22
  */
-public class RAbroadBO {
-//    public List<RAbroadClassifyBO> categorys;
-//    public List<List<RAbroadCommodityBO>> commodityList;
-//    public List<List<RAdBO>> advList;
-//    public List<RAdBO> topAdvList;
+public class GlobalPresenter extends BasePresenter<AbroadGlobalActivity> {
+    @Inject
+    public GlobalPresenter() {
+    }
 
-    public List<RAdBO> topAdvList;
-    public List<RClassifyBO> categorys;
-    public List<RAdBO> earthAdv;
-    public List<RCountryBO> countrys;
-    public List<adv> advList;
+    public void getGloablInfo() {
+        BaseRequest baseRequest = new BaseRequest(NetConfig.GLOBAL);
+        add(NetWork.getMyApi().getGlobal(baseRequest)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<RGlobalBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.failed(e.getMessage());
+                    }
 
-    public class adv {
-        public List<RAdBO> advs;
-        public String categoryName;
-        public String categoryId;
-        public String pcPic;
+                    @Override
+                    public void onNext(RGlobalBO rGlobalBO) {
+                        mView.successful(rGlobalBO);
+                    }
+                }));
     }
 }
