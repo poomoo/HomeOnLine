@@ -16,7 +16,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -114,11 +114,11 @@
 
             <ImageView
                 android:id="@+id/img_abroad_global_brand1"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="100dp"
                 android:onClick="brandClick"
                 android:scaleType="centerCrop"
-                android:src="@drawable/replace2" />
+                android:src="@drawable/replace3b1" />
 
             <ImageView
                 android:id="@+id/img_abroad_global_brand2"
@@ -127,7 +127,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:onClick="brandClick"
                 android:scaleType="centerCrop"
-                android:src="@drawable/replace2" />
+                android:src="@drawable/replace3b1" />
 
             <ImageView
                 android:id="@+id/img_abroad_global_brand3"
@@ -136,7 +136,7 @@
                 android:layout_marginTop="@dimen/dp_10"
                 android:onClick="brandClick"
                 android:scaleType="centerCrop"
-                android:src="@drawable/replace2" />
+                android:src="@drawable/replace3b1" />
             <!--品牌精选-->
 
             <!--专题特卖-->

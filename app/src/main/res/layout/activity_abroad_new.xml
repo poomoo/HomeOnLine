@@ -477,14 +477,16 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:background="@color/white"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_8"
+                    android:paddingTop="@dimen/dp_8">
 
                     <ImageView
                         android:id="@+id/img_abroad_country1"
                         android:layout_width="0dp"
                         android:layout_height="100dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
                         android:onClick="countryClick"
                         android:scaleType="centerInside"
                         android:src="@drawable/replace1b2" />
@@ -494,7 +496,6 @@
                         android:layout_width="0dp"
                         android:layout_height="100dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
                         android:onClick="countryClick"
                         android:scaleType="centerInside"
                         android:src="@drawable/replace1b2" />
@@ -504,7 +505,6 @@
                         android:layout_width="0dp"
                         android:layout_height="100dp"
                         android:layout_weight="1"
-                        android:background="@color/white"
                         android:scaleType="centerInside"
                         android:src="@drawable/replace1b2" />
                 </LinearLayout>

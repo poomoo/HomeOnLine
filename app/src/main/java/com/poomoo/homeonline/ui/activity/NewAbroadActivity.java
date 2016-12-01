@@ -37,6 +37,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.ImageViewTarget;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
@@ -132,6 +133,7 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
     private RCountryBO rCountryBO;
     private String categoryId = "";
     private RAbroadBO rAbroadBO;
+    private static final int COLUMN_NUM = 4;//分类列数
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +168,7 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
         dp6 = (int) getResources().getDimension(R.dimen.dp_6);
         dp10 = (int) getResources().getDimension(R.dimen.dp_10);
 
-        categoryWidth = MyUtils.getScreenWidth(this) / 3;
+        categoryWidth = MyUtils.getScreenWidth(this) / COLUMN_NUM;
         categoryParams = new LinearLayout.LayoutParams(categoryWidth, ViewGroup.LayoutParams.WRAP_CONTENT);
         categoryParams.gravity = Gravity.CENTER;
         categoryParams.setMargins(0, 0, 0, dp10);
@@ -182,7 +184,7 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
         globalCommodity3Img.setLayoutParams(globalParams);
 
         countryWidth = MyUtils.getScreenWidth(this) / 3;
-        countryParams = new LinearLayout.LayoutParams(countryWidth, countryWidth * 3 / 4);
+        countryParams = new LinearLayout.LayoutParams(countryWidth, countryWidth / 2);
         country1Img.setLayoutParams(countryParams);
         country2Img.setLayoutParams(countryParams);
         country3Img.setLayoutParams(countryParams);
@@ -202,25 +204,25 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
 
         /*顶部分类*/
         len = rAbroadBO.categorys.size();
-        group = len / 3 + len % 3;
+        group = len / COLUMN_NUM + len % COLUMN_NUM;
         for (int i = 0; i < group; i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.item_activity_abroad_category, null);
             categorySubLayout = (LinearLayout) view.findViewById(R.id.llayout_abroad_category);
-            for (int j = 0; j < 3; j++) {
+            for (int j = 0; j < COLUMN_NUM; j++) {
                 View subView = LayoutInflater.from(this).inflate(R.layout.item_activity_abroad_category_info, null);
                 categoryInfoLayout = (LinearLayout) subView.findViewById(R.id.llayout_abroad_category_info);
                 categoryImg = (ImageView) subView.findViewById(R.id.img_abroad_category);
                 categoryTxt = (TextView) subView.findViewById(R.id.txt_abroad_category);
 
                 categoryInfoLayout.setLayoutParams(categoryParams);
-                Glide.with(this).load(NetConfig.ImageUrl + rAbroadBO.categorys.get(i * 3 + j).pcPic).into(categoryImg);
-                categoryTxt.setText(rAbroadBO.categorys.get(i * 3 + j).categoryName);
+                Glide.with(this).load(NetConfig.ImageUrl + rAbroadBO.categorys.get(i * COLUMN_NUM + j).pcPic).into(categoryImg);
+                categoryTxt.setText(rAbroadBO.categorys.get(i * COLUMN_NUM + j).categoryName);
 
-                categoryInfoLayout.setTag(R.id.tag_first, rAbroadBO.categorys.get(i * 3 + j).id + "");
+                categoryInfoLayout.setTag(R.id.tag_first, rAbroadBO.categorys.get(i * COLUMN_NUM + j).id + "");
                 categoryInfoLayout.setOnClickListener(new classifyClick());
 
                 categorySubLayout.addView(subView);
-                if (i * 3 + j == len - 1)
+                if (i * COLUMN_NUM + j == len - 1)
                     break;
             }
             categoryLayout.addView(view);
@@ -236,9 +238,9 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
         globalCommodity3Img.setTag(R.id.tag_first, 3);
 
         /*国家地区馆*/
-        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(0).countrySign).into(country1Img);
-        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(1).countrySign).into(country2Img);
-        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(2).countrySign).into(country3Img);
+        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(0).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country1Img);
+        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(1).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country2Img);
+        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(2).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country3Img);
         country1Img.setTag(R.id.tag_first, 0);
         country2Img.setTag(R.id.tag_first, 1);
         country3Img.setTag(R.id.tag_first, 2);
@@ -265,11 +267,11 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
             subTitleTxt.setText(subTitle[i]);
             if (rAbroadBO.advList.get(i).advs.size() > 0) {
                 img1.setOnClickListener(new commodityClick());
-                Glide.with(this).load(NetConfig.ImageUrl + rAbroadBO.advList.get(i).advs.get(0).advertisementPic).placeholder(R.drawable.replace2b3).into(img1);
+                Glide.with(this).load(NetConfig.ImageUrl + rAbroadBO.advList.get(i).advs.get(0).advertisementPic).placeholder(R.drawable.replace2b3).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(img1);
             }
             if (rAbroadBO.advList.get(i).advs.size() > 1) {
                 img2.setOnClickListener(new commodityClick());
-                Glide.with(this).load(NetConfig.ImageUrl + rAbroadBO.advList.get(i).advs.get(1).advertisementPic).placeholder(R.drawable.replace2b3).into(img2);
+                Glide.with(this).load(NetConfig.ImageUrl + rAbroadBO.advList.get(i).advs.get(1).advertisementPic).placeholder(R.drawable.replace2b3).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(img2);
             }
 
             moreTxt.setOnClickListener(new classifyClick());

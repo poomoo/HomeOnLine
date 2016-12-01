@@ -57,9 +57,9 @@
 
             <ImageView
                 android:id="@+id/img_abroad_commodity1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
+                android:layout_width="120dp"
+                android:layout_height="180dp"
+                android:scaleType="centerInside"
                 android:src="@drawable/replace2b3" />
 
             <TextView
@@ -114,9 +114,9 @@
 
             <ImageView
                 android:id="@+id/img_abroad_commodity2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:scaleType="centerCrop"
+                android:layout_width="120dp"
+                android:layout_height="180dp"
+                android:scaleType="centerInside"
                 android:src="@drawable/replace2b3" />
 
             <TextView

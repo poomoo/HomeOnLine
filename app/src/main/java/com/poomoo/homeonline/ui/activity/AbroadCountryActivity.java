@@ -36,6 +36,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
@@ -218,7 +219,7 @@ public class AbroadCountryActivity extends BaseDaggerActivity<CountryListPresent
 
             if (i == (countryGroup - 1)) {//最后一组
                 if (countryCount % 2 != 0) {//单出一个国家
-                    Glide.with(this).load(NetConfig.ImageUrl + countrys.get(i * 2).countrySign).placeholder(R.drawable.replace2).into(country1Img);
+                    Glide.with(this).load(NetConfig.ImageUrl + countrys.get(i * 2).countrySign).placeholder(R.drawable.replace2).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country1Img);
                     country1Img.setTag(R.id.tag_first, i * 2);
                     country1Img.setOnClickListener(new OnCountryClick());
                     country2Img.setVisibility(View.GONE);
@@ -229,8 +230,8 @@ public class AbroadCountryActivity extends BaseDaggerActivity<CountryListPresent
                     moreTxt.setVisibility(View.VISIBLE);
                 }
             } else {
-                Glide.with(this).load(NetConfig.ImageUrl + countrys.get(i * 2).countrySign).placeholder(R.drawable.replace2).into(country1Img);
-                Glide.with(this).load(NetConfig.ImageUrl + countrys.get(i * 2 + 1).countrySign).placeholder(R.drawable.replace2).into(country2Img);
+                Glide.with(this).load(NetConfig.ImageUrl + countrys.get(i * 2).countrySign).placeholder(R.drawable.replace2).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country1Img);
+                Glide.with(this).load(NetConfig.ImageUrl + countrys.get(i * 2 + 1).countrySign).placeholder(R.drawable.replace2).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country2Img);
 
                 country1Img.setTag(R.id.tag_first, i * 2);
                 country2Img.setTag(R.id.tag_first, i * 2 + 1);
@@ -252,7 +253,7 @@ public class AbroadCountryActivity extends BaseDaggerActivity<CountryListPresent
                 if (j == 1) fashionImg.setLayoutParams(fashionImg2Params);
                 else fashionImg.setLayoutParams(fashionImgParams);
                 if (danpinAdv.size() > i * 3 + j) {
-                    Glide.with(this).load(NetConfig.ImageUrl + danpinAdv.get(i * 3 + j).advertisementPic).placeholder(R.drawable.replace2b3).into(fashionImg);
+                    Glide.with(this).load(NetConfig.ImageUrl + danpinAdv.get(i * 3 + j).advertisementPic).placeholder(R.drawable.replace2b3).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(fashionImg);
                     fashionImg.setTag(R.id.tag_first, i * 3 + j);
                     fashionImg.setOnClickListener(new onFashionClick());
                 }
@@ -276,15 +277,15 @@ public class AbroadCountryActivity extends BaseDaggerActivity<CountryListPresent
 
             if (renqiAdv.size() > i * 3) {
                 popularityAdImg.setOnClickListener(this);
-                Glide.with(this).load(NetConfig.ImageUrl + renqiAdv.get(i * 3).advertisementPic).placeholder(R.drawable.replace).into(popularityAdImg);
+                Glide.with(this).load(NetConfig.ImageUrl + renqiAdv.get(i * 3).advertisementPic).placeholder(R.drawable.replace).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(popularityAdImg);
             }
             if (renqiAdv.size() > i * 3 + 1) {
                 popularityCommodity1Img.setOnClickListener(this);
-                Glide.with(this).load(NetConfig.ImageUrl + renqiAdv.get(i * 3 + 1).advertisementPic).placeholder(R.drawable.replace2).into(popularityCommodity1Img);
+                Glide.with(this).load(NetConfig.ImageUrl + renqiAdv.get(i * 3 + 1).advertisementPic).placeholder(R.drawable.replace2).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(popularityCommodity1Img);
             }
             if (renqiAdv.size() > i * 3 + 2) {
                 popularityCommodity2Img.setOnClickListener(this);
-                Glide.with(this).load(NetConfig.ImageUrl + renqiAdv.get(i * 3 + 2).advertisementPic).placeholder(R.drawable.replace2).into(popularityCommodity2Img);
+                Glide.with(this).load(NetConfig.ImageUrl + renqiAdv.get(i * 3 + 2).advertisementPic).placeholder(R.drawable.replace2).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(popularityCommodity2Img);
             }
 
             popularityAdImg.setTag(R.id.tag_first, i * 3);
