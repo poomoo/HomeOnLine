@@ -411,7 +411,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:layout_marginTop="@dimen/dp_30"
                     android:clickable="true"
                     android:onClick="toGlobal"
                     android:padding="@dimen/dp_8"

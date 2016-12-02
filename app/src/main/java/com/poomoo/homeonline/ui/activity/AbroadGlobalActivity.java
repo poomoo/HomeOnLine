@@ -196,8 +196,7 @@ public class AbroadGlobalActivity extends BaseDaggerActivity<GlobalPresenter> im
         recommend4Img.setTag(R.id.tag_first, 3);
 
         if (brandList.size() > 0)//http://i.gasgoo.com/upload/TrainAd/201451294721.jpg
-            Glide.with(this).load(NetConfig.ImageUrl + brandList.get(0).advertisementPic).placeholder(R.drawable.replace1b2).into(brand1Img);
-//            Glide.with(this).load("http://img.pconline.com.cn/images/photoblog/4/8/9/4/4894260/20097/30/1248945695636_mthumb.jpg").placeholder(R.drawable.replace3b1).into(brand1Img);
+            Glide.with(this).load(NetConfig.ImageUrl + brandList.get(0).advertisementPic).placeholder(R.drawable.replace3b1).into(brand1Img);
         if (brandList.size() > 1)
             Glide.with(this).load(NetConfig.ImageUrl + brandList.get(1).advertisementPic).placeholder(R.drawable.replace3b1).into(brand2Img);
         if (brandList.size() > 2)
