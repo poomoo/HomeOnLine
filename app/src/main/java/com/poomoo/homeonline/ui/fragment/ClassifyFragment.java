@@ -4,6 +4,7 @@
 package com.poomoo.homeonline.ui.fragment;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -117,7 +118,7 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
         classifyRecycler.setLayoutParams(new LinearLayout.LayoutParams(MyUtils.getScreenWidth(getActivity()) * 1 / 4, LinearLayout.LayoutParams.MATCH_PARENT));
         classifyRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         classifyRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
-                .color(getResources().getColor(R.color.ThemeBg))
+                .color(ContextCompat.getColor(getActivity(), R.color.ThemeBg))
                 .size((int) getResources().getDimension(R.dimen.divider_height2))
                 .build());
 
@@ -134,7 +135,7 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     }
 
     public void loadClassifySucceed(List<RClassifyBO> rClassifyBOs) {
-        LogUtils.d(TAG,"rClassifyBOs"+rClassifyBOs.get(0).childrenList.get(0).categoryPic);
+        LogUtils.d(TAG, "rClassifyBOs" + rClassifyBOs.get(0).childrenList.get(0).categoryPic);
         errorLayout.setState(ErrorLayout.HIDE, "");
         layout.setVisibility(View.VISIBLE);
         classifyListAdapter.setItems(rClassifyBOs);

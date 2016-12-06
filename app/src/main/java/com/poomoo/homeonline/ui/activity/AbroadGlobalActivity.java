@@ -273,7 +273,7 @@ public class AbroadGlobalActivity extends BaseDaggerActivity<GlobalPresenter> im
     @Override
     public void onClick(View view) {
         position = (int) view.getTag(R.id.tag_first);
-        if (position < goodList.size()) {
+        if (position < specialList.size()) {
             rAdBO = specialList.get(position);
             jump();
         }
