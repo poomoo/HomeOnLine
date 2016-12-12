@@ -328,6 +328,14 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
     }
 
     public void successful(RAbroadBO rAbroadBO) {
+        if (rAbroadBO.earthAdv.size() == 0
+                || rAbroadBO.categorys.size() == 0
+                || rAbroadBO.topAdvList.size() == 0
+                || rAbroadBO.advList.size() == 0
+                || rAbroadBO.countrys.size() == 0) {
+            errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+            return;
+        }
         scrollView.setVisibility(View.VISIBLE);
         errorLayout.setState(ErrorLayout.HIDE, "");
         String[] urls = new String[rAbroadBO.topAdvList.size()];

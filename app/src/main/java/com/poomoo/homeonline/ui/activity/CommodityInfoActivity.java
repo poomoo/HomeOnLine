@@ -464,6 +464,9 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         }
 
         if (commodityType == 2) {//抢购商品不能加入购物车 且每人只能购买一件
+            priceTxt.setText("￥ " + rCommodityInfoBO.commodity.lowestPriceDetail.rushPrice);
+            oldPriceTxt.setText("￥ " + rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice);
+
             cartBtn.setEnabled(false);
             countEdt.setEnabled(false);
             plusImg.setClickable(false);
@@ -489,7 +492,10 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         cartCommodityBO.commodityId = rCommodityInfoBO.commodity.id;
         cartCommodityBO.listPic = rCommodityInfoBO.commodity.listPic;
         cartCommodityBO.commodityName = rCommodityInfoBO.commodity.commodityName;
-        cartCommodityBO.commodityPrice = rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice;
+        if (commodityType == 2)//抢购商品
+            cartCommodityBO.commodityPrice = rCommodityInfoBO.commodity.lowestPriceDetail.rushPrice;
+        else
+            cartCommodityBO.commodityPrice = rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice;
         cartCommodityBO.orderType = rCommodityInfoBO.orderType;
         cartCommodityBO.commodityType = commodityType;
 

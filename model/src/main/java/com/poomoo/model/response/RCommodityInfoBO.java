@@ -71,6 +71,7 @@ public class RCommodityInfoBO implements Serializable {
             public double commonPrice;//市场价
             public double platformPrice;//平台价格
             public int repertory;//库存
+            public double rushPrice;//抢购价
 
             @Override
             public String toString() {
