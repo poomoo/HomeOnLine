@@ -203,7 +203,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <com.poomoo.homeonline.ui.custom.ErrorLayout
-        android:id="@+id/error_frame"
+        android:id="@+id/error_main_frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </RelativeLayout>

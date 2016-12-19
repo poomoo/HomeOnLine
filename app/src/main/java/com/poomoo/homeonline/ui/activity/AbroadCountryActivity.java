@@ -46,6 +46,7 @@ import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCountryBO;
 import com.poomoo.model.response.RCountryListBO;
@@ -351,7 +352,7 @@ public class AbroadCountryActivity extends BaseDaggerActivity<CountryListPresent
         if (rAdBO.isCommodity) {
             bundle = new Bundle();
             bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
-            bundle.putInt(getString(R.string.intent_commodityType), 0);
+            bundle.putInt(getString(R.string.intent_commodityType), CommodityType.ABROAD);
             openActivity(CommodityInfoActivity.class, bundle);
         } else {
             bundle = new Bundle();

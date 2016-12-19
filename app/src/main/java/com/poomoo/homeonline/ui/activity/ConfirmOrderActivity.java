@@ -39,6 +39,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -56,6 +57,7 @@ import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.request.QOrderBO;
 import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.ROrderBO;
@@ -102,6 +104,8 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
     LinearLayout contentLayout;
     @Bind(R.id.txt_ticket)
     TextView ticketTxt;
+    @Bind(R.id.img_abroad_limit)
+    ImageView limitImg;
 
     private QOrderBO qOrderBO = new QOrderBO("");
     private ConfirmOrderAdapter confirmOrderAdapter;
@@ -134,6 +138,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
 
     private boolean repertoryIllegal = false;//库存是否为0
     private boolean priceIllegal = false;//价格是否为0
+    private boolean isLimited = false;//是否超过跨境限额
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -214,7 +219,7 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
             public void afterTextChanged(Editable s) {
                 String temp = s.toString();
                 LogUtils.d(TAG, "totalPriceTxt:" + temp);
-                if (temp.length() > 0)
+                if (temp.length() > 0 && !isLimited)
                     zfgBtn.setEnabled(true);
             }
         });
@@ -240,6 +245,13 @@ public class ConfirmOrderActivity extends BaseDaggerActivity<ConfirmOrderPresent
                 repertoryIllegal = true;
             if (cartCommodityBOs.commodityPrice == 0)
                 priceIllegal = true;
+        }
+
+        /*跨境限额2000*/
+        if (rCartCommodityBOs.get(0).commodityType == CommodityType.ABROAD
+                && !(rCartCommodityBOs.get(0).commodityPrice * rCartCommodityBOs.get(0).commodityNum < 2000)) {
+            limitImg.setVisibility(View.VISIBLE);
+            isLimited = true;
         }
     }
 

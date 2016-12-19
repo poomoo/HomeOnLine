@@ -24,26 +24,16 @@
  * #                                                   #
  * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.model.request;
+package com.poomoo.model;
 
 /**
- * 类名 QSpecificationBO
- * 描述 商品规格详情
+ * 类名 CommodityType
+ * 描述 商品类型
  * 作者 李苜菲
- * 日期 2016/8/9 15:32
+ * 日期 2016/12/13 10:36
  */
-public class QSpecificationBO extends BaseRequest {
-    public int commodityId;//商品主键
-    public int commodityType;//商品类型
-    public Integer[] paramterValueIds;//特殊参数值主键集合
-    public int matchId;//抢购商品ID
-
-    public QSpecificationBO(String method, int commodityId, int commodityType, Integer[] paramterValueIds, int matchId) {
-        super(method);
-        this.commodityId = commodityId;
-        this.commodityType = commodityType;
-        this.paramterValueIds = paramterValueIds;
-        if (matchId != -1)
-            this.matchId = matchId;
-    }
+public class CommodityType {
+    public static final int GRAB = 2;//抢购商品
+    public static final int PRESENT = 4;//买赠商品
+    public static final int ABROAD = 7;//跨境商品
 }

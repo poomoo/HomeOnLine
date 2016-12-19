@@ -49,6 +49,7 @@ import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RAbroadBO;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCountryBO;
@@ -219,6 +220,7 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
                 categoryTxt.setText(rAbroadBO.categorys.get(i * COLUMN_NUM + j).categoryName);
 
                 categoryInfoLayout.setTag(R.id.tag_first, rAbroadBO.categorys.get(i * COLUMN_NUM + j).id + "");
+                categoryInfoLayout.setTag(R.id.tag_second, rAbroadBO.categorys.get(i * COLUMN_NUM + j).categoryName);
                 categoryInfoLayout.setOnClickListener(new classifyClick());
 
                 categorySubLayout.addView(subView);
@@ -293,30 +295,6 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
         openActivity(AbroadCountryActivity.class);
     }
 
-//    @OnClick({R.id.llayout_abroad_classify1, R.id.llayout_abroad_classify2, R.id.llayout_abroad_classify3, R.id.llayout_abroad_classify4, R.id.llayout_abroad_classify5, R.id.llayout_abroad_classify6})
-//    void OnClassifyClick(View view) {
-//        switch (view.getId()) {
-//            /*分类*/
-//            case R.id.llayout_abroad_classify1:
-//                break;
-//            case R.id.llayout_abroad_classify2:
-//                MyUtils.showToast(getApplicationContext(), "点击了" + title[1]);
-//                break;
-//            case R.id.llayout_abroad_classify3:
-//                MyUtils.showToast(getApplicationContext(), "点击了" + title[2]);
-//                break;
-//            case R.id.llayout_abroad_classify4:
-//                MyUtils.showToast(getApplicationContext(), "点击了" + title[3]);
-//                break;
-//            case R.id.llayout_abroad_classify5:
-//                MyUtils.showToast(getApplicationContext(), "点击了" + title[4]);
-//                break;
-//            case R.id.llayout_abroad_classify6:
-//                MyUtils.showToast(getApplicationContext(), "点击了其他");
-//                break;
-//        }
-//    }
-
     @Override
     public void onLoadActiveClick() {
         errorLayout.setState(ErrorLayout.LOADING, "");
@@ -354,7 +332,7 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
         if (rAdBO.isCommodity) {
             bundle = new Bundle();
             bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
-            bundle.putInt(getString(R.string.intent_commodityType), 0);
+            bundle.putInt(getString(R.string.intent_commodityType), CommodityType.ABROAD);
             openActivity(CommodityInfoActivity.class, bundle);
         } else {
             bundle = new Bundle();
@@ -384,7 +362,8 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
         public void onClick(View v) {
             bundle = new Bundle();
             bundle.putString(getString(R.string.intent_categoryId), (String) v.getTag(R.id.tag_first));
-            openActivity(ClassifyListActivity.class, bundle);
+            bundle.putString(getString(R.string.intent_title), (String) v.getTag(R.id.tag_second));
+            openActivity(AbroadClassifyListActivity.class, bundle);
         }
     }
 
@@ -398,7 +377,7 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
             if (rAdBO.isCommodity) {
                 bundle = new Bundle();
                 bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
-                bundle.putInt(getString(R.string.intent_commodityType), 0);
+                bundle.putInt(getString(R.string.intent_commodityType), CommodityType.ABROAD);
                 openActivity(CommodityInfoActivity.class, bundle);
             } else {
                 bundle = new Bundle();

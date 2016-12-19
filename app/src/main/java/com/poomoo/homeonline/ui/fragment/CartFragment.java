@@ -46,6 +46,7 @@ import com.poomoo.homeonline.ui.activity.ConfirmOrderActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.custom.AddAndMinusView;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.RCartShopBO;
 import com.poomoo.model.response.RCommodityCount;
@@ -86,6 +87,10 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     TextView deleteTxt;
     @Bind(R.id.llayout_empty)
     LinearLayout emptyLayout;
+    @Bind(R.id.llayout_abroad_limit)
+    LinearLayout limitLayout;
+    @Bind(R.id.txt_cart_limit)
+    TextView limitTxt;
     @Bind(R.id.error_frame)
     ErrorLayout mErrorLayout;
 
@@ -112,6 +117,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     private int[] deleteIndex;//删除的商品的id集合
     private Bundle bundle;
     private RCartCommodityBO cartCommodityBO;
+    private boolean isLimited = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -149,9 +155,9 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
             cartCommodityBO = (RCartCommodityBO) adapter.getChild(groupPosition1, childPosition1);
             bundle = new Bundle();
             bundle.putInt(getString(R.string.intent_commodityId), cartCommodityBO.commodityId);
-            bundle.putInt(getString(R.string.intent_commodityDetailId), cartCommodityBO.commodityDetailId);
+//            bundle.putInt(getString(R.string.intent_commodityDetailId), cartCommodityBO.commodityDetailId);
             if (cartCommodityBO.commodityType == 5) {//买赠
-                cartCommodityBO.commodityType = 4;
+                cartCommodityBO.commodityType = CommodityType.PRESENT;
                 bundle.putInt(getString(R.string.intent_matchId), cartCommodityBO.newActivityId);//match_id传newActivityId
             }
             bundle.putInt(getString(R.string.intent_commodityType), cartCommodityBO.commodityType);
@@ -185,26 +191,29 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         swipeRefreshLayout.setEnabled(true);
         swipeRefreshLayout.setRefreshing(false);
 
-        if (!isRefresh)
-            adapter.setGroup(rCartShopBOs);
-        else
-            add(rCartShopBOs);
-        if (adapter.getGroupCount() == 0) {
+        if (adapter.getGroupCount() == 0 && rCartShopBOs.size() == 0) {
             listView.setVisibility(View.GONE);
             cartBuyLayout.setVisibility(View.GONE);
             editTxt.setVisibility(View.GONE);
             emptyLayout.setVisibility(View.VISIBLE);
+            limitLayout.setVisibility(View.GONE);
         } else {
             listView.setVisibility(View.VISIBLE);
             cartBuyLayout.setVisibility(View.VISIBLE);
             editTxt.setVisibility(View.VISIBLE);
             emptyLayout.setVisibility(View.GONE);
+
+            if (!isRefresh)
+                adapter.setGroup(rCartShopBOs);
+            else
+                add(rCartShopBOs);
         }
 
         expandListView();
     }
 
     public void getInfoFailed(String msg) {
+        swipeRefreshLayout.post(() -> swipeRefreshLayout.setRefreshing(false));
         swipeRefreshLayout.setEnabled(false);
         mErrorLayout.setState(ErrorLayout.HIDE, "");
         mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
@@ -213,6 +222,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         cartBuyLayout.setVisibility(View.GONE);
         editLayout.setVisibility(View.GONE);
         editTxt.setVisibility(View.GONE);
+        limitLayout.setVisibility(View.GONE);
     }
 
     public void changeCount(int cartId, int cartNum, int groupPosition, int childPosition, AddAndMinusView addAndMinusView, int commodityType) {
@@ -456,30 +466,61 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         }
     }
 
+//    public void add(List<RCartShopBO> rCartShopBOs) {
+//        Iterator<RCartShopBO> iterator = rCartShopBOs.iterator();
+//        final List<RCartShopBO> data = adapter.getGroups();
+//        while (iterator.hasNext()) {
+////            LogUtils.d(TAG, "While");
+//            RCartShopBO obj = iterator.next();
+//            if (data.contains(obj)) {
+//                int i = data.indexOf(obj);
+//                //遍历新增的商品和老的商品并比较
+//                int newLen = obj.getChildrenCount();
+//                for (int j = 0; j < newLen; j++) {
+//                    if (!data.get(i).carts.contains(obj.carts.get(j))) {//不存在则添加新商品
+//                        obj.carts.get(j).isBuyChecked = data.get(i).isBuyChecked;
+//                        data.get(i).carts.add(0, obj.carts.get(j));
+////                        LogUtils.d(TAG, "店铺" + obj.shopName + "添加了商品" + obj.carts.get(j).commodityName);
+//                    } else {//存在则更新
+//                        int position = data.get(i).carts.indexOf(obj.carts.get(j));
+//                        obj.carts.get(j).isBuyChecked = data.get(i).carts.get(data.get(i).carts.indexOf(obj.carts.get(j))).isBuyChecked;
+//                        data.get(i).carts.set(position, obj.carts.get(j));
+////                        LogUtils.d(TAG, "店铺" + obj.shopName + "更新了商品" + obj.carts.get(j).commodityName);
+//                    }
+//                }
+//            } else {
+//                LogUtils.d(TAG, "添加了一个店铺:" + obj.shopName);
+//                obj.isBuyChecked = allBuyChk.isChecked();
+//                obj.setChildChecked(allBuyChk.isChecked());
+//                data.add(0, obj);
+//            }
+//        }
+//        adapter.notifyDataSetChanged();
+//        expandListView();
+//        changeState();
+//    }
+
     public void add(List<RCartShopBO> rCartShopBOs) {
         Iterator<RCartShopBO> iterator = rCartShopBOs.iterator();
         final List<RCartShopBO> data = adapter.getGroups();
         while (iterator.hasNext()) {
-//            LogUtils.d(TAG, "While");
             RCartShopBO obj = iterator.next();
-            if (data.contains(obj)) {
-                int i = data.indexOf(obj);
-                //遍历新增的商品和老的商品并比较
-                int newLen = obj.getChildrenCount();
-                for (int j = 0; j < newLen; j++) {
-                    if (!data.get(i).carts.contains(obj.carts.get(j))) {//不存在则添加新商品
-                        obj.carts.get(j).isBuyChecked = data.get(i).isBuyChecked;
-                        data.get(i).carts.add(0, obj.carts.get(j));
-//                        LogUtils.d(TAG, "店铺" + obj.shopName + "添加了商品" + obj.carts.get(j).commodityName);
-                    } else {//存在则更新
-                        int position = data.get(i).carts.indexOf(obj.carts.get(j));
-                        obj.carts.get(j).isBuyChecked = data.get(i).carts.get(data.get(i).carts.indexOf(obj.carts.get(j))).isBuyChecked;
-                        data.get(i).carts.set(position, obj.carts.get(j));
-//                        LogUtils.d(TAG, "店铺" + obj.shopName + "更新了商品" + obj.carts.get(j).commodityName);
-                    }
-                }
-            } else {
-                LogUtils.d(TAG, "添加了一个店铺:" + obj.shopName);
+//            if (data.contains(obj)) {
+//                int i = data.indexOf(obj);
+//                //遍历新增的商品和老的商品并比较
+//                int newLen = obj.getChildrenCount();
+//                for (int j = 0; j < newLen; j++) {
+//                    if (!data.get(i).carts.contains(obj.carts.get(j))) {//不存在则添加新商品
+//                        obj.carts.get(j).isBuyChecked = data.get(i).isBuyChecked;
+//                        data.get(i).carts.add(0, obj.carts.get(j));
+//                    } else {//存在则更新
+//                        int position = data.get(i).carts.indexOf(obj.carts.get(j));
+//                        obj.carts.get(j).isBuyChecked = data.get(i).carts.get(data.get(i).carts.indexOf(obj.carts.get(j))).isBuyChecked;
+//                        data.get(i).carts.set(position, obj.carts.get(j));
+//                    }
+//                }
+//            }
+            if (!data.contains(obj)) {
                 obj.isBuyChecked = allBuyChk.isChecked();
                 obj.setChildChecked(allBuyChk.isChecked());
                 data.add(0, obj);
@@ -497,6 +538,17 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
         isRefresh = true;
         mPresenter.getCartInfo(application.getUserId());
     }
+
+    public void showLimited(boolean isLimited, int flag) {
+        this.isLimited = isLimited;
+        LogUtils.d(TAG, "isLimited:" + isLimited + " flag:" + flag);
+        limitTxt.setText(flag == 1 ? R.string.label_limit1 : R.string.label_limit2);
+        limitLayout.setVisibility(isLimited ? View.VISIBLE : View.GONE);
+        limitLayout.setClickable(isLimited);
+        buyLayout.setBackgroundResource(isLimited ? R.color.gray : R.color.ThemeRed);
+        buyLayout.setEnabled(!isLimited);
+    }
+
 
     class EditPopUpWindow extends PopupWindow {
 
@@ -570,6 +622,7 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
             ColorDrawable dw = new ColorDrawable(0xb0000000);
             this.setBackgroundDrawable(dw);
         }
+
     }
 
     /**

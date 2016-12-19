@@ -22,6 +22,7 @@ package com.poomoo.homeonline.reject.components;
 
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.activity.AbroadActivity;
+import com.poomoo.homeonline.ui.activity.AbroadClassifyListActivity;
 import com.poomoo.homeonline.ui.activity.AbroadCountryActivity;
 import com.poomoo.homeonline.ui.activity.AbroadCountryInfoActivity;
 import com.poomoo.homeonline.ui.activity.AbroadGlobalActivity;
@@ -37,7 +38,7 @@ import com.poomoo.homeonline.ui.activity.EvaluateActivity;
 import com.poomoo.homeonline.ui.activity.FeedBackActivity;
 import com.poomoo.homeonline.ui.activity.GetCodeActivity;
 import com.poomoo.homeonline.ui.activity.NewAbroadActivity;
-import com.poomoo.homeonline.ui.activity.OnSaleActivity;
+import com.poomoo.homeonline.ui.activity.TicketZoneActivity;
 import com.poomoo.homeonline.ui.activity.InviteActivity;
 import com.poomoo.homeonline.ui.activity.LogInActivity;
 import com.poomoo.homeonline.ui.activity.MyTicketActivity;
@@ -103,7 +104,7 @@ public interface ActivityComponent {
 
     void inject(InviteActivity activity);
 
-    void inject(OnSaleActivity activity);
+    void inject(TicketZoneActivity activity);
 
     void inject(PresentActivity activity);
 
@@ -116,4 +117,6 @@ public interface ActivityComponent {
     void inject(AbroadCountryActivity activity);
 
     void inject(AbroadCountryInfoActivity activity);
+
+    void inject(AbroadClassifyListActivity activity);
 }

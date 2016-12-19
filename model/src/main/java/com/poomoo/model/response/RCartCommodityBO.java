@@ -3,6 +3,8 @@
  */
 package com.poomoo.model.response;
 
+import android.util.Log;
+
 import java.io.Serializable;
 
 /**
@@ -12,6 +14,7 @@ import java.io.Serializable;
  * 日期 2016/8/5 16:54
  */
 public class RCartCommodityBO implements Serializable {
+    private final String TAG = getClass().getSimpleName();
     public int id;//在购物车里面的ID
     public String listPic;
     public String commodityName;
@@ -45,6 +48,7 @@ public class RCartCommodityBO implements Serializable {
 
     @Override
     public boolean equals(Object o) {
+//        Log.d(TAG, "this.id:" + this.id + "\n" + "((RCartCommodityBO) o).id:" + ((RCartCommodityBO) o).id);
         if (this.id == ((RCartCommodityBO) o).id)
             return true;
         return false;

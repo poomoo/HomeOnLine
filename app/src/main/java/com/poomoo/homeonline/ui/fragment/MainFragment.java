@@ -43,12 +43,10 @@ import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
-import com.poomoo.homeonline.ui.activity.AbroadActivity;
-import com.poomoo.homeonline.ui.activity.ClassifyInfoActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.activity.NewAbroadActivity;
-import com.poomoo.homeonline.ui.activity.OnSaleActivity;
+import com.poomoo.homeonline.ui.activity.TicketZoneActivity;
 import com.poomoo.homeonline.ui.activity.PresentActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.activity.WebViewActivity;
@@ -107,7 +105,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     RecyclerView hotRecycler;
     @Bind(R.id.recycler_guess)
     RecyclerView guessRecycler;
-    @Bind(R.id.error_frame)
+    @Bind(R.id.error_main_frame)
     ErrorLayout errorLayout;
 
     private MainGridAdapter gridAdapter;
@@ -493,7 +491,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 openActivity(PresentActivity.class);
                 break;
             case 2:
-                openActivity(OnSaleActivity.class);
+                openActivity(TicketZoneActivity.class);
                 break;
             case 3:
                 openActivity(NewAbroadActivity.class);
@@ -549,6 +547,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
+            errorLayout.setState(ErrorLayout.HIDE, "");
             mPresenter.getGuess(application.getUserId());
         }
     }

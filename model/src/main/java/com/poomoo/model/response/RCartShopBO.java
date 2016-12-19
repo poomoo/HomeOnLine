@@ -3,6 +3,8 @@
  */
 package com.poomoo.model.response;
 
+import android.util.Log;
+
 import java.util.List;
 
 /**
@@ -12,6 +14,7 @@ import java.util.List;
  * 日期 2016/8/5 16:54
  */
 public class RCartShopBO {
+    private final String TAG = getClass().getSimpleName();
     //    public int shopId;
     public String shopName;
     public List<RCartCommodityBO> carts;
@@ -43,8 +46,14 @@ public class RCartShopBO {
 
     @Override
     public boolean equals(Object o) {
-        if (this.shopName.equals(((RCartShopBO) o).shopName))
+//        if (this.shopName.equals(((RCartShopBO) o).shopName))
+//            return true;
+//        Log.d(TAG, "this.carts:" + this.carts + "\n" + "(RCartShopBO) o).carts:" + ((RCartShopBO) o).carts);
+
+        if (this.carts.equals(((RCartShopBO) o).carts))
             return true;
         return false;
     }
+
+
 }

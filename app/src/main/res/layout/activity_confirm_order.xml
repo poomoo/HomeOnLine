@@ -171,7 +171,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/dp_10"
                     android:paddingLeft="@dimen/dp_20"
                     android:paddingRight="@dimen/dp_20"
                     android:paddingTop="@dimen/dp_10">
@@ -235,10 +234,11 @@
                             android:clickable="true"
                             android:onClick="selectTicket"
                             android:text="不使用抵用券" />
+
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_arrow_down"/>
+                            android:src="@drawable/ic_arrow_down" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -257,12 +257,22 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/dp_10"
-                            android:text="" />
+                            android:text="￥26.60" />
                     </LinearLayout>
                 </LinearLayout>
 
+                <ImageView
+                    android:id="@+id/img_abroad_limit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:src="@drawable/ic_abroad_limit"
+                    android:visibility="gone"/>
+
                 <View
                     android:layout_width="match_parent"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_height="1dp"
                     android:background="@color/divide" />
             </LinearLayout>

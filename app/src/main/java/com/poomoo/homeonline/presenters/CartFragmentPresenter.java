@@ -33,18 +33,23 @@ import com.poomoo.api.NetWork;
 import com.poomoo.homeonline.adapter.AddressListAdapter;
 import com.poomoo.homeonline.ui.fragment.CartFragment;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.QCountBO;
 import com.poomoo.model.request.QDeleteBO;
 import com.poomoo.model.request.QUserIdBO;
+import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.RCartShopBO;
 import com.poomoo.model.response.RCommodityCount;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -67,6 +72,38 @@ public class CartFragmentPresenter extends BasePresenter<CartFragment> {
         QUserIdBO qUserIdBO = new QUserIdBO(NetConfig.CARTINFO, userId);
         add(NetWork.getMyApi().GetCartInfo(qUserIdBO)
                 .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .map(rCartShopBOs -> {
+                    List<RCartShopBO> rCartShopBOs1 = new ArrayList<>();
+                    RCartShopBO rCartShopBO;
+                    for (RCartCommodityBO carts : rCartShopBOs.get(0).carts) {
+                        rCartShopBO = new RCartShopBO();
+                        switch (carts.commodityType) {
+                            case CommodityType.ABROAD:
+                                rCartShopBO.shopName = "家有保税仓发货";
+                                break;
+                            default:
+                                rCartShopBO.shopName = "家有自营发货";
+                                break;
+                        }
+                        rCartShopBO.carts = new ArrayList<>();
+                        rCartShopBO.carts.add(carts);
+                        rCartShopBOs1.add(rCartShopBO);
+                    }
+                    return rCartShopBOs1;
+                })
+//                .observeOn(Schedulers.computation())
+//                .map(rCartShopBOs -> {
+//                    int i = 0;
+//                    for (RCartShopBO shopBO : rCartShopBOs) {
+//                        if (i % 2 == 0) {
+//                            shopBO.carts.get(0).commodityType = CommodityType.ABROAD;
+//                            shopBO.shopName = "家有保税仓发货";
+//                        }
+//                        i++;
+//                    }
+//                    return rCartShopBOs;
+//                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AbsAPICallback<List<RCartShopBO>>() {
                     @Override
@@ -87,8 +124,8 @@ public class CartFragmentPresenter extends BasePresenter<CartFragment> {
      * @param cartId
      * @param cartNum
      */
-    public void changeCount(int cartId, int cartNum,int commodityType) {
-        QCountBO qCountBO = new QCountBO(NetConfig.CHANGCOUNT, cartId, cartNum,commodityType);
+    public void changeCount(int cartId, int cartNum, int commodityType) {
+        QCountBO qCountBO = new QCountBO(NetConfig.CHANGCOUNT, cartId, cartNum, commodityType);
         add(NetWork.getMyApi().ChangeCommodityCount(qCountBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

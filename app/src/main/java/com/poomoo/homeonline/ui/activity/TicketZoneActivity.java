@@ -61,12 +61,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 类名 OnSaleActivity
+ * 类名 TicketZoneActivity
  * 描述 优惠券专区
  * 作者 李苜菲
  * 日期 2016/10/31 15:26
  */
-public class OnSaleActivity extends BaseDaggerActivity<OnSalePresenter> implements ErrorLayout.OnActiveClickListener {
+public class TicketZoneActivity extends BaseDaggerActivity<OnSalePresenter> implements ErrorLayout.OnActiveClickListener {
     @Bind(R.id.scroll_on_sale)
     ScrollView scrollView;
     @Bind(R.id.flipper_ad)

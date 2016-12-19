@@ -57,6 +57,7 @@ import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.homeonline.ui.popup.RulePopupWindow;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.ROnSaleBO;
@@ -171,7 +172,7 @@ public class PresentActivity extends BaseDaggerActivity<PresentPresenter> implem
         POSITION = (int) ((View) view.getParent()).getTag();
         bundle.putInt(getString(R.string.intent_commodityId), rPresentBOs.get(POSITION).activityCommodities.get(position).commodityId);
         bundle.putInt(getString(R.string.intent_commodityDetailId), rPresentBOs.get(POSITION).activityCommodities.get(position).detailId);
-        bundle.putInt(getString(R.string.intent_commodityType), 4);//买赠商品固定传4
+        bundle.putInt(getString(R.string.intent_commodityType), CommodityType.PRESENT);//买赠商品固定传4
         bundle.putInt(getString(R.string.intent_matchId), rPresentBOs.get(POSITION).activityCommodities.get(position).activityId);//match_id传activityId
         openActivity(CommodityInfoActivity.class, bundle);
     }

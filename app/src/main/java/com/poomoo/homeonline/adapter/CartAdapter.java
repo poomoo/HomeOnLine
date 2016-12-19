@@ -20,6 +20,7 @@ import com.poomoo.homeonline.listeners.OnEditCheckChangedListener;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.custom.AddAndMinusView;
 import com.poomoo.homeonline.ui.fragment.CartFragment;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.RCartShopBO;
 
@@ -42,6 +43,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
     private List<RCartShopBO> group = new ArrayList<>();
     private RCartShopBO rCartShopBO;
     private RCartCommodityBO rCartCommodityBO;
+    private RCartCommodityBO lastCartCommodityBO;
     private OnBuyCheckChangedListener onBuyCheckChangedListener;
     private OnEditCheckChangedListener onEditCheckChangedListener;
 
@@ -53,9 +55,11 @@ public class CartAdapter extends BaseExpandableListAdapter {
     private int commodityKind = 0;
 
     private boolean isFreePostage = true;//是否包邮
+    private boolean isLimited = false;//跨境商品是否超过限额2000
 
     private BigDecimal bg;
     private DecimalFormat df = new DecimalFormat("0.00");
+    private int FLAG;//1-跨境商品超过限额2000 2-同时选中了普通商品和跨境商品
 
     public CartAdapter(Context context, OnBuyCheckChangedListener onBuyCheckChangedListener, OnEditCheckChangedListener onEditCheckChangedListener) {
         this.context = context;
@@ -113,13 +117,12 @@ public class CartAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-//        LogUtils.d(TAG, "getGroupView:" + groupPosition);
-
         GroupViewHolder holder;
         convertView = LayoutInflater.from(context).inflate(R.layout.item_list_group, null);
         holder = new GroupViewHolder();
         holder.shopLayout = (LinearLayout) convertView.findViewById(R.id.llayout_shop);
         holder.shopChk = (CheckBox) convertView.findViewById(R.id.chk_shop);
+        holder.typeTxt = (TextView) convertView.findViewById(R.id.txt_type);
         holder.shopTxt = (TextView) convertView.findViewById(R.id.txt_shop);
 
         rCartShopBO = group.get(groupPosition);
@@ -128,8 +131,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
         else
             holder.shopChk.setChecked(rCartShopBO.isBuyChecked);
         holder.shopTxt.setText(rCartShopBO.shopName);
+        if (rCartShopBO.shopName.equals("家有保税仓发货"))
+            holder.typeTxt.setText("保");
 
-        // 點擊 CheckBox 時，將狀態存起來
         holder.shopLayout.setOnClickListener(new Group_CheckBox_Click(groupPosition));
 
         setTotalPrice();
@@ -179,10 +183,10 @@ public class CartAdapter extends BaseExpandableListAdapter {
      */
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
-//        LogUtils.d(TAG, "getChildView:" + childPosition);
         ChildViewHolder holder;
         convertView = LayoutInflater.from(context).inflate(R.layout.item_list_cart, null);
         holder = new ChildViewHolder();
+        holder.backGroundLayout = (LinearLayout) convertView.findViewById(R.id.llayout_cart_commodity);
         holder.commodityLayout = (LinearLayout) convertView.findViewById(R.id.llayout_commodity);
         holder.commodityChk = (CheckBox) convertView.findViewById(R.id.chk_commodity);
         holder.commodityImg = (ImageView) convertView.findViewById(R.id.img_commodity);
@@ -191,10 +195,14 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.addAndMinusView = (AddAndMinusView) convertView.findViewById(R.id.addAndMinusView);
 
         rCartCommodityBO = group.get(groupPosition).carts.get(childPosition);
+
         if (isEdit)
             holder.commodityChk.setChecked(rCartCommodityBO.isEditChecked);
-        else
+        else {
             holder.commodityChk.setChecked(rCartCommodityBO.isBuyChecked);
+            if (isLimited && rCartCommodityBO.isBuyChecked && FLAG == 1)
+                holder.backGroundLayout.setBackgroundResource(R.drawable.shape_rectangle_red);
+        }
         Glide.with(context).load(NetConfig.ImageUrl + rCartCommodityBO.listPic).placeholder(R.drawable.replace).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.commodityImg);
         holder.commodityTxt.setText(rCartCommodityBO.commodityName);
         holder.priceTxt.setText(rCartCommodityBO.commodityPrice + "");
@@ -202,11 +210,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
         holder.addAndMinusView.setCount(rCartCommodityBO.commodityNum);
         holder.addAndMinusView.setOnCountChangeListener(new CountChange(rCartCommodityBO.id, groupPosition, childPosition, holder.addAndMinusView, rCartCommodityBO.commodityType));
 
-        // 點擊 CheckBox 時，將狀態存起來
         holder.commodityLayout.setOnClickListener(new Child_CheckBox_Click(groupPosition, childPosition));
 
         setTotalPrice();
-//        getTotalCommodityCount();
         getTotalCommodity();
         MainNewActivity.INSTANCE.setInfoNum(3, commodityKind, commodityKind > 0 ? true : false);
         return convertView;
@@ -255,24 +261,24 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 cartFragment.showEditPopupWindow(cartId, count, groupPosition, childPosition, addAndMinusView, commodityType);
             else {
                 cartFragment.changeCount(cartId, count, groupPosition, childPosition, addAndMinusView, commodityType);
-//                setCount(groupPosition, childPosition, count);
             }
         }
     }
 
     public void setCount(int groupPosition, int childPosition, int count) {
         group.get(groupPosition).carts.get(childPosition).commodityNum = count;
-//        setTotalPrice();
         notifyDataSetChanged();
     }
 
     class GroupViewHolder {
         LinearLayout shopLayout;
         CheckBox shopChk;
+        TextView typeTxt;
         TextView shopTxt;
     }
 
     class ChildViewHolder {
+        LinearLayout backGroundLayout;
         LinearLayout commodityLayout;
         CheckBox commodityChk;
         ImageView commodityImg;
@@ -363,28 +369,56 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     public void setTotalPrice() {
         totalPrice = 0.00;
-//        removeCount = 0;
         deleteIndex = new ArrayList<>();
         rCartCommodityBOs = new ArrayList<>();
-        for (int i = 0; i < group.size(); i++)
+        isLimited = false;
+        lastCartCommodityBO=null;
+
+        for (int i = 0; i < group.size(); i++) {
             for (int j = 0; j < group.get(i).getChildrenCount(); j++) {
                 rCartCommodityBO = group.get(i).carts.get(j);
                 if (rCartCommodityBO.isBuyChecked) {
                     totalPrice += rCartCommodityBO.commodityPrice * rCartCommodityBO.commodityNum;
                     rCartCommodityBO.commodityDetailsId = rCartCommodityBO.commodityDetailId;
-//                    if(rCartCommodityBO.commodityType==4){
-//                        rCartCommodityBO.newActivityId = matchId;
-//                        rCartCommodityBO.activityRule = activityRule;
-//                    }
+
                     rCartCommodityBOs.add(rCartCommodityBO);
                     if (!rCartCommodityBO.isFreePostage)
                         isFreePostage = false;
+
+                    if (rCartCommodityBO.commodityType == CommodityType.ABROAD) {
+                        if (!(totalPrice < 2000)) {//跨境商品不能超过2000限额
+                            FLAG = 1;
+                            isLimited = true;
+                            break;
+                        }
+                    }
                 }
-                if (rCartCommodityBO.isEditChecked)
+                if (rCartCommodityBO.isEditChecked) {
                     deleteIndex.add(rCartCommodityBO.id);
+                }
+
             }
+            if (rCartCommodityBO.isBuyChecked) {
+                if (lastCartCommodityBO != null)
+                    if (rCartCommodityBO.commodityType != lastCartCommodityBO.commodityType
+                            && (rCartCommodityBO.commodityType == CommodityType.ABROAD
+                            || lastCartCommodityBO.commodityType == CommodityType.ABROAD)) {//不能同时选中普通商品和跨境商品
+                        FLAG = 2;
+                        isLimited = true;
+                        break;
+                    }
+
+                if (isLimited)
+                    break;
+                lastCartCommodityBO = rCartCommodityBO;
+            }
+        }
 
         cartFragment.setTotalPrice(df.format(totalPrice));
+        if (isEdit)
+            cartFragment.showLimited(false, FLAG);
+        else
+            cartFragment.showLimited(isLimited, FLAG);
     }
 
     public double getTotalPrice() {

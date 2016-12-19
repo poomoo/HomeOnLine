@@ -34,9 +34,20 @@
         </LinearLayout>
 
         <TextView
+            android:id="@+id/txt_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/shape_sale_type"
+            android:text="自"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
             android:id="@+id/txt_shop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_6"
             android:text="厂家商品信息"
             android:textSize="@dimen/sp_14" />
     </LinearLayout>

@@ -40,6 +40,7 @@
     <string name="title_abroad">跨境直邮</string>
     <string name="title_global">全球精选</string>
     <string name="title_country">国家地区馆</string>
+    <string name="title_empty"></string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -50,6 +51,8 @@
     <string name="label_invite_info">奖励详情</string>
     <string name="label_invite_code">我的邀请码</string>
     <string name="label_rule">"凡是今日起,在本商城领取优惠券,购买满90减5元"\n"满199元减10元,满250减15元,满300减20元"</string>
+    <string name="label_limit1">"标红部分的跨境商品合计超过限额￥2000,请选择部分商品进行结算"</string>
+    <string name="label_limit2">"抱歉,跨境商品与普通商品不能同时购买,请分开结算"</string>
 
     <string name="hint_inputUserName">请输入用户名</string>
     <string name="hint_inputUserPassWord">请输入密码</string>
@@ -112,6 +115,7 @@
     <string name="intent_vouchersMoney">vouchersMoney</string>
     <string name="intent_activityRule">activityRule</string>
     <string name="intent_countryId">countryId</string>
+    <string name="intent_title">title</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>

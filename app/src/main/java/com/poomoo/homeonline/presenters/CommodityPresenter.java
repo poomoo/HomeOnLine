@@ -83,8 +83,8 @@ public class CommodityPresenter extends BasePresenter<CommodityInfoActivity> {
      * @param commodityId
      * @param paramterValueIds
      */
-    public void getCommodityInfoBySpecification(int commodityId, int commodityType, Integer[] paramterValueIds) {
-        QSpecificationBO qSpecificationBO = new QSpecificationBO(NetConfig.SPECIFICATION, commodityId, commodityType, paramterValueIds);
+    public void getCommodityInfoBySpecification(int commodityId, int commodityType, Integer[] paramterValueIds, int matchId) {
+        QSpecificationBO qSpecificationBO = new QSpecificationBO(NetConfig.SPECIFICATION, commodityId, commodityType, paramterValueIds,matchId);
         add(NetWork.getMyApi().GetCommodityInfoBySpecification(qSpecificationBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

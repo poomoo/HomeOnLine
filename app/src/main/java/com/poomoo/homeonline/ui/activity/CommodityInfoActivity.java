@@ -78,6 +78,7 @@ import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.PinchImageView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.homeonline.ui.custom.VerticalViewPager;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.RCartNumBO;
 import com.poomoo.model.response.RCommodityInfoBO;
@@ -196,6 +197,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     public static CommodityInfoActivity inStance = null;
     private int repertory;//库存
     private int newActivityId = -1;//买赠商品需要传值
+    private double price = 0.00;
+    private double oldPrice = 0.00;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -439,8 +442,6 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         });
         commodityName = rCommodityInfoBO.commodity.commodityName;
         nameTxt.setText(commodityName);
-        priceTxt.setText("￥ " + rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice);
-        oldPriceTxt.setText("￥ " + rCommodityInfoBO.commodity.lowestPriceDetail.commonPrice);
         inventoryTxt.setText("库存" + rCommodityInfoBO.commodity.lowestPriceDetail.repertory + "件");
         repertory = rCommodityInfoBO.commodity.lowestPriceDetail.repertory;
         maxNum = rCommodityInfoBO.commodity.lowestPriceDetail.repertory;
@@ -463,18 +464,21 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             specificationLayout.setVisibility(View.GONE);
         }
 
-        if (commodityType == 2) {//抢购商品不能加入购物车 且每人只能购买一件
-            priceTxt.setText("￥ " + rCommodityInfoBO.commodity.lowestPriceDetail.rushPrice);
-            oldPriceTxt.setText("￥ " + rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice);
+        if (commodityType == CommodityType.GRAB) {//抢购商品不能加入购物车 且每人只能购买一件
+            price = rCommodityInfoBO.commodity.lowestPriceDetail.rushPrice;
+            oldPrice = rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice;
 
             cartBtn.setEnabled(false);
             countEdt.setEnabled(false);
             plusImg.setClickable(false);
             minusImg.setClickable(false);
             if (!isStar) buyBtn.setEnabled(false);
+        } else {
+            price = rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice;
+            oldPrice = rCommodityInfoBO.commodity.lowestPriceDetail.commonPrice;
         }
 
-        if (commodityType == 4) {//买赠
+        if (commodityType == CommodityType.PRESENT) {//买赠
             activityRule = rCommodityInfoBO.activityRule;
             presentLayout.setVisibility(View.VISIBLE);
             presentTxt.setText(getResources().getStringArray(R.array.activityRule)[rCommodityInfoBO.activityRule]);
@@ -489,13 +493,12 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             minusImg.setClickable(false);
         }
 
+        priceTxt.setText("￥ " + price);
+        oldPriceTxt.setText("￥ " + oldPrice);
+
         cartCommodityBO.commodityId = rCommodityInfoBO.commodity.id;
         cartCommodityBO.listPic = rCommodityInfoBO.commodity.listPic;
         cartCommodityBO.commodityName = rCommodityInfoBO.commodity.commodityName;
-        if (commodityType == 2)//抢购商品
-            cartCommodityBO.commodityPrice = rCommodityInfoBO.commodity.lowestPriceDetail.rushPrice;
-        else
-            cartCommodityBO.commodityPrice = rCommodityInfoBO.commodity.lowestPriceDetail.platformPrice;
         cartCommodityBO.orderType = rCommodityInfoBO.orderType;
         cartCommodityBO.commodityType = commodityType;
 
@@ -533,10 +536,16 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     }
 
     public void getSpecificationSucceed(RSpecificationBO rSpecificationBO) {
-        LogUtils.d(TAG, "getSpecificationSucceed START");
+        if (commodityType == CommodityType.GRAB) {
+            price = rSpecificationBO.commodityDetail.rushPrice;
+            oldPrice = rSpecificationBO.commodityDetail.platformPrice;
+        } else {
+            price = rSpecificationBO.commodityDetail.platformPrice;
+            oldPrice = rSpecificationBO.commodityDetail.commonPrice;
+        }
         dialog_progressBarRlayout.setVisibility(View.GONE);
-        dialog_newPriceTxt.setText("￥" + rSpecificationBO.commodityDetail.platformPrice);
-        dialog_oldPriceTxt.setText("￥" + rSpecificationBO.commodityDetail.commonPrice);
+        dialog_newPriceTxt.setText("￥" + price);
+        dialog_oldPriceTxt.setText("￥" + oldPrice);
         dialog_inventoryTxt.setText("库存" + rSpecificationBO.commodityDetail.repertory + "件");
         maxNum = rSpecificationBO.commodityDetail.repertory;
         commodityDetailId = rSpecificationBO.commodityDetail.id;
@@ -560,8 +569,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             dialog_plusImg.setClickable(false);
             dialog_minusImg.setClickable(false);
         }
-        priceTxt.setText("￥ " + rSpecificationBO.commodityDetail.platformPrice);
-        oldPriceTxt.setText("￥ " + rSpecificationBO.commodityDetail.commonPrice);
+        priceTxt.setText("￥ " + price);
+        oldPriceTxt.setText("￥ " + oldPrice);
     }
 
     public void getSpecificationFailed(String msg) {
@@ -571,7 +580,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
 
     private void addToCart() {
         showProgressBar();
-        if (commodityType == 4) {
+        if (commodityType == CommodityType.PRESENT) {
             newActivityId = matchId;//买赠的matchId即为newActivityId
             matchId = -1;
         }
@@ -595,8 +604,9 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     public void createOrder() {
         cartCommodityBO.commodityNum = count;
         cartCommodityBO.commodityDetailsId = commodityDetailId;
-        totalPrice = count * cartCommodityBO.commodityPrice;
-        if (commodityType == 4) {//买赠
+        cartCommodityBO.commodityPrice = price;
+        totalPrice = count * price;
+        if (commodityType == CommodityType.PRESENT) {//买赠
             cartCommodityBO.newActivityId = matchId;
             cartCommodityBO.activityRule = activityRule;
         } else
@@ -891,7 +901,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
             isAllSelected = true;
             dialog_progressBarRlayout.setVisibility(View.VISIBLE);
             dialog_inventoryTxt.setVisibility(View.VISIBLE);
-            mPresenter.getCommodityInfoBySpecification(commodityId, commodityType, specification.toArray(new Integer[specification.size()]));
+            mPresenter.getCommodityInfoBySpecification(commodityId, commodityType, specification.toArray(new Integer[specification.size()]), matchId);
         }
         confirmBtn.setEnabled(isAllSelected);
         dialog_cartBtn.setEnabled(isAllSelected);

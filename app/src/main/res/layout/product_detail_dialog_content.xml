@@ -34,11 +34,13 @@
                 android:id="@+id/llayout_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/replace"
                 android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/replace"
                 android:background="@color/white"
                 android:gravity="bottom"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dp_6"
+                android:paddingRight="26dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -57,7 +59,7 @@
                             android:layout_height="wrap_content"
                             android:ellipsize="end"
                             android:maxLines="2"
-                            android:text="iphone 6siphone 6siphone 6siphone 6siphone 6siphone 6siphone 6siphone 6siphone 6siphone 6s"
+                            android:text="绿毛峰B-3四川雅安蒙顶山明前炒青新绿茶叶盒装茶"
                             android:textColor="@color/black"
                             android:textSize="@dimen/sp_18" />
 
@@ -173,13 +175,12 @@
                 </LinearLayout>
             </LinearLayout>
 
+
             <ImageView
                 android:id="@+id/dialog_close"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="26dp"
+                android:layout_height="26dp"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentTop="true"
-                android:padding="1dp"
                 android:src="@drawable/ic_close" />
         </RelativeLayout>
 

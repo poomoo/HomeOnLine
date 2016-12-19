@@ -30,11 +30,12 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.TicketZoneActivity;
-import com.poomoo.model.ResponseBO;
-import com.poomoo.model.request.BaseRequest;
-import com.poomoo.model.request.QGetTicketBO;
-import com.poomoo.model.response.ROnSaleBO;
+import com.poomoo.homeonline.ui.activity.AbroadClassifyListActivity;
+import com.poomoo.homeonline.ui.activity.ClassifyListActivity;
+import com.poomoo.model.request.QClassifyListBO;
+import com.poomoo.model.response.RListCommodityBO;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -42,57 +43,36 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * 类名 OnSalePresenter
- * 描述 优惠券专区
+ * 类名 ClassifyListPresenter
+ * 描述 分类商品列表
  * 作者 李苜菲
- * 日期 2016/11/1 10:32
+ * 日期 2016/8/17 11:43
  */
-public class OnSalePresenter extends BasePresenter<TicketZoneActivity> {
+public class AbroadClassifyListPresenter extends BasePresenter<AbroadClassifyListActivity> {
     @Inject
-    public OnSalePresenter() {
+    public AbroadClassifyListPresenter() {
     }
 
     /**
-     * 优惠专区详情
+     * 获取分类商品
+     *
+     * @param categoryId
+     * @param index
      */
-    public void getOnSaleInfo() {
-        BaseRequest baseRequest = new BaseRequest(NetConfig.ONSALE);
-        add(NetWork.getMyApi().GetOnSaleInfo(baseRequest)
+    public void getCommodity(String categoryId, int index) {
+        QClassifyListBO qClassifyListBO = new QClassifyListBO(NetConfig.NEWGETCOMMODITY, categoryId, index);
+        add(NetWork.getMyApi().getClassifyCommodityList(qClassifyListBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<ROnSaleBO>() {
+                .subscribe(new AbsAPICallback<List<RListCommodityBO>>() {
                     @Override
                     protected void onError(ApiException e) {
                         mView.failed(e.getMessage());
                     }
 
                     @Override
-                    public void onNext(ROnSaleBO rOnSaleBO) {
-                        mView.successful(rOnSaleBO);
-                    }
-                }));
-    }
-
-    /**
-     * 领取优惠券
-     *
-     * @param userId
-     * @param money
-     */
-    public void getTicket(Integer userId, String money) {
-        QGetTicketBO qGetTicketBO = new QGetTicketBO(NetConfig.GETTICKET, money, userId);
-        add(NetWork.getMyApi().getTicket(qGetTicketBO)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<ResponseBO>() {
-                    @Override
-                    protected void onError(ApiException e) {
-                        mView.getTicketFailed(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(ResponseBO responseBO) {
-                        mView.getTicketSuccessful();
+                    public void onNext(List<RListCommodityBO> rListCommodityBOs) {
+                        mView.succeed(rListCommodityBOs);
                     }
                 }));
     }

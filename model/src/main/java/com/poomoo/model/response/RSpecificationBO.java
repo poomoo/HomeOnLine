@@ -43,6 +43,7 @@ public class RSpecificationBO {
         public double commonPrice;//市场价格
         public double platformPrice;//平台价格
         public int repertory;//库存
+        public double rushPrice;//抢购价格
     }
 
     public class PicList {
