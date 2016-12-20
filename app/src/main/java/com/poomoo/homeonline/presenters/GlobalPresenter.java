@@ -50,7 +50,7 @@ public class GlobalPresenter extends BasePresenter<AbroadGlobalActivity> {
     public GlobalPresenter() {
     }
 
-    public void getGloablInfo() {
+    public void getGlobalInfo() {
         BaseRequest baseRequest = new BaseRequest(NetConfig.GLOBAL);
         add(NetWork.getMyApi().getGlobal(baseRequest)
                 .subscribeOn(Schedulers.io())

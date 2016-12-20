@@ -38,11 +38,9 @@ import com.bumptech.glide.Glide;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
-import com.poomoo.homeonline.listeners.AdvertisementListener;
 import com.poomoo.homeonline.presenters.GlobalPresenter;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
-import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
@@ -167,7 +165,7 @@ public class AbroadGlobalActivity extends BaseDaggerActivity<GlobalPresenter> im
 
         errorLayout.setOnActiveClickListener(this);
         errorLayout.setState(ErrorLayout.LOADING, "");
-        mPresenter.getGloablInfo();
+        mPresenter.getGlobalInfo();
     }
 
     private void addView(RGlobalBO rGlobalBO) {
@@ -250,7 +248,7 @@ public class AbroadGlobalActivity extends BaseDaggerActivity<GlobalPresenter> im
     @Override
     public void onLoadActiveClick() {
         errorLayout.setState(ErrorLayout.LOADING, "");
-        mPresenter.getGloablInfo();
+        mPresenter.getGlobalInfo();
     }
 
     public void goodClick(View view) {
