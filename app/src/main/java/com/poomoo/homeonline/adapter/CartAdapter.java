@@ -370,6 +370,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     public void setTotalPrice() {
         totalPrice = 0.00;
+        abroadPrice = 0.00;
         deleteIndex = new ArrayList<>();
         rCartCommodityBOs = new ArrayList<>();
         lastCartCommodityBO = null;
@@ -387,9 +388,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
                     if (rCartCommodityBO.commodityType == CommodityType.ABROAD) {
                         abroadPrice += rCartCommodityBO.commodityPrice * rCartCommodityBO.commodityNum;
+                        LogUtils.d(TAG, "abroadPrice:" + abroadPrice + " FLAG:" + FLAG);
                         if (!(abroadPrice < 2000)) {//跨境商品不能超过2000限额
                             FLAG = 1;
-                            break;
                         }
                     }
                 }
@@ -398,6 +399,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
                 }
 
             }
+            LogUtils.d(TAG, " FLAG:" + FLAG);
             if (rCartCommodityBO.isBuyChecked) {
                 if (lastCartCommodityBO != null)
                     if (rCartCommodityBO.commodityType != lastCartCommodityBO.commodityType

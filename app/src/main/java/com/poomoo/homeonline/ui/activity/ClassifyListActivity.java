@@ -150,7 +150,7 @@ public class ClassifyListActivity extends BaseListDaggerActivity<RListCommodityB
     }
 
     public void succeed(List<RListCommodityBO> rListCommodityBOs) {
-        rListCommodityBOs.addAll(rListCommodityBOs);
+//        rListCommodityBOs.addAll(rListCommodityBOs);
         setEmptyMsg("没有该类商品");
         onLoadResultData(rListCommodityBOs);
     }
