@@ -504,6 +504,7 @@
                         android:layout_width="0dp"
                         android:layout_height="100dp"
                         android:layout_weight="1"
+                        android:onClick="countryClick"
                         android:scaleType="centerInside"
                         android:src="@drawable/replace1b2" />
                 </LinearLayout>
