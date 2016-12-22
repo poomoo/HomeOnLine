@@ -7,5 +7,5 @@ package com.poomoo.homeonline.listeners;
  * 日期 2016/7/19 11:25
  */
 public interface ClassifyOnItemClickListener {
-    void onClick(String categoryId);
+    void onClick(String categoryId,boolean isAbroad);
 }

@@ -39,6 +39,7 @@ import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseListDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RListCommodityBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
@@ -57,6 +58,7 @@ import butterknife.OnClick;
 public class ClassifyListActivity extends BaseListDaggerActivity<RListCommodityBO, ClassifyListPresenter> implements BaseListAdapter.OnItemClickListener {
     private ListCommodityAdapter listCommodityAdapter;
     private String categoryId;
+    private boolean isAbroad;
     private RListCommodityBO rListCommodityBO;
     private Bundle bundle;
 
@@ -93,6 +95,7 @@ public class ClassifyListActivity extends BaseListDaggerActivity<RListCommodityB
 
     private void init() {
         categoryId = getIntent().getStringExtra(getString(R.string.intent_categoryId));
+        isAbroad = getIntent().getBooleanExtra(getString(R.string.intent_isAbroad), false);
 
         mSwipeRefreshLayout.setEnabled(false);
         //设置布局管理器
@@ -114,11 +117,11 @@ public class ClassifyListActivity extends BaseListDaggerActivity<RListCommodityB
         });
         mListView.setLayoutManager(gridLayoutManager);
         mListView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .color(ContextCompat.getColor(this,R.color.transParent))
+                .color(ContextCompat.getColor(this, R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
         mListView.addItemDecoration(new VerticalDividerItemDecoration.Builder(this)
-                .color(ContextCompat.getColor(this,R.color.transParent))
+                .color(ContextCompat.getColor(this, R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
         mListView.setPadding((int) getResources().getDimension(R.dimen.recycler_divider), 0, 0, 0);
@@ -164,7 +167,7 @@ public class ClassifyListActivity extends BaseListDaggerActivity<RListCommodityB
         rListCommodityBO = listCommodityAdapter.getItem(position);
         bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_commodityId), rListCommodityBO.commodityId);
-        bundle.putInt(getString(R.string.intent_commodityType), rListCommodityBO.commodityType);
+        bundle.putInt(getString(R.string.intent_commodityType), isAbroad ? CommodityType.ABROAD : rListCommodityBO.commodityType);
         bundle.putInt(getString(R.string.intent_commodityDetailId), rListCommodityBO.commodityDetailId);
         openActivity(CommodityInfoActivity.class, bundle);
     }

@@ -9,7 +9,7 @@ package com.poomoo.api;
  */
 public class NetConfig {
     //本地服务器
-//    public final static String url = "http://192.168.1.106:8080/";
+//    public final static String url = "http://192.168.1.109:8080/";
 //    public final static String suffix = "app/call.json";
 //    public final static String grabUrl = url + "app/rush.html";
 //    public final static String check = "jyzx/app/pay/alipay_return.html";

@@ -116,6 +116,8 @@
     <string name="intent_activityRule">activityRule</string>
     <string name="intent_countryId">countryId</string>
     <string name="intent_title">title</string>
+    <string name="intent_countryName">countryName</string>
+    <string name="intent_isAbroad">isAbroad</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>
@@ -168,6 +170,5 @@
     <string name="btn_invite">立即邀请</string>
 
     <string name="umeng_sharebutton_copy">复制链接</string>
-    <string name="intent_countryName">countryName</string>
 
 </resources>

@@ -13,6 +13,7 @@ public class RThirdClassifyBO {
     public int id;
     public String categoryName;
     public String categoryPic;
+    public String fullName;
 
     @Override
     public String toString() {
@@ -20,6 +21,7 @@ public class RThirdClassifyBO {
                 "id=" + id +
                 ", categoryName='" + categoryName + '\'' +
                 ", categoryPic='" + categoryPic + '\'' +
+                ", fullName='" + fullName + '\'' +
                 '}';
     }
 }

@@ -59,7 +59,6 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     ErrorLayout errorLayout;
 
     private ClassifyListAdapter classifyListAdapter;
-    //    private SubClassifyListAdapter subClassifyListAdapter;
     private SubClassifyListAdapter subClassifyListAdapter;
     private List<RSubClassifyBO> rSubClassifyBOs = new ArrayList<>();
     private List<RSubClassifyBO> rSubClassifyBOs2 = new ArrayList<>();
@@ -170,9 +169,10 @@ public class ClassifyFragment extends BaseDaggerFragment<ClassifyFragmentPresent
     }
 
     @Override
-    public void onClick(String categoryId) {
+    public void onClick(String categoryId, boolean isAbroad) {
         Bundle bundle = new Bundle();
         bundle.putString(getString(R.string.intent_categoryId), categoryId);
+        bundle.putBoolean(getString(R.string.intent_isAbroad), isAbroad);
         openActivity(ClassifyListActivity.class, bundle);
     }
 

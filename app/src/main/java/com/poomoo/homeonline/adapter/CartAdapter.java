@@ -49,17 +49,18 @@ public class CartAdapter extends BaseExpandableListAdapter {
 
     public boolean isEdit = false;//true -购买模式 false-编辑模式
     private double totalPrice = 0.00;
+    private double abroadPrice = 0.00;//跨境商品总金额
     public List<Integer> deleteIndex;//选择的删除项下标
     public ArrayList<RCartCommodityBO> rCartCommodityBOs;//选择购买的商品集合
     //    private int commodityCount = 0;
     private int commodityKind = 0;
 
     private boolean isFreePostage = true;//是否包邮
-    private boolean isLimited = false;//跨境商品是否超过限额2000
+//    private boolean isLimited = false;//跨境商品是否超过限额2000
 
     private BigDecimal bg;
     private DecimalFormat df = new DecimalFormat("0.00");
-    private int FLAG;//1-跨境商品超过限额2000 2-同时选中了普通商品和跨境商品
+    private int FLAG = 0;//1-跨境商品超过限额2000 2-同时选中了普通商品和跨境商品
 
     public CartAdapter(Context context, OnBuyCheckChangedListener onBuyCheckChangedListener, OnEditCheckChangedListener onEditCheckChangedListener) {
         this.context = context;
@@ -200,7 +201,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
             holder.commodityChk.setChecked(rCartCommodityBO.isEditChecked);
         else {
             holder.commodityChk.setChecked(rCartCommodityBO.isBuyChecked);
-            if (isLimited && rCartCommodityBO.isBuyChecked && FLAG == 1)
+            if (rCartCommodityBO.isBuyChecked && FLAG == 1)
                 holder.backGroundLayout.setBackgroundResource(R.drawable.shape_rectangle_red);
         }
         Glide.with(context).load(NetConfig.ImageUrl + rCartCommodityBO.listPic).placeholder(R.drawable.replace).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(holder.commodityImg);
@@ -371,9 +372,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
         totalPrice = 0.00;
         deleteIndex = new ArrayList<>();
         rCartCommodityBOs = new ArrayList<>();
-        isLimited = false;
-        lastCartCommodityBO=null;
-
+        lastCartCommodityBO = null;
+        FLAG = 0;
         for (int i = 0; i < group.size(); i++) {
             for (int j = 0; j < group.get(i).getChildrenCount(); j++) {
                 rCartCommodityBO = group.get(i).carts.get(j);
@@ -386,9 +386,9 @@ public class CartAdapter extends BaseExpandableListAdapter {
                         isFreePostage = false;
 
                     if (rCartCommodityBO.commodityType == CommodityType.ABROAD) {
-                        if (!(totalPrice < 2000)) {//跨境商品不能超过2000限额
+                        abroadPrice += rCartCommodityBO.commodityPrice * rCartCommodityBO.commodityNum;
+                        if (!(abroadPrice < 2000)) {//跨境商品不能超过2000限额
                             FLAG = 1;
-                            isLimited = true;
                             break;
                         }
                     }
@@ -404,12 +404,8 @@ public class CartAdapter extends BaseExpandableListAdapter {
                             && (rCartCommodityBO.commodityType == CommodityType.ABROAD
                             || lastCartCommodityBO.commodityType == CommodityType.ABROAD)) {//不能同时选中普通商品和跨境商品
                         FLAG = 2;
-                        isLimited = true;
                         break;
                     }
-
-                if (isLimited)
-                    break;
                 lastCartCommodityBO = rCartCommodityBO;
             }
         }
@@ -418,7 +414,7 @@ public class CartAdapter extends BaseExpandableListAdapter {
         if (isEdit)
             cartFragment.showLimited(false, FLAG);
         else
-            cartFragment.showLimited(isLimited, FLAG);
+            cartFragment.showLimited(FLAG == 0 ? false : true, FLAG);
     }
 
     public double getTotalPrice() {

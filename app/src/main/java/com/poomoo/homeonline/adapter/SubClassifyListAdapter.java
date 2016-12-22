@@ -86,6 +86,7 @@ public class SubClassifyListAdapter extends BaseListAdapter<RSubClassifyBO> {
                 LinearLayout parentLayout = (LinearLayout) parent.findViewById(R.id.llayout_parent);
                 contentViewHolder.linearLayout.removeAllViews();
                 for (int i = 0; i < len; i++) {
+                    LogUtils.d(TAG, "item:" + item.childrenList.get(i));
                     View view = LayoutInflater.from(mContext).inflate(R.layout.item_grid_sub_classify, null);
                     ImageView img = (ImageView) view.findViewById(R.id.img_thirdClassify);
                     TextView nameTxt = (TextView) view.findViewById(R.id.txt_thirdClassify);
@@ -95,7 +96,7 @@ public class SubClassifyListAdapter extends BaseListAdapter<RSubClassifyBO> {
 
                     Glide.with(mContext).load(NetConfig.ImageUrl + item.childrenList.get(i).categoryPic).priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.SOURCE).placeholder(R.drawable.replace_small).into(img);
                     nameTxt.setText(item.childrenList.get(i).categoryName);
-                    view.setOnClickListener(new OnItemClick(item.childrenList.get(i).id + ""));
+                    view.setOnClickListener(new OnItemClick(item.childrenList.get(i).id + "", item.childrenList.get(i).fullName != null && item.childrenList.get(i).fullName.contains("跨境直邮") ? true : false));
                     LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(width, width);
                     if ((i - 1) % 3 == 0)
                         layoutParams.setMargins(margin, 0, margin, 0);
@@ -139,14 +140,16 @@ public class SubClassifyListAdapter extends BaseListAdapter<RSubClassifyBO> {
 
     class OnItemClick implements View.OnClickListener {
         private String categoryId;
+        private boolean isAbroad;
 
-        public OnItemClick(String categoryId) {
+        public OnItemClick(String categoryId, boolean isAbroad) {
             this.categoryId = categoryId;
+            this.isAbroad = isAbroad;
         }
 
         @Override
         public void onClick(View v) {
-            onItemClickListener.onClick(this.categoryId);
+            onItemClickListener.onClick(this.categoryId, this.isAbroad);
         }
     }
 
