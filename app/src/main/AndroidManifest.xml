@@ -154,10 +154,6 @@
             android:exported="false" />
 
         <activity
-            android:name=".ui.activity.AbroadActivity"
-            android:exported="false" />
-
-        <activity
             android:name=".ui.activity.NewAbroadActivity"
             android:exported="false" />
 

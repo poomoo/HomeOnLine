@@ -156,7 +156,7 @@ public class TicketZoneActivity extends BaseDaggerActivity<OnSalePresenter> impl
 
     public void failed(String msg) {
         flag = 0;
-            errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+        errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 
     public void getTicketSuccessful() {
@@ -199,7 +199,10 @@ public class TicketZoneActivity extends BaseDaggerActivity<OnSalePresenter> impl
                 bundle = new Bundle();
                 bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                 bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
-                bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                if (rAdBO.commodityType != null)
+                    bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                else
+                    bundle.putInt(getString(R.string.intent_commodityType), 0);
                 openActivity(CommodityInfoActivity.class, bundle);
             } else {
                 bundle = new Bundle();

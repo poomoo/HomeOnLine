@@ -75,8 +75,8 @@ public class ConfirmOrderAdapter extends BaseListAdapter<RCartCommodityBO> {
         holder.nameTxt.setText(item.commodityName);
         holder.priceTxt.setText(item.commodityPrice + "");
         holder.countTxt.setText(item.commodityNum + "");
-        LogUtils.d(TAG, "commodityType:" + item.commodityType);
-        if (item.commodityType == 4) {//买赠
+        LogUtils.d(TAG, "orderType:" + item.orderType);
+        if (item.orderType == 4) {//买赠
             if (!TextUtils.isEmpty(item.present)) {
                 holder.linearLayout.setVisibility(View.VISIBLE);
                 holder.presentCountTxt.setText(item.present);

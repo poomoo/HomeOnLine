@@ -35,11 +35,9 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.ListCommodityAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.presenters.AbroadClassifyListPresenter;
-import com.poomoo.homeonline.presenters.ClassifyListPresenter;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseListDaggerActivity;
-import com.poomoo.homeonline.ui.custom.AddAndMinusView;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RListCommodityBO;
@@ -49,7 +47,6 @@ import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * 类名 AbroadClassifyListActivity

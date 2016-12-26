@@ -21,7 +21,6 @@
 package com.poomoo.homeonline.reject.components;
 
 import com.poomoo.homeonline.reject.modules.ActivityModule;
-import com.poomoo.homeonline.ui.activity.AbroadActivity;
 import com.poomoo.homeonline.ui.activity.AbroadClassifyListActivity;
 import com.poomoo.homeonline.ui.activity.AbroadCountryActivity;
 import com.poomoo.homeonline.ui.activity.AbroadCountryInfoActivity;
@@ -107,8 +106,6 @@ public interface ActivityComponent {
     void inject(TicketZoneActivity activity);
 
     void inject(PresentActivity activity);
-
-    void inject(AbroadActivity activity);
 
     void inject(NewAbroadActivity activity);
 

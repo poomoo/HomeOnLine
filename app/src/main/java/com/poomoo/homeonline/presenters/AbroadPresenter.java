@@ -30,14 +30,9 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.AbroadActivity;
 import com.poomoo.homeonline.ui.activity.NewAbroadActivity;
 import com.poomoo.model.request.BaseRequest;
-import com.poomoo.model.request.QIdBO;
 import com.poomoo.model.response.RAbroadBO;
-import com.poomoo.model.response.RAbroadCommodityBO;
-
-import java.util.List;
 
 import javax.inject.Inject;
 

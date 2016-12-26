@@ -43,13 +43,6 @@
       <sourceFolder url="file://$MODULE_DIR$/src/c360Debug/jni" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/c360Debug/rs" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/c360Debug/shaders" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/c360/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/c360/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/c360/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/c360/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/apt/androidTest/c360/debug" isTestSource="true" generated="true" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/c360/debug" type="java-test-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/c360/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testC360Debug/res" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testC360Debug/resources" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/testC360Debug/assets" type="java-test-resource" />
@@ -58,6 +51,13 @@
       <sourceFolder url="file://$MODULE_DIR$/src/testC360Debug/jni" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testC360Debug/rs" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/testC360Debug/shaders" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/r/androidTest/c360/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/aidl/androidTest/c360/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/buildConfig/androidTest/c360/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/rs/androidTest/c360/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/source/apt/androidTest/c360/debug" isTestSource="true" generated="true" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/rs/androidTest/c360/debug" type="java-test-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/build/generated/res/resValues/androidTest/c360/debug" type="java-test-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/c360/res" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/c360/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/c360/assets" type="java-resource" />
@@ -169,10 +169,10 @@
     <orderEntry type="library" exported="" name="appcompat-v7-23.4.0" level="project" />
     <orderEntry type="library" exported="" name="umeng_social_view" level="project" />
     <orderEntry type="library" exported="" name="design-23.4.0" level="project" />
+    <orderEntry type="library" exported="" name="analytics-6.0.7" level="project" />
     <orderEntry type="library" exported="" name="umeng_social_net" level="project" />
     <orderEntry type="library" exported="" name="dagger-2.0.2" level="project" />
     <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
-    <orderEntry type="library" exported="" name="analytics-6.0.6" level="project" />
     <orderEntry type="library" exported="" name="rxandroid-1.1.0" level="project" />
     <orderEntry type="library" exported="" name="umeng_social_api" level="project" />
     <orderEntry type="library" exported="" name="rxjava-1.1.0" level="project" />
