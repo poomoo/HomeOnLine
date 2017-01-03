@@ -377,7 +377,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rlayout_purchasing"
+                android:id="@+id/rlayout_wholeSale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"

@@ -43,9 +43,9 @@ import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
+import com.poomoo.homeonline.ui.activity.AbroadActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
-import com.poomoo.homeonline.ui.activity.NewAbroadActivity;
 import com.poomoo.homeonline.ui.activity.TicketZoneActivity;
 import com.poomoo.homeonline.ui.activity.PresentActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
@@ -502,7 +502,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 openActivity(TicketZoneActivity.class);
                 break;
             case 3:
-                openActivity(NewAbroadActivity.class);
+                openActivity(AbroadActivity.class);
                 break;
         }
     }

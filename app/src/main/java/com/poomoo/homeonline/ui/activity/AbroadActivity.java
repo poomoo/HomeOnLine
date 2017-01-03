@@ -66,7 +66,7 @@ import butterknife.OnClick;
  * 作者 李苜菲
  * 日期 2016/11/23 11:56
  */
-public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> implements ErrorLayout.OnActiveClickListener {
+public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implements ErrorLayout.OnActiveClickListener {
     @Bind(R.id.scroll_abroad)
     ScrollView scrollView;
     @Bind(R.id.flipper_ad)
@@ -185,7 +185,8 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
         globalCommodity3Img.setLayoutParams(globalParams);
 
         countryWidth = MyUtils.getScreenWidth(this) / 3;
-        countryParams = new LinearLayout.LayoutParams(countryWidth, countryWidth / 2);
+        countryParams = new LinearLayout.LayoutParams(countryWidth, countryWidth * 10 / 17);
+        LogUtils.d(TAG, "countryWidth:" + countryWidth + " countryWidth/2:" + countryWidth / 2 + " countryWidth*10/17:" + countryWidth * 10 / 17);
         country1Img.setLayoutParams(countryParams);
         country2Img.setLayoutParams(countryParams);
         country3Img.setLayoutParams(countryParams);
@@ -205,6 +206,7 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
 
         /*顶部分类*/
         len = rAbroadBO.categorys.size();
+        LogUtils.d(TAG, "顶部分类");
         group = len / COLUMN_NUM + len % COLUMN_NUM;
         for (int i = 0; i < group; i++) {
             View view = LayoutInflater.from(this).inflate(R.layout.item_activity_abroad_category, null);
@@ -229,16 +231,17 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
             }
             categoryLayout.addView(view);
         }
-
+        LogUtils.d(TAG, "全球精品");
         /*全球精品*/
-        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(0).advertisementPic).into(globalImg);
-        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(1).advertisementPic).into(globalCommodity1Img);
-        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(2).advertisementPic).into(globalCommodity2Img);
-        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(3).advertisementPic).into(globalCommodity3Img);
+        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(0).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalImg);
+        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(1).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalCommodity1Img);
+        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(2).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalCommodity2Img);
+        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(3).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalCommodity3Img);
         globalCommodity1Img.setTag(R.id.tag_first, 1);
         globalCommodity2Img.setTag(R.id.tag_first, 2);
         globalCommodity3Img.setTag(R.id.tag_first, 3);
 
+        LogUtils.d(TAG, "国家地区馆");
         /*国家地区馆*/
         Glide.with(this).load(NetConfig.ImageUrl + countrys.get(0).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country1Img);
         Glide.with(this).load(NetConfig.ImageUrl + countrys.get(1).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country2Img);
@@ -247,6 +250,7 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
         country2Img.setTag(R.id.tag_first, 1);
         country3Img.setTag(R.id.tag_first, 2);
 
+        LogUtils.d(TAG, "底部分类");
         /*底部分类*/
         title = getResources().getStringArray(R.array.abroad_title);
         subTitle = getResources().getStringArray(R.array.abroad_subTitle);
@@ -311,11 +315,16 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
                 || rAbroadBO.topAdvList.size() == 0
                 || rAbroadBO.advList.size() == 0
                 || rAbroadBO.countrys.size() == 0) {
-            errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+//            LogUtils.d(TAG, "rAbroadBO.earthAdv.size():" + rAbroadBO.earthAdv.size()
+//                    + "\n" + " rAbroadBO.categorys.size():" + rAbroadBO.categorys.size() + "\n" + "rAbroadBO.topAdvList.size():" + rAbroadBO.topAdvList.size() + "\n"
+//                    + " rAbroadBO.advList.size():" + rAbroadBO.advList.size() + "\n" + " rAbroadBO.countrys.size():" + rAbroadBO.countrys.size());
+            errorLayout.setState(ErrorLayout.EMPTY_DATA, "暂时没有数据");
             return;
         }
-        scrollView.setVisibility(View.VISIBLE);
-        errorLayout.setState(ErrorLayout.HIDE, "");
+//        LogUtils.d(TAG, "rAbroadBO.earthAdv:" + rAbroadBO.earthAdv
+//                + "\n" + " rAbroadBO.categorys:" + rAbroadBO.categorys + "\n" + "rAbroadBO.topAdvList:" + rAbroadBO.topAdvList + "\n"
+//                + " rAbroadBO.advList:" + rAbroadBO.advList + "\n" + " rAbroadBO.countrys:" + rAbroadBO.countrys);
+
         String[] urls = new String[rAbroadBO.topAdvList.size()];
         int i = 0;
         for (RAdBO rAdBO : rAbroadBO.topAdvList)
@@ -326,6 +335,8 @@ public class NewAbroadActivity extends BaseDaggerActivity<AbroadPresenter> imple
         });
         this.rAbroadBO = rAbroadBO;
         addView(rAbroadBO);
+        scrollView.setVisibility(View.VISIBLE);
+        errorLayout.setState(ErrorLayout.HIDE, "");
     }
 
     public void jump() {

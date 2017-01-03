@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ThemeBg"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <include
@@ -487,8 +487,7 @@
                         android:layout_height="100dp"
                         android:layout_weight="1"
                         android:onClick="countryClick"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/replace1b2" />
+                        android:scaleType="centerInside" />
 
                     <ImageView
                         android:id="@+id/img_abroad_country2"
@@ -496,8 +495,7 @@
                         android:layout_height="100dp"
                         android:layout_weight="1"
                         android:onClick="countryClick"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/replace1b2" />
+                        android:scaleType="centerInside" />
 
                     <ImageView
                         android:id="@+id/img_abroad_country3"
@@ -505,8 +503,7 @@
                         android:layout_height="100dp"
                         android:layout_weight="1"
                         android:onClick="countryClick"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/replace1b2" />
+                        android:scaleType="centerInside" />
                 </LinearLayout>
 
                 <TextView

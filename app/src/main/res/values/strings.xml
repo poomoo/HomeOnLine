@@ -53,6 +53,7 @@
     <string name="label_rule">"凡是今日起,在本商城领取优惠券,购买满90减5元"\n"满199元减10元,满250减15元,满300减20元"</string>
     <string name="label_limit1">"标红部分的跨境商品合计超过限额￥2000,请选择部分商品进行结算"</string>
     <string name="label_limit2">"抱歉,跨境商品与普通商品不能同时购买,请分开结算"</string>
+    <string name="label_wholeSalePower">申请成为家有在线集采用户后，可以按照集采价进行批量采购，买的越多价格越低。(如;购买某种商品1-5件,20元;6-10件，18元;10件以上,16元)</string>
 
     <string name="hint_inputUserName">请输入用户名</string>
     <string name="hint_inputUserPassWord">请输入密码</string>
@@ -170,5 +171,8 @@
     <string name="btn_invite">立即邀请</string>
 
     <string name="umeng_sharebutton_copy">复制链接</string>
+    <string name="title_wholeSale1">申请成为集采用户</string>
+    <string name="btn_applyToWholeSaleUser">申请成为集采用户</string>
+    <string name="btn_submit">提交</string>
 
 </resources>

@@ -36,7 +36,7 @@ import com.poomoo.homeonline.ui.activity.ConfirmOrderActivity;
 import com.poomoo.homeonline.ui.activity.EvaluateActivity;
 import com.poomoo.homeonline.ui.activity.FeedBackActivity;
 import com.poomoo.homeonline.ui.activity.GetCodeActivity;
-import com.poomoo.homeonline.ui.activity.NewAbroadActivity;
+import com.poomoo.homeonline.ui.activity.AbroadActivity;
 import com.poomoo.homeonline.ui.activity.TicketZoneActivity;
 import com.poomoo.homeonline.ui.activity.InviteActivity;
 import com.poomoo.homeonline.ui.activity.LogInActivity;
@@ -107,7 +107,7 @@ public interface ActivityComponent {
 
     void inject(PresentActivity activity);
 
-    void inject(NewAbroadActivity activity);
+    void inject(AbroadActivity activity);
 
     void inject(AbroadGlobalActivity activity);
 

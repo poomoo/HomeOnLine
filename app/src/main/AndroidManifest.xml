@@ -154,7 +154,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".ui.activity.NewAbroadActivity"
+            android:name=".ui.activity.AbroadActivity"
             android:exported="false" />
 
         <activity
@@ -168,8 +168,13 @@
         <activity
             android:name=".ui.activity.AbroadCountryInfoActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.activity.AbroadClassifyListActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.WholeSaleUserPowerActivity"
             android:exported="false" />
 
         <!--图片相关-->

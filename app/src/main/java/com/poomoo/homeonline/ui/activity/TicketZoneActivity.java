@@ -132,6 +132,13 @@ public class TicketZoneActivity extends BaseDaggerActivity<OnSalePresenter> impl
     }
 
     public void successful(ROnSaleBO rOnSaleBO) {
+        LogUtils.d(TAG, "rOnSaleBO.yhqs.size():" + rOnSaleBO.yhqs.size() + "\n" + "rOnSaleBO.advlist.size():" + rOnSaleBO.advlist.size() + "\n" + "rOnSaleBO.commoditys.size():" + rOnSaleBO.commoditys.size());
+        if (rOnSaleBO.yhqs.size() == 0
+                || rOnSaleBO.advlist.size() == 0
+                || rOnSaleBO.commoditys.size() == 0) {
+            errorLayout.setState(ErrorLayout.EMPTY_DATA, "暂时没有数据");
+            return;
+        }
         loadAd(rOnSaleBO.advlist);
         addView(rOnSaleBO);
         setImage(rOnSaleBO.yhqs);
