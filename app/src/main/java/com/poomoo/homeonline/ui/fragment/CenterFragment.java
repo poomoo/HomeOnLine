@@ -37,6 +37,7 @@ import com.poomoo.homeonline.ui.activity.MyOrdersActivity;
 import com.poomoo.homeonline.ui.activity.SafeActivity;
 import com.poomoo.homeonline.ui.activity.ScanHistoryActivity;
 import com.poomoo.homeonline.ui.activity.TicketActivity;
+import com.poomoo.homeonline.ui.activity.WholeSaleMainActivity;
 import com.poomoo.homeonline.ui.activity.WholeSaleUserPowerActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.model.response.ROrderBO;
@@ -131,7 +132,7 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         openActivity(MyOrdersActivity.class, bundle);
     }
 
-    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_ticket, R.id.rlayout_my_address,R.id.rlayout_wholeSale,R.id.rlayout_invite, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale})
+    @OnClick({R.id.txt_collection, R.id.txt_history, R.id.rlayout_my_info, R.id.rlayout_ticket, R.id.rlayout_my_address, R.id.rlayout_wholeSale, R.id.rlayout_invite, R.id.rlayout_tel, R.id.rlayout_feed_back, R.id.rlayout_safe_center, R.id.llayout_after_sale})
     void other(View view) {
         if (!MyUtils.isLogin(getActivity())) {
             Intent login = new Intent(getActivity(), LogInActivity.class);
@@ -160,7 +161,8 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
                 openActivity(AddressListActivity.class, bundle);
                 break;
             case R.id.rlayout_wholeSale:
-                openActivity(WholeSaleUserPowerActivity.class);
+//                openActivity(WholeSaleUserPowerActivity.class);
+                openActivity(WholeSaleMainActivity.class);
                 break;
             case R.id.rlayout_invite:
                 openActivity(InviteActivity.class);
@@ -260,7 +262,7 @@ public class CenterFragment extends BaseDaggerFragment<CenterFragmentPresenter> 
         if (MyUtils.isLogin(getActivity())) {
             nameTxt.setText(application.getNickName());
             logoutLayout.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             nameTxt.setText("登录/注册");
             logoutLayout.setVisibility(View.GONE);
         }

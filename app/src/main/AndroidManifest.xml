@@ -98,7 +98,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".ui.activity.ClassifyInfoActivity"
+            android:name=".ui.activity.WholeSaleClassifyInfoActivity"
             android:exported="false" />
 
         <activity
@@ -175,6 +175,13 @@
 
         <activity
             android:name=".ui.activity.WholeSaleUserPowerActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.RegisterToWholeSaleUserActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.WholeSaleMainActivity"
             android:exported="false" />
 
         <!--图片相关-->

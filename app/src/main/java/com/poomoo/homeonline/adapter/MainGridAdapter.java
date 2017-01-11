@@ -24,43 +24,60 @@ import com.poomoo.model.response.RCateBO;
  * 日期 2016/7/19 11:31
  */
 public class MainGridAdapter extends MyBaseAdapter<RCateBO> {
+    private boolean isWholeSale;
     private RCateBO item;
-    private String url;
+    private final static int[] wholeSaleLogo = {R.drawable.ic_wholesale_taste, R.drawable.ic_wholesale_wine, R.drawable.ic_wholesale_artware, R.drawable.ic_wholesale_food, R.drawable.ic_wholesale_global, R.drawable.ic_wholesale_infant, R.drawable.ic_wholesale_beauty, R.drawable.ic_wholesale_house};
+    public final static String[] wholeSaleName = {"贵州味道", "贵茶贵酒", "黔匠艺品", "食品酒水", "全球优品", "母婴用品", "美妆个护", "家居生活"};
 
-    public MainGridAdapter(Context context) {
+    public MainGridAdapter(Context context, boolean isWholeSale) {
         super(context);
+        this.isWholeSale = isWholeSale;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+//    public void setUrl(String url) {
+//        this.url = url;
+//    }
+
+
+    @Override
+    public int getCount() {
+        if (!isWholeSale)
+            return itemList.size();
+        else
+            return 8;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final ViewHolder viewHolder;
         viewHolder = new ViewHolder();
-        item = itemList.get(position);
 
         convertView = inflater.inflate(R.layout.item_grid_main, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.img_main);
         viewHolder.txt = (TextView) convertView.findViewById(R.id.txt_main);
 
-//        Glide.with(context).load(url + item.id + ".png").placeholder(R.drawable.replace).priority(Priority.IMMEDIATE).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(viewHolder.image);
-        switch (position) {
-            case 0:
-                viewHolder.image.setImageResource(R.drawable.ic_grab);
-                break;
-            case 1:
-                viewHolder.image.setImageResource(R.drawable.ic_present);
-                break;
-            case 2:
-                viewHolder.image.setImageResource(R.drawable.ic_tickets);
-                break;
-            case 3:
-                viewHolder.image.setImageResource(R.drawable.ic_abroad);
-                break;
+        if (!isWholeSale) {
+            item = itemList.get(position);
+            viewHolder.txt.setText(item.categoryName);
+            switch (position) {
+                case 0:
+                    viewHolder.image.setImageResource(R.drawable.ic_grab);
+                    break;
+                case 1:
+                    viewHolder.image.setImageResource(R.drawable.ic_present);
+                    break;
+                case 2:
+                    viewHolder.image.setImageResource(R.drawable.ic_tickets);
+                    break;
+                case 3:
+                    viewHolder.image.setImageResource(R.drawable.ic_abroad);
+                    break;
+            }
+        } else {
+            viewHolder.image.setImageResource(wholeSaleLogo[position]);
+            viewHolder.txt.setText(wholeSaleName[position]);
         }
-        viewHolder.txt.setText(item.categoryName);
+
         return convertView;
     }
 

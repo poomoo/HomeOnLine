@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -148,7 +149,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 
     private void init() {
         slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) / 2));//设置广告栏的宽高比为2:1
-        gridAdapter = new MainGridAdapter(getActivity());
+        gridAdapter = new MainGridAdapter(getActivity(),false);
         menuGrid.setAdapter(gridAdapter);
         menuGrid.setOnItemClickListener(this);
         mPresenter.getSlide();
@@ -291,11 +292,11 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private void initGuess() {
         guessRecycler.setLayoutManager(new ScrollGridLayoutManager(getActivity(), 2));
         guessRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
-                .color(getResources().getColor(R.color.transParent))
+                .color(ContextCompat.getColor(getActivity(), R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
         guessRecycler.addItemDecoration(new VerticalDividerItemDecoration.Builder(getActivity())
-                .color(getResources().getColor(R.color.transParent))
+                .color(ContextCompat.getColor(getActivity(), R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
 
@@ -385,7 +386,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     }
 
     public void loadTypeSucceed(RTypeBO rTypeBO) {
-        gridAdapter.setUrl(rTypeBO.picUrl);
+//        gridAdapter.setUrl(rTypeBO.picUrl);
         gridAdapter.setItems(rTypeBO.categotys.subList(0, rTypeBO.categotys.size() - 1));
         SPUtils.put(getActivity().getApplicationContext(), getString(R.string.sp_type), gson.toJson(rTypeBO));
     }
@@ -399,7 +400,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             }.getType();
             RTypeBO rTypeBO;
             rTypeBO = new Gson().fromJson(json, type);
-            gridAdapter.setUrl(rTypeBO.picUrl);
+//            gridAdapter.setUrl(rTypeBO.picUrl);
             gridAdapter.setItems(rTypeBO.categotys);
         }
     }

@@ -117,7 +117,6 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     private int[] deleteIndex;//删除的商品的id集合
     private Bundle bundle;
     private RCartCommodityBO cartCommodityBO;
-    private boolean isLimited = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -540,7 +539,6 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
     }
 
     public void showLimited(boolean isLimited, int flag) {
-        this.isLimited = isLimited;
         LogUtils.d(TAG, "isLimited:" + isLimited + " flag:" + flag);
         limitTxt.setText(flag == 1 ? R.string.label_limit1 : R.string.label_limit2);
         limitLayout.setVisibility(isLimited ? View.VISIBLE : View.GONE);

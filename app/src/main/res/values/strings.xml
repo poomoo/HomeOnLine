@@ -41,6 +41,9 @@
     <string name="title_global">全球精选</string>
     <string name="title_country">国家地区馆</string>
     <string name="title_empty"></string>
+    <string name="title_wholeSale1">申请成为集采用户</string>
+    <string name="title_toWhole_sale_user">提交资料</string>
+    <string name="title_toWhole_sale_center">集采中心</string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -68,6 +71,8 @@
     <string name="btn_close">关闭</string>
     <string name="btn_confirm">确定</string>
     <string name="btn_present">立即秒杀</string>
+    <string name="btn_applyToWholeSaleUser">申请成为集采用户</string>
+    <string name="btn_submit">提交</string>
 
     <string name="intent_value">value</string>
     <string name="intent_parent">parent</string>
@@ -119,6 +124,7 @@
     <string name="intent_title">title</string>
     <string name="intent_countryName">countryName</string>
     <string name="intent_isAbroad">isAbroad</string>
+    <string name="intent_isActivity">isActivity</string>
 
     <string name="sp_isIndex">isIndex</string>
     <string name="sp_phoneNum">phoneNum</string>
@@ -171,8 +177,5 @@
     <string name="btn_invite">立即邀请</string>
 
     <string name="umeng_sharebutton_copy">复制链接</string>
-    <string name="title_wholeSale1">申请成为集采用户</string>
-    <string name="btn_applyToWholeSaleUser">申请成为集采用户</string>
-    <string name="btn_submit">提交</string>
 
 </resources>

@@ -46,4 +46,12 @@ public class RListCommodityBO {
     public int activityId;
 
     public String price;
+
+    @Override
+    public String toString() {
+        return "RListCommodityBO{" +
+                "commodityName='" + commodityName + '\'' +
+                ", commodityType=" + commodityType +
+                '}';
+    }
 }

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.poomoo.commlib.LogUtils;
+import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.TimeCountDownUtil;
 import com.poomoo.homeonline.R;
@@ -139,10 +140,7 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
                 if (!getCodeBtn.isClickable())
                     return;
                 String temp = s.toString();
-                if (temp.length() == 11)
-                    getCodeBtn.setEnabled(true);
-                else
-                    getCodeBtn.setEnabled(false);
+                getCodeBtn.setEnabled(MyUtils.checkPhoneNum(temp));
             }
         });
 
@@ -203,7 +201,7 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
     public void getCodeSucceed() {
         hideProgressBar();
         MyUtils.showToast(getApplicationContext(), "验证码发送成功");
-        timeCountDownUtil = new TimeCountDownUtil(60 * 1000, 1000, getCodeBtn);
+        timeCountDownUtil = new TimeCountDownUtil(MyConfig.SMSCOUNTDOWNTIME, MyConfig.COUNTDOWNTIBTERVAL, getCodeBtn);
         timeCountDownUtil.start();
         getCodeBtn.setEnabled(false);
     }

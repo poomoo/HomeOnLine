@@ -27,29 +27,22 @@
 package com.poomoo.homeonline.ui.activity;
 
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
-import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
-import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.ClassifyInfoAdapter;
 import com.poomoo.homeonline.adapter.ListCommodityAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.presenters.ClassifyInfoPresenter;
-import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
-import com.poomoo.homeonline.ui.custom.NoScrollRecyclerView;
-import com.poomoo.homeonline.ui.custom.SlideShowView;
-import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RClassifyInfoBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
@@ -61,22 +54,16 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
- * 类名 ClassifyInfoActivity
- * 描述 分类详情
+ * 类名 WholeSaleClassifyInfoActivity
+ * 描述 集采分类详情
  * 作者 李苜菲
  * 日期 2016/8/16 15:53
  */
-public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresenter> implements BaseListAdapter.OnItemClickListener, ErrorLayout.OnActiveClickListener {
-    @Bind(R.id.scrollView_classify_info)
-    ScrollView scrollView;
-    @Bind(R.id.flipper_ad)
-    SlideShowView slideShowView;
+public class WholeSaleClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresenter> implements BaseListAdapter.OnItemClickListener, ErrorLayout.OnActiveClickListener {
+    @Bind(R.id.recycler_classify_title)
+    RecyclerView titleRecycler;
     @Bind(R.id.recycler_classify_info)
-    RecyclerView classifyRecycler;
-    @Bind(R.id.recycler_commodity)
-    NoScrollRecyclerView commodityRecycler;
-    @Bind(R.id.txt_classify_info)
-    TextView classifyTxt;
+    RecyclerView infoRecycler;
     @Bind(R.id.error_frame)
     ErrorLayout mErrorLayout;
 
@@ -84,20 +71,18 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
     private ListCommodityAdapter listCommodityAdapter;
     private ClassifyInfoAdapter classifyInfoAdapter;
     private List<RListCommodityBO> rListCommodityBOs;
-    public static int SELECTPOSITION = 0;
+    public static int SELECT_POSITION = 0;
     private String categoryId;
     public final String mEmptyMsg = "暂无商品";
     private RListCommodityBO rListCommodityBO;
     private boolean isList = false;//true-加载list
-    private String[] ad;
-    private RAdBO rAdBO;
     private Bundle bundle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        title = getIntent().getStringExtra(getString(R.string.intent_value));
+        title = getIntent().getStringExtra(getString(R.string.intent_title));
         categoryId = getIntent().getStringExtra(getString(R.string.intent_categoryId));
         init();
     }
@@ -123,24 +108,16 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
     private void init() {
         HeaderViewHolder headerViewHolder = getHeaderView();
         headerViewHolder.titleTxt.setText(title);
-//        scrollView.setVisibility(View.GONE);
-        slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(this) / 2));//设置广告栏的宽高比为2:1
-//        titleImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(this) / 2));//设置广告栏的宽高比为2:1
 
-        classifyRecycler.setLayoutManager(new GridLayoutManager(this, 3));
-        classifyRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .color(getResources().getColor(R.color.transParent))
+        titleRecycler.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        titleRecycler.addItemDecoration(new VerticalDividerItemDecoration.Builder(this)
+                .color(ContextCompat.getColor(this, R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.dp_10))
                 .build());
-        classifyRecycler.addItemDecoration(new VerticalDividerItemDecoration.Builder(this)
-                .color(getResources().getColor(R.color.transParent))
-                .size((int) getResources().getDimension(R.dimen.recycler_divider))
-                .build());
         classifyInfoAdapter = new ClassifyInfoAdapter(this, BaseListAdapter.NEITHER);
-        classifyRecycler.setAdapter(classifyInfoAdapter);
+        titleRecycler.setAdapter(classifyInfoAdapter);
         classifyInfoAdapter.setOnItemClickListener((position, id, view) -> {
-            classifyTxt.setText(classifyInfoAdapter.getItem(position).categoryName);
-            SELECTPOSITION = position;
+            SELECT_POSITION = position;
             classifyInfoAdapter.notifyDataSetChanged();
             listCommodityAdapter.clear();
             categoryId = classifyInfoAdapter.getItem(position).id + "";
@@ -148,25 +125,25 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
             mPresenter.loadClassifyList(categoryId);
         });
 
-        commodityRecycler.setLayoutManager(new ScrollGridLayoutManager(this, 2));
-        commodityRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                .color(getResources().getColor(R.color.transParent))
+        infoRecycler.setLayoutManager(new GridLayoutManager(this, 2));
+        infoRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .color(ContextCompat.getColor(this, R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
-        commodityRecycler.addItemDecoration(new VerticalDividerItemDecoration.Builder(this)
-                .color(getResources().getColor(R.color.transParent))
+        infoRecycler.addItemDecoration(new VerticalDividerItemDecoration.Builder(this)
+                .color(ContextCompat.getColor(this, R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
-//        commodityRecycler.setPadding((int) getResources().getDimension(R.dimen.dp_20), (int) getResources().getDimension(R.dimen.dp_10), (int) getResources().getDimension(R.dimen.dp_20), 0);
-        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.NEITHER, false);
-        commodityRecycler.setAdapter(listCommodityAdapter);
+//        infoRecycler.setPadding((int) getResources().getDimension(R.dimen.dp_20), (int) getResources().getDimension(R.dimen.dp_10), (int) getResources().getDimension(R.dimen.dp_20), 0);
+        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.NEITHER, true);
+        infoRecycler.setAdapter(listCommodityAdapter);
         listCommodityAdapter.setOnItemClickListener(this);
 
         mErrorLayout.setOnActiveClickListener(this);
 
         mErrorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.loadClassify(categoryId);
-        SELECTPOSITION = 0;
+        SELECT_POSITION = 0;
     }
 
     @Override
@@ -183,43 +160,22 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
         LogUtils.d(TAG, "threeCategoryList" + rClassifyInfoBO.threeCategoryList);
         LogUtils.d(TAG, "commoditys" + rClassifyInfoBO.commoditys);
 
-        scrollView.setVisibility(View.VISIBLE);
-        int len = rClassifyInfoBO.advertisementList.size();
-        ad = new String[len];
-        for (int i = 0; i < len; i++) {
-            rAdBO = new RAdBO();
-            rAdBO = rClassifyInfoBO.advertisementList.get(i);
-            ad[i] = NetConfig.ImageUrl + rAdBO.advertisementPic;
-        }
-        slideShowView.setPics(ad, position -> {
-//            rAdBO = rClassifyInfoBO.advertisementList.get(position);
-//            if (rAdBO.isCommodity) {
-//                bundle = new Bundle();
-//                bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
-//                bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
-//                bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-//                openActivity(CommodityInfoActivity.class, bundle);
-//            } else {
-//                bundle = new Bundle();
-//                bundle.putString(getString(R.string.intent_value), rAdBO.connect);
-//                openActivity(WebViewActivity.class, bundle);
-//            }
-        });
-//        Glide.with(this).load(NetConfig.ImageUrl + rClassifyInfoBO.advertisementList.get(0).advertisementPic).placeholder(R.drawable.replace2).priority(Priority.IMMEDIATE).into(titleImg);
         this.rListCommodityBOs = rClassifyInfoBO.commoditys;
-        classifyTxt.setText(rClassifyInfoBO.threeCategoryList.get(0).categoryName);
         onLoadResultData(rListCommodityBOs);
+        RClassifyInfoBO classifyInfoBO = new RClassifyInfoBO();
+        RClassifyInfoBO.ThreeCategoryList threeCategoryList = classifyInfoBO.new ThreeCategoryList();
+        threeCategoryList.categoryName = "全部";
+        threeCategoryList.id = categoryId;
+        rClassifyInfoBO.threeCategoryList.add(0, threeCategoryList);
         classifyInfoAdapter.setItems(rClassifyInfoBO.threeCategoryList);
     }
 
     public void loadClassifyFailed(String msg) {
         isList = false;
-        scrollView.setVisibility(View.GONE);
-            mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+        mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 
     public void loadInfoSucceed(List<RListCommodityBO> rListCommodityBOs) {
-        scrollView.setVisibility(View.VISIBLE);
         mErrorLayout.setState(ErrorLayout.HIDE, "");
         this.rListCommodityBOs = rListCommodityBOs;
         listCommodityAdapter.setItems(rListCommodityBOs);
@@ -227,8 +183,7 @@ public class ClassifyInfoActivity extends BaseDaggerActivity<ClassifyInfoPresent
 
     public void loadInfoFailed(String msg) {
         isList = true;
-        scrollView.setVisibility(View.GONE);
-            mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+        mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 
     @Override

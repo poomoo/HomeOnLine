@@ -44,7 +44,7 @@ public class RClassifyInfoBO {
 //    }
 
     public class ThreeCategoryList {
-        public int id;
+        public String id;
         public String categoryName;
     }
 }

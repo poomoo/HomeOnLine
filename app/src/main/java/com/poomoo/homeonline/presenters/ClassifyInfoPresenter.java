@@ -30,7 +30,7 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.ClassifyInfoActivity;
+import com.poomoo.homeonline.ui.activity.WholeSaleClassifyInfoActivity;
 import com.poomoo.model.request.QCategoryIdBO;
 import com.poomoo.model.response.RClassifyInfoBO;
 import com.poomoo.model.response.RListCommodityBO;
@@ -48,7 +48,7 @@ import rx.schedulers.Schedulers;
  * 作者 李苜菲
  * 日期 2016/8/16 15:54
  */
-public class ClassifyInfoPresenter extends BasePresenter<ClassifyInfoActivity> {
+public class ClassifyInfoPresenter extends BasePresenter<WholeSaleClassifyInfoActivity> {
     @Inject
     public ClassifyInfoPresenter() {
 

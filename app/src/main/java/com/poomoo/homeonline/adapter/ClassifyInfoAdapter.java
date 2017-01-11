@@ -5,13 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.TextView;
 
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
-import com.poomoo.homeonline.ui.activity.ClassifyInfoActivity;
-import com.poomoo.homeonline.ui.fragment.ClassifyFragment;
-import com.poomoo.model.response.RClassifyBO;
+import com.poomoo.homeonline.ui.activity.WholeSaleClassifyInfoActivity;
 import com.poomoo.model.response.RClassifyInfoBO;
 
 import butterknife.Bind;
@@ -38,7 +35,7 @@ public class ClassifyInfoAdapter extends BaseListAdapter<RClassifyInfoBO.ThreeCa
     protected void onBindDefaultViewHolder(RecyclerView.ViewHolder h, int position) {
         BaseViewHolder holder = (BaseViewHolder) h;
         holder.classifyChk.setText(items.get(position).categoryName);
-        holder.classifyChk.setChecked(position == ClassifyInfoActivity.SELECTPOSITION);
+        holder.classifyChk.setChecked(position == WholeSaleClassifyInfoActivity.SELECT_POSITION);
     }
 
     public static final class BaseViewHolder extends RecyclerView.ViewHolder {

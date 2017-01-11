@@ -203,15 +203,17 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
     private void addView(RAbroadBO rAbroadBO) {
         earthAdv = rAbroadBO.earthAdv;
         countrys = rAbroadBO.countrys;
-
         /*顶部分类*/
         len = rAbroadBO.categorys.size();
         LogUtils.d(TAG, "顶部分类");
-        group = len / COLUMN_NUM + len % COLUMN_NUM;
+        group = len / COLUMN_NUM + len % COLUMN_NUM;//当分类个数小于COLUMN_NUM的情况没有考虑进去！！（记得修改）
+        LogUtils.d(TAG, "group:" + group);
         for (int i = 0; i < group; i++) {
+            LogUtils.d(TAG, "i:" + i);
             View view = LayoutInflater.from(this).inflate(R.layout.item_activity_abroad_category, null);
             categorySubLayout = (LinearLayout) view.findViewById(R.id.llayout_abroad_category);
             for (int j = 0; j < COLUMN_NUM; j++) {
+                LogUtils.d(TAG, "j:" + j);
                 View subView = LayoutInflater.from(this).inflate(R.layout.item_activity_abroad_category_info, null);
                 categoryInfoLayout = (LinearLayout) subView.findViewById(R.id.llayout_abroad_category_info);
                 categoryImg = (ImageView) subView.findViewById(R.id.img_abroad_category);
@@ -321,9 +323,9 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
             errorLayout.setState(ErrorLayout.EMPTY_DATA, "暂时没有数据");
             return;
         }
-//        LogUtils.d(TAG, "rAbroadBO.earthAdv:" + rAbroadBO.earthAdv
-//                + "\n" + " rAbroadBO.categorys:" + rAbroadBO.categorys + "\n" + "rAbroadBO.topAdvList:" + rAbroadBO.topAdvList + "\n"
-//                + " rAbroadBO.advList:" + rAbroadBO.advList + "\n" + " rAbroadBO.countrys:" + rAbroadBO.countrys);
+        LogUtils.d(TAG, "rAbroadBO.earthAdv:" + rAbroadBO.earthAdv
+                + "\n" + " rAbroadBO.categorys:" + rAbroadBO.categorys + "\n" + "rAbroadBO.topAdvList:" + rAbroadBO.topAdvList + "\n"
+                + " rAbroadBO.advList:" + rAbroadBO.advList + "\n" + " rAbroadBO.countrys:" + rAbroadBO.countrys);
 
         String[] urls = new String[rAbroadBO.topAdvList.size()];
         int i = 0;

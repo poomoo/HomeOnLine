@@ -52,6 +52,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -124,7 +125,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private TextView nameTxt;
     private TextView priceTxt;
     private TextView oldPriceTxt;
-    private TextView purchaseTxt;
+    private RadioGroup priceRG;
+    private RadioGroup numRG;
     private TextView inventoryTxt;
     private TextView selectedTxt;
     private TextView presentTxt;
@@ -134,6 +136,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private LinearLayout presentLayout;
     private LinearLayout countLayout;
     private LinearLayout specificationLayout;
+    private LinearLayout commonPriceLayout;
+    private LinearLayout wholeSalePriceLayout;
     private ScrollView scrollView;
 
     //view2
@@ -199,6 +203,7 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
     private int newActivityId = -1;//买赠商品需要传值
     private double price = 0.00;
     private double oldPrice = 0.00;
+    private boolean isPress = false;//是否是手指点击事件
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -295,7 +300,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         nameTxt = (TextView) view1.findViewById(R.id.txt_info_name);
         priceTxt = (TextView) view1.findViewById(R.id.txt_info_price);
         oldPriceTxt = (TextView) view1.findViewById(R.id.txt_info_old_price);
-        purchaseTxt = (TextView) view1.findViewById(R.id.txt_purchase);
+        priceRG = (RadioGroup) view1.findViewById(R.id.radio_group_price);
+        numRG = (RadioGroup) view1.findViewById(R.id.radio_group_num);
         inventoryTxt = (TextView) view1.findViewById(R.id.txt_inventory);
         selectedTxt = (TextView) view1.findViewById(R.id.txt_commodity_selected);
         presentTxt = (TextView) view1.findViewById(R.id.txt_present_info);
@@ -305,10 +311,52 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
         plusImg = (ImageView) view1.findViewById(R.id.img_info_add);
         minusImg = (ImageView) view1.findViewById(R.id.img_info_minus);
         specificationLayout = (LinearLayout) view1.findViewById(R.id.layout_commodity_specification);
+        commonPriceLayout = (LinearLayout) view1.findViewById(R.id.layout_common_price);
+        wholeSalePriceLayout = (LinearLayout) view1.findViewById(R.id.layout_wholesale_price);
         scrollView = (ScrollView) view1.findViewById(R.id.scroll_commodity_info);
 
-        purchaseTxt.setOnClickListener(this);
         specificationLayout.setOnClickListener(this);
+
+        commonPriceLayout.setVisibility(View.GONE);
+        wholeSalePriceLayout.setVisibility(View.VISIBLE);
+        priceRG.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rbtn_price1:
+                    isPress = true;
+                    numRG.check(R.id.rbtn_num1);
+                    isPress = false;
+                    break;
+                case R.id.rbtn_price2:
+                    isPress = true;
+                    numRG.check(R.id.rbtn_num2);
+                    isPress = false;
+                    break;
+                case R.id.rbtn_price3:
+                    isPress = true;
+                    numRG.check(R.id.rbtn_num3);
+                    isPress = false;
+                    break;
+            }
+        });
+        numRG.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.rbtn_num1:
+                    isPress = true;
+                    priceRG.check(R.id.rbtn_price1);
+                    isPress = false;
+                    break;
+                case R.id.rbtn_num2:
+                    isPress = true;
+                    priceRG.check(R.id.rbtn_price2);
+                    isPress = false;
+                    break;
+                case R.id.rbtn_num3:
+                    isPress = true;
+                    priceRG.check(R.id.rbtn_price3);
+                    isPress = false;
+                    break;
+            }
+        });
 
         slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, screenWidth));
         oldPriceTxt.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
@@ -963,9 +1011,9 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
                 }
                 showProgressBar();
                 break;
-            case R.id.txt_purchase:
-                createDialog(true, true);
-                break;
+//            case R.id.txt_purchase:
+//                createDialog(true, true);
+//                break;
             case R.id.layout_commodity_specification:
                 createDialog(true, false);
                 break;

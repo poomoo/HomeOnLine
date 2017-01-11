@@ -57,6 +57,6 @@ public class WholeSaleUserPowerActivity extends BaseActivity {
     }
 
     public void toWholeSaleRegister(View view) {
-
+        openActivity(RegisterToWholeSaleUserActivity.class);
     }
 }

@@ -28,7 +28,7 @@ import com.poomoo.homeonline.ui.activity.AbroadGlobalActivity;
 import com.poomoo.homeonline.ui.activity.AddressInfoActivity;
 import com.poomoo.homeonline.ui.activity.AddressListActivity;
 import com.poomoo.homeonline.ui.activity.ChangePassWordActivity;
-import com.poomoo.homeonline.ui.activity.ClassifyInfoActivity;
+import com.poomoo.homeonline.ui.activity.WholeSaleClassifyInfoActivity;
 import com.poomoo.homeonline.ui.activity.ClassifyListActivity;
 import com.poomoo.homeonline.ui.activity.CollectActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
@@ -81,7 +81,7 @@ public interface ActivityComponent {
 
     void inject(SearchActivity activity);
 
-    void inject(ClassifyInfoActivity activity);
+    void inject(WholeSaleClassifyInfoActivity activity);
 
     void inject(ClassifyListActivity activity);
 

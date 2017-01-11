@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.Priority;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.MyBaseAdapter;
 import com.poomoo.model.response.RCateBO;
@@ -41,6 +42,7 @@ public class OnSaleGridAdapter extends MyBaseAdapter<RListCommodityBO> {
         final ViewHolder viewHolder;
         viewHolder = new ViewHolder();
         item = itemList.get(position);
+//        LogUtils.d(TAG,"item:"+item);
 
         convertView = inflater.inflate(R.layout.item_list_commodity, null);
         viewHolder.image = (ImageView) convertView.findViewById(R.id.img_commodity);

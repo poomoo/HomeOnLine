@@ -55,4 +55,11 @@ public class ROnSaleBO {
                     '}';
         }
     }
+
+    @Override
+    public String toString() {
+        return "ROnSaleBO{" +
+                "commoditys=" + commoditys +
+                '}';
+    }
 }

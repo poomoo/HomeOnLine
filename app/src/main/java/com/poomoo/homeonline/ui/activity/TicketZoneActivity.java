@@ -223,6 +223,7 @@ public class TicketZoneActivity extends BaseDaggerActivity<OnSalePresenter> impl
         name = getResources().getStringArray(R.array.on_sale_type);
         len = rOnSaleBO.commoditys.size();
         for (int i = 0; i < len; i++) {
+//            LogUtils.d(TAG, "i:" + i + "commoditys:" + rOnSaleBO.commoditys.get(i));
             View view = LayoutInflater.from(this).inflate(R.layout.layout_on_sale, null);
             TextView titleTxt = (TextView) view.findViewById(R.id.txt_on_sale_name);
             NoScrollGridView gridView = (NoScrollGridView) view.findViewById(R.id.grid_on_sale);
@@ -243,6 +244,7 @@ public class TicketZoneActivity extends BaseDaggerActivity<OnSalePresenter> impl
                 bundle.putInt(getString(R.string.intent_commodityId), rListCommodityBO.commodityId);
                 bundle.putInt(getString(R.string.intent_commodityDetailId), rListCommodityBO.commodityDetailId);
                 bundle.putInt(getString(R.string.intent_commodityType), rListCommodityBO.commodityType);
+                bundle.putBoolean(getString(R.string.intent_isActivity), true);
                 openActivity(CommodityInfoActivity.class, bundle);
             });
             zoneLayout.addView(view);

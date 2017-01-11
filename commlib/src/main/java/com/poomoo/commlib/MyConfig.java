@@ -54,4 +54,10 @@ public class MyConfig {
 
     //退款原因
     public static final String[] reason = {"", "商品描述不符", "卖家发错货", "少件/漏发", "7天无理由退换货", "买错，不需要", "快递无跟踪记录", "快递一直未送到", "空包裹，少货", "未按规定时间发货", "其他"};
+
+    // 时间
+    public static final int advTime = 1 * 5 * 1000;// 广告轮播时间
+    public static final long SMSCOUNTDOWNTIME = 60 * 1000;//发送验证码倒计时
+    public static final long COUNTDOWNTIBTERVAL = 1000;//倒计时间隔时间
+
 }
