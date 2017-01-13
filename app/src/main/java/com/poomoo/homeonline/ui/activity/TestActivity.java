@@ -122,7 +122,7 @@ public class TestActivity extends BaseActivity implements SwipeRefreshLayout.OnR
                 .color(getResources().getColor(R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
-        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.NEITHER, true);
+        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.NEITHER, ListCommodityAdapter.COMMON);
         commodityRecycler.setAdapter(listCommodityAdapter);
 
         listCommodityAdapter.setItems(getList());

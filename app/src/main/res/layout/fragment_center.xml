@@ -386,7 +386,7 @@
                 android:paddingLeft="@dimen/dp_20"
                 android:paddingRight="@dimen/dp_20"
                 android:paddingTop="@dimen/dp_10"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -417,7 +417,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/divide"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <RelativeLayout
                 android:id="@+id/rlayout_invite"

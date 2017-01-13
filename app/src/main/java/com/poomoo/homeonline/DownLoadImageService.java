@@ -14,11 +14,19 @@ public class DownLoadImageService implements Runnable {
     private String url;
     private Context context;
     private ImageDownLoadCallBack callBack;
+    private int group = 0;
 
     public DownLoadImageService(Context context, String url, ImageDownLoadCallBack callBack) {
         this.url = url;
         this.callBack = callBack;
         this.context = context;
+    }
+
+    public DownLoadImageService(Context context, String url, int group, ImageDownLoadCallBack callBack) {
+        this.url = url;
+        this.callBack = callBack;
+        this.context = context;
+        this.group = group;
     }
 
     @Override
@@ -28,7 +36,7 @@ public class DownLoadImageService implements Runnable {
             bitmap = Glide.with(context)
                     .load(url)
                     .asBitmap()
-                    .into(Target.SIZE_ORIGINAL,Target.SIZE_ORIGINAL)
+                    .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                     .get();
         } catch (Exception e) {
             e.printStackTrace();

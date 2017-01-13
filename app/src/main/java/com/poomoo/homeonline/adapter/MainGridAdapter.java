@@ -61,16 +61,28 @@ public class MainGridAdapter extends MyBaseAdapter<RCateBO> {
             viewHolder.txt.setText(item.categoryName);
             switch (position) {
                 case 0:
-                    viewHolder.image.setImageResource(R.drawable.ic_grab);
+                    viewHolder.image.setImageResource(R.drawable.ic_grab_new);
                     break;
                 case 1:
-                    viewHolder.image.setImageResource(R.drawable.ic_present);
+                    viewHolder.image.setImageResource(R.drawable.ic_tickets_new);
                     break;
                 case 2:
-                    viewHolder.image.setImageResource(R.drawable.ic_tickets);
+                    viewHolder.image.setImageResource(R.drawable.ic_present_new);
                     break;
                 case 3:
-                    viewHolder.image.setImageResource(R.drawable.ic_abroad);
+                    viewHolder.image.setImageResource(R.drawable.ic_abroad_new);
+                    break;
+                case 4:
+                    viewHolder.image.setImageResource(R.drawable.ic_ecological_new);
+                    break;
+                case 5:
+                    viewHolder.image.setImageResource(R.drawable.ic_specialty_new);
+                    break;
+                case 6:
+                    viewHolder.image.setImageResource(R.drawable.ic_teawin_new);
+                    break;
+                case 7:
+                    viewHolder.image.setImageResource(R.drawable.ic_artwork_new);
                     break;
             }
         } else {

@@ -32,29 +32,42 @@ import butterknife.ButterKnife;
  */
 public class ListCommodityAdapter extends BaseListAdapter<RListCommodityBO> {
     private RListCommodityBO item;
-    private boolean isCommon;//true-通用 false-特列
+    //    private boolean isCommon;//true-通用 false-特列
+    private int flag = 0;//1-猜你喜欢 2-通用 3-专题
+    public static final int GUESS = 1;
+    public static final int COMMON = 2;
+//    public static final int SPECIAL = 3;
 
-    public ListCommodityAdapter(Context context, int mode, boolean isCommon) {
+    public ListCommodityAdapter(Context context, int mode, int flag) {
         super(context, mode);
-        this.isCommon = isCommon;
+        this.flag = flag;
     }
 
     @Override
     protected RecyclerView.ViewHolder onCreateDefaultViewHolder(ViewGroup parent, int type) {
-        if (isCommon)
-            return new BaseViewHolder(mInflater.inflate(R.layout.item_list_commodity, parent, false));
-        else
-            return new BaseViewHolder(mInflater.inflate(R.layout.item_list_classify_commodity, parent, false));
+        switch (flag) {
+            case GUESS:
+                return new BaseViewHolder(mInflater.inflate(R.layout.item_list_commodity_guess, parent, false));
+            case COMMON:
+                return new BaseViewHolder(mInflater.inflate(R.layout.item_list_commodity, parent, false));
+//            case SPECIAL:
+//                return new BaseViewHolder(mInflater.inflate(R.layout.item_list_classify_commodity, parent, false));
+            default:
+                return new BaseViewHolder(mInflater.inflate(R.layout.item_list_commodity, parent, false));
+        }
     }
 
     @Override
     protected void onBindDefaultViewHolder(RecyclerView.ViewHolder h, int position) {
         BaseViewHolder holder = (BaseViewHolder) h;
-        if (isCommon)
-            holder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(mContext) / 2));//设置广告栏的宽高比为1:1
-        else
-            holder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(mContext) * 2 / 5));//设置广告栏的宽高比为1:1
 
+        switch (flag) {
+            case GUESS:
+            case COMMON:
+                holder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(mContext) / 2));//设置广告栏的宽高比为1:1
+//            case SPECIAL:
+//                holder.image.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(mContext) * 2 / 5));//设置广告栏的宽高比为1:1
+        }
         item = items.get(position);
         Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().placeholder(R.drawable.replace).priority(Priority.HIGH).into(holder.image);
         holder.nameTxt.setText(item.commodityName);

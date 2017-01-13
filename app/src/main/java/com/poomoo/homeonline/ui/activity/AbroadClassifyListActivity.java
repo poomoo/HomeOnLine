@@ -88,7 +88,7 @@ public class AbroadClassifyListActivity extends BaseListDaggerActivity<RListComm
 
     @Override
     protected BaseListAdapter<RListCommodityBO> onSetupAdapter() {
-        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.ONLY_FOOTER, true);
+        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.ONLY_FOOTER, ListCommodityAdapter.COMMON);
         return listCommodityAdapter;
     }
 

@@ -2,7 +2,10 @@ package com.poomoo.homeonline.ui.custom;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SelectorUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.activity.LogInActivity;
 
@@ -31,10 +35,10 @@ public class BottomBar extends LinearLayout implements OnClickListener {
     TextView inform_cartTxt;
     TextView inform_centerTxt;
 
-    private Context context;
+    private static Context context;
     public static OnItemChangedListener onItemChangedListener;
     private RelativeLayout[] mRelativeLayout = new RelativeLayout[5];
-    private TextView[] mTextViews = new TextView[5];
+    private static TextView[] mTextViews = new TextView[5];
     public static BottomBar instance;
 
     public BottomBar(Context context) {
@@ -80,6 +84,22 @@ public class BottomBar extends LinearLayout implements OnClickListener {
         addView(view);
 
         mTextViews[0].setSelected(true);
+    }
+
+    public static void setDrawable(int position, Drawable normal, Drawable checked) {
+//        normal=ContextCompat.getDrawable(context, R.drawable.selector_nav1);
+//        normal=ContextCompat.getDrawable(context, R.drawable.nav1_checked_new);
+//        normal.setBounds(0,20, normal.getMinimumWidth(), normal.getMinimumHeight());
+//        checked.setBounds(0, 0, checked.getMinimumWidth(), checked.getMinimumHeight());
+//        mTextViews[position].setGravity(Gravity.CENTER);
+
+//        mTextViews[position].setCompoundDrawables(null, SelectorUtils.setSelector(context, normal, checked), null, null);
+        LogUtils.d(TAG,"开始设置首页图标！");
+        mTextViews[position].setCompoundDrawablesWithIntrinsicBounds(null, SelectorUtils.setSelector(context, normal, checked), null, null);
+
+//        mTextViews[position].setCompoundDrawables(null, normal, null, null);
+//        mTextViews[position].setCompoundDrawablesWithIntrinsicBounds(null, ContextCompat.getDrawable(context, R.drawable.selector_nav1), null, null);
+        LogUtils.d(TAG,"设置首页图标成功！");
     }
 
 

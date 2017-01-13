@@ -135,7 +135,7 @@ public class WholeSaleClassifyInfoActivity extends BaseDaggerActivity<ClassifyIn
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
 //        infoRecycler.setPadding((int) getResources().getDimension(R.dimen.dp_20), (int) getResources().getDimension(R.dimen.dp_10), (int) getResources().getDimension(R.dimen.dp_20), 0);
-        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.NEITHER, true);
+        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.NEITHER, ListCommodityAdapter.COMMON);
         infoRecycler.setAdapter(listCommodityAdapter);
         listCommodityAdapter.setOnItemClickListener(this);
 

@@ -317,8 +317,8 @@ public class CommodityInfoActivity extends BaseDaggerActivity<CommodityPresenter
 
         specificationLayout.setOnClickListener(this);
 
-        commonPriceLayout.setVisibility(View.GONE);
-        wholeSalePriceLayout.setVisibility(View.VISIBLE);
+        commonPriceLayout.setVisibility(View.VISIBLE);
+        wholeSalePriceLayout.setVisibility(View.GONE);
         priceRG.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
                 case R.id.rbtn_price1:

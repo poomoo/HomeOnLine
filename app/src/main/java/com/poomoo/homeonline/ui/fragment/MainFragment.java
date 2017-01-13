@@ -6,6 +6,9 @@ package com.poomoo.homeonline.ui.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -31,6 +34,7 @@ import com.poomoo.commlib.MarketUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.TimeCountDownUtilBy3View;
+import com.poomoo.homeonline.DownLoadImageService;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.HotAdapter;
 import com.poomoo.homeonline.adapter.ListCommodityAdapter;
@@ -38,6 +42,7 @@ import com.poomoo.homeonline.adapter.MainGrabAdapter;
 import com.poomoo.homeonline.adapter.MainGridAdapter;
 import com.poomoo.homeonline.adapter.PicturesGridAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
+import com.poomoo.homeonline.listeners.ImageDownLoadCallBack;
 import com.poomoo.homeonline.listeners.ScrollViewListener;
 import com.poomoo.homeonline.presenters.MainFragmentPresenter;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
@@ -46,12 +51,16 @@ import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.AbroadActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
+import com.poomoo.homeonline.ui.activity.EcologicalActivity;
+import com.poomoo.homeonline.ui.activity.IndexViewPagerActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
+import com.poomoo.homeonline.ui.activity.SpecialtyActivity;
 import com.poomoo.homeonline.ui.activity.TicketZoneActivity;
 import com.poomoo.homeonline.ui.activity.PresentActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.activity.WebViewActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
+import com.poomoo.homeonline.ui.custom.BottomBar;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
@@ -70,6 +79,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -124,6 +135,10 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private final int GUESS = 3;
     private Bundle bundle;
     private Gson gson = new Gson();
+    private static final int[] titleResource = {R.drawable.ic_qhcs_new, R.drawable.ic_lsyz_new, R.drawable.ic_zwmj_new, R.drawable.ic_jjsh_new};
+    private int index = 0;
+    private BitmapDrawable drawable1;
+    private BitmapDrawable drawable2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -149,7 +164,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 
     private void init() {
         slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) / 2));//设置广告栏的宽高比为2:1
-        gridAdapter = new MainGridAdapter(getActivity(),false);
+        gridAdapter = new MainGridAdapter(getActivity(), false);
         menuGrid.setAdapter(gridAdapter);
         menuGrid.setOnItemClickListener(this);
         mPresenter.getSlide();
@@ -185,6 +200,75 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             errorLayout.setOnActiveClickListener(this);
             errorLayout.setState(ErrorLayout.NOT_NETWORK, "");
         }
+
+//        test();
+    }
+
+    private void test() {
+        //首页图标
+        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/wOGrjYPOqb7S6g9wdSc7Yw3bL9lcEGyHbF7n7YnRDmk!/b/dHcBAAAAAAAA&bo=LQAtAAAAAAADByI!&rf=viewer_4", 0);
+        onDownLoad("http://a2.qpic.cn/psb?/V109J8rm0oL61T/tvQgvqAUuDKp7eqUdpBhQFs2qYKigmtYdbZ7bbVeLWY!/b/dAkBAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 0);
+        //分类图标
+        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/7WIwIPQJeGfeSiCg*LtIDXJpcwNvdzHdgn5PqirjfqY!/b/dCABAAAAAAAA&bo=LAAtAAAAAAADByM!&rf=viewer_4", 1);
+        onDownLoad("http://b288.photo.store.qq.com/psb?/V109J8rm0oL61T/ViSYSOJDH0f6.7eJnvCA2VH2cOvKIRYQb7.LbMHSkks!/b/dCABAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 1);
+        //抢购图标
+        onDownLoad("http://a2.qpic.cn/psb?/V109J8rm0oL61T/BAa57prxLkjaXIuNWmGDtUBbOZgYiE905NZflSKoN3c!/b/dLIAAAAAAAAA&bo=LQAtAAAAAAADByI!&rf=viewer_4", 2);
+        onDownLoad("http://b288.photo.store.qq.com/psb?/V109J8rm0oL61T/Zfe7Ea*mJsy3t7MzGMS37G.PH5FsQFZWR5DEFh0eps4!/b/dCABAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 2);
+        //购物车图标
+        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/WTup4BOIYRQHfcRh77LWLykM6mfoKqXTvZuwH0ZL0mk!/b/dCABAAAAAAAA&bo=LAArAAAAAAADByU!&rf=viewer_4", 3);
+        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/46D8fqBznv1iR.JqWLWzbCXxnoaY*FuMC5c8mE*JBDU!/b/dPYAAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 3);
+        //个人中心图标
+        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/SgMJ3BULEPiwIKXR4YfwXyvwMtTsGct0pw.YjwEGiRE!/b/dCABAAAAAAAA&bo=KAAuAAAAAAADByQ!&rf=viewer_4", 4);
+        onDownLoad("http://a3.qpic.cn/psb?/V109J8rm0oL61T/bBSVmVgIw5OuN7giRvHJAUOUe0D4fL6IDWjz9LTKWWo!/b/dLAAAAAAAAAA&bo=LQAsAAAAAAADByM!&rf=viewer_4", 4);
+    }
+
+    /**
+     * 单线程列队执行
+     */
+    private static ExecutorService singleExecutor = null;
+
+
+    /**
+     * 执行单线程列队执行
+     */
+    public void runOnQueue(Runnable runnable) {
+        if (singleExecutor == null) {
+            singleExecutor = Executors.newSingleThreadExecutor();
+        }
+        singleExecutor.submit(runnable);
+    }
+
+    /**
+     * 启动图片下载线程
+     */
+    private void onDownLoad(String url, int group) {
+        DownLoadImageService service = new DownLoadImageService(getActivity(), url, group, new ImageDownLoadCallBack() {
+            @Override
+            public void onDownLoadSuccess(Bitmap bitmap) {
+                // 在这里执行图片保存方法
+                LogUtils.d(TAG, "下载图标成功:" + bitmap + "index:" + index + " group:" + group);
+                if (index == 0)
+                    drawable1 = new BitmapDrawable(getActivity().getResources(), bitmap);
+                if (index == 1)
+                    drawable2 = new BitmapDrawable(getActivity().getResources(), bitmap);
+                index++;
+                if (index > 1) {
+                    index = 0;
+                    BottomBar.setDrawable(group, drawable1, drawable2);
+                }
+            }
+
+            @Override
+            public void onDownLoadFailed() {
+                LogUtils.d(TAG, "下载引导页图片失败");
+            }
+        }
+
+        );
+
+        //启动图片下载线程
+        runOnQueue(service);
+
     }
 
     @OnClick({R.id.llayout_search, R.id.llayout_toGrab})
@@ -235,7 +319,9 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 }
             });
 
-            Glide.with(this).load(rSpecialAdBO.picUrl + (i + 1) + ".png").priority(Priority.IMMEDIATE).into(titleImg);
+//            Glide.with(this).load(rSpecialAdBO.picUrl + (i + 1) + ".png").priority(Priority.IMMEDIATE).into(titleImg);
+//            Glide.with(this).load(titleResource[i]).priority(Priority.IMMEDIATE).into(titleImg);
+            titleImg.setImageResource(titleResource[i]);
 
             contentImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) * 5 / 12));//设置广告栏的宽高比为12:5
             Glide.with(this).load(NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic).placeholder(R.drawable.replace12b5).priority(Priority.HIGH).into(contentImg);
@@ -276,10 +362,9 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private void initHot() {
         hotRecycler.setLayoutManager(new ScrollLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         hotRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
-                .color(getResources().getColor(R.color.transParent))
+                .color(ContextCompat.getColor(getActivity(),R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
-
         hotAdapter = new HotAdapter(getActivity(), BaseListAdapter.NEITHER);
         hotRecycler.setAdapter(hotAdapter);
         hotRecycler.setTag(HOT);
@@ -293,14 +378,15 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         guessRecycler.setLayoutManager(new ScrollGridLayoutManager(getActivity(), 2));
         guessRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .color(ContextCompat.getColor(getActivity(), R.color.transParent))
-                .size((int) getResources().getDimension(R.dimen.recycler_divider))
+                .size((int)
+                        getResources().getDimension(R.dimen.recycler_divider))
                 .build());
         guessRecycler.addItemDecoration(new VerticalDividerItemDecoration.Builder(getActivity())
                 .color(ContextCompat.getColor(getActivity(), R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
 
-        listCommodityAdapter = new ListCommodityAdapter(getActivity(), BaseListAdapter.NEITHER, true);
+        listCommodityAdapter = new ListCommodityAdapter(getActivity(), BaseListAdapter.NEITHER, ListCommodityAdapter.GUESS);
         guessRecycler.setAdapter(listCommodityAdapter);
         guessRecycler.setTag(GUESS);
         listCommodityAdapter.setOnItemClickListener(this);
@@ -504,6 +590,12 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 break;
             case 3:
                 openActivity(AbroadActivity.class);
+                break;
+            case 4:
+                openActivity(EcologicalActivity.class);
+                break;
+            case 5:
+                openActivity(SpecialtyActivity.class);
                 break;
         }
     }

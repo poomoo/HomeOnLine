@@ -180,8 +180,17 @@
         <activity
             android:name=".ui.activity.RegisterToWholeSaleUserActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.activity.WholeSaleMainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.EcologicalActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.SpecialtyActivity"
             android:exported="false" />
 
         <!--图片相关-->

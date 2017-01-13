@@ -112,7 +112,7 @@ public class WholeSaleMainActivity extends BaseActivity implements BaseListAdapt
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
 
-        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.NEITHER, true);
+        listCommodityAdapter = new ListCommodityAdapter(this, BaseListAdapter.NEITHER, ListCommodityAdapter.COMMON);
         recycler.setAdapter(listCommodityAdapter);
         listCommodityAdapter.setOnItemClickListener(this);
 

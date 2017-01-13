@@ -177,5 +177,7 @@
     <string name="btn_invite">立即邀请</string>
 
     <string name="umeng_sharebutton_copy">复制链接</string>
+    <string name="title_ecological">生态有机</string>
+    <string name="title_specialty">贵州特产</string>
 
 </resources>
