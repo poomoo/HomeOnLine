@@ -519,11 +519,13 @@ public class CartFragment extends BaseDaggerFragment<CartFragmentPresenter> impl
 //                    }
 //                }
 //            }
-            if (!data.contains(obj)) {
-                obj.isBuyChecked = allBuyChk.isChecked();
-                obj.setChildChecked(allBuyChk.isChecked());
+
+            obj.isBuyChecked = allBuyChk.isChecked();
+            obj.setChildChecked(allBuyChk.isChecked());
+            if (!data.contains(obj))
                 data.add(0, obj);
-            }
+            else //存在则更新
+                data.set(data.indexOf(obj), obj);
         }
         adapter.notifyDataSetChanged();
         expandListView();
