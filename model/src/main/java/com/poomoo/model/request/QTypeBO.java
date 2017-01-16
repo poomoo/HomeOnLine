@@ -27,16 +27,19 @@
 package com.poomoo.model.request;
 
 /**
- * 类名 QVersion
- * 描述 检查升级
+ * 类名 QTypeBO
+ * 描述 type 生态有机、贵州特产、贵酒贵茶、黔匠艺品详情
  * 作者 李苜菲
  * 日期 2016/9/6 9:18
  */
-public class QVersion extends BaseRequest{
-    public int type;//1-安卓
+public class QTypeBO extends BaseRequest {
+    public int type;//0-生态有机 1-贵州特产 2-贵茶贵酒 3-黔匠艺品
+    public Integer categoryId;
 
-    public QVersion(String method, int type) {
+    public QTypeBO(String method, int type, int categoryId) {
         super(method);
         this.type = type;
+        if (categoryId != -1)
+            this.categoryId = categoryId;
     }
 }

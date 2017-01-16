@@ -65,8 +65,9 @@ import com.poomoo.model.request.QTransferPriceBO;
 import com.poomoo.model.request.QUpdateInfoBO;
 import com.poomoo.model.request.QUserBO;
 import com.poomoo.model.request.QUserIdBO;
-import com.poomoo.model.request.QVersion;
+import com.poomoo.model.request.QTypeBO;
 import com.poomoo.model.request.QCountryInfoBO;
+import com.poomoo.model.request.QVersionBO;
 import com.poomoo.model.response.RAbroadBO;
 import com.poomoo.model.response.RAbroadCommodityBO;
 import com.poomoo.model.response.RAdBO;
@@ -85,6 +86,7 @@ import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RIndexBO;
 import com.poomoo.model.response.RIsCollect;
 import com.poomoo.model.response.RListCommodityBO;
+import com.poomoo.model.response.RNewSpecialBO;
 import com.poomoo.model.response.ROnSaleBO;
 import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.ROrderListBO;
@@ -301,7 +303,7 @@ public interface MyApi {
 
     //检查更新
     @POST(NetConfig.suffix)
-    Observable<RVersionBO> CheckUpdate(@Body QVersion data);
+    Observable<RVersionBO> CheckUpdate(@Body QVersionBO data);
 
     //检查更新
     @POST(NetConfig.suffix)
@@ -354,4 +356,8 @@ public interface MyApi {
     //国家馆商品
     @POST(NetConfig.suffix)
     Observable<List<RListCommodityBO>> getCountryInfoCommodity(@Body QCountryInfoCommodityBO qCountryInfoCommodityBO);
+
+    //生态有机、贵州特产、贵酒贵茶、黔匠艺品详情
+    @POST(NetConfig.suffix)
+    Observable<RNewSpecialBO> getSpecialInfo(@Body QTypeBO qTypeBO);
 }

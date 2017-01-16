@@ -22,7 +22,7 @@
  * #                                                   #
  * #               佛祖保佑         永无BUG            #
  * #                                                   #
- * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
+ * Copyright (c) 2017. 跑马科技 Inc. All rights reserved.
  */
 package com.poomoo.homeonline.presenters;
 
@@ -30,12 +30,11 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.WholeSaleClassifyInfoActivity;
-import com.poomoo.model.request.QCategoryIdBO;
-import com.poomoo.model.response.RClassifyInfoBO;
-import com.poomoo.model.response.RListCommodityBO;
-
-import java.util.List;
+import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
+import com.poomoo.model.ResponseBO;
+import com.poomoo.model.request.QAddCartBO;
+import com.poomoo.model.request.QTypeBO;
+import com.poomoo.model.response.RNewSpecialBO;
 
 import javax.inject.Inject;
 
@@ -43,56 +42,58 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * 类名 ClassifyInfoPresenter
- * 描述 分类详情
+ * 类名 NewSpecialPresenter
+ * 描述 新增专题
  * 作者 李苜菲
- * 日期 2016/8/16 15:54
+ * 日期 2017/1/16 14:13
  */
-public class ClassifyInfoPresenter extends BasePresenter<WholeSaleClassifyInfoActivity> {
+public class NewSpecialPresenter extends BasePresenter<BaseDaggerActivity> {
     @Inject
-    public ClassifyInfoPresenter() {
-
+    public NewSpecialPresenter() {
     }
 
-    /**
-     * @param categoryId
-     */
-    public void loadClassify(int categoryId) {
-        QCategoryIdBO qCategoryIdBO = new QCategoryIdBO(NetConfig.CLASSINFO, categoryId);
-        add(NetWork.getMyApi().getClassifyInfo(qCategoryIdBO)
+    public void getInfo(int type, int categoryId) {
+        QTypeBO qTypeBO = new QTypeBO(NetConfig.NEWSPECIAL, type, categoryId);
+        add(NetWork.getMyApi().getSpecialInfo(qTypeBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<RClassifyInfoBO>() {
+                .subscribe(new AbsAPICallback<RNewSpecialBO>() {
                     @Override
                     protected void onError(ApiException e) {
-                        mView.loadClassifyFailed(e.getMessage());
+                        mView.getInfoFailed();
                     }
 
                     @Override
-                    public void onNext(RClassifyInfoBO rClassifyInfoBO) {
-                        mView.loadClassifySucceed(rClassifyInfoBO);
+                    public void onNext(RNewSpecialBO rNewSpecialBO) {
+                        mView.getInfoSuccessful(rNewSpecialBO);
                     }
                 }));
-
     }
 
     /**
-     * @param categoryId
+     * 添加到购物车
+     *
+     * @param commodityId
+     * @param commodityName
+     * @param commodityType
+     * @param commodityNum
+     * @param listPic
+     * @param commodityDetailId
      */
-    public void loadClassifyList(int categoryId) {
-        QCategoryIdBO qCategoryIdBO = new QCategoryIdBO(NetConfig.CLASSINFOLIST, categoryId);
-        add(NetWork.getMyApi().getClassifyInfoList(qCategoryIdBO)
+    public void addToCart(int userId, int newActivityId, int commodityId, String commodityName, int commodityType, int commodityNum, String listPic, int commodityDetailId, Integer rushPurchaseId) {
+        QAddCartBO qAddCartBO = new QAddCartBO(NetConfig.ADDCART, userId, -1, newActivityId, commodityDetailId, listPic, commodityNum, rushPurchaseId, commodityType, commodityId, commodityName);
+        add(NetWork.getMyApi().AddToCart(qAddCartBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new AbsAPICallback<List<RListCommodityBO>>() {
+                .subscribe(new AbsAPICallback<ResponseBO>() {
                     @Override
                     protected void onError(ApiException e) {
-                        mView.loadInfoFailed(e.getMessage());
+                        mView.addToCartFailed();
                     }
 
                     @Override
-                    public void onNext(List<RListCommodityBO> rListCommodityBOs) {
-                        mView.loadInfoSucceed(rListCommodityBOs);
+                    public void onNext(ResponseBO responseBO) {
+                        mView.addToCartSucceed();
                     }
                 }));
     }

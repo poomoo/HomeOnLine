@@ -13,6 +13,7 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.ui.activity.WholeSaleClassifyInfoActivity;
 import com.poomoo.model.response.RClassifyInfoBO;
+import com.poomoo.model.response.RThirdClassifyBO;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -23,17 +24,15 @@ import butterknife.ButterKnife;
  * 作者 李苜菲
  * 日期 2016/7/19 11:30
  */
-public class ClassifyInfoAdapter extends BaseListAdapter<RClassifyInfoBO.ThreeCategoryList> {
+public class ClassifyInfoAdapter extends BaseListAdapter<RThirdClassifyBO> {
     public static int SELECT_POSITION;
     public static boolean isShowAll = false;
     private final ColorStateList color;
-    private Context context;
 
     public ClassifyInfoAdapter(Context context, int mode) {
         super(context, mode);
         SELECT_POSITION = 0;
         isShowAll = false;
-        this.context = context;
         color = ContextCompat.getColorStateList(context, R.color.selector_specialty_text);
     }
 

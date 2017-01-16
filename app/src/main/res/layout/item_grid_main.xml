@@ -18,5 +18,5 @@
         android:layout_height="wrap_content"
         android:text="贵州味道"
         android:textColor="@color/black"
-        android:textSize="@dimen/sp_14" />
+        android:textSize="@dimen/sp_12" />
 </LinearLayout>

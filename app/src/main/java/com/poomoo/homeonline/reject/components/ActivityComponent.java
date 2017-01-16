@@ -27,7 +27,11 @@ import com.poomoo.homeonline.ui.activity.AbroadCountryInfoActivity;
 import com.poomoo.homeonline.ui.activity.AbroadGlobalActivity;
 import com.poomoo.homeonline.ui.activity.AddressInfoActivity;
 import com.poomoo.homeonline.ui.activity.AddressListActivity;
+import com.poomoo.homeonline.ui.activity.ArtworkActivity;
 import com.poomoo.homeonline.ui.activity.ChangePassWordActivity;
+import com.poomoo.homeonline.ui.activity.EcologicalActivity;
+import com.poomoo.homeonline.ui.activity.SpecialtyActivity;
+import com.poomoo.homeonline.ui.activity.TeaWineActivity;
 import com.poomoo.homeonline.ui.activity.WholeSaleClassifyInfoActivity;
 import com.poomoo.homeonline.ui.activity.ClassifyListActivity;
 import com.poomoo.homeonline.ui.activity.CollectActivity;
@@ -116,4 +120,12 @@ public interface ActivityComponent {
     void inject(AbroadCountryInfoActivity activity);
 
     void inject(AbroadClassifyListActivity activity);
+
+    void inject(EcologicalActivity activity);
+
+    void inject(SpecialtyActivity activity);
+
+    void inject(TeaWineActivity activity);
+
+    void inject(ArtworkActivity activity);
 }

@@ -30,17 +30,14 @@ import com.poomoo.api.AbsAPICallback;
 import com.poomoo.api.ApiException;
 import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
-import com.poomoo.homeonline.ui.activity.AddressListActivity;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
 import com.poomoo.model.request.BaseRequest;
 import com.poomoo.model.request.QUserIdBO;
-import com.poomoo.model.request.QVersion;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RGrabBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.RSpecialAdBO;
 import com.poomoo.model.response.RTypeBO;
-import com.poomoo.model.response.RVersionBO;
 
 import java.util.List;
 

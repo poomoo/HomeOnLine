@@ -50,6 +50,7 @@ import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.homeonline.ui.popup.RulePopupWindow;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.ROnSaleBO;
@@ -59,6 +60,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.poomoo.model.CommodityType.COMMON;
 
 /**
  * 类名 TicketZoneActivity
@@ -209,7 +212,7 @@ public class TicketZoneActivity extends BaseDaggerActivity<OnSalePresenter> impl
                 if (rAdBO.commodityType != null)
                     bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
                 else
-                    bundle.putInt(getString(R.string.intent_commodityType), 0);
+                    bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
                 openActivity(CommodityInfoActivity.class, bundle);
             } else {
                 bundle = new Bundle();

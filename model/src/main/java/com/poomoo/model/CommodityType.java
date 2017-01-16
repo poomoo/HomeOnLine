@@ -33,6 +33,7 @@ package com.poomoo.model;
  * 日期 2016/12/13 10:36
  */
 public class CommodityType {
+    public static final int COMMON = 0;//普通商品
     public static final int GRAB = 2;//抢购商品
     public static final int PRESENT = 4;//买赠商品
     public static final int ABROAD = 7;//跨境商品

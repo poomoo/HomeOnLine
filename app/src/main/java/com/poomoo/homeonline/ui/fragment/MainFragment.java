@@ -67,6 +67,7 @@ import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RCateBO;
 import com.poomoo.model.response.RGrabBO;
@@ -87,6 +88,9 @@ import java.util.concurrent.Executors;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.poomoo.model.CommodityType.COMMON;
+import static com.poomoo.model.CommodityType.GRAB;
 
 /**
  * 类名 MainFragment
@@ -312,7 +316,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     if (rAdBO.commodityType != null)
                         bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                    else bundle.putInt(getString(R.string.intent_commodityType), 0);
+                    else bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
                     bundle = new Bundle();
@@ -335,7 +339,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     if (rAdBO.commodityType != null)
                         bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                    else bundle.putInt(getString(R.string.intent_commodityType), 0);
+                    else bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
                     bundle = new Bundle();
@@ -419,7 +423,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
                 if (rAdBO.commodityType != null)
                     bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                else bundle.putInt(getString(R.string.intent_commodityType), 0);
+                else bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
                 openActivity(CommodityInfoActivity.class, bundle);
             } else {
                 bundle = new Bundle();
@@ -454,7 +458,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
                     if (rAdBO.commodityType != null)
                         bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                    else bundle.putInt(getString(R.string.intent_commodityType), 0);
+                    else bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {
                     bundle = new Bundle();
@@ -623,7 +627,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 bundle = new Bundle();
                 bundle.putInt(getString(R.string.intent_commodityId), rGrabBO.commodityId);
                 bundle.putInt(getString(R.string.intent_commodityDetailId), rGrabBO.commodityDetailId);
-                bundle.putInt(getString(R.string.intent_commodityType), 2);//抢购商品
+                bundle.putInt(getString(R.string.intent_commodityType), CommodityType.GRAB);//抢购商品
                 bundle.putInt(getString(R.string.intent_matchId), rGrabBO.id);//matchId
                 openActivity(CommodityInfoActivity.class, bundle);
                 break;
@@ -636,7 +640,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     if (rAdBO.commodityType != null)
                         bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
                     else
-                        bundle.putInt(getString(R.string.intent_commodityType), 0);
+                        bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {
                     bundle = new Bundle();

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:singleLine="true"
+        android:maxLines="1"
         android:text="@string/app_name"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_18" />
@@ -36,8 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerInParent="true"
-        android:onClick="toDo"
         android:layout_marginRight="10dp"
+        android:onClick="toDo"
         android:visibility="gone" />
 
     <TextView
@@ -48,8 +48,8 @@
         android:layout_centerInParent="true"
         android:layout_marginRight="10dp"
         android:clickable="true"
+        android:maxLines="1"
         android:onClick="toDo"
-        android:singleLine="true"
         android:textSize="@dimen/sp_14"
         android:visibility="gone" />
 

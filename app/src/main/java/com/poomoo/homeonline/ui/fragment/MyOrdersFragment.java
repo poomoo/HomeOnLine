@@ -27,6 +27,7 @@ import com.poomoo.homeonline.ui.activity.ReFundActivity;
 import com.poomoo.homeonline.ui.activity.ReFundInfoActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerListFragment;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
+import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RCartCommodityBO;
 import com.poomoo.model.response.ROrderBO;
 import com.poomoo.model.response.ROrderListBO;
@@ -272,7 +273,7 @@ public class MyOrdersFragment extends BaseDaggerListFragment<ROrderListBO, Order
         bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_commodityId), rOrderListBO.orderDetails.get(childPos).commodityId);
         bundle.putInt(getString(R.string.intent_commodityDetailId), rOrderListBO.orderDetails.get(childPos).commodityDetailsId);
-        bundle.putInt(getString(R.string.intent_commodityType), 0);
+        bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
         openActivity(CommodityInfoActivity.class, bundle);
     }
 }

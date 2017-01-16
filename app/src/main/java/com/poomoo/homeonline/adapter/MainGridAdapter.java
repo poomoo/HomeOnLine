@@ -27,7 +27,8 @@ public class MainGridAdapter extends MyBaseAdapter<RCateBO> {
     private boolean isWholeSale;
     private RCateBO item;
     private final static int[] wholeSaleLogo = {R.drawable.ic_wholesale_taste, R.drawable.ic_wholesale_wine, R.drawable.ic_wholesale_artware, R.drawable.ic_wholesale_food, R.drawable.ic_wholesale_global, R.drawable.ic_wholesale_infant, R.drawable.ic_wholesale_beauty, R.drawable.ic_wholesale_house};
-    public final static String[] wholeSaleName = {"贵州味道", "贵茶贵酒", "黔匠艺品", "食品酒水", "全球优品", "母婴用品", "美妆个护", "家居生活"};
+    public final static String[] wholeSaleName = {"贵州味道", "贵酒贵茶", "黔匠艺品", "食品酒水", "全球优品", "母婴用品", "美妆个护", "家居生活"};
+    private final static int[] type = {R.drawable.ic_grab_new, R.drawable.ic_tickets_new, R.drawable.ic_present_new, R.drawable.ic_abroad_new, R.drawable.ic_ecological_new, R.drawable.ic_specialty_new, R.drawable.ic_teawin_new, R.drawable.ic_artwork_new};
 
     public MainGridAdapter(Context context, boolean isWholeSale) {
         super(context);
@@ -59,32 +60,7 @@ public class MainGridAdapter extends MyBaseAdapter<RCateBO> {
         if (!isWholeSale) {
             item = itemList.get(position);
             viewHolder.txt.setText(item.categoryName);
-            switch (position) {
-                case 0:
-                    viewHolder.image.setImageResource(R.drawable.ic_grab_new);
-                    break;
-                case 1:
-                    viewHolder.image.setImageResource(R.drawable.ic_tickets_new);
-                    break;
-                case 2:
-                    viewHolder.image.setImageResource(R.drawable.ic_present_new);
-                    break;
-                case 3:
-                    viewHolder.image.setImageResource(R.drawable.ic_abroad_new);
-                    break;
-                case 4:
-                    viewHolder.image.setImageResource(R.drawable.ic_ecological_new);
-                    break;
-                case 5:
-                    viewHolder.image.setImageResource(R.drawable.ic_specialty_new);
-                    break;
-                case 6:
-                    viewHolder.image.setImageResource(R.drawable.ic_teawin_new);
-                    break;
-                case 7:
-                    viewHolder.image.setImageResource(R.drawable.ic_artwork_new);
-                    break;
-            }
+            viewHolder.image.setImageResource(type[position]);
         } else {
             viewHolder.image.setImageResource(wholeSaleLogo[position]);
             viewHolder.txt.setText(wholeSaleName[position]);

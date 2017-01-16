@@ -22,29 +22,21 @@
  * #                                                   #
  * #               佛祖保佑         永无BUG            #
  * #                                                   #
- * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
+ * Copyright (c) 2017. 跑马科技 Inc. All rights reserved.
  */
 package com.poomoo.model.response;
 
 import java.util.List;
 
 /**
- * 类名 RClassifyInfoBO
- * 描述 RClassifyInfoBO
+ * 类名 RNewSpecialBO
+ * 描述 新专题 (生态有机、贵州特产、贵酒贵茶、黔匠艺品)
  * 作者 李苜菲
- * 日期 2016/8/16 16:35
+ * 日期 2017/1/16 14:43
  */
-public class RClassifyInfoBO {
-    public List<RAdBO> advertisementList;
-    public List<RThirdClassifyBO> threeCategoryList;
-    public List<RListCommodityBO> commoditys;
-
-//    public class AdvertisementList {
-//        public String advertisementPic;
-//    }
-
-//    public class ThreeCategoryList {
-//        public int id;
-//        public String categoryName;
-//    }
+public class RNewSpecialBO {
+    public List<RThirdClassifyBO> commodityCategorys;
+    public List<RAdBO> topAdv;
+    public List<RAdBO> hotAdvs;
+    public List<RListCommodityBO> selectSingles;
 }

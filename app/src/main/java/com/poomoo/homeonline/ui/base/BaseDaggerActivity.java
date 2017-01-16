@@ -21,6 +21,7 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.application.MyApplication;
 import com.poomoo.homeonline.presenters.BasePresenter;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
+import com.poomoo.model.response.RNewSpecialBO;
 import com.umeng.analytics.MobclickAgent;
 
 import javax.inject.Inject;
@@ -89,6 +90,18 @@ public abstract class BaseDaggerActivity<P extends BasePresenter> extends Fragme
             getActivityOutToRight();
         });
         return headerViewHolder;
+    }
+
+    public void getInfoSuccessful(RNewSpecialBO rNewSpecialBO) {
+    }
+
+    public void getInfoFailed() {
+    }
+
+    public void addToCartFailed() {
+    }
+
+    public void addToCartSucceed() {
     }
 
     protected class HeaderViewHolder {

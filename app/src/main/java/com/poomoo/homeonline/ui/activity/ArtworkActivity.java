@@ -29,24 +29,34 @@ package com.poomoo.homeonline.ui.activity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 
 import com.bumptech.glide.Glide;
+import com.poomoo.api.NetConfig;
+import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.SpecialtyListCommodityAdapter;
 import com.poomoo.homeonline.adapter.SpecialtyTitleAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
+import com.poomoo.homeonline.presenters.NewSpecialPresenter;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
-import com.poomoo.homeonline.ui.base.BaseActivity;
+import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
+import com.poomoo.homeonline.reject.modules.ActivityModule;
+import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.NoScrollRecyclerView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
-import com.poomoo.model.response.RClassifyInfoBO;
+import com.poomoo.model.CommodityType;
+import com.poomoo.model.response.RAdBO;
 import com.poomoo.model.response.RListCommodityBO;
+import com.poomoo.model.response.RNewSpecialBO;
+import com.poomoo.model.response.RThirdClassifyBO;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -56,7 +66,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import static com.poomoo.commlib.MyConfig.ARTWORK;
-import static com.poomoo.commlib.MyConfig.SPECIALTY;
 
 /**
  * 类名 ArtworkActivity
@@ -64,7 +73,9 @@ import static com.poomoo.commlib.MyConfig.SPECIALTY;
  * 作者 李苜菲
  * 日期 2017/1/13 15:17
  */
-public class ArtworkActivity extends BaseActivity implements BaseListAdapter.OnItemClickListener {
+public class ArtworkActivity extends BaseDaggerActivity<NewSpecialPresenter> implements BaseListAdapter.OnItemClickListener, ErrorLayout.OnActiveClickListener {
+    @Bind(R.id.scrollView)
+    ScrollView scrollView;
     @Bind(R.id.recycler_title)
     RecyclerView titleRecycler;
     @Bind(R.id.img_arrow)
@@ -87,9 +98,15 @@ public class ArtworkActivity extends BaseActivity implements BaseListAdapter.OnI
     private SpecialtyListCommodityAdapter infoAdapter;
     private SpecialtyTitleAdapter titleAdapter;
     private LinearLayout.LayoutParams layoutParams;
+    private ImageView[] hot = new ImageView[4];
     private int dp8;
     private int dp10;
     private int width;
+    private String[] ad;
+    private RAdBO rAdBO;
+    private Bundle bundle;
+    private int categoryId = 0;
+    private RListCommodityBO commodityBO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +114,6 @@ public class ArtworkActivity extends BaseActivity implements BaseListAdapter.OnI
 
         ButterKnife.bind(this);
         init();
-
     }
 
     @Override
@@ -110,9 +126,21 @@ public class ArtworkActivity extends BaseActivity implements BaseListAdapter.OnI
         return R.string.title_artwork;
     }
 
+    @Override
+    protected void setupActivityComponent(ActivityModule activityModule) {
+        DaggerActivityComponent.builder()
+                .activityModule(activityModule)
+                .build()
+                .inject(this);
+    }
+
     private void init() {
-        HeaderViewHolder headerViewHolder = getHeaderView();
+        BaseDaggerActivity.HeaderViewHolder headerViewHolder = getHeaderView();
         headerViewHolder.titleTxt.setTextColor(ContextCompat.getColor(this, R.color.artwork));
+        headerViewHolder.titleTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, getResources().getDimension(R.dimen.sp_12));
+        headerViewHolder.rightImg.setImageResource(R.drawable.ic_special_search);
+        headerViewHolder.rightImg.setVisibility(View.VISIBLE);
+        headerViewHolder.rightImg.setOnClickListener(v -> openActivity(SearchActivity.class));
         headerViewHolder.backImg.setOnClickListener(v -> {
             finish();
             getActivityOutToRight();
@@ -123,16 +151,20 @@ public class ArtworkActivity extends BaseActivity implements BaseListAdapter.OnI
         dp10 = (int) getResources().getDimension(R.dimen.dp_10);
         width = MyUtils.getScreenWidth(this) - dp8 - dp10 * 2;
         layoutParams = new LinearLayout.LayoutParams(width / 2, width / 4);
-        img1.setLayoutParams(layoutParams);
-        img2.setLayoutParams(layoutParams);
-        img3.setLayoutParams(layoutParams);
-        img4.setLayoutParams(layoutParams);
-        Glide.with(this).load("").placeholder(R.drawable.replace2).into(img1);
-        Glide.with(this).load("").placeholder(R.drawable.replace2).into(img2);
-        Glide.with(this).load("").placeholder(R.drawable.replace2).into(img3);
-        Glide.with(this).load("").placeholder(R.drawable.replace2).into(img4);
+        hot[0] = img1;
+        hot[1] = img2;
+        hot[2] = img3;
+        hot[3] = img4;
+        hot[0].setLayoutParams(layoutParams);
+        hot[1].setLayoutParams(layoutParams);
+        hot[2].setLayoutParams(layoutParams);
+        hot[3].setLayoutParams(layoutParams);
 
         initRecycler();
+        mErrorLayout.setOnActiveClickListener(this);
+
+        mPresenter.getInfo(3, 0);
+        mErrorLayout.setState(ErrorLayout.LOADING, "");
     }
 
     private void initRecycler() {
@@ -142,26 +174,26 @@ public class ArtworkActivity extends BaseActivity implements BaseListAdapter.OnI
                 .size((int) getResources().getDimension(R.dimen.dp_10))
                 .build());
 
-        titleAdapter = new SpecialtyTitleAdapter(this, BaseListAdapter.NEITHER,ARTWORK);
+        titleAdapter = new SpecialtyTitleAdapter(this, BaseListAdapter.NEITHER, ARTWORK);
         titleRecycler.setAdapter(titleAdapter);
         titleAdapter.setOnItemClickListener((position, id, view) -> {
             SpecialtyTitleAdapter.SELECT_POSITION = position;
             titleAdapter.notifyDataSetChanged();
 //            infoAdapter.clear();
-//            categoryId = titleAdapter.getItem(position).id + "";
-//            mErrorLayout.setState(ErrorLayout.LOADING, "");
-//            mPresenter.loadClassifyList(categoryId);
+            categoryId = titleAdapter.getItem(position).id;
+            mPresenter.getInfo(3, categoryId);
+            mErrorLayout.setState(ErrorLayout.LOADING, "");
         });
-        titleAdapter.setItems(getTitleList());
+//        titleAdapter.setItems(getTitleList());
 
         listRecycler.setLayoutManager(new ScrollLinearLayoutManager(this));
-        infoAdapter = new SpecialtyListCommodityAdapter(this, BaseListAdapter.NEITHER, ARTWORK, position -> {
-
+        infoAdapter = new SpecialtyListCommodityAdapter(this, BaseListAdapter.NEITHER, ARTWORK, position -> {//添加购物车
+            commodityBO = infoAdapter.getItem(position);
+            addToCart(commodityBO);
         });
         listRecycler.setAdapter(infoAdapter);
         infoAdapter.setOnItemClickListener(this);
-
-        infoAdapter.setItems(getList());
+//        infoAdapter.setItems(getList());
     }
 
     public void showHide(View view) {
@@ -170,14 +202,119 @@ public class ArtworkActivity extends BaseActivity implements BaseListAdapter.OnI
         titleAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void getInfoSuccessful(RNewSpecialBO rNewSpecialBO) {
+        LogUtils.d(TAG, "顶部分类");
+        if (rNewSpecialBO.commodityCategorys != null) {
+            titleAdapter.setItems(rNewSpecialBO.commodityCategorys);
+            if (rNewSpecialBO.commodityCategorys.size() < 5)
+                arrowImg.setVisibility(View.GONE);
+            else
+                arrowImg.setVisibility(View.VISIBLE);
+        }
+        LogUtils.d(TAG, "顶部广告");
+        int len = rNewSpecialBO.topAdv.size();
+        ad = new String[len];
+        for (int i = 0; i < len; i++) {
+            rAdBO = new RAdBO();
+            rAdBO = rNewSpecialBO.topAdv.get(i);
+            ad[i] = NetConfig.ImageUrl + rAdBO.advertisementPic;
+        }
+        slideShowView.setPics(ad, position -> {
+            if (ad.length == 0)
+                return;
+            rAdBO = rNewSpecialBO.topAdv.get(position);
+            if (rAdBO.isCommodity) {
+                bundle = new Bundle();
+                bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
+                bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
+                bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
+                openActivity(CommodityInfoActivity.class, bundle);
+            } else {
+                bundle = new Bundle();
+                bundle.putString(getString(R.string.intent_value), rAdBO.connect);
+                openActivity(WebViewActivity.class, bundle);
+            }
+        });
+        LogUtils.d(TAG, "热门推荐");
+        int hotSize = rNewSpecialBO.hotAdvs.size();
+        for (int i = 0; i < 4; i++) {
+            if (hotSize > i) {
+                Glide.with(this).load(NetConfig.ImageUrl + rNewSpecialBO.hotAdvs.get(i).advertisementPic).placeholder(R.drawable.replace2).into(hot[i]);
+                hot[i].setTag(R.id.tag_first, rNewSpecialBO.hotAdvs.get(i));
+                hot[i].setVisibility(View.VISIBLE);
+            } else
+                hot[i].setVisibility(View.GONE);
 
-    public List<RClassifyInfoBO.ThreeCategoryList> getTitleList() {
-        List<RClassifyInfoBO.ThreeCategoryList> threeCategoryLists = new ArrayList<>();
-        RClassifyInfoBO.ThreeCategoryList threeCategoryList;
-        for (int i = 0; i < 10; i++) {
-            threeCategoryList = new RClassifyInfoBO().new ThreeCategoryList();
-            threeCategoryList.categoryName = "测试标题" + (i + 1);
-            threeCategoryLists.add(threeCategoryList);
+        }
+        LogUtils.d(TAG, "精选单品");
+        infoAdapter.setItems(rNewSpecialBO.selectSingles);
+
+        scrollView.setVisibility(View.VISIBLE);
+        mErrorLayout.setState(ErrorLayout.HIDE, "");
+    }
+
+    @Override
+    public void getInfoFailed() {
+        mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+        scrollView.setVisibility(View.GONE);
+    }
+
+    private void addToCart(RListCommodityBO commodityBO) {
+        mErrorLayout.setState(ErrorLayout.LOADING, "");
+        mPresenter.addToCart(application.getUserId(), -1, commodityBO.lowestPriceDetail.commodityId, commodityBO.commodityName, CommodityType.COMMON, 1, commodityBO.listPic, commodityBO.lowestPriceDetail.id, -1);
+    }
+
+    @Override
+    public void addToCartSucceed() {
+        mErrorLayout.setState(ErrorLayout.HIDE, "");
+        MyUtils.showToast(getApplicationContext(), "添加购物车成功");
+    }
+
+    @Override
+    public void addToCartFailed() {
+        mErrorLayout.setState(ErrorLayout.HIDE, "");
+        MyUtils.showToast(getApplicationContext(), "添加购物车失败");
+    }
+
+    @Override
+    public void onLoadActiveClick() {
+        mPresenter.getInfo(3, categoryId);
+        mErrorLayout.setState(ErrorLayout.LOADING, "");
+    }
+
+    public void hotClick(View view) {
+        rAdBO = (RAdBO) view.getTag(R.id.tag_first);
+        if (rAdBO == null)
+            return;
+        if (rAdBO.isCommodity) {//商品广告
+            bundle = new Bundle();
+            bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
+            bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
+            openActivity(CommodityInfoActivity.class, bundle);
+        } else {//链接
+            bundle = new Bundle();
+            bundle.putString(getString(R.string.intent_value), rAdBO.connect);
+            openActivity(WebViewActivity.class, bundle);
+        }
+    }
+
+    @Override
+    public void onItemClick(int position, long id, View view) {
+        bundle = new Bundle();
+        bundle.putInt(getString(R.string.intent_commodityId), infoAdapter.getItem(position).lowestPriceDetail.commodityId);
+        bundle.putInt(getString(R.string.intent_commodityDetailId), infoAdapter.getItem(position).id);
+        bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
+        openActivity(CommodityInfoActivity.class, bundle);
+    }
+
+    public List<RThirdClassifyBO> getTitleList() {
+        List<RThirdClassifyBO> threeCategoryLists = new ArrayList<>();
+        RThirdClassifyBO rThirdClassifyBO;
+        for (int i = 0; i < 3; i++) {
+            rThirdClassifyBO = new RThirdClassifyBO();
+            rThirdClassifyBO.categoryName = "测试标题" + (i + 1);
+            threeCategoryLists.add(rThirdClassifyBO);
         }
         return threeCategoryLists;
     }
@@ -194,10 +331,5 @@ public class ArtworkActivity extends BaseActivity implements BaseListAdapter.OnI
             rListCommodityBOs.add(rListCommodityBO);
         }
         return rListCommodityBOs;
-    }
-
-    @Override
-    public void onItemClick(int position, long id, View view) {
-
     }
 }

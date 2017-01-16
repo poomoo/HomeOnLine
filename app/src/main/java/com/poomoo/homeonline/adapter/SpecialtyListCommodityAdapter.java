@@ -72,8 +72,8 @@ public class SpecialtyListCommodityAdapter extends BaseListAdapter<RListCommodit
                 .into(holder.image);
 
         holder.nameTxt.setText(item.commodityName);
-        holder.priceTxt.setText("￥" + item.platformPrice);
-        holder.oldPriceTxt.setText("￥" + item.commonPrice);
+        holder.priceTxt.setText("￥" + item.lowestPriceDetail.platformPrice);
+        holder.oldPriceTxt.setText("￥" + item.lowestPriceDetail.commonPrice);
         holder.oldPriceTxt.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG);
         holder.addToCartImg.setOnClickListener(new OnClickListener(position));
         switch (FLAG) {

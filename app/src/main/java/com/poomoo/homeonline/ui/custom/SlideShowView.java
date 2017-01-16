@@ -118,8 +118,11 @@ public class SlideShowView extends FrameLayout {
      */
     private void initUI(Context context) {
         LogUtils.d(TAG, "initUI:");
-        if (imageUrls == null || imageUrls.length == 0)
-            return;
+        if (imageUrls == null || imageUrls.length == 0){
+            //            return;
+            imageUrls=new String[1];
+            imageUrls[0]="";
+        }
         this.removeAllViews();
         LayoutInflater.from(context).inflate(R.layout.layout_slideshow, this, true);
         LinearLayout dotLayout = (LinearLayout) findViewById(R.id.dotLayout);

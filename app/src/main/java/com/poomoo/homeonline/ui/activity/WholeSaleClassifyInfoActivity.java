@@ -45,6 +45,7 @@ import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.model.response.RClassifyInfoBO;
 import com.poomoo.model.response.RListCommodityBO;
+import com.poomoo.model.response.RThirdClassifyBO;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 import com.yqritc.recyclerviewflexibledivider.VerticalDividerItemDecoration;
 
@@ -72,7 +73,7 @@ public class WholeSaleClassifyInfoActivity extends BaseDaggerActivity<ClassifyIn
     private ClassifyInfoAdapter classifyInfoAdapter;
     private List<RListCommodityBO> rListCommodityBOs;
     //    public static int SELECT_POSITION = 0;
-    private String categoryId;
+    private int categoryId;
     public final String mEmptyMsg = "暂无商品";
     private RListCommodityBO rListCommodityBO;
     private boolean isList = false;//true-加载list
@@ -83,7 +84,7 @@ public class WholeSaleClassifyInfoActivity extends BaseDaggerActivity<ClassifyIn
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         title = getIntent().getStringExtra(getString(R.string.intent_title));
-        categoryId = getIntent().getStringExtra(getString(R.string.intent_categoryId));
+        categoryId = getIntent().getIntExtra(getString(R.string.intent_categoryId), 0);
         init();
     }
 
@@ -120,7 +121,7 @@ public class WholeSaleClassifyInfoActivity extends BaseDaggerActivity<ClassifyIn
             ClassifyInfoAdapter.SELECT_POSITION = position;
             classifyInfoAdapter.notifyDataSetChanged();
             listCommodityAdapter.clear();
-            categoryId = classifyInfoAdapter.getItem(position).id + "";
+            categoryId = classifyInfoAdapter.getItem(position).id;
             mErrorLayout.setState(ErrorLayout.LOADING, "");
             mPresenter.loadClassifyList(categoryId);
         });
@@ -163,11 +164,10 @@ public class WholeSaleClassifyInfoActivity extends BaseDaggerActivity<ClassifyIn
 
         this.rListCommodityBOs = rClassifyInfoBO.commoditys;
         onLoadResultData(rListCommodityBOs);
-        RClassifyInfoBO classifyInfoBO = new RClassifyInfoBO();
-        RClassifyInfoBO.ThreeCategoryList threeCategoryList = classifyInfoBO.new ThreeCategoryList();
-        threeCategoryList.categoryName = "全部";
-        threeCategoryList.id = categoryId;
-        rClassifyInfoBO.threeCategoryList.add(0, threeCategoryList);
+        RThirdClassifyBO rThirdClassifyBO = new RThirdClassifyBO();
+        rThirdClassifyBO.categoryName = "全部";
+        rThirdClassifyBO.id = categoryId;
+        rClassifyInfoBO.threeCategoryList.add(0, rThirdClassifyBO);
         classifyInfoAdapter.setItems(rClassifyInfoBO.threeCategoryList);
     }
 

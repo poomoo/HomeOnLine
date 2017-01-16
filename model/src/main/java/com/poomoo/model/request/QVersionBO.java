@@ -24,27 +24,19 @@
  * #                                                   #
  * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.model.response;
-
-import java.util.List;
+package com.poomoo.model.request;
 
 /**
- * 类名 RClassifyInfoBO
- * 描述 RClassifyInfoBO
+ * 类名 QTypeBO
+ * 描述 type 检查更新
  * 作者 李苜菲
- * 日期 2016/8/16 16:35
+ * 日期 2016/9/6 9:18
  */
-public class RClassifyInfoBO {
-    public List<RAdBO> advertisementList;
-    public List<RThirdClassifyBO> threeCategoryList;
-    public List<RListCommodityBO> commoditys;
+public class QVersionBO extends BaseRequest {
+    public int type;//1-安卓
 
-//    public class AdvertisementList {
-//        public String advertisementPic;
-//    }
-
-//    public class ThreeCategoryList {
-//        public int id;
-//        public String categoryName;
-//    }
+    public QVersionBO(String method, int type) {
+        super(method);
+        this.type = type;
+    }
 }

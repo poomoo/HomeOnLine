@@ -32,7 +32,8 @@ import com.poomoo.api.NetConfig;
 import com.poomoo.api.NetWork;
 import com.poomoo.homeonline.ui.activity.SplashActivity;
 import com.poomoo.model.request.BaseRequest;
-import com.poomoo.model.request.QVersion;
+import com.poomoo.model.request.QTypeBO;
+import com.poomoo.model.request.QVersionBO;
 import com.poomoo.model.response.RIndexBO;
 import com.poomoo.model.response.RVersionBO;
 
@@ -79,8 +80,8 @@ public class SplashPresenter extends BasePresenter<SplashActivity> {
      * 检查更新
      */
     public void checkUpdate() {
-        QVersion qVersion = new QVersion(NetConfig.UPDATE, 1);
-        add(NetWork.getMyApi().CheckUpdate(qVersion)
+        QVersionBO qVersionBO = new QVersionBO(NetConfig.UPDATE, 1);
+        add(NetWork.getMyApi().CheckUpdate(qVersionBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new AbsAPICallback<RVersionBO>() {

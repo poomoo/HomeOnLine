@@ -33,9 +33,9 @@ package com.poomoo.model.request;
  * 日期 2016/8/16 16:33
  */
 public class QCategoryIdBO extends BaseRequest {
-    public String categoryId;
+    public int categoryId;
 
-    public QCategoryIdBO(String method, String categoryId) {
+    public QCategoryIdBO(String method, int categoryId) {
         super(method);
         this.categoryId = categoryId;
     }

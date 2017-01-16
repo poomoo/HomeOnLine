@@ -11,6 +11,7 @@ import android.widget.CheckBox;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.model.response.RClassifyInfoBO;
+import com.poomoo.model.response.RThirdClassifyBO;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -26,7 +27,7 @@ import static com.poomoo.commlib.MyConfig.TEA_WINE;
  * 作者 李苜菲
  * 日期 2016/7/19 11:30
  */
-public class SpecialtyTitleAdapter extends BaseListAdapter<RClassifyInfoBO.ThreeCategoryList> {
+public class SpecialtyTitleAdapter extends BaseListAdapter<RThirdClassifyBO> {
     public static int SELECT_POSITION;
     public static boolean isShowAll = false;
     private ColorStateList color;
@@ -62,8 +63,11 @@ public class SpecialtyTitleAdapter extends BaseListAdapter<RClassifyInfoBO.Three
     public int getItemCount() {
         if (isShowAll)
             return super.getItemCount();
-        else
-            return 4;
+        else {
+            if (super.getItemCount() >= 4) return 4;
+            else
+                return super.getItemCount();
+        }
     }
 
     @Override

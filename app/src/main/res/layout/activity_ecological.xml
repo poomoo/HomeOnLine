@@ -8,8 +8,10 @@
         layout="@layout/pub_layout_title_bar" />
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         android:layout_below="@id/title">
 
         <LinearLayout
@@ -52,7 +54,7 @@
                         android:id="@+id/img_1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="commodityClick"
+                        android:onClick="hotClick"
                         android:scaleType="centerCrop" />
 
                     <View
@@ -63,7 +65,7 @@
                         android:id="@+id/img_2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="commodityClick"
+                        android:onClick="hotClick"
                         android:scaleType="centerCrop" />
 
                     <View
@@ -85,7 +87,7 @@
                         android:id="@+id/img_3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="commodityClick"
+                        android:onClick="hotClick"
                         android:scaleType="centerCrop" />
 
                     <View
@@ -96,7 +98,7 @@
                         android:id="@+id/img_4"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="commodityClick"
+                        android:onClick="hotClick"
                         android:scaleType="centerCrop" />
 
                     <View

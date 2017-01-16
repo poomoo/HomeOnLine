@@ -144,7 +144,7 @@ public class WholeSaleMainActivity extends BaseActivity implements BaseListAdapt
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         bundle = new Bundle();
         bundle.putString(getString(R.string.intent_title), MainGridAdapter.wholeSaleName[position]);
-        bundle.putString(getString(R.string.intent_categoryId), "1757");
+        bundle.putInt(getString(R.string.intent_categoryId), 1757);
         openActivity(WholeSaleClassifyInfoActivity.class, bundle);
     }
 }
