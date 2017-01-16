@@ -36,8 +36,8 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
-import com.poomoo.homeonline.adapter.SpecialtyTitleAdapter;
 import com.poomoo.homeonline.adapter.SpecialtyListCommodityAdapter;
+import com.poomoo.homeonline.adapter.SpecialtyTitleAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
@@ -56,14 +56,15 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import static com.poomoo.commlib.MyConfig.SPECIALTY;
+import static com.poomoo.commlib.MyConfig.TEA_WINE;
 
 /**
- * 类名 SpecialtyActivity
- * 描述 贵州特产
+ * 类名 TeaWineActivity
+ * 描述 贵酒贵茶
  * 作者 李苜菲
  * 日期 2017/1/13 15:17
  */
-public class SpecialtyActivity extends BaseActivity implements BaseListAdapter.OnItemClickListener {
+public class TeaWineActivity extends BaseActivity implements BaseListAdapter.OnItemClickListener {
     @Bind(R.id.recycler_title)
     RecyclerView titleRecycler;
     @Bind(R.id.img_arrow)
@@ -102,17 +103,17 @@ public class SpecialtyActivity extends BaseActivity implements BaseListAdapter.O
 
     @Override
     protected int onBindLayout() {
-        return R.layout.activity_specialty;
+        return R.layout.activity_tea_wine;
     }
 
     @Override
     protected int onSetTitle() {
-        return R.string.title_specialty;
+        return R.string.title_tea_wine;
     }
 
     private void init() {
         HeaderViewHolder headerViewHolder = getHeaderView();
-        headerViewHolder.titleTxt.setTextColor(ContextCompat.getColor(this, R.color.specialty));
+        headerViewHolder.titleTxt.setTextColor(ContextCompat.getColor(this, R.color.tea_wine));
         headerViewHolder.backImg.setOnClickListener(v -> {
             finish();
             getActivityOutToRight();
@@ -142,7 +143,7 @@ public class SpecialtyActivity extends BaseActivity implements BaseListAdapter.O
                 .size((int) getResources().getDimension(R.dimen.dp_10))
                 .build());
 
-        titleAdapter = new SpecialtyTitleAdapter(this, BaseListAdapter.NEITHER,SPECIALTY);
+        titleAdapter = new SpecialtyTitleAdapter(this, BaseListAdapter.NEITHER,TEA_WINE);
         titleRecycler.setAdapter(titleAdapter);
         titleAdapter.setOnItemClickListener((position, id, view) -> {
             SpecialtyTitleAdapter.SELECT_POSITION = position;
@@ -155,7 +156,7 @@ public class SpecialtyActivity extends BaseActivity implements BaseListAdapter.O
         titleAdapter.setItems(getTitleList());
 
         listRecycler.setLayoutManager(new ScrollLinearLayoutManager(this));
-        infoAdapter = new SpecialtyListCommodityAdapter(this, BaseListAdapter.NEITHER, SPECIALTY, position -> {
+        infoAdapter = new SpecialtyListCommodityAdapter(this, BaseListAdapter.NEITHER, TEA_WINE, position -> {
 
         });
         listRecycler.setAdapter(infoAdapter);

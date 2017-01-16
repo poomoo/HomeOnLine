@@ -60,4 +60,9 @@ public class MyConfig {
     public static final long SMSCOUNTDOWNTIME = 60 * 1000;//发送验证码倒计时
     public static final long COUNTDOWNTIBTERVAL = 1000;//倒计时间隔时间
 
+    public static final int ECOLOGICAL = 0;//生态有机
+    public static final int SPECIALTY = 1;//贵州特产
+    public static final int TEA_WINE = 2;//贵酒贵茶
+    public static final int ARTWORK = 3;//黔匠艺品
+
 }

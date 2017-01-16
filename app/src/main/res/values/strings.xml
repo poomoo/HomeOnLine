@@ -44,6 +44,10 @@
     <string name="title_wholeSale1">申请成为集采用户</string>
     <string name="title_toWhole_sale_user">提交资料</string>
     <string name="title_toWhole_sale_center">集采中心</string>
+    <string name="title_ecological">生态有机</string>
+    <string name="title_specialty">贵州特产</string>
+    <string name="title_tea_wine">贵酒贵茶</string>
+    <string name="title_artwork">黔匠艺品</string>
 
     <string name="label_userName">"用户名　"</string>
     <string name="label_userPassWord">登录密码</string>
@@ -177,7 +181,5 @@
     <string name="btn_invite">立即邀请</string>
 
     <string name="umeng_sharebutton_copy">复制链接</string>
-    <string name="title_ecological">生态有机</string>
-    <string name="title_specialty">贵州特产</string>
 
 </resources>

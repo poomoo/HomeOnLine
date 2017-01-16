@@ -36,8 +36,8 @@ import android.widget.LinearLayout;
 import com.bumptech.glide.Glide;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
-import com.poomoo.homeonline.adapter.SpecialtyTitleAdapter;
 import com.poomoo.homeonline.adapter.SpecialtyListCommodityAdapter;
+import com.poomoo.homeonline.adapter.SpecialtyTitleAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
@@ -55,15 +55,16 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.poomoo.commlib.MyConfig.ARTWORK;
 import static com.poomoo.commlib.MyConfig.SPECIALTY;
 
 /**
- * 类名 SpecialtyActivity
- * 描述 贵州特产
+ * 类名 ArtworkActivity
+ * 描述 黔匠艺品
  * 作者 李苜菲
  * 日期 2017/1/13 15:17
  */
-public class SpecialtyActivity extends BaseActivity implements BaseListAdapter.OnItemClickListener {
+public class ArtworkActivity extends BaseActivity implements BaseListAdapter.OnItemClickListener {
     @Bind(R.id.recycler_title)
     RecyclerView titleRecycler;
     @Bind(R.id.img_arrow)
@@ -89,7 +90,6 @@ public class SpecialtyActivity extends BaseActivity implements BaseListAdapter.O
     private int dp8;
     private int dp10;
     private int width;
-//    public static int SELECT_POSITION = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,17 +102,17 @@ public class SpecialtyActivity extends BaseActivity implements BaseListAdapter.O
 
     @Override
     protected int onBindLayout() {
-        return R.layout.activity_specialty;
+        return R.layout.activity_artwork;
     }
 
     @Override
     protected int onSetTitle() {
-        return R.string.title_specialty;
+        return R.string.title_artwork;
     }
 
     private void init() {
         HeaderViewHolder headerViewHolder = getHeaderView();
-        headerViewHolder.titleTxt.setTextColor(ContextCompat.getColor(this, R.color.specialty));
+        headerViewHolder.titleTxt.setTextColor(ContextCompat.getColor(this, R.color.artwork));
         headerViewHolder.backImg.setOnClickListener(v -> {
             finish();
             getActivityOutToRight();
@@ -142,7 +142,7 @@ public class SpecialtyActivity extends BaseActivity implements BaseListAdapter.O
                 .size((int) getResources().getDimension(R.dimen.dp_10))
                 .build());
 
-        titleAdapter = new SpecialtyTitleAdapter(this, BaseListAdapter.NEITHER,SPECIALTY);
+        titleAdapter = new SpecialtyTitleAdapter(this, BaseListAdapter.NEITHER,ARTWORK);
         titleRecycler.setAdapter(titleAdapter);
         titleAdapter.setOnItemClickListener((position, id, view) -> {
             SpecialtyTitleAdapter.SELECT_POSITION = position;
@@ -155,7 +155,7 @@ public class SpecialtyActivity extends BaseActivity implements BaseListAdapter.O
         titleAdapter.setItems(getTitleList());
 
         listRecycler.setLayoutManager(new ScrollLinearLayoutManager(this));
-        infoAdapter = new SpecialtyListCommodityAdapter(this, BaseListAdapter.NEITHER, SPECIALTY, position -> {
+        infoAdapter = new SpecialtyListCommodityAdapter(this, BaseListAdapter.NEITHER, ARTWORK, position -> {
 
         });
         listRecycler.setAdapter(infoAdapter);

@@ -71,7 +71,7 @@ public class WholeSaleClassifyInfoActivity extends BaseDaggerActivity<ClassifyIn
     private ListCommodityAdapter listCommodityAdapter;
     private ClassifyInfoAdapter classifyInfoAdapter;
     private List<RListCommodityBO> rListCommodityBOs;
-    public static int SELECT_POSITION = 0;
+    //    public static int SELECT_POSITION = 0;
     private String categoryId;
     public final String mEmptyMsg = "暂无商品";
     private RListCommodityBO rListCommodityBO;
@@ -117,7 +117,7 @@ public class WholeSaleClassifyInfoActivity extends BaseDaggerActivity<ClassifyIn
         classifyInfoAdapter = new ClassifyInfoAdapter(this, BaseListAdapter.NEITHER);
         titleRecycler.setAdapter(classifyInfoAdapter);
         classifyInfoAdapter.setOnItemClickListener((position, id, view) -> {
-            SELECT_POSITION = position;
+            ClassifyInfoAdapter.SELECT_POSITION = position;
             classifyInfoAdapter.notifyDataSetChanged();
             listCommodityAdapter.clear();
             categoryId = classifyInfoAdapter.getItem(position).id + "";
@@ -143,7 +143,8 @@ public class WholeSaleClassifyInfoActivity extends BaseDaggerActivity<ClassifyIn
 
         mErrorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.loadClassify(categoryId);
-        SELECT_POSITION = 0;
+        ClassifyInfoAdapter.SELECT_POSITION = 0;
+
     }
 
     @Override

@@ -193,6 +193,14 @@
             android:name=".ui.activity.SpecialtyActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.activity.TeaWineActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".ui.activity.ArtworkActivity"
+            android:exported="false" />
+
         <!--图片相关-->
         <activity
             android:name=".ui.activity.pics.ImageGridActivity"

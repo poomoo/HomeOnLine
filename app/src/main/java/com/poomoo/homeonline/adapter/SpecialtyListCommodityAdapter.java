@@ -25,6 +25,11 @@ import com.poomoo.model.response.RListCommodityBO;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.poomoo.commlib.MyConfig.ARTWORK;
+import static com.poomoo.commlib.MyConfig.ECOLOGICAL;
+import static com.poomoo.commlib.MyConfig.SPECIALTY;
+import static com.poomoo.commlib.MyConfig.TEA_WINE;
+
 /**
  * 类名 SpecialtyListCommodityAdapter
  * 描述 专题商品列表适配器
@@ -37,10 +42,6 @@ public class SpecialtyListCommodityAdapter extends BaseListAdapter<RListCommodit
     private LinearLayout.LayoutParams layoutParams;
     private int margin = 0;
     private int FLAG;
-    public static final int ECOLOGICAL = 0;//生态有机
-    public static final int SPECIALTY = 1;//贵州特产
-    public static final int TEA_WIN = 2;//贵酒贵茶
-    public static final int ARTWORK = 3;//黔匠艺品
 
     public SpecialtyListCommodityAdapter(Context context, int mode, int flag, AddToCartListener addToCartListener) {
         super(context, mode);
@@ -84,7 +85,7 @@ public class SpecialtyListCommodityAdapter extends BaseListAdapter<RListCommodit
                 holder.logoImg.setImageResource(R.drawable.ic_logo_specialty);
                 holder.addToCartImg.setImageResource(R.drawable.ic_cart_specialty);
                 break;
-            case TEA_WIN:
+            case TEA_WINE:
                 holder.logoImg.setImageResource(R.drawable.ic_logo_teawin);
                 holder.addToCartImg.setImageResource(R.drawable.ic_cart_teawin);
                 break;

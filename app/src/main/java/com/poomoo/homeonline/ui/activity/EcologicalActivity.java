@@ -53,6 +53,8 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
+import static com.poomoo.commlib.MyConfig.ECOLOGICAL;
+
 /**
  * 类名 EcologicalActivity
  * 描述 生态有机
@@ -135,7 +137,7 @@ public class EcologicalActivity extends BaseActivity implements BaseListAdapter.
 //                .size((int) getResources().getDimension(R.dimen.recycler_divider))
 //                .build());
 
-        adapter = new SpecialtyListCommodityAdapter(this, BaseListAdapter.NEITHER, SpecialtyListCommodityAdapter.ECOLOGICAL, position -> {
+        adapter = new SpecialtyListCommodityAdapter(this, BaseListAdapter.NEITHER, ECOLOGICAL, position -> {
 
         });
         recyclerView.setAdapter(adapter);

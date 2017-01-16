@@ -50,11 +50,13 @@ import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
 import com.poomoo.homeonline.reject.components.DaggerFragmentComponent;
 import com.poomoo.homeonline.reject.modules.FragmentModule;
 import com.poomoo.homeonline.ui.activity.AbroadActivity;
+import com.poomoo.homeonline.ui.activity.ArtworkActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.EcologicalActivity;
 import com.poomoo.homeonline.ui.activity.IndexViewPagerActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
 import com.poomoo.homeonline.ui.activity.SpecialtyActivity;
+import com.poomoo.homeonline.ui.activity.TeaWineActivity;
 import com.poomoo.homeonline.ui.activity.TicketZoneActivity;
 import com.poomoo.homeonline.ui.activity.PresentActivity;
 import com.poomoo.homeonline.ui.activity.SearchActivity;
@@ -362,7 +364,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private void initHot() {
         hotRecycler.setLayoutManager(new ScrollLinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         hotRecycler.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
-                .color(ContextCompat.getColor(getActivity(),R.color.transParent))
+                .color(ContextCompat.getColor(getActivity(), R.color.transParent))
                 .size((int) getResources().getDimension(R.dimen.recycler_divider))
                 .build());
         hotAdapter = new HotAdapter(getActivity(), BaseListAdapter.NEITHER);
@@ -596,6 +598,12 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 break;
             case 5:
                 openActivity(SpecialtyActivity.class);
+                break;
+            case 6:
+                openActivity(TeaWineActivity.class);
+                break;
+            case 7:
+                openActivity(ArtworkActivity.class);
                 break;
         }
     }
