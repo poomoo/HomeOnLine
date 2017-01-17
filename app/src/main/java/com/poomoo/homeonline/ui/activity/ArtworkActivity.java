@@ -149,8 +149,9 @@ public class ArtworkActivity extends BaseDaggerActivity<NewSpecialPresenter> imp
 
         dp8 = (int) getResources().getDimension(R.dimen.dp_8);
         dp10 = (int) getResources().getDimension(R.dimen.dp_10);
-        width = MyUtils.getScreenWidth(this) - dp8 - dp10 * 2;
-        layoutParams = new LinearLayout.LayoutParams(width / 2, width / 4);
+        width = MyUtils.getScreenWidth(this) - dp8 * 3 - dp10 * 2;
+        width /= 4;
+        layoutParams = new LinearLayout.LayoutParams(width, width * 5 / 4);//宽高比4:5
         hot[0] = img1;
         hot[1] = img2;
         hot[2] = img3;
@@ -240,7 +241,7 @@ public class ArtworkActivity extends BaseDaggerActivity<NewSpecialPresenter> imp
         int hotSize = rNewSpecialBO.hotAdvs.size();
         for (int i = 0; i < 4; i++) {
             if (hotSize > i) {
-                Glide.with(this).load(NetConfig.ImageUrl + rNewSpecialBO.hotAdvs.get(i).advertisementPic).placeholder(R.drawable.replace2).into(hot[i]);
+                Glide.with(this).load(NetConfig.ImageUrl + rNewSpecialBO.hotAdvs.get(i).advertisementPic).placeholder(R.drawable.replace2b3).into(hot[i]);
                 hot[i].setTag(R.id.tag_first, rNewSpecialBO.hotAdvs.get(i));
                 hot[i].setVisibility(View.VISIBLE);
             } else

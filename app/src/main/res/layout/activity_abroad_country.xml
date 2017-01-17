@@ -13,8 +13,8 @@
         android:id="@+id/scrollView_country"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_below="@id/title">
+        android:layout_below="@id/title"
+        android:visibility="gone">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -111,8 +111,10 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
     <com.poomoo.homeonline.ui.custom.ErrorLayout
         android:id="@+id/error_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@id/title" />
 </RelativeLayout>

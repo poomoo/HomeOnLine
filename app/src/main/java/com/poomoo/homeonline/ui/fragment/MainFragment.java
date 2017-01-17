@@ -589,10 +589,10 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 ((MainNewActivity) getActivity()).jump(2);
                 break;
             case 1:
-                openActivity(PresentActivity.class);
+                openActivity(TicketZoneActivity.class);
                 break;
             case 2:
-                openActivity(TicketZoneActivity.class);
+                openActivity(PresentActivity.class);
                 break;
             case 3:
                 openActivity(AbroadActivity.class);

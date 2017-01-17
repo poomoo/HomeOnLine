@@ -53,5 +53,6 @@ public class RPresentBO {
         public String presentPcUrl;
         public String presentMoveUrl;
         public int commodityType;
+        public String rule;
     }
 }

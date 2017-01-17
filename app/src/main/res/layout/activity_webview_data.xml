@@ -18,5 +18,6 @@
     <com.poomoo.homeonline.ui.custom.ErrorLayout
         android:id="@+id/error_frame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title" />
 </RelativeLayout>

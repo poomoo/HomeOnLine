@@ -100,6 +100,7 @@ public class TicketZoneActivity extends BaseDaggerActivity<OnSalePresenter> impl
     private String money = "";//优惠券面额
     private int POSITION = 0;
     private String rule;
+    private ImageView[] tickets = new ImageView[4];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,18 +137,23 @@ public class TicketZoneActivity extends BaseDaggerActivity<OnSalePresenter> impl
 
     public void successful(ROnSaleBO rOnSaleBO) {
         LogUtils.d(TAG, "rOnSaleBO.yhqs.size():" + rOnSaleBO.yhqs.size() + "\n" + "rOnSaleBO.advlist.size():" + rOnSaleBO.advlist.size() + "\n" + "rOnSaleBO.commoditys.size():" + rOnSaleBO.commoditys.size());
-        if (rOnSaleBO.yhqs.size() == 0
-                || rOnSaleBO.advlist.size() == 0
-                || rOnSaleBO.commoditys.size() == 0) {
-            errorLayout.setState(ErrorLayout.EMPTY_DATA, "暂时没有数据");
-            return;
-        }
+//        if (rOnSaleBO.yhqs.size() == 0
+//                || rOnSaleBO.advlist.size() == 0
+//                || rOnSaleBO.commoditys.size() == 0) {
+//            errorLayout.setState(ErrorLayout.EMPTY_DATA, "暂时没有数据");
+//            return;
+//        }
         loadAd(rOnSaleBO.advlist);
         addView(rOnSaleBO);
         setImage(rOnSaleBO.yhqs);
         LogUtils.d(TAG, "优惠券图片:" + rOnSaleBO.yhqs);
         errorLayout.setState(ErrorLayout.HIDE, "");
         scrollView.setVisibility(View.VISIBLE);
+    }
+
+    public void failed(String msg) {
+        flag = 0;
+        errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 
     private void setImage(List<ROnSaleBO.Pic> pics) {
@@ -158,15 +164,22 @@ public class TicketZoneActivity extends BaseDaggerActivity<OnSalePresenter> impl
         img2.setLayoutParams(lp);
         img3.setLayoutParams(lp);
         img4.setLayoutParams(lp);
-        Glide.with(this).load(NetConfig.ImageUrl + pics.get(0).voucherPic).placeholder(R.drawable.replace2).into(img1);
-        Glide.with(this).load(NetConfig.ImageUrl + pics.get(1).voucherPic).placeholder(R.drawable.replace2).into(img2);
-        Glide.with(this).load(NetConfig.ImageUrl + pics.get(2).voucherPic).placeholder(R.drawable.replace2).into(img3);
-        Glide.with(this).load(NetConfig.ImageUrl + pics.get(3).voucherPic).placeholder(R.drawable.replace2).into(img4);
-    }
+        tickets[0] = img1;
+        tickets[1] = img2;
+        tickets[2] = img3;
+        tickets[3] = img4;
+        for (int i = 0; i < 4; i++) {
+            if (pics.size() > i) {
+                Glide.with(this).load(NetConfig.ImageUrl + pics.get(i).voucherPic).placeholder(R.drawable.replace2).into(tickets[i]);
+                tickets[i].setVisibility(View.VISIBLE);
+            } else
+                tickets[i].setVisibility(View.GONE);
 
-    public void failed(String msg) {
-        flag = 0;
-        errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+        }
+//        Glide.with(this).load(NetConfig.ImageUrl + pics.get(0).voucherPic).placeholder(R.drawable.replace2).into(img1);
+//        Glide.with(this).load(NetConfig.ImageUrl + pics.get(1).voucherPic).placeholder(R.drawable.replace2).into(img2);
+//        Glide.with(this).load(NetConfig.ImageUrl + pics.get(2).voucherPic).placeholder(R.drawable.replace2).into(img3);
+//        Glide.with(this).load(NetConfig.ImageUrl + pics.get(3).voucherPic).placeholder(R.drawable.replace2).into(img4);
     }
 
     public void getTicketSuccessful() {

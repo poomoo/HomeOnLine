@@ -268,12 +268,12 @@
                     android:layout_marginLeft="@dimen/dp_10"
                     android:layout_marginRight="@dimen/dp_10"
                     android:src="@drawable/ic_abroad_limit"
-                    android:visibility="gone"/>
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_height="1dp"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:background="@color/divide" />
             </LinearLayout>
         </ScrollView>
@@ -292,5 +292,6 @@
     <com.poomoo.homeonline.ui.custom.ErrorLayout
         android:id="@+id/error_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/title" />
 </RelativeLayout>

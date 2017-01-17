@@ -9,7 +9,7 @@ package com.poomoo.api;
  */
 public class NetConfig {
     //本地服务器
-    public final static String url = "http://192.168.1.102/";
+    public final static String url = "http://192.168.1.101/";
     public final static String suffix = "app/call.json";
     public final static String grabUrl = url + "app/rush.html";
     public final static String check = "jyzx/app/pay/alipay_return.html";
@@ -47,7 +47,8 @@ public class NetConfig {
     public final static String GRAB = "1006_04";//首页抢购
     public final static String GUESS = "1006_05";//首页猜你喜欢
     public final static String HOT = "1006_06";//首页热门推荐
-    public final static String NEWSPECIAL = "1006_07";//生态有机 贵州特产 贵酒贵茶 黔匠艺品
+    public final static String NEWSPECIAL = "1006_07";//贵州特产 贵酒贵茶 黔匠艺品
+    public final static String ECOLOGICAL="1006_08";//生态有机
 
     public final static String CLASSIFY = "1007_01";//商品分类
 

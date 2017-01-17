@@ -20,23 +20,41 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <ImageView
+            <com.poomoo.homeonline.ui.custom.SlideShowView
+                android:id="@+id/flipper_ad"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:scaleType="fitXY"
-                android:src="@drawable/img_present" />
+                android:layout_height="100dp" />
 
-            <LinearLayout
-                android:id="@+id/llayout_present_content"
+            <com.poomoo.homeonline.ui.custom.NoScrollRecyclerView
+                android:id="@+id/recycler_present"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/pink"
-                android:orientation="vertical" />
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/img_present" />
+
+        <LinearLayout
+            android:id="@+id/llayout_present_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/pink"
+            android:orientation="vertical" />
+    </LinearLayout>
 
     <com.poomoo.homeonline.ui.custom.ErrorLayout
         android:id="@+id/error_frame"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/title" />
 </RelativeLayout>

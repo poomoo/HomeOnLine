@@ -49,6 +49,7 @@ public class PresentCommodityAdapter extends BaseListAdapter<RPresentBO.Activity
 
         item = items.get(position);
         Glide.with(mContext).load(NetConfig.ImageUrl + item.listPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).centerCrop().placeholder(R.drawable.replace).priority(Priority.HIGH).into(holder.image);
+        holder.ruleTxt.setText(item.rule);
         holder.nameTxt.setText(item.commodityName);
         holder.priceTxt.setText("￥" + item.commodityPrice);
     }
@@ -56,6 +57,8 @@ public class PresentCommodityAdapter extends BaseListAdapter<RPresentBO.Activity
     public static final class BaseViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.img_present_commodity)
         ImageView image;
+        @Bind(R.id.txt_present_rule)
+        TextView ruleTxt;
         @Bind(R.id.txt_present_commodity_name)
         TextView nameTxt;
         @Bind(R.id.txt_present_commodity_price)

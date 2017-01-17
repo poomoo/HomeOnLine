@@ -41,7 +41,7 @@ import com.poomoo.commlib.MyUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.SpecialtyListCommodityAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
-import com.poomoo.homeonline.presenters.NewSpecialPresenter;
+import com.poomoo.homeonline.presenters.EcologicalPresenter;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
@@ -51,7 +51,6 @@ import com.poomoo.homeonline.ui.custom.NoScrollRecyclerView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.model.CommodityType;
 import com.poomoo.model.response.RAdBO;
-import com.poomoo.model.response.RCommodityInfoBO;
 import com.poomoo.model.response.RListCommodityBO;
 import com.poomoo.model.response.RNewSpecialBO;
 
@@ -69,7 +68,7 @@ import static com.poomoo.commlib.MyConfig.ECOLOGICAL;
  * 作者 李苜菲
  * 日期 2017/1/13 15:17
  */
-public class EcologicalActivity extends BaseDaggerActivity<NewSpecialPresenter> implements BaseListAdapter.OnItemClickListener, ErrorLayout.OnActiveClickListener {
+public class EcologicalActivity extends BaseDaggerActivity<EcologicalPresenter> implements BaseListAdapter.OnItemClickListener, ErrorLayout.OnActiveClickListener {
     @Bind(R.id.scrollView)
     ScrollView scrollView;
     @Bind(R.id.flipper_ad)
@@ -153,7 +152,7 @@ public class EcologicalActivity extends BaseDaggerActivity<NewSpecialPresenter> 
         initRecycler();
         mErrorLayout.setOnActiveClickListener(this);
 
-        mPresenter.getInfo(0, -1);
+        mPresenter.getInfo();
         mErrorLayout.setState(ErrorLayout.LOADING, "");
     }
 
@@ -170,7 +169,6 @@ public class EcologicalActivity extends BaseDaggerActivity<NewSpecialPresenter> 
 //        adapter.setItems(getList());
     }
 
-    @Override
     public void getInfoSuccessful(RNewSpecialBO rNewSpecialBO) {
         super.getInfoSuccessful(rNewSpecialBO);
         LogUtils.d(TAG, "顶部广告");
@@ -215,7 +213,6 @@ public class EcologicalActivity extends BaseDaggerActivity<NewSpecialPresenter> 
         mErrorLayout.setState(ErrorLayout.HIDE, "");
     }
 
-    @Override
     public void getInfoFailed() {
         super.getInfoFailed();
         mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
@@ -239,7 +236,7 @@ public class EcologicalActivity extends BaseDaggerActivity<NewSpecialPresenter> 
 
     @Override
     public void onLoadActiveClick() {
-        mPresenter.getInfo(0, -1);
+        mPresenter.getInfo();
         mErrorLayout.setState(ErrorLayout.LOADING, "");
     }
 

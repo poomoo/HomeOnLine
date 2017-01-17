@@ -357,7 +357,11 @@ public interface MyApi {
     @POST(NetConfig.suffix)
     Observable<List<RListCommodityBO>> getCountryInfoCommodity(@Body QCountryInfoCommodityBO qCountryInfoCommodityBO);
 
-    //生态有机、贵州特产、贵酒贵茶、黔匠艺品详情
+    //贵州特产、贵酒贵茶、黔匠艺品详情
     @POST(NetConfig.suffix)
     Observable<RNewSpecialBO> getSpecialInfo(@Body QTypeBO qTypeBO);
+
+    //生态有机
+    @POST(NetConfig.suffix)
+    Observable<RNewSpecialBO> getEcologicalInfo(@Body BaseRequest baseRequest);
 }

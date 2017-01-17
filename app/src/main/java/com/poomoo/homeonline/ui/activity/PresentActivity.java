@@ -30,7 +30,9 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Slide;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +57,7 @@ import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
 import com.poomoo.homeonline.ui.custom.CustomDialog;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
+import com.poomoo.homeonline.ui.custom.NoScrollRecyclerView;
 import com.poomoo.homeonline.ui.custom.SlideShowView;
 import com.poomoo.homeonline.ui.popup.RulePopupWindow;
 import com.poomoo.model.CommodityType;
@@ -79,21 +82,24 @@ import butterknife.ButterKnife;
 public class PresentActivity extends BaseDaggerActivity<PresentPresenter> implements ErrorLayout.OnActiveClickListener, BaseListAdapter.OnItemClickListener {
     @Bind(R.id.scroll_present)
     ScrollView scrollView;
-    @Bind(R.id.llayout_present_content)
-    LinearLayout contentLayout;
+    @Bind(R.id.flipper_ad)
+    SlideShowView slideShowView;
+    @Bind(R.id.recycler_present)
+    NoScrollRecyclerView recyclerView;
+    //    @Bind(R.id.llayout_present_content)
+//    LinearLayout contentLayout;
     @Bind(R.id.error_frame)
     ErrorLayout errorLayout;
 
     private PresentCommodityAdapter adapter;
     private Bundle bundle;
-    private List<RPresentBO> rPresentBOs;
-    private int POSITION = 0;
+    private List<RPresentBO.ActivityCommodities> commodities;
+    private RPresentBO rPresentBO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        setBack();
         init();
     }
 
@@ -116,48 +122,55 @@ public class PresentActivity extends BaseDaggerActivity<PresentPresenter> implem
     }
 
     private void init() {
+        HeaderViewHolder headerViewHolder = getHeaderView();
+        headerViewHolder.titleTxt.setTextColor(ContextCompat.getColor(this, R.color.pink));
+        headerViewHolder.titleTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, getResources().getDimension(R.dimen.sp_12));
+        headerViewHolder.rightImg.setImageResource(R.drawable.ic_special_search);
+        headerViewHolder.rightImg.setVisibility(View.VISIBLE);
+        headerViewHolder.rightImg.setOnClickListener(v -> openActivity(SearchActivity.class));
+        headerViewHolder.backImg.setOnClickListener(v -> {
+            finish();
+            getActivityOutToRight();
+        });
+
+        slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(this) / 2));//设置广告栏的宽高比为2:1
+
+        recyclerView.setLayoutManager(new ScrollLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
+                .color(ContextCompat.getColor(context, R.color.transParent))
+                .size((int) getResources().getDimension(R.dimen.dp_10))
+                .build());
+        adapter = new PresentCommodityAdapter(this, BaseListAdapter.NEITHER);
+        adapter.setOnItemClickListener(this);
+        recyclerView.setAdapter(adapter);
+
         errorLayout.setState(ErrorLayout.LOADING, "");
         mPresenter.getPresentInfo();
         errorLayout.setOnActiveClickListener(this);
     }
 
     public void successful(List<RPresentBO> rPresentBOs) {
-        this.rPresentBOs = rPresentBOs;
         addView(rPresentBOs);
         errorLayout.setState(ErrorLayout.HIDE, "");
         scrollView.setVisibility(View.VISIBLE);
     }
 
     public void failed(String msg) {
-            errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+        errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
     }
 
 
     private void addView(List<RPresentBO> rPresentBOs) {
+        commodities = new ArrayList<>();
         int len = rPresentBOs.size();
         for (int i = 0; i < len; i++) {
-            View view = LayoutInflater.from(this).inflate(R.layout.layout_present_content, null);
-            TextView titleTxt = (TextView) view.findViewById(R.id.txt_present_name);
-            RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.recycler_present);
-
-//            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            lp.setMargins((int) getResources().getDimension(R.dimen.dp_10), 0, 0, 0);
-//            titleTxt.setLayoutParams(lp);
-            titleTxt.setText(rPresentBOs.get(i).title);
-
-            recyclerView.setLayoutManager(new ScrollLinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-            recyclerView.addItemDecoration(new HorizontalDividerItemDecoration.Builder(this)
-                    .color(ContextCompat.getColor(context, R.color.transParent))
-                    .size((int) getResources().getDimension(R.dimen.dp_10))
-                    .build());
-
-            adapter = new PresentCommodityAdapter(this, BaseListAdapter.NEITHER);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setTag(i);
-            adapter.setOnItemClickListener(this);
-            adapter.setItems(rPresentBOs.get(i).activityCommodities);
-            contentLayout.addView(view);
+            rPresentBO = rPresentBOs.get(i);
+            for (int j = 0; j < rPresentBO.activityCommodities.size(); j++) {
+                rPresentBO.activityCommodities.get(j).rule = rPresentBO.title;
+                commodities.add(rPresentBO.activityCommodities.get(j));
+            }
         }
+        adapter.setItems(commodities);
     }
 
     @Override
@@ -169,11 +182,10 @@ public class PresentActivity extends BaseDaggerActivity<PresentPresenter> implem
     @Override
     public void onItemClick(int position, long id, View view) {
         bundle = new Bundle();
-        POSITION = (int) ((View) view.getParent()).getTag();
-        bundle.putInt(getString(R.string.intent_commodityId), rPresentBOs.get(POSITION).activityCommodities.get(position).commodityId);
-        bundle.putInt(getString(R.string.intent_commodityDetailId), rPresentBOs.get(POSITION).activityCommodities.get(position).detailId);
+        bundle.putInt(getString(R.string.intent_commodityId), adapter.getItem(position).commodityId);
+        bundle.putInt(getString(R.string.intent_commodityDetailId), adapter.getItem(position).detailId);
         bundle.putInt(getString(R.string.intent_commodityType), CommodityType.PRESENT);//买赠商品固定传4
-        bundle.putInt(getString(R.string.intent_matchId), rPresentBOs.get(POSITION).activityCommodities.get(position).activityId);//match_id传activityId
+        bundle.putInt(getString(R.string.intent_matchId), adapter.getItem(position).activityId);//match_id传activityId
         openActivity(CommodityInfoActivity.class, bundle);
     }
 }

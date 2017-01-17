@@ -109,10 +109,12 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
     private LinearLayout.LayoutParams globalParams;
     private LinearLayout.LayoutParams globalParams2;
     private int globalImgWidth = 0;
+    private ImageView global[] = new ImageView[4];
 
     /*国家地区馆*/
     private LinearLayout.LayoutParams countryParams;
     private int countryWidth = 0;
+    private ImageView country[] = new ImageView[4];
 
     /*底部分类*/
     private LinearLayout.LayoutParams bottomParams;
@@ -201,57 +203,157 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
         mPresenter.getAbroad();
     }
 
+    public void toGlobal(View view) {
+        openActivity(AbroadGlobalActivity.class);
+    }
+
+    public void toCountry(View view) {
+        openActivity(AbroadCountryActivity.class);
+    }
+
+    @Override
+    public void onLoadActiveClick() {
+        errorLayout.setState(ErrorLayout.LOADING, "");
+        mPresenter.getAbroad();
+    }
+
+    public void failed(String msg) {
+        errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
+    }
+
+    public void successful(RAbroadBO rAbroadBO) {
+//        if (rAbroadBO.earthAdv.size() == 0
+//                || rAbroadBO.categorys.size() == 0
+//                || rAbroadBO.topAdvList.size() == 0
+//                || rAbroadBO.advList.size() == 0
+//                || rAbroadBO.countrys.size() == 0) {
+////            LogUtils.d(TAG, "rAbroadBO.earthAdv.size():" + rAbroadBO.earthAdv.size()
+////                    + "\n" + " rAbroadBO.categorys.size():" + rAbroadBO.categorys.size() + "\n" + "rAbroadBO.topAdvList.size():" + rAbroadBO.topAdvList.size() + "\n"
+////                    + " rAbroadBO.advList.size():" + rAbroadBO.advList.size() + "\n" + " rAbroadBO.countrys.size():" + rAbroadBO.countrys.size());
+//            errorLayout.setState(ErrorLayout.EMPTY_DATA, "暂时没有数据");
+//            return;
+//        }
+        LogUtils.d(TAG, "rAbroadBO.earthAdv:" + rAbroadBO.earthAdv + "\n"
+                + " rAbroadBO.categorys:" + rAbroadBO.categorys + "\n"
+                + "rAbroadBO.topAdvList:" + rAbroadBO.topAdvList + "\n"
+                + " rAbroadBO.advList:" + rAbroadBO.advList + "\n"
+                + " rAbroadBO.countrys:" + rAbroadBO.countrys);
+
+        String[] urls = new String[rAbroadBO.topAdvList.size()];
+        int i = 0;
+        for (RAdBO rAdBO : rAbroadBO.topAdvList)
+            urls[i++] = NetConfig.ImageUrl + rAdBO.advertisementPic;
+        slideShowView.setPics(urls, position -> {
+            if (urls.length == 0)
+                return;
+            rAdBO = rAbroadBO.topAdvList.get(position);
+            jump();
+        });
+        this.rAbroadBO = rAbroadBO;
+        addView(rAbroadBO);
+        scrollView.setVisibility(View.VISIBLE);
+        errorLayout.setState(ErrorLayout.HIDE, "");
+    }
+
     private void addView(RAbroadBO rAbroadBO) {
         earthAdv = rAbroadBO.earthAdv;
         countrys = rAbroadBO.countrys;
         /*顶部分类*/
+//        rAbroadBO.categorys = rAbroadBO.categorys.subList(0, 3);
         len = rAbroadBO.categorys.size();
         LogUtils.d(TAG, "顶部分类");
-        group = len / COLUMN_NUM + len % COLUMN_NUM;//当分类个数小于COLUMN_NUM的情况没有考虑进去！！（记得修改）
-        LogUtils.d(TAG, "group:" + group);
-        for (int i = 0; i < group; i++) {
-            LogUtils.d(TAG, "i:" + i);
+        if (len > COLUMN_NUM - 1) {//分类个数大于等于COLUMN_NUM
+            group = len / COLUMN_NUM + len % COLUMN_NUM;//当分类个数小于COLUMN_NUM的情况没有考虑进去！！（记得修改）
+            LogUtils.d(TAG, "group:" + group);
+            for (int i = 0; i < group; i++) {
+                LogUtils.d(TAG, "i:" + i);
+                View view = LayoutInflater.from(this).inflate(R.layout.item_activity_abroad_category, null);
+                categorySubLayout = (LinearLayout) view.findViewById(R.id.llayout_abroad_category);
+                for (int j = 0; j < COLUMN_NUM; j++) {
+                    LogUtils.d(TAG, "j:" + j);
+                    View subView = LayoutInflater.from(this).inflate(R.layout.item_activity_abroad_category_info, null);
+                    categoryInfoLayout = (LinearLayout) subView.findViewById(R.id.llayout_abroad_category_info);
+                    categoryImg = (ImageView) subView.findViewById(R.id.img_abroad_category);
+                    categoryTxt = (TextView) subView.findViewById(R.id.txt_abroad_category);
+
+                    categoryInfoLayout.setLayoutParams(categoryParams);
+                    Glide.with(this).load(NetConfig.ImageUrl + rAbroadBO.categorys.get(i * COLUMN_NUM + j).pcPic).into(categoryImg);
+                    categoryTxt.setText(rAbroadBO.categorys.get(i * COLUMN_NUM + j).categoryName);
+
+                    categoryInfoLayout.setTag(R.id.tag_first, rAbroadBO.categorys.get(i * COLUMN_NUM + j).id + "");
+                    categoryInfoLayout.setTag(R.id.tag_second, rAbroadBO.categorys.get(i * COLUMN_NUM + j).categoryName);
+                    categoryInfoLayout.setOnClickListener(new classifyClick());
+
+                    categorySubLayout.addView(subView);
+                    if (i * COLUMN_NUM + j == len - 1)
+                        break;
+                }
+                categoryLayout.addView(view);
+            }
+        } else {
             View view = LayoutInflater.from(this).inflate(R.layout.item_activity_abroad_category, null);
             categorySubLayout = (LinearLayout) view.findViewById(R.id.llayout_abroad_category);
-            for (int j = 0; j < COLUMN_NUM; j++) {
-                LogUtils.d(TAG, "j:" + j);
+            for (int i = 0; i < len; i++) {
                 View subView = LayoutInflater.from(this).inflate(R.layout.item_activity_abroad_category_info, null);
                 categoryInfoLayout = (LinearLayout) subView.findViewById(R.id.llayout_abroad_category_info);
                 categoryImg = (ImageView) subView.findViewById(R.id.img_abroad_category);
                 categoryTxt = (TextView) subView.findViewById(R.id.txt_abroad_category);
 
                 categoryInfoLayout.setLayoutParams(categoryParams);
-                Glide.with(this).load(NetConfig.ImageUrl + rAbroadBO.categorys.get(i * COLUMN_NUM + j).pcPic).into(categoryImg);
-                categoryTxt.setText(rAbroadBO.categorys.get(i * COLUMN_NUM + j).categoryName);
+                Glide.with(this).load(NetConfig.ImageUrl + rAbroadBO.categorys.get(i).pcPic).into(categoryImg);
+                categoryTxt.setText(rAbroadBO.categorys.get(i).categoryName);
 
-                categoryInfoLayout.setTag(R.id.tag_first, rAbroadBO.categorys.get(i * COLUMN_NUM + j).id + "");
-                categoryInfoLayout.setTag(R.id.tag_second, rAbroadBO.categorys.get(i * COLUMN_NUM + j).categoryName);
+                categoryInfoLayout.setTag(R.id.tag_first, rAbroadBO.categorys.get(i).id + "");
+                categoryInfoLayout.setTag(R.id.tag_second, rAbroadBO.categorys.get(i).categoryName);
                 categoryInfoLayout.setOnClickListener(new classifyClick());
 
                 categorySubLayout.addView(subView);
-                if (i * COLUMN_NUM + j == len - 1)
-                    break;
             }
             categoryLayout.addView(view);
         }
+
         LogUtils.d(TAG, "全球精品");
         /*全球精品*/
-        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(0).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalImg);
-        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(1).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalCommodity1Img);
-        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(2).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalCommodity2Img);
-        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(3).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalCommodity3Img);
-        globalCommodity1Img.setTag(R.id.tag_first, 1);
-        globalCommodity2Img.setTag(R.id.tag_first, 2);
-        globalCommodity3Img.setTag(R.id.tag_first, 3);
+        global[0] = globalImg;
+        global[1] = globalCommodity1Img;
+        global[2] = globalCommodity2Img;
+        global[3] = globalCommodity3Img;
+        for (int i = 0; i < 4; i++) {
+            if (earthAdv.size() > i) {
+                Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(i).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(global[i]);
+                global[i].setVisibility(View.VISIBLE);
+                if (i > 0)
+                    global[i].setTag(R.id.tag_first, i);
+            } else
+                global[i].setVisibility(View.GONE);
+        }
+//        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(0).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalImg);
+//        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(1).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalCommodity1Img);
+//        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(2).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalCommodity2Img);
+//        Glide.with(this).load(NetConfig.ImageUrl + earthAdv.get(3).advertisementPic).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(globalCommodity3Img);
+//        globalCommodity1Img.setTag(R.id.tag_first, 1);
+//        globalCommodity2Img.setTag(R.id.tag_first, 2);
+//        globalCommodity3Img.setTag(R.id.tag_first, 3);
 
         LogUtils.d(TAG, "国家地区馆");
         /*国家地区馆*/
-        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(0).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country1Img);
-        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(1).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country2Img);
-        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(2).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country3Img);
-        country1Img.setTag(R.id.tag_first, 0);
-        country2Img.setTag(R.id.tag_first, 1);
-        country3Img.setTag(R.id.tag_first, 2);
+        country[0] = country1Img;
+        country[1] = country2Img;
+        country[2] = country3Img;
+        for (int i = 0; i < 3; i++) {
+            if (countrys.size() > i) {
+                Glide.with(this).load(NetConfig.ImageUrl + countrys.get(i).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country[i]);
+                country[i].setVisibility(View.VISIBLE);
+                country[i].setTag(R.id.tag_first, i);
+            } else
+                country[i].setVisibility(View.GONE);
+        }
+//        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(0).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country1Img);
+//        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(1).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country2Img);
+//        Glide.with(this).load(NetConfig.ImageUrl + countrys.get(2).countrySign).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(country3Img);
+//        country1Img.setTag(R.id.tag_first, 0);
+//        country2Img.setTag(R.id.tag_first, 1);
+//        country3Img.setTag(R.id.tag_first, 2);
 
         LogUtils.d(TAG, "底部分类");
         /*底部分类*/
@@ -292,54 +394,6 @@ public class AbroadActivity extends BaseDaggerActivity<AbroadPresenter> implemen
 
             classifyLayout.addView(view);
         }
-    }
-
-    public void toGlobal(View view) {
-        openActivity(AbroadGlobalActivity.class);
-    }
-
-    public void toCountry(View view) {
-        openActivity(AbroadCountryActivity.class);
-    }
-
-    @Override
-    public void onLoadActiveClick() {
-        errorLayout.setState(ErrorLayout.LOADING, "");
-        mPresenter.getAbroad();
-    }
-
-    public void failed(String msg) {
-        errorLayout.setState(ErrorLayout.LOAD_FAILED, "");
-    }
-
-    public void successful(RAbroadBO rAbroadBO) {
-        if (rAbroadBO.earthAdv.size() == 0
-                || rAbroadBO.categorys.size() == 0
-                || rAbroadBO.topAdvList.size() == 0
-                || rAbroadBO.advList.size() == 0
-                || rAbroadBO.countrys.size() == 0) {
-//            LogUtils.d(TAG, "rAbroadBO.earthAdv.size():" + rAbroadBO.earthAdv.size()
-//                    + "\n" + " rAbroadBO.categorys.size():" + rAbroadBO.categorys.size() + "\n" + "rAbroadBO.topAdvList.size():" + rAbroadBO.topAdvList.size() + "\n"
-//                    + " rAbroadBO.advList.size():" + rAbroadBO.advList.size() + "\n" + " rAbroadBO.countrys.size():" + rAbroadBO.countrys.size());
-            errorLayout.setState(ErrorLayout.EMPTY_DATA, "暂时没有数据");
-            return;
-        }
-        LogUtils.d(TAG, "rAbroadBO.earthAdv:" + rAbroadBO.earthAdv
-                + "\n" + " rAbroadBO.categorys:" + rAbroadBO.categorys + "\n" + "rAbroadBO.topAdvList:" + rAbroadBO.topAdvList + "\n"
-                + " rAbroadBO.advList:" + rAbroadBO.advList + "\n" + " rAbroadBO.countrys:" + rAbroadBO.countrys);
-
-        String[] urls = new String[rAbroadBO.topAdvList.size()];
-        int i = 0;
-        for (RAdBO rAdBO : rAbroadBO.topAdvList)
-            urls[i++] = NetConfig.ImageUrl + rAdBO.advertisementPic;
-        slideShowView.setPics(urls, position -> {
-            rAdBO = rAbroadBO.topAdvList.get(position);
-            jump();
-        });
-        this.rAbroadBO = rAbroadBO;
-        addView(rAbroadBO);
-        scrollView.setVisibility(View.VISIBLE);
-        errorLayout.setState(ErrorLayout.HIDE, "");
     }
 
     public void jump() {
