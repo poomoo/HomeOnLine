@@ -8,7 +8,6 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -53,13 +52,12 @@ import com.poomoo.homeonline.ui.activity.AbroadActivity;
 import com.poomoo.homeonline.ui.activity.ArtworkActivity;
 import com.poomoo.homeonline.ui.activity.CommodityInfoActivity;
 import com.poomoo.homeonline.ui.activity.EcologicalActivity;
-import com.poomoo.homeonline.ui.activity.IndexViewPagerActivity;
 import com.poomoo.homeonline.ui.activity.MainNewActivity;
+import com.poomoo.homeonline.ui.activity.PresentActivity;
+import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.activity.SpecialtyActivity;
 import com.poomoo.homeonline.ui.activity.TeaWineActivity;
 import com.poomoo.homeonline.ui.activity.TicketZoneActivity;
-import com.poomoo.homeonline.ui.activity.PresentActivity;
-import com.poomoo.homeonline.ui.activity.SearchActivity;
 import com.poomoo.homeonline.ui.activity.WebViewActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
 import com.poomoo.homeonline.ui.custom.BottomBar;
@@ -88,9 +86,6 @@ import java.util.concurrent.Executors;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
-import static com.poomoo.model.CommodityType.COMMON;
-import static com.poomoo.model.CommodityType.GRAB;
 
 /**
  * 类名 MainFragment
@@ -141,7 +136,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private final int GUESS = 3;
     private Bundle bundle;
     private Gson gson = new Gson();
-    private static final int[] titleResource = {R.drawable.ic_qhcs_new, R.drawable.ic_lsyz_new, R.drawable.ic_zwmj_new, R.drawable.ic_jjsh_new};
+    private static final int[] titleResource = {R.drawable.ic_qhcs_new, R.drawable.ic_ecological_title_new, R.drawable.ic_lsyz_new, R.drawable.ic_zwmj_new, R.drawable.ic_jjsh_new};
     private int index = 0;
     private BitmapDrawable drawable1;
     private BitmapDrawable drawable2;
@@ -296,6 +291,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 
         int len = rSpecialAdBO.advs.size();
         for (int i = 0; i < len; i++) {
+            LogUtils.d(TAG, "专题广告:" + rSpecialAdBO.advs.get(i));
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_special, null);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(0, (int) getResources().getDimension(R.dimen.dp_8), 0, 0);
@@ -316,7 +312,8 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     if (rAdBO.commodityType != null)
                         bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                    else bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
+                    else
+                        bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
                     bundle = new Bundle();
@@ -339,7 +336,8 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
                     if (rAdBO.commodityType != null)
                         bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                    else bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
+                    else
+                        bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {//链接
                     bundle = new Bundle();
@@ -458,7 +456,8 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                     bundle.putInt(getString(R.string.intent_commodityDetailId), rAdBO.commodityDetailId);
                     if (rAdBO.commodityType != null)
                         bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                    else bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
+                    else
+                        bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
                     openActivity(CommodityInfoActivity.class, bundle);
                 } else {
                     bundle = new Bundle();
