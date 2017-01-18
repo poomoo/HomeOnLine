@@ -33,13 +33,13 @@ package com.poomoo.model.request;
  * 日期 2016/9/6 9:18
  */
 public class QTypeBO extends BaseRequest {
-    public int type;//0-生态有机 1-贵州特产 2-贵茶贵酒 3-黔匠艺品
-    public Integer categoryId;
+    public Integer type;//0-生态有机 1-贵州特产 2-贵茶贵酒 3-黔匠艺品
+    public int categoryId;
 
     public QTypeBO(String method, int type, int categoryId) {
         super(method);
-        this.type = type;
         if (categoryId != -1)
-            this.categoryId = categoryId;
+            this.type = type;
+        this.categoryId = categoryId;
     }
 }

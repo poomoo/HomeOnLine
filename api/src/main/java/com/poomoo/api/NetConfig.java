@@ -47,8 +47,9 @@ public class NetConfig {
     public final static String GRAB = "1006_04";//首页抢购
     public final static String GUESS = "1006_05";//首页猜你喜欢
     public final static String HOT = "1006_06";//首页热门推荐
-    public final static String NEWSPECIAL = "1006_07";//贵州特产 贵酒贵茶 黔匠艺品
+    public final static String NEWSPECIAL = "1006_07";//贵州特产  黔匠艺品
     public final static String ECOLOGICAL="1006_08";//生态有机
+    public final static String TEAWINE="1006_09";//贵酒贵茶
 
     public final static String CLASSIFY = "1007_01";//商品分类
 

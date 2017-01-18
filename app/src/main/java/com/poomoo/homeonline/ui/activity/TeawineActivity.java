@@ -43,7 +43,7 @@ import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.SpecialtyListCommodityAdapter;
 import com.poomoo.homeonline.adapter.SpecialtyTitleAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
-import com.poomoo.homeonline.presenters.NewSpecialPresenter;
+import com.poomoo.homeonline.presenters.TeaWinePresenter;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollLinearLayoutManager;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
@@ -73,7 +73,7 @@ import static com.poomoo.commlib.MyConfig.TEA_WINE;
  * 作者 李苜菲
  * 日期 2017/1/13 15:17
  */
-public class TeaWineActivity extends BaseDaggerActivity<NewSpecialPresenter> implements BaseListAdapter.OnItemClickListener, ErrorLayout.OnActiveClickListener {
+public class TeaWineActivity extends BaseDaggerActivity<TeaWinePresenter> implements BaseListAdapter.OnItemClickListener, ErrorLayout.OnActiveClickListener {
     @Bind(R.id.scrollView)
     ScrollView scrollView;
     @Bind(R.id.recycler_title)
@@ -160,7 +160,7 @@ public class TeaWineActivity extends BaseDaggerActivity<NewSpecialPresenter> imp
         initRecycler();
         mErrorLayout.setOnActiveClickListener(this);
 
-        mPresenter.getInfo(2, 0);
+        mPresenter.getInfo(0);
         mErrorLayout.setState(ErrorLayout.LOADING, "");
     }
 
@@ -178,7 +178,7 @@ public class TeaWineActivity extends BaseDaggerActivity<NewSpecialPresenter> imp
             titleAdapter.notifyDataSetChanged();
 //            infoAdapter.clear();
             categoryId = titleAdapter.getItem(position).id;
-            mPresenter.getInfo(2, categoryId);
+            mPresenter.getInfo(categoryId);
             mErrorLayout.setState(ErrorLayout.LOADING, "");
         });
 //        titleAdapter.setItems(getTitleList());
@@ -199,7 +199,6 @@ public class TeaWineActivity extends BaseDaggerActivity<NewSpecialPresenter> imp
         titleAdapter.notifyDataSetChanged();
     }
 
-    @Override
     public void getInfoSuccessful(RNewSpecialBO rNewSpecialBO) {
         LogUtils.d(TAG, "顶部分类");
         if (rNewSpecialBO.commodityCategorys != null) {
@@ -251,7 +250,6 @@ public class TeaWineActivity extends BaseDaggerActivity<NewSpecialPresenter> imp
         mErrorLayout.setState(ErrorLayout.HIDE, "");
     }
 
-    @Override
     public void getInfoFailed() {
         mErrorLayout.setState(ErrorLayout.LOAD_FAILED, "");
         scrollView.setVisibility(View.GONE);
@@ -262,13 +260,11 @@ public class TeaWineActivity extends BaseDaggerActivity<NewSpecialPresenter> imp
         mPresenter.addToCart(application.getUserId(), -1, commodityBO.lowestPriceDetail.commodityId, commodityBO.commodityName, CommodityType.COMMON, 1, commodityBO.listPic, commodityBO.lowestPriceDetail.id, -1);
     }
 
-    @Override
     public void addToCartSucceed() {
         mErrorLayout.setState(ErrorLayout.HIDE, "");
         MyUtils.showToast(getApplicationContext(), "添加购物车成功");
     }
 
-    @Override
     public void addToCartFailed() {
         mErrorLayout.setState(ErrorLayout.HIDE, "");
         MyUtils.showToast(getApplicationContext(), "添加购物车失败");
@@ -276,7 +272,7 @@ public class TeaWineActivity extends BaseDaggerActivity<NewSpecialPresenter> imp
 
     @Override
     public void onLoadActiveClick() {
-        mPresenter.getInfo(2, categoryId);
+        mPresenter.getInfo(categoryId);
         mErrorLayout.setState(ErrorLayout.LOADING, "");
     }
 
