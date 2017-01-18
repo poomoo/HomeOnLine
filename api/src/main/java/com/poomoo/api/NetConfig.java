@@ -9,23 +9,23 @@ package com.poomoo.api;
  */
 public class NetConfig {
     //本地服务器
-//    public final static String url = "http://192.168.1.101/";
+//    public final static String url = "http://192.168.1.102/";
 //    public final static String suffix = "app/call.json";
 //    public final static String grabUrl = url + "app/rush.html";
 //    public final static String check = "jyzx/app/pay/alipay_return.html";
 
     //测试服务器
 //    public final static String url = "http://115.28.95.198/";
-//    public final static String url = "http://news.jiayou9.com/";
-//    public final static String suffix = "app/call.json";
-//    public final static String grabUrl = url + "app/rush.html";
-//    public final static String check = "app/pay/alipay_return.html";
-
-    //正式服务器
-    public final static String url = "http://www.jiayou9.com/";
+    public final static String url = "http://news.jiayou9.com/";
     public final static String suffix = "app/call.json";
     public final static String grabUrl = url + "app/rush.html";
     public final static String check = "app/pay/alipay_return.html";
+
+    //正式服务器
+//    public final static String url = "http://www.jiayou9.com/";
+//    public final static String suffix = "app/call.json";
+//    public final static String grabUrl = url + "app/rush.html";
+//    public final static String check = "app/pay/alipay_return.html";
 
     //图片地址
     public final static String ImageUrl = "http://img.jiayou9.com/jyzx";
