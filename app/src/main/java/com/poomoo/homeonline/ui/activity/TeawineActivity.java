@@ -135,7 +135,7 @@ public class TeaWineActivity extends BaseDaggerActivity<NewSpecialPresenter> imp
     private void init() {
         BaseDaggerActivity.HeaderViewHolder headerViewHolder = getHeaderView();
         headerViewHolder.titleTxt.setTextColor(ContextCompat.getColor(this, R.color.tea_wine));
-        headerViewHolder.titleTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, getResources().getDimension(R.dimen.sp_12));
+        headerViewHolder.titleTxt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
         headerViewHolder.rightImg.setImageResource(R.drawable.ic_special_search);
         headerViewHolder.rightImg.setVisibility(View.VISIBLE);
         headerViewHolder.rightImg.setOnClickListener(v -> openActivity(SearchActivity.class));

@@ -291,7 +291,9 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 
         int len = rSpecialAdBO.advs.size();
         for (int i = 0; i < len; i++) {
-            LogUtils.d(TAG, "专题广告:" + rSpecialAdBO.advs.get(i));
+            LogUtils.d(TAG, "专题广告:" + " i:" + i + rSpecialAdBO.advs.get(i));
+            if (null == rSpecialAdBO.advs.get(i) || 0 == rSpecialAdBO.advs.get(i).size())
+                continue;
             View view = LayoutInflater.from(getActivity()).inflate(R.layout.layout_special, null);
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             lp.setMargins(0, (int) getResources().getDimension(R.dimen.dp_8), 0, 0);
