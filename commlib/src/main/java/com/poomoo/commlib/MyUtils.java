@@ -498,17 +498,4 @@ public class MyUtils {
     public static int CalculatePresentCount(int activityRule, int commodityNum) {
         return commodityNum / --activityRule;
     }
-
-    /**
-     * @param curDate    当前日期
-     * @param targetDate 目标日期
-     * @return
-     */
-    public static boolean isBefore(Date curDate, Date targetDate) {
-        Calendar cur = Calendar.getInstance();
-        Calendar target = Calendar.getInstance();
-        cur.setTime(curDate);
-        target.setTime(targetDate);
-        return cur.before(target);
-    }
 }

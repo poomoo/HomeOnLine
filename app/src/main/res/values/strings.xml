@@ -148,6 +148,7 @@
     <string name="sp_guess">guess</string>
     <string name="sp_hasCache">hasCache</string>
     <string name="sp_currVersion">currVersion</string>
+    <string name="sp_isFirst">isFirst</string>
 
     <string name="dialog">请稍后...</string>
 

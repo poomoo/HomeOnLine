@@ -7,9 +7,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
+import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.ui.base.BaseActivity;
 import com.poomoo.homeonline.ui.custom.BottomBar;
@@ -18,8 +22,6 @@ import com.poomoo.homeonline.ui.fragment.CenterFragment;
 import com.poomoo.homeonline.ui.fragment.ClassifyFragment;
 import com.poomoo.homeonline.ui.fragment.GrabFragment;
 import com.poomoo.homeonline.ui.fragment.MainFragment;
-
-import java.util.zip.Deflater;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -33,6 +35,10 @@ import butterknife.ButterKnife;
 public class MainNewActivity extends BaseActivity {
     @Bind(R.id.bottomBar)
     BottomBar bottomBar;
+    @Bind(R.id.rlayout_main_ad)
+    RelativeLayout adRlayout;
+    @Bind(R.id.img_close)
+    ImageView closeImg;
 
     private MainFragment mainFragment;
     private ClassifyFragment classifyFragment;
@@ -44,6 +50,9 @@ public class MainNewActivity extends BaseActivity {
     private long exitTime = 0;
     public static MainNewActivity INSTANCE = null;
     private int flag = 0;
+
+    public static boolean isShowAd = false;//是否展示广告
+    private boolean isFirst = true;
 
 
     @Override
@@ -82,6 +91,19 @@ public class MainNewActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.frameLayout_main, curFragment)
                 .commit();
+
+        isFirst = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isFirst), true);
+        if (isShowAd && isFirst)
+            showAd();
+        closeImg.setOnClickListener(v -> adRlayout.setVisibility(View.GONE));
+    }
+
+    /**
+     * 广告
+     */
+    private void showAd() {
+        adRlayout.setVisibility(View.VISIBLE);
+        SPUtils.put(getApplicationContext(), getString(R.string.sp_isFirst), false);
     }
 
     public void jump(int position) {

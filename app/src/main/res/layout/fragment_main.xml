@@ -43,8 +43,8 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/dp_10"
                         android:layout_marginRight="@dimen/dp_10"
-                        android:src="@drawable/ic_new_year_top"
-                        android:scaleType="centerInside"/>
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_new_year_top" />
 
                     <com.poomoo.homeonline.ui.custom.NoScrollGridView
                         android:id="@+id/grid_menu"
@@ -170,8 +170,8 @@
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_hot_new"
-                            android:scaleType="center"/>
+                            android:scaleType="center"
+                            android:src="@drawable/ic_hot_new" />
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recycler_hot"

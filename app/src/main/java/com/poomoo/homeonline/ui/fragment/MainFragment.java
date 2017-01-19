@@ -6,7 +6,6 @@ package com.poomoo.homeonline.ui.fragment;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,7 +32,6 @@ import com.poomoo.commlib.MarketUtils;
 import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.commlib.TimeCountDownUtilBy3View;
-import com.poomoo.homeonline.DownLoadImageService;
 import com.poomoo.homeonline.R;
 import com.poomoo.homeonline.adapter.HotAdapter;
 import com.poomoo.homeonline.adapter.ListCommodityAdapter;
@@ -41,7 +39,6 @@ import com.poomoo.homeonline.adapter.MainGrabAdapter;
 import com.poomoo.homeonline.adapter.MainGridAdapter;
 import com.poomoo.homeonline.adapter.PicturesGridAdapter;
 import com.poomoo.homeonline.adapter.base.BaseListAdapter;
-import com.poomoo.homeonline.listeners.ImageDownLoadCallBack;
 import com.poomoo.homeonline.listeners.ScrollViewListener;
 import com.poomoo.homeonline.presenters.MainFragmentPresenter;
 import com.poomoo.homeonline.recyclerLayoutManager.ScrollGridLayoutManager;
@@ -60,7 +57,6 @@ import com.poomoo.homeonline.ui.activity.TeaWineActivity;
 import com.poomoo.homeonline.ui.activity.TicketZoneActivity;
 import com.poomoo.homeonline.ui.activity.WebViewActivity;
 import com.poomoo.homeonline.ui.base.BaseDaggerFragment;
-import com.poomoo.homeonline.ui.custom.BottomBar;
 import com.poomoo.homeonline.ui.custom.ErrorLayout;
 import com.poomoo.homeonline.ui.custom.MyScrollView;
 import com.poomoo.homeonline.ui.custom.NoScrollGridView;
@@ -80,8 +76,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -137,13 +131,13 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     private Bundle bundle;
     private Gson gson = new Gson();
     private static final int[] titleResource = {R.drawable.ic_qhcs_new, R.drawable.ic_ecological_title_new, R.drawable.ic_lsyz_new, R.drawable.ic_zwmj_new, R.drawable.ic_jjsh_new};
-    private int index = 0;
-    private BitmapDrawable drawable1;
-    private BitmapDrawable drawable2;
+//    private int index = 0;
+//    private BitmapDrawable drawable1;
+//    private BitmapDrawable drawable2;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        LogUtils.d("AdvertisementActivity","MainFragment onCreateView");
+        LogUtils.d("AdvertisementActivity", "MainFragment onCreateView");
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -152,7 +146,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        LogUtils.d("AdvertisementActivity","MainFragment onActivityCreated");
+        LogUtils.d("AdvertisementActivity", "MainFragment onActivityCreated");
         init();
     }
 
@@ -166,7 +160,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 
 
     private void init() {
-        LogUtils.d("AdvertisementActivity","MainFragment2");
+        LogUtils.d("AdvertisementActivity", "MainFragment2");
         slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) / 2));//设置广告栏的宽高比为2:1
         gridAdapter = new MainGridAdapter(getActivity(), false);
         menuGrid.setAdapter(gridAdapter);
@@ -206,75 +200,75 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         }
 
 //        test();
-        LogUtils.d("AdvertisementActivity","MainFragment3");
+        LogUtils.d("AdvertisementActivity", "MainFragment3");
     }
 
-    private void test() {
-        //首页图标
-        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/wOGrjYPOqb7S6g9wdSc7Yw3bL9lcEGyHbF7n7YnRDmk!/b/dHcBAAAAAAAA&bo=LQAtAAAAAAADByI!&rf=viewer_4", 0);
-        onDownLoad("http://a2.qpic.cn/psb?/V109J8rm0oL61T/tvQgvqAUuDKp7eqUdpBhQFs2qYKigmtYdbZ7bbVeLWY!/b/dAkBAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 0);
-        //分类图标
-        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/7WIwIPQJeGfeSiCg*LtIDXJpcwNvdzHdgn5PqirjfqY!/b/dCABAAAAAAAA&bo=LAAtAAAAAAADByM!&rf=viewer_4", 1);
-        onDownLoad("http://b288.photo.store.qq.com/psb?/V109J8rm0oL61T/ViSYSOJDH0f6.7eJnvCA2VH2cOvKIRYQb7.LbMHSkks!/b/dCABAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 1);
-        //抢购图标
-        onDownLoad("http://a2.qpic.cn/psb?/V109J8rm0oL61T/BAa57prxLkjaXIuNWmGDtUBbOZgYiE905NZflSKoN3c!/b/dLIAAAAAAAAA&bo=LQAtAAAAAAADByI!&rf=viewer_4", 2);
-        onDownLoad("http://b288.photo.store.qq.com/psb?/V109J8rm0oL61T/Zfe7Ea*mJsy3t7MzGMS37G.PH5FsQFZWR5DEFh0eps4!/b/dCABAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 2);
-        //购物车图标
-        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/WTup4BOIYRQHfcRh77LWLykM6mfoKqXTvZuwH0ZL0mk!/b/dCABAAAAAAAA&bo=LAArAAAAAAADByU!&rf=viewer_4", 3);
-        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/46D8fqBznv1iR.JqWLWzbCXxnoaY*FuMC5c8mE*JBDU!/b/dPYAAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 3);
-        //个人中心图标
-        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/SgMJ3BULEPiwIKXR4YfwXyvwMtTsGct0pw.YjwEGiRE!/b/dCABAAAAAAAA&bo=KAAuAAAAAAADByQ!&rf=viewer_4", 4);
-        onDownLoad("http://a3.qpic.cn/psb?/V109J8rm0oL61T/bBSVmVgIw5OuN7giRvHJAUOUe0D4fL6IDWjz9LTKWWo!/b/dLAAAAAAAAAA&bo=LQAsAAAAAAADByM!&rf=viewer_4", 4);
-    }
-
-    /**
-     * 单线程列队执行
-     */
-    private static ExecutorService singleExecutor = null;
-
-
-    /**
-     * 执行单线程列队执行
-     */
-    public void runOnQueue(Runnable runnable) {
-        if (singleExecutor == null) {
-            singleExecutor = Executors.newSingleThreadExecutor();
-        }
-        singleExecutor.submit(runnable);
-    }
-
-    /**
-     * 启动图片下载线程
-     */
-    private void onDownLoad(String url, int group) {
-        DownLoadImageService service = new DownLoadImageService(getActivity(), url, group, new ImageDownLoadCallBack() {
-            @Override
-            public void onDownLoadSuccess(Bitmap bitmap) {
-                // 在这里执行图片保存方法
-                LogUtils.d(TAG, "下载图标成功:" + bitmap + "index:" + index + " group:" + group);
-                if (index == 0)
-                    drawable1 = new BitmapDrawable(getActivity().getResources(), bitmap);
-                if (index == 1)
-                    drawable2 = new BitmapDrawable(getActivity().getResources(), bitmap);
-                index++;
-                if (index > 1) {
-                    index = 0;
-                    BottomBar.setDrawable(group, drawable1, drawable2);
-                }
-            }
-
-            @Override
-            public void onDownLoadFailed() {
-                LogUtils.d(TAG, "下载引导页图片失败");
-            }
-        }
-
-        );
-
-        //启动图片下载线程
-        runOnQueue(service);
-
-    }
+//    private void test() {
+//        //首页图标
+//        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/wOGrjYPOqb7S6g9wdSc7Yw3bL9lcEGyHbF7n7YnRDmk!/b/dHcBAAAAAAAA&bo=LQAtAAAAAAADByI!&rf=viewer_4", 0);
+//        onDownLoad("http://a2.qpic.cn/psb?/V109J8rm0oL61T/tvQgvqAUuDKp7eqUdpBhQFs2qYKigmtYdbZ7bbVeLWY!/b/dAkBAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 0);
+//        //分类图标
+//        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/7WIwIPQJeGfeSiCg*LtIDXJpcwNvdzHdgn5PqirjfqY!/b/dCABAAAAAAAA&bo=LAAtAAAAAAADByM!&rf=viewer_4", 1);
+//        onDownLoad("http://b288.photo.store.qq.com/psb?/V109J8rm0oL61T/ViSYSOJDH0f6.7eJnvCA2VH2cOvKIRYQb7.LbMHSkks!/b/dCABAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 1);
+//        //抢购图标
+//        onDownLoad("http://a2.qpic.cn/psb?/V109J8rm0oL61T/BAa57prxLkjaXIuNWmGDtUBbOZgYiE905NZflSKoN3c!/b/dLIAAAAAAAAA&bo=LQAtAAAAAAADByI!&rf=viewer_4", 2);
+//        onDownLoad("http://b288.photo.store.qq.com/psb?/V109J8rm0oL61T/Zfe7Ea*mJsy3t7MzGMS37G.PH5FsQFZWR5DEFh0eps4!/b/dCABAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 2);
+//        //购物车图标
+//        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/WTup4BOIYRQHfcRh77LWLykM6mfoKqXTvZuwH0ZL0mk!/b/dCABAAAAAAAA&bo=LAArAAAAAAADByU!&rf=viewer_4", 3);
+//        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/46D8fqBznv1iR.JqWLWzbCXxnoaY*FuMC5c8mE*JBDU!/b/dPYAAAAAAAAA&bo=KwAtAAAAAAADByQ!&rf=viewer_4", 3);
+//        //个人中心图标
+//        onDownLoad("http://a1.qpic.cn/psb?/V109J8rm0oL61T/SgMJ3BULEPiwIKXR4YfwXyvwMtTsGct0pw.YjwEGiRE!/b/dCABAAAAAAAA&bo=KAAuAAAAAAADByQ!&rf=viewer_4", 4);
+//        onDownLoad("http://a3.qpic.cn/psb?/V109J8rm0oL61T/bBSVmVgIw5OuN7giRvHJAUOUe0D4fL6IDWjz9LTKWWo!/b/dLAAAAAAAAAA&bo=LQAsAAAAAAADByM!&rf=viewer_4", 4);
+//    }
+//
+//    /**
+//     * 单线程列队执行
+//     */
+//    private static ExecutorService singleExecutor = null;
+//
+//
+//    /**
+//     * 执行单线程列队执行
+//     */
+//    public void runOnQueue(Runnable runnable) {
+//        if (singleExecutor == null) {
+//            singleExecutor = Executors.newSingleThreadExecutor();
+//        }
+//        singleExecutor.submit(runnable);
+//    }
+//
+//    /**
+//     * 启动图片下载线程
+//     */
+//    private void onDownLoad(String url, int group) {
+//        DownLoadImageService service = new DownLoadImageService(getActivity(), url, group, new ImageDownLoadCallBack() {
+//            @Override
+//            public void onDownLoadSuccess(Bitmap bitmap) {
+//                // 在这里执行图片保存方法
+//                LogUtils.d(TAG, "下载图标成功:" + bitmap + "index:" + index + " group:" + group);
+//                if (index == 0)
+//                    drawable1 = new BitmapDrawable(getActivity().getResources(), bitmap);
+//                if (index == 1)
+//                    drawable2 = new BitmapDrawable(getActivity().getResources(), bitmap);
+//                index++;
+//                if (index > 1) {
+//                    index = 0;
+//                    BottomBar.setDrawable(group, drawable1, drawable2);
+//                }
+//            }
+//
+//            @Override
+//            public void onDownLoadFailed() {
+//                LogUtils.d(TAG, "下载引导页图片失败");
+//            }
+//        }
+//
+//        );
+//
+//        //启动图片下载线程
+//        runOnQueue(service);
+//
+//    }
 
     @OnClick({R.id.llayout_search, R.id.llayout_toGrab})
     void search(View view) {

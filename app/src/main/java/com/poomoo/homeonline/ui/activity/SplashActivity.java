@@ -17,7 +17,6 @@ import com.poomoo.commlib.MyUtils;
 import com.poomoo.commlib.SPUtils;
 import com.poomoo.homeonline.DownLoadImageService;
 import com.poomoo.homeonline.R;
-import com.poomoo.homeonline.adapter.CountryCommodityListAdapter;
 import com.poomoo.homeonline.listeners.ImageDownLoadCallBack;
 import com.poomoo.homeonline.presenters.SplashPresenter;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
@@ -32,7 +31,6 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -82,8 +80,8 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
         versionTxt.setText(MyUtils.getVersionName(this));
 
         //不显示日志
-//        LogUtils.isDebug = false;
-//        NetWork.level = HttpLoggingInterceptor.Level.NONE;
+        LogUtils.isDebug = false;
+        NetWork.level = HttpLoggingInterceptor.Level.NONE;
 
         //统计错误日志到友盟平台
         MobclickAgent.setDebugMode(true);
@@ -91,8 +89,8 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
 
         curDate = new Date();
         try {
-            date1 = sdf.parse("2017-01-26 12:00:00");
-            date2 = sdf.parse("2017-02-04 12:00:00");
+            date1 = sdf.parse("2017-01-26 23:59:59");
+            date2 = sdf.parse("2017-02-04 23:59:59");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -124,11 +122,12 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
             }
             if (curDate.before(date1)) {
                 LogUtils.d(TAG, "展示年货");
+                MainNewActivity.isShowAd = true;
                 showAd(1);
             } else if (curDate.after(date1) && curDate.before(date2)) {
                 LogUtils.d(TAG, "展示新年");
                 showAd(2);
-            } else{
+            } else {
                 openActivity(MainNewActivity.class);
                 finish();
             }
