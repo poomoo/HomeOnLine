@@ -288,7 +288,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
      * 动态增加专题广告
      */
     private void addView(RSpecialAdBO rSpecialAdBO) {
-
+        specialAdLayout.removeAllViews();
         int len = rSpecialAdBO.advs.size();
         for (int i = 0; i < len; i++) {
             LogUtils.d(TAG, "专题广告:" + " i:" + i + rSpecialAdBO.advs.get(i));
@@ -301,6 +301,34 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             ImageView titleImg = (ImageView) view.findViewById(R.id.img_special_title);
             ImageView contentImg = (ImageView) view.findViewById(R.id.img_special_content);
             NoScrollGridView gridView = (NoScrollGridView) view.findViewById(R.id.grid_special);
+
+//            Glide.with(this).load(rSpecialAdBO.picUrl + (i + 1) + ".png").priority(Priority.IMMEDIATE).into(titleImg);
+//            Glide.with(this).load(titleResource[i]).priority(Priority.IMMEDIATE).into(titleImg);
+            titleImg.setImageResource(titleResource[i]);
+
+            contentImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) * 5 / 12));//设置广告栏的宽高比为12:5
+            Glide.with(this).load(NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic).placeholder(R.drawable.replace12b5).priority(Priority.IMMEDIATE).into(contentImg);
+            contentImg.setTag(i);
+            contentImg.setOnClickListener(v -> {
+                if (1 == (int) contentImg.getTag()) {//跳转到生态有机界面
+                    openActivity(EcologicalActivity.class);
+                    return;
+                }
+                rAdBO = rSpecialAdBO.advs.get((int) contentImg.getTag()).get(0);
+                if (rAdBO.isCommodity) {//商品广告
+                    bundle = new Bundle();
+                    bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
+                    if (rAdBO.commodityType != null)
+                        bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
+                    else
+                        bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
+                    openActivity(CommodityInfoActivity.class, bundle);
+                } else {//链接
+                    bundle = new Bundle();
+                    bundle.putString(getString(R.string.intent_value), rAdBO.connect);
+                    openActivity(WebViewActivity.class, bundle);
+                }
+            });
 
             PicturesGridAdapter picturesGridAdapter = new PicturesGridAdapter(getActivity());
             gridView.setAdapter(picturesGridAdapter);
@@ -324,33 +352,6 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
                 }
             });
 
-//            Glide.with(this).load(rSpecialAdBO.picUrl + (i + 1) + ".png").priority(Priority.IMMEDIATE).into(titleImg);
-//            Glide.with(this).load(titleResource[i]).priority(Priority.IMMEDIATE).into(titleImg);
-            titleImg.setImageResource(titleResource[i]);
-
-            contentImg.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) * 5 / 12));//设置广告栏的宽高比为12:5
-            Glide.with(this).load(NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic).placeholder(R.drawable.replace12b5).priority(Priority.HIGH).into(contentImg);
-            contentImg.setTag(i);
-            contentImg.setOnClickListener(v -> {
-                if (1 == (int) contentImg.getTag()) {//跳转到生态有机界面
-                    openActivity(EcologicalActivity.class);
-                    return;
-                }
-                rAdBO = rSpecialAdBO.advs.get((int) contentImg.getTag()).get(0);
-                if (rAdBO.isCommodity) {//商品广告
-                    bundle = new Bundle();
-                    bundle.putInt(getString(R.string.intent_commodityId), rAdBO.commodityId);
-                    if (rAdBO.commodityType != null)
-                        bundle.putInt(getString(R.string.intent_commodityType), rAdBO.commodityType);
-                    else
-                        bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
-                    openActivity(CommodityInfoActivity.class, bundle);
-                } else {//链接
-                    bundle = new Bundle();
-                    bundle.putString(getString(R.string.intent_value), rAdBO.connect);
-                    openActivity(WebViewActivity.class, bundle);
-                }
-            });
             specialAdLayout.addView(view);
         }
     }
