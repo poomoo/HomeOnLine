@@ -332,6 +332,10 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
             Glide.with(this).load(NetConfig.ImageUrl + rSpecialAdBO.advs.get(i).get(0).advertisementPic).placeholder(R.drawable.replace12b5).priority(Priority.HIGH).into(contentImg);
             contentImg.setTag(i);
             contentImg.setOnClickListener(v -> {
+                if (1 == (int) contentImg.getTag()) {//跳转到生态有机界面
+                    openActivity(EcologicalActivity.class);
+                    return;
+                }
                 rAdBO = rSpecialAdBO.advs.get((int) contentImg.getTag()).get(0);
                 if (rAdBO.isCommodity) {//商品广告
                     bundle = new Bundle();
