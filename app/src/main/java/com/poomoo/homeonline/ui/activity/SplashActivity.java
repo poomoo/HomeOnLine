@@ -2,8 +2,11 @@ package com.poomoo.homeonline.ui.activity;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.poomoo.api.HttpLoggingInterceptor;
@@ -27,12 +30,18 @@ import com.umeng.analytics.MobclickAgent;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
+import static com.poomoo.commlib.MyConfig.COUNTDOWNTIBTERVAL;
 
 /**
  * 类名 SplashActivity
@@ -43,8 +52,14 @@ import butterknife.ButterKnife;
 public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
     @Bind(R.id.txt_version)
     TextView versionTxt;
+    @Bind(R.id.layout_version)
+    LinearLayout versionLayout;
+    @Bind(R.id.layout_advertisement)
+    LinearLayout adLayout;
+    @Bind(R.id.txt_countDownTime)
+    TextView countDownTxt;
 
-    private final int SPLASH_DISPLAY_LENGTH = 3000;
+    private final int SPLASH_DISPLAY_LENGTH = 1 * 1000;
     private boolean isIndex = false;//是否需要引导
     private static String DB_PATH = "/data/data/com.poomoo.homeonline/databases/";
     private static String DB_NAME = "homeOnLine.db";
@@ -52,6 +67,12 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
     private boolean isFirst = true;
     private Bitmap[] bitmaps;
     private int length = 0;
+
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private Date curDate;
+    private Date date1;
+    private Date date2;
+    private CountDownTimer countDownTimer;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,12 +82,20 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
         versionTxt.setText(MyUtils.getVersionName(this));
 
         //不显示日志
-        LogUtils.isDebug = false;
-        NetWork.level = HttpLoggingInterceptor.Level.NONE;
+//        LogUtils.isDebug = false;
+//        NetWork.level = HttpLoggingInterceptor.Level.NONE;
 
         //统计错误日志到友盟平台
         MobclickAgent.setDebugMode(true);
         MobclickAgent.setCatchUncaughtExceptions(true);
+
+        curDate = new Date();
+        try {
+            date1 = sdf.parse("2017-01-26 12:00:00");
+            date2 = sdf.parse("2017-02-04 12:00:00");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
         importDB();
         isIndex = (boolean) SPUtils.get(getApplicationContext(), getString(R.string.sp_isIndex), true);
@@ -74,19 +103,6 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
             mPresenter.getIndex();
         else
             mPresenter.checkUpdate();
-    }
-
-    public void toMain() {
-        new Handler().postDelayed(() -> {
-            if (MyUtils.isLogin(this)) {
-                application.setUserId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), -1));
-                application.setNickName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_nickName), ""));
-                application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
-            }
-            openActivity(MainNewActivity.class);
-//            openActivity(CountryInfoActivity.class);
-            finish();
-        }, SPLASH_DISPLAY_LENGTH);
     }
 
     @Override
@@ -97,6 +113,54 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
     @Override
     protected int onSetTitle() {
         return 0;
+    }
+
+    public void toMain() {
+        new Handler().postDelayed(() -> {
+            if (MyUtils.isLogin(this)) {
+                application.setUserId((Integer) SPUtils.get(getApplicationContext(), getString(R.string.sp_userId), -1));
+                application.setNickName((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_nickName), ""));
+                application.setTel((String) SPUtils.get(getApplicationContext(), getString(R.string.sp_phoneNum), ""));
+            }
+            if (curDate.before(date1)) {
+                LogUtils.d(TAG, "展示年货");
+                showAd(1);
+            } else if (curDate.after(date1) && curDate.before(date2)) {
+                LogUtils.d(TAG, "展示新年");
+                showAd(2);
+            } else{
+                openActivity(MainNewActivity.class);
+                finish();
+            }
+        }, SPLASH_DISPLAY_LENGTH);
+    }
+
+    private void showAd(int flag) {
+        if (2 == flag)
+            adLayout.setBackgroundResource(R.drawable.bg_newyear);
+        versionLayout.setVisibility(View.GONE);
+        adLayout.setVisibility(View.VISIBLE);
+        countDownTimer = new CountDownTimer(4 * 1000, COUNTDOWNTIBTERVAL) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                LogUtils.d(TAG, "millisUntilFinished:" + millisUntilFinished);
+                countDownTxt.setText(millisUntilFinished / 1000 + "s");
+            }
+
+            @Override
+            public void onFinish() {
+                LogUtils.d(TAG, "onFinish:");
+                openActivity(MainNewActivity.class);
+                finish();
+            }
+        };
+        countDownTimer.start();
+    }
+
+    public void toFinish(View view) {
+        LogUtils.d(TAG, "点击跳过:");
+        countDownTimer.onFinish();
+        countDownTimer.cancel();
     }
 
     @Override

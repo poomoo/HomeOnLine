@@ -143,6 +143,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        LogUtils.d("AdvertisementActivity","MainFragment onCreateView");
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -151,6 +152,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        LogUtils.d("AdvertisementActivity","MainFragment onActivityCreated");
         init();
     }
 
@@ -164,6 +166,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
 
 
     private void init() {
+        LogUtils.d("AdvertisementActivity","MainFragment2");
         slideShowView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, MyUtils.getScreenWidth(getActivity()) / 2));//设置广告栏的宽高比为2:1
         gridAdapter = new MainGridAdapter(getActivity(), false);
         menuGrid.setAdapter(gridAdapter);
@@ -203,6 +206,7 @@ public class MainFragment extends BaseDaggerFragment<MainFragmentPresenter> impl
         }
 
 //        test();
+        LogUtils.d("AdvertisementActivity","MainFragment3");
     }
 
     private void test() {
