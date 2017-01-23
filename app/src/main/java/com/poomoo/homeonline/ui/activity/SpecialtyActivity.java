@@ -205,6 +205,7 @@ public class SpecialtyActivity extends BaseDaggerActivity<NewSpecialPresenter> i
 
     @Override
     public void getInfoSuccessful(RNewSpecialBO rNewSpecialBO) {
+        LogUtils.d(TAG, "selectSingles:" + rNewSpecialBO.selectSingles);
         LogUtils.d(TAG, "顶部分类");
         if (rNewSpecialBO.commodityCategorys != null) {
             titleAdapter.setItems(rNewSpecialBO.commodityCategorys);
@@ -304,7 +305,7 @@ public class SpecialtyActivity extends BaseDaggerActivity<NewSpecialPresenter> i
     public void onItemClick(int position, long id, View view) {
         bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_commodityId), infoAdapter.getItem(position).lowestPriceDetail.commodityId);
-        bundle.putInt(getString(R.string.intent_commodityDetailId), infoAdapter.getItem(position).id);
+        bundle.putInt(getString(R.string.intent_commodityDetailId), infoAdapter.getItem(position).lowestPriceDetail.id);
         bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
         openActivity(CommodityInfoActivity.class, bundle);
     }

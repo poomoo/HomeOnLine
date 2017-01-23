@@ -51,8 +51,19 @@ public class RListCommodityBO {
     @Override
     public String toString() {
         return "RListCommodityBO{" +
-                "commodityName='" + commodityName + '\'' +
+                "id=" + id +
+                ", commodityPrice=" + commodityPrice +
+                ", platformPrice=" + platformPrice +
+                ", commodityDetailId=" + commodityDetailId +
+                ", commodityName='" + commodityName + '\'' +
+                ", commonPrice=" + commonPrice +
+                ", listPic='" + listPic + '\'' +
+                ", commodityId=" + commodityId +
                 ", commodityType=" + commodityType +
+                ", rushPurchaseId=" + rushPurchaseId +
+                ", activityId=" + activityId +
+                ", lowestPriceDetail=" + lowestPriceDetail +
+                ", price='" + price + '\'' +
                 '}';
     }
 }

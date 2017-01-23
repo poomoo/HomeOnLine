@@ -260,7 +260,7 @@ public class EcologicalActivity extends BaseDaggerActivity<EcologicalPresenter> 
     public void onItemClick(int position, long id, View view) {
         bundle = new Bundle();
         bundle.putInt(getString(R.string.intent_commodityId), adapter.getItem(position).lowestPriceDetail.commodityId);
-        bundle.putInt(getString(R.string.intent_commodityDetailId), adapter.getItem(position).id);
+        bundle.putInt(getString(R.string.intent_commodityDetailId), adapter.getItem(position).lowestPriceDetail.id);
         bundle.putInt(getString(R.string.intent_commodityType), CommodityType.COMMON);
         openActivity(CommodityInfoActivity.class, bundle);
     }
