@@ -36,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyUtils;
@@ -241,7 +242,7 @@ public class ArtworkActivity extends BaseDaggerActivity<NewSpecialPresenter> imp
         int hotSize = rNewSpecialBO.hotAdvs.size();
         for (int i = 0; i < 4; i++) {
             if (hotSize > i) {
-                Glide.with(this).load(NetConfig.ImageUrl + rNewSpecialBO.hotAdvs.get(i).advertisementPic).placeholder(R.drawable.replace2b3).into(hot[i]);
+                Glide.with(this).load(NetConfig.ImageUrl + rNewSpecialBO.hotAdvs.get(i).advertisementPic).placeholder(R.drawable.replace2b3).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(hot[i]);
                 hot[i].setTag(R.id.tag_first, rNewSpecialBO.hotAdvs.get(i));
                 hot[i].setVisibility(View.VISIBLE);
             } else

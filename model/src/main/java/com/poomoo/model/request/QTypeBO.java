@@ -38,8 +38,8 @@ public class QTypeBO extends BaseRequest {
 
     public QTypeBO(String method, int type, int categoryId) {
         super(method);
-        if (categoryId != -1)
-            this.type = type;
+        if (type != -1)
+        this.type = type;
         this.categoryId = categoryId;
     }
 }
