@@ -66,6 +66,7 @@
     <string name="hint_inputUserPassWord">请输入密码</string>
     <string name="hint_inputPhoneNum">请输入您的手机号</string>
     <string name="hint_inputCode">请输入验证码</string>
+    <string name="hint_inputImgCode">图形验证码</string>
     <string name="hint_inputPassWord">请输入6位以上的密码</string>
     <string name="hint_inputPassWordAgain">再次输入密码</string>
 

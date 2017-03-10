@@ -78,10 +78,10 @@ public class SplashActivity extends BaseDaggerActivity<SplashPresenter> {
 
         ButterKnife.bind(this);
         versionTxt.setText(MyUtils.getVersionName(this));
-
+        MyUtils.showToast(this, "中文测试");
         //不显示日志
-        LogUtils.isDebug = false;
-        NetWork.level = HttpLoggingInterceptor.Level.NONE;
+//        LogUtils.isDebug = false;
+//        NetWork.level = HttpLoggingInterceptor.Level.NONE;
 
         //统计错误日志到友盟平台
         MobclickAgent.setDebugMode(true);

@@ -7,13 +7,15 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.bumptech.glide.Glide;
 import com.jakewharton.rxbinding.widget.RxTextView;
+import com.poomoo.api.NetConfig;
 import com.poomoo.commlib.LogUtils;
 import com.poomoo.commlib.MyConfig;
 import com.poomoo.commlib.MyUtils;
@@ -23,6 +25,7 @@ import com.poomoo.homeonline.presenters.GetCodePresenter;
 import com.poomoo.homeonline.reject.components.DaggerActivityComponent;
 import com.poomoo.homeonline.reject.modules.ActivityModule;
 import com.poomoo.homeonline.ui.base.BaseDaggerActivity;
+import com.poomoo.model.response.RImgCodeBO;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -40,6 +43,10 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
     LinearLayout llayout;
     @Bind(R.id.edt_tel)
     EditText phoneEdt;
+    @Bind(R.id.img_code)
+    ImageView codeImg;
+    @Bind(R.id.edt_imgCode)
+    EditText imgCodeEdt;
     @Bind(R.id.edt_code)
     EditText codeEdt;
     @Bind(R.id.btn_code)
@@ -51,9 +58,11 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
 
     private String phoneNum = "";
     private String code = "";
+    private String imgCode = "";
     private String PARENT = "";
     private int where = 0;//0-注册 1-找回密码 2-更换手机 3-修改登录密码
     private boolean flag;//true-找回密码 false-注册
+    private String temp = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,15 +122,16 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
             phoneNum = application.getTel();
             nextBtn.setTag("old");
             showProgressBar();
-            mPresenter.getCode(phoneNum, flag);
+            mPresenter.getImgCode(phoneNum);
         }
 
         if (where == 3) {
             llayout.setVisibility(View.GONE);
             phoneNum = application.getTel();
             showProgressBar();
-            mPresenter.getCode(phoneNum, flag);
+            mPresenter.getImgCode(phoneNum);
         }
+
 
         getCodeBtn.setEnabled(false);
         phoneEdt.addTextChangedListener(new TextWatcher() {
@@ -139,10 +149,37 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
             public void afterTextChanged(Editable s) {
                 if (!getCodeBtn.isClickable())
                     return;
-                String temp = s.toString();
-                getCodeBtn.setEnabled(MyUtils.checkPhoneNum(temp));
+                temp = s.toString();
+                if (MyUtils.checkPhoneNum(temp)) {
+                    showProgressBar();
+                    mPresenter.getImgCode(phoneNum);
+                }
             }
         });
+
+        imgCodeEdt.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!getCodeBtn.isClickable())
+                    return;
+                imgCode = s.toString();
+                if (2 == where || 3 == where)
+                    getCodeBtn.setEnabled(imgCode.length() > 0);
+                else
+                    getCodeBtn.setEnabled(imgCode.length() > 0 && MyUtils.checkPhoneNum(temp));
+            }
+        });
+
 
     }
 
@@ -181,12 +218,18 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
         return true;
     }
 
+    public void getImgCode(View view) {
+        showProgressBar();
+        mPresenter.getImgCode(phoneNum);
+    }
+
+
     public void toGetCode(View view) {
         MyUtils.hiddenKeyBoard(this, phoneEdt);
         showProgressBar();
         if (where == 0 || where == 1)
             phoneNum = phoneEdt.getText().toString().trim();
-        mPresenter.getCode(phoneNum, flag);
+        mPresenter.getCode(phoneNum, flag, imgCode);
     }
 
     public void toNext(View view) {
@@ -196,6 +239,13 @@ public class GetCodeActivity extends BaseDaggerActivity<GetCodePresenter> {
             phoneNum = phoneEdt.getText().toString().trim();
         code = codeEdt.getText().toString().trim();
         mPresenter.checkCode(phoneNum, code);
+    }
+
+    public void getImgCodeSucceed(RImgCodeBO rImgCodeBO) {
+        hideProgressBar();
+        LogUtils.d(TAG, "验证码图片地址:" + NetConfig.url + "other/images/imagescode/" + rImgCodeBO.iUrl);
+        codeImg.setVisibility(View.VISIBLE);
+        Glide.with(this).load(NetConfig.url + "other/images/imagescode/" + rImgCodeBO.iUrl).into(codeImg);
     }
 
     public void getCodeSucceed() {

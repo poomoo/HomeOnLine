@@ -49,6 +49,7 @@ import com.poomoo.model.request.QFeedBackBO;
 import com.poomoo.model.request.QGetTicketBO;
 import com.poomoo.model.request.QHistory;
 import com.poomoo.model.request.QIdBO;
+import com.poomoo.model.request.QImgCodeBO;
 import com.poomoo.model.request.QIsCollectBO;
 import com.poomoo.model.request.QLoginBO;
 import com.poomoo.model.request.QMyTicketBO;
@@ -83,6 +84,7 @@ import com.poomoo.model.response.RCountryListBO;
 import com.poomoo.model.response.RDataBO;
 import com.poomoo.model.response.RGlobalBO;
 import com.poomoo.model.response.RGrabBO;
+import com.poomoo.model.response.RImgCodeBO;
 import com.poomoo.model.response.RIndexBO;
 import com.poomoo.model.response.RIsCollect;
 import com.poomoo.model.response.RListCommodityBO;
@@ -122,6 +124,9 @@ public interface MyApi {
 
     @POST(NetConfig.suffix)
     Observable<ResponseBO> GetCode(@Body QCodeBO data);
+
+    @POST(NetConfig.suffix)
+    Observable<RImgCodeBO> GetImgCode(@Body QImgCodeBO data);
 
     @POST(NetConfig.suffix)
     Observable<ResponseBO> CheckCode(@Body QCheckCodeBO data);

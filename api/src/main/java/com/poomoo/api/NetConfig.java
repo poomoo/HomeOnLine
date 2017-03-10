@@ -33,6 +33,7 @@ public class NetConfig {
 
     public final static String LOGIN = "1001";//登录
     public final static String CODE = "1002";//获取验证码
+    public final static String IMGCODE = "1002_01";//获取验证码
     public final static String CHECK = "1003";//校验验证码
     public final static String REGISTER = "1004";//注册
 

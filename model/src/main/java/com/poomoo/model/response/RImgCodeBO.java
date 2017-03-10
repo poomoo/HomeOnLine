@@ -22,25 +22,16 @@
  * #                                                   #
  * #               佛祖保佑         永无BUG            #
  * #                                                   #
- * Copyright (c) 2016. 跑马科技 Inc. All rights reserved.
+ * Copyright (c) 2017. 跑马科技 Inc. All rights reserved.
  */
-package com.poomoo.model.request;
+package com.poomoo.model.response;
 
 /**
- * 类名 QCodeBO
- * 描述 发送验证码请求
+ * 类名 RImgCodeBO
+ * 描述 图片验证
  * 作者 李苜菲
- * 日期 2016/8/1 11:08
+ * 日期 2017/2/15 14:04
  */
-public class QCodeBO extends BaseRequest {
-    public String phoneNum;
-    public boolean flag;
-    public String imgCode;
-
-    public QCodeBO(String method, String phoneNum, boolean flag, String imgCode) {
-        super(method);
-        this.phoneNum = phoneNum;
-        this.flag = flag;
-        this.imgCode = imgCode;
-    }
+public class RImgCodeBO {
+    public String iUrl;
 }

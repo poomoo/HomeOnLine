@@ -34,7 +34,9 @@ import com.poomoo.homeonline.ui.activity.GetCodeActivity;
 import com.poomoo.model.ResponseBO;
 import com.poomoo.model.request.QCheckCodeBO;
 import com.poomoo.model.request.QCodeBO;
+import com.poomoo.model.request.QImgCodeBO;
 import com.poomoo.model.request.QUpdateInfoBO;
+import com.poomoo.model.response.RImgCodeBO;
 
 import javax.inject.Inject;
 
@@ -53,13 +55,36 @@ public class GetCodePresenter extends BasePresenter<GetCodeActivity> {
     }
 
     /**
+     * 获取图片验证码
+     *
+     * @param phoneNum
+     */
+    public void getImgCode(String phoneNum) {
+        QImgCodeBO qCodeBO = new QImgCodeBO(NetConfig.IMGCODE, phoneNum);
+        add(NetWork.getMyApi().GetImgCode(qCodeBO)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new AbsAPICallback<RImgCodeBO>() {
+                    @Override
+                    protected void onError(ApiException e) {
+                        mView.failed(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(RImgCodeBO rImgCodeBO) {
+                        mView.getImgCodeSucceed(rImgCodeBO);
+                    }
+                }));
+    }
+
+    /**
      * 获取验证码
      *
      * @param phoneNum
      * @param flag
      */
-    public void getCode(String phoneNum, boolean flag) {
-        QCodeBO qCodeBO = new QCodeBO(NetConfig.CODE, phoneNum, flag);
+    public void getCode(String phoneNum, boolean flag, String imgCode) {
+        QCodeBO qCodeBO = new QCodeBO(NetConfig.CODE, phoneNum, flag, imgCode);
         add(NetWork.getMyApi().GetCode(qCodeBO)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

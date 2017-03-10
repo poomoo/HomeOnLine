@@ -27,20 +27,16 @@
 package com.poomoo.model.request;
 
 /**
- * 类名 QCodeBO
- * 描述 发送验证码请求
+ * 类名 QImgCodeBO
+ * 描述 获取图片验证码
  * 作者 李苜菲
  * 日期 2016/8/1 11:08
  */
-public class QCodeBO extends BaseRequest {
+public class QImgCodeBO extends BaseRequest {
     public String phoneNum;
-    public boolean flag;
-    public String imgCode;
 
-    public QCodeBO(String method, String phoneNum, boolean flag, String imgCode) {
+    public QImgCodeBO(String method, String phoneNum) {
         super(method);
         this.phoneNum = phoneNum;
-        this.flag = flag;
-        this.imgCode = imgCode;
     }
 }
